@@ -1,10 +1,10 @@
 # clash-source 运行报告
 
-- 生成时间：2026-10-13 23:44:50（UTC 记录：2026-10-13T15:44:43Z）
+- 生成时间：2026-10-13 23:49:38（UTC 记录：2026-10-13T15:49:31Z）
 - AI 模式：`off`
-- 订阅入口：`https://YOUR_GITHUB_ID.github.io/clash-source/profile.yaml`
-- 备用入口（github.io 不达时）：`https://gh-proxy.com/raw.githubusercontent.com/YOUR_GITHUB_ID/gh-pages/profile.yaml`
-- jsdelivr 备用：`https://cdn.jsdelivr.net/gh/YOUR_GITHUB_ID/clash-source@gh-pages/profile.yaml`
+- 订阅入口：`https://pala911.github.io/clash-source/profile.yaml`
+- 备用入口（github.io 不达时）：`https://gh-proxy.com/raw.githubusercontent.com/pala911/gh-pages/profile.yaml`
+- jsdelivr 备用：`https://cdn.jsdelivr.net/gh/pala911/clash-source@gh-pages/profile.yaml`
 
 ## 各源漏斗
 
@@ -30,7 +30,6 @@
 ## ⚠ 本次告警
 
 - yypool 产出 1433 超过 max_nodes=900，已截断（考虑淘汰最差尾部）
-- 未指定 GitHub 用户名，profile 里的订阅地址是占位符 YOUR_GITHUB_ID（CI 上会自动取真实值；本地预览请传 --owner）
 
 ## 硬过滤命中 TOP（按源）
 
