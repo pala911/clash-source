@@ -1,0 +1,65 @@
+name: update-source
+
+on:
+  schedule:
+    # 每周一 03:17 UTC（北京 11:17）。想更鲜改成 '17 */6 * * *'（每 6 小时），
+    # 但注意：仓库 60 天无活动会被 GitHub 停用定时任务（每次成功提交 dist 即可保活）。
+    - cron: "17 3 * * 1"
+  workflow_dispatch:        # 网页上「Run workflow」手动触发，几分钟刷完
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-source
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: 安装依赖
+        run: pip install -r requirements.txt
+
+      - name: 跑流水线（抓取→归一→硬过滤→AI→产出）
+        env:
+          AI_BASE_URL: ${{ secrets.AI_BASE_URL }}
+          AI_API_KEY: ${{ secrets.AI_API_KEY }}
+          AI_MODEL: ${{ secrets.AI_MODEL }}
+          GITHUB_REPOSITORY_OWNER: ${{ github.repository_owner }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: python src/run.py --ai-mode auto --keep-raw
+
+      - name: 提交产物到 main（dist/ 是事实来源，reports/ 是审计留痕）
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A dist reports
+          if git diff --cached --quiet; then
+            echo "本轮无变化，跳过提交"
+          else
+            git commit -m "chore: 源更新 $(date -u +%FT%TZ)"
+            git push
+          fi
+
+      - name: 发布到 gh-pages（手机订阅站点根）
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout --orphan gh-pages-new
+          git rm -rf --cached . >/dev/null 2>&1 || true
+          rm -rf .github src reports
+          mv dist/* .
+          rmdir dist 2>/dev/null || true
+          touch .nojekyll
+          git add -A
+          git commit -m "pages: $(date -u +%FT%TZ)"
+          git push -f origin gh-pages-new:gh-pages
+          echo "订阅入口: https://${{ github.repository_owner }}.github.io/${{ github.repository }}/profile.yaml"

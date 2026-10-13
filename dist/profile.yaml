@@ -1,0 +1,715 @@
+# clash-source 自动生成 —— 手机订阅入口
+# https://YOUR_GITHUB_ID.github.io/clash-source/profile.yaml
+# 备用（若 github.io 不可达）：
+#   https://gh-proxy.com/raw.githubusercontent.com/YOUR_GITHUB_ID.github.io/gh-pages/profile.yaml
+# 备用：https://gh-proxy.com/raw.githubusercontent.com/YOUR_GITHUB_ID.github.io/main/dist/profile.yaml
+mode: rule
+unified-delay: true
+tcp-concurrent: true
+dns:
+  enable: true
+  ipv6: false
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  nameserver:
+  - 223.5.5.5
+  - 119.29.29.29
+  fallback:
+  - 8.8.8.8
+  - 1.1.1.1
+  fallback-filter:
+    geoip: false
+    geoip-code: CN
+  fake-ip-filter:
+  - '*.lan'
+  - '*.local'
+  - '*.localdomain'
+  - '*.home.arpa'
+  - '*.example'
+  - '*.invalid'
+  - '*.localhost'
+  - '*.test'
+  - localhost
+  - '*.msftconnecttest.com'
+  - '*.msftncsi.com'
+  - time.*.com
+  - time.*.gov
+  - time.*.edu.cn
+  - time.*.apple.com
+  - ntp.*.com
+  - +.pool.ntp.org
+  - +.xboxlive.com
+  - xbox.*.*.microsoft.com
+  - +.stun.playstation.net
+proxy-groups:
+- name: SRC-anaer
+  type: url-test
+  use:
+  - anaer
+  url: https://www.youtube.com/generate_204
+  expected-status: 204
+  interval: 120
+  tolerance: 200
+  timeout: 4000
+  lazy: true
+- name: SRC-autojiedian
+  type: url-test
+  use:
+  - autojiedian
+  url: https://www.youtube.com/generate_204
+  expected-status: 204
+  interval: 180
+  tolerance: 200
+  timeout: 4000
+  lazy: true
+- name: SRC-automerge
+  type: url-test
+  use:
+  - automerge
+  url: https://www.youtube.com/generate_204
+  expected-status: 204
+  interval: 180
+  tolerance: 200
+  timeout: 4000
+  lazy: true
+- name: SRC-ermaozi
+  type: url-test
+  use:
+  - ermaozi
+  url: https://www.youtube.com/generate_204
+  expected-status: 204
+  interval: 120
+  tolerance: 200
+  timeout: 4000
+  lazy: true
+- name: SRC-nomorewalls
+  type: url-test
+  use:
+  - nomorewalls
+  url: https://www.youtube.com/generate_204
+  expected-status: 204
+  interval: 120
+  tolerance: 200
+  timeout: 4000
+  lazy: true
+- name: SRC-passcro
+  type: url-test
+  use:
+  - passcro
+  url: https://www.youtube.com/generate_204
+  expected-status: 204
+  interval: 120
+  tolerance: 200
+  timeout: 4000
+  lazy: true
+- name: SRC-ruk1ng001
+  type: url-test
+  use:
+  - ruk1ng001
+  url: https://www.youtube.com/generate_204
+  expected-status: 204
+  interval: 120
+  tolerance: 200
+  timeout: 4000
+  lazy: true
+- name: SRC-shaoyouvip
+  type: url-test
+  use:
+  - shaoyouvip
+  url: https://www.youtube.com/generate_204
+  expected-status: 204
+  interval: 120
+  tolerance: 200
+  timeout: 4000
+  lazy: true
+- name: SRC-snakem982
+  type: url-test
+  use:
+  - snakem982
+  url: https://www.youtube.com/generate_204
+  expected-status: 204
+  interval: 120
+  tolerance: 200
+  timeout: 4000
+  lazy: true
+- name: SRC-ssrsub
+  type: url-test
+  use:
+  - ssrsub
+  url: https://www.youtube.com/generate_204
+  expected-status: 204
+  interval: 120
+  tolerance: 200
+  timeout: 4000
+  lazy: true
+- name: SRC-yypool
+  type: url-test
+  use:
+  - yypool
+  url: https://www.youtube.com/generate_204
+  expected-status: 204
+  interval: 180
+  tolerance: 200
+  timeout: 4000
+  lazy: true
+- name: SRC-zhuhaiuk
+  type: url-test
+  use:
+  - zhuhaiuk
+  url: https://www.youtube.com/generate_204
+  expected-status: 204
+  interval: 120
+  tolerance: 200
+  timeout: 4000
+  lazy: true
+- name: AUTO
+  type: url-test
+  lazy: false
+  url: https://www.youtube.com/generate_204
+  expected-status: 204
+  interval: 120
+  tolerance: 200
+  timeout: 4000
+  proxies:
+  - SRC-anaer
+  - SRC-zhuhaiuk
+  - SRC-ssrsub
+  - SRC-yypool
+  - SRC-ruk1ng001
+  - SRC-passcro
+  - SRC-ermaozi
+  - SRC-nomorewalls
+  - SRC-snakem982
+- name: FAILOVER
+  type: fallback
+  lazy: false
+  url: https://www.youtube.com/generate_204
+  expected-status: 204
+  interval: 60
+  timeout: 4000
+  proxies:
+  - AUTO
+  - SRC-zhuhaiuk
+  - SRC-anaer
+  - SRC-yypool
+  - SRC-ssrsub
+  - SRC-ruk1ng001
+  - SRC-passcro
+  - SRC-ermaozi
+  - SRC-shaoyouvip
+  - SRC-nomorewalls
+  - SRC-snakem982
+  - SRC-automerge
+  - SRC-autojiedian
+- name: PROXY
+  type: select
+  proxies:
+  - FAILOVER
+  - AUTO
+  - SRC-zhuhaiuk
+  - SRC-anaer
+  - SRC-yypool
+  - SRC-ssrsub
+  - SRC-ruk1ng001
+  - SRC-passcro
+  - SRC-ermaozi
+  - SRC-shaoyouvip
+  - SRC-nomorewalls
+  - SRC-snakem982
+  - SRC-automerge
+  - SRC-autojiedian
+- name: Claude
+  type: select
+  use:
+  - anaer
+  - autojiedian
+  - automerge
+  - ermaozi
+  - nomorewalls
+  - passcro
+  - ruk1ng001
+  - shaoyouvip
+  - snakem982
+  - ssrsub
+  - yypool
+  - zhuhaiuk
+  proxies:
+  - PROXY
+  - FAILOVER
+  - AUTO
+  - SRC-autojiedian
+  - SRC-ruk1ng001
+  - SRC-zhuhaiuk
+  - SRC-shaoyouvip
+  - SRC-nomorewalls
+  - SRC-ssrsub
+  - SRC-snakem982
+- name: Gemini
+  type: select
+  use:
+  - anaer
+  - autojiedian
+  - automerge
+  - ermaozi
+  - nomorewalls
+  - passcro
+  - ruk1ng001
+  - shaoyouvip
+  - snakem982
+  - ssrsub
+  - yypool
+  - zhuhaiuk
+  proxies:
+  - PROXY
+  - FAILOVER
+  - AUTO
+  - SRC-autojiedian
+  - SRC-ruk1ng001
+  - SRC-zhuhaiuk
+  - SRC-shaoyouvip
+  - SRC-nomorewalls
+  - SRC-ssrsub
+  - SRC-snakem982
+rule-providers:
+  LocalAreaNetwork:
+    type: http
+    behavior: classical
+    format: text
+    interval: 86400
+    path: ./ruleset/LocalAreaNetwork.list
+    url: https://gh-proxy.com/raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/LocalAreaNetwork.list
+  UnBan:
+    type: http
+    behavior: classical
+    format: text
+    interval: 86400
+    path: ./ruleset/UnBan.list
+    url: https://gh-proxy.com/raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/UnBan.list
+  BanAD:
+    type: http
+    behavior: classical
+    format: text
+    interval: 86400
+    path: ./ruleset/BanAD.list
+    url: https://gh-proxy.com/raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/BanAD.list
+  BanProgramAD:
+    type: http
+    behavior: classical
+    format: text
+    interval: 86400
+    path: ./ruleset/BanProgramAD.list
+    url: https://gh-proxy.com/raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/BanProgramAD.list
+  GoogleCN:
+    type: http
+    behavior: classical
+    format: text
+    interval: 86400
+    path: ./ruleset/GoogleCN.list
+    url: https://gh-proxy.com/raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/GoogleCN.list
+  GoogleFCM:
+    type: http
+    behavior: classical
+    format: text
+    interval: 86400
+    path: ./ruleset/GoogleFCM.list
+    url: https://gh-proxy.com/raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/GoogleFCM.list
+  Apple:
+    type: http
+    behavior: classical
+    format: text
+    interval: 86400
+    path: ./ruleset/Apple.list
+    url: https://gh-proxy.com/raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Apple.list
+  Microsoft:
+    type: http
+    behavior: classical
+    format: text
+    interval: 86400
+    path: ./ruleset/Microsoft.list
+    url: https://gh-proxy.com/raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Microsoft.list
+  OneDrive:
+    type: http
+    behavior: classical
+    format: text
+    interval: 86400
+    path: ./ruleset/OneDrive.list
+    url: https://gh-proxy.com/raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/OneDrive.list
+  Bing:
+    type: http
+    behavior: classical
+    format: text
+    interval: 86400
+    path: ./ruleset/Bing.list
+    url: https://gh-proxy.com/raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Bing.list
+  ChinaDomain:
+    type: http
+    behavior: domain
+    format: text
+    interval: 86400
+    path: ./ruleset/ChinaDomain.list
+    url: https://gh-proxy.com/raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ChinaDomain.list
+  ChinaCompanyIp:
+    type: http
+    behavior: ipcidr
+    format: text
+    interval: 86400
+    path: ./ruleset/ChinaCompanyIp.list
+    url: https://gh-proxy.com/raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ChinaCompanyIp.list
+  ChinaMedia:
+    type: http
+    behavior: classical
+    format: text
+    interval: 86400
+    path: ./ruleset/ChinaMedia.list
+    url: https://gh-proxy.com/raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ChinaMedia.list
+  Bilibili:
+    type: http
+    behavior: classical
+    format: text
+    interval: 86400
+    path: ./ruleset/Bilibili.list
+    url: https://gh-proxy.com/raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/Bilibili.list
+  BilibiliHMT:
+    type: http
+    behavior: classical
+    format: text
+    interval: 86400
+    path: ./ruleset/BilibiliHMT.list
+    url: https://gh-proxy.com/raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/BilibiliHMT.list
+  NetEaseMusic:
+    type: http
+    behavior: classical
+    format: text
+    interval: 86400
+    path: ./ruleset/NetEaseMusic.list
+    url: https://gh-proxy.com/raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/NetEaseMusic.list
+  Download:
+    type: http
+    behavior: classical
+    format: text
+    interval: 86400
+    path: ./ruleset/Download.list
+    url: https://gh-proxy.com/raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Download.list
+  SteamCN:
+    type: http
+    behavior: classical
+    format: text
+    interval: 86400
+    path: ./ruleset/SteamCN.list
+    url: https://gh-proxy.com/raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/SteamCN.list
+  Steam:
+    type: http
+    behavior: classical
+    format: text
+    interval: 86400
+    path: ./ruleset/Steam.list
+    url: https://gh-proxy.com/raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/Steam.list
+  Epic:
+    type: http
+    behavior: classical
+    format: text
+    interval: 86400
+    path: ./ruleset/Epic.list
+    url: https://gh-proxy.com/raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/Epic.list
+  Origin:
+    type: http
+    behavior: classical
+    format: text
+    interval: 86400
+    path: ./ruleset/Origin.list
+    url: https://gh-proxy.com/raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/Origin.list
+  Sony:
+    type: http
+    behavior: classical
+    format: text
+    interval: 86400
+    path: ./ruleset/Sony.list
+    url: https://gh-proxy.com/raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/Sony.list
+  Nintendo:
+    type: http
+    behavior: classical
+    format: text
+    interval: 86400
+    path: ./ruleset/Nintendo.list
+    url: https://gh-proxy.com/raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/Nintendo.list
+  Telegram:
+    type: http
+    behavior: classical
+    format: text
+    interval: 86400
+    path: ./ruleset/Telegram.list
+    url: https://gh-proxy.com/raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Telegram.list
+  YouTube:
+    type: http
+    behavior: classical
+    format: text
+    interval: 86400
+    path: ./ruleset/YouTube.list
+    url: https://gh-proxy.com/raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/YouTube.list
+  Netflix:
+    type: http
+    behavior: classical
+    format: text
+    interval: 86400
+    path: ./ruleset/Netflix.list
+    url: https://gh-proxy.com/raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/Netflix.list
+  Bahamut:
+    type: http
+    behavior: classical
+    format: text
+    interval: 86400
+    path: ./ruleset/Bahamut.list
+    url: https://gh-proxy.com/raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/Bahamut.list
+  OpenAi:
+    type: http
+    behavior: classical
+    format: text
+    interval: 86400
+    path: ./ruleset/OpenAi.list
+    url: https://gh-proxy.com/raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/OpenAi.list
+  ProxyMedia:
+    type: http
+    behavior: classical
+    format: text
+    interval: 86400
+    path: ./ruleset/ProxyMedia.list
+    url: https://gh-proxy.com/raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ProxyMedia.list
+  ProxyGFWlist:
+    type: http
+    behavior: classical
+    format: text
+    interval: 86400
+    path: ./ruleset/ProxyGFWlist.list
+    url: https://gh-proxy.com/raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ProxyGFWlist.list
+  category-ads-all:
+    type: http
+    behavior: domain
+    format: yaml
+    interval: 86400
+    path: ./ruleset/category-ads-all.yaml
+    url: https://gh-proxy.com/raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-ads-all.yaml
+  claude:
+    type: http
+    behavior: domain
+    format: mrs
+    interval: 86400
+    path: ./ruleset/claude.mrs
+    url: https://hvwin8.github.io/autojiedian/rules/claude/claude.mrs
+  gemini:
+    type: http
+    behavior: domain
+    format: mrs
+    interval: 86400
+    path: ./ruleset/gemini.mrs
+    url: https://hvwin8.github.io/autojiedian/rules/gemini/gemini.mrs
+rules:
+- IP-CIDR6,::/0,REJECT,no-resolve
+- DOMAIN-SUFFIX,doubleclick.net,REJECT
+- DOMAIN-SUFFIX,googleadservices.com,REJECT
+- DOMAIN-SUFFIX,googlesyndication.com,REJECT
+- DOMAIN-SUFFIX,mobileads.google.com,REJECT
+- DOMAIN-SUFFIX,github.com,PROXY
+- DOMAIN-SUFFIX,githubusercontent.com,PROXY
+- DOMAIN-SUFFIX,github.io,PROXY
+- DOMAIN-SUFFIX,githubassets.com,PROXY
+- DOMAIN-SUFFIX,github.dev,PROXY
+- DOMAIN-SUFFIX,gh-proxy.com,DIRECT
+- RULE-SET,LocalAreaNetwork,DIRECT
+- IP-CIDR,127.0.0.0/8,DIRECT,no-resolve
+- IP-CIDR,10.0.0.0/8,DIRECT,no-resolve
+- IP-CIDR,172.16.0.0/12,DIRECT,no-resolve
+- IP-CIDR,192.168.0.0/16,DIRECT,no-resolve
+- DOMAIN-SUFFIX,digitalchina.com,DIRECT
+- RULE-SET,BanAD,REJECT
+- RULE-SET,BanProgramAD,REJECT
+- RULE-SET,category-ads-all,REJECT
+- RULE-SET,UnBan,DIRECT
+- RULE-SET,ChinaDomain,DIRECT
+- RULE-SET,ChinaCompanyIp,DIRECT
+- RULE-SET,ChinaMedia,DIRECT
+- RULE-SET,Bilibili,DIRECT
+- RULE-SET,GoogleCN,DIRECT
+- RULE-SET,Apple,DIRECT
+- RULE-SET,Microsoft,DIRECT
+- RULE-SET,OneDrive,DIRECT
+- RULE-SET,Bing,DIRECT
+- RULE-SET,NetEaseMusic,DIRECT
+- RULE-SET,SteamCN,DIRECT
+- RULE-SET,Download,DIRECT
+- DOMAIN-REGEX,^assets\d+\.xboxlive\.(com|cn)$,DIRECT
+- DOMAIN-SUFFIX,twimg.com,PROXY
+- DOMAIN-SUFFIX,tiktokcdn.com,PROXY
+- DOMAIN-SUFFIX,tiktokcdn-eu.com,PROXY
+- DOMAIN-SUFFIX,tiktokcdn-us.com,PROXY
+- DOMAIN-SUFFIX,tiktokv.com,PROXY
+- DOMAIN-SUFFIX,byteoversea.com,PROXY
+- DOMAIN-SUFFIX,fbcdn.net,PROXY
+- DOMAIN-SUFFIX,fbcdn.com,PROXY
+- DOMAIN-SUFFIX,cdninstagram.com,PROXY
+- RULE-SET,claude,Claude
+- DOMAIN-SUFFIX,claude.com,Claude
+- RULE-SET,gemini,Gemini
+- RULE-SET,YouTube,PROXY
+- RULE-SET,Netflix,PROXY
+- RULE-SET,ProxyMedia,PROXY
+- RULE-SET,Bahamut,PROXY
+- RULE-SET,BilibiliHMT,PROXY
+- RULE-SET,OpenAi,PROXY
+- RULE-SET,GoogleFCM,PROXY
+- RULE-SET,Telegram,PROXY
+- RULE-SET,Steam,PROXY
+- RULE-SET,Epic,PROXY
+- RULE-SET,Origin,PROXY
+- RULE-SET,Sony,PROXY
+- RULE-SET,Nintendo,PROXY
+- RULE-SET,ProxyGFWlist,PROXY
+- IP-CIDR,10.0.0.0/8,DIRECT
+- IP-CIDR,172.16.0.0/12,DIRECT
+- IP-CIDR,192.168.0.0/16,DIRECT
+- GEOIP,CN,DIRECT
+- MATCH,PROXY
+proxy-providers:
+  yypool:
+    type: http
+    url: https://YOUR_GITHUB_ID.github.io/clash-source/nodes/yypool.yaml
+    path: ./providers/yypool.yaml
+    interval: 3600
+    exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
+    health-check:
+      enable: true
+      url: https://www.youtube.com/generate_204
+      interval: 300
+      timeout: 5000
+      expected-status: 204
+  anaer:
+    type: http
+    url: https://YOUR_GITHUB_ID.github.io/clash-source/nodes/anaer.yaml
+    path: ./providers/anaer.yaml
+    interval: 3600
+    exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
+    health-check:
+      enable: true
+      url: https://www.youtube.com/generate_204
+      interval: 300
+      timeout: 5000
+      expected-status: 204
+  passcro:
+    type: http
+    url: https://YOUR_GITHUB_ID.github.io/clash-source/nodes/passcro.yaml
+    path: ./providers/passcro.yaml
+    interval: 3600
+    exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
+    health-check:
+      enable: true
+      url: https://www.youtube.com/generate_204
+      interval: 300
+      timeout: 5000
+      expected-status: 204
+  automerge:
+    type: http
+    url: https://YOUR_GITHUB_ID.github.io/clash-source/nodes/automerge.yaml
+    path: ./providers/automerge.yaml
+    interval: 3600
+    exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
+    health-check:
+      enable: true
+      url: https://www.youtube.com/generate_204
+      interval: 300
+      timeout: 5000
+      expected-status: 204
+  ermaozi:
+    type: http
+    url: https://YOUR_GITHUB_ID.github.io/clash-source/nodes/ermaozi.yaml
+    path: ./providers/ermaozi.yaml
+    interval: 3600
+    exclude-filter: (?i)(过期|剩余|流量|官网|订阅|加群|电报|telegram|t\.me|https?://)
+    health-check:
+      enable: true
+      url: https://www.youtube.com/generate_204
+      interval: 300
+      timeout: 5000
+      expected-status: 204
+  zhuhaiuk:
+    type: http
+    url: https://YOUR_GITHUB_ID.github.io/clash-source/nodes/zhuhaiuk.yaml
+    path: ./providers/zhuhaiuk.yaml
+    interval: 3600
+    exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
+    health-check:
+      enable: true
+      url: https://www.youtube.com/generate_204
+      interval: 300
+      timeout: 5000
+      expected-status: 204
+  ssrsub:
+    type: http
+    url: https://YOUR_GITHUB_ID.github.io/clash-source/nodes/ssrsub.yaml
+    path: ./providers/ssrsub.yaml
+    interval: 3600
+    exclude-filter: 机场推荐:dafei\.de 德国 07|🇨🇳CN_[0-9]
+    health-check:
+      enable: true
+      url: https://www.youtube.com/generate_204
+      interval: 300
+      timeout: 5000
+      expected-status: 204
+  ruk1ng001:
+    type: http
+    url: https://YOUR_GITHUB_ID.github.io/clash-source/nodes/ruk1ng001.yaml
+    path: ./providers/ruk1ng001.yaml
+    interval: 3600
+    exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
+    health-check:
+      enable: true
+      url: https://www.youtube.com/generate_204
+      interval: 300
+      timeout: 5000
+      expected-status: 204
+  snakem982:
+    type: http
+    url: https://YOUR_GITHUB_ID.github.io/clash-source/nodes/snakem982.yaml
+    path: ./providers/snakem982.yaml
+    interval: 3600
+    exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
+    health-check:
+      enable: true
+      url: https://www.youtube.com/generate_204
+      interval: 300
+      timeout: 5000
+      expected-status: 204
+  nomorewalls:
+    type: http
+    url: https://YOUR_GITHUB_ID.github.io/clash-source/nodes/nomorewalls.yaml
+    path: ./providers/nomorewalls.yaml
+    interval: 3600
+    exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
+    health-check:
+      enable: true
+      url: https://www.youtube.com/generate_204
+      interval: 300
+      timeout: 5000
+      expected-status: 204
+  autojiedian:
+    type: http
+    url: https://YOUR_GITHUB_ID.github.io/clash-source/nodes/autojiedian.yaml
+    path: ./providers/autojiedian.yaml
+    interval: 3600
+    exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
+    health-check:
+      enable: true
+      url: https://www.youtube.com/generate_204
+      interval: 300
+      timeout: 5000
+      expected-status: 204
+  shaoyouvip:
+    type: http
+    url: https://YOUR_GITHUB_ID.github.io/clash-source/nodes/shaoyouvip.yaml
+    path: ./providers/shaoyouvip.yaml
+    interval: 3600
+    exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
+    health-check:
+      enable: true
+      url: https://www.youtube.com/generate_204
+      interval: 300
+      timeout: 5000
+      expected-status: 204
