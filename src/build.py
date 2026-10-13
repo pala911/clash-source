@@ -93,6 +93,8 @@ def dump_yaml(obj, header, path):
 def write_dist(dist_dir, per_source_nodes, all_nodes, profile, manifest, base):
     nodes_dir = os.path.join(dist_dir, "nodes")
     os.makedirs(nodes_dir, exist_ok=True)
+    owner = manifest.get("owner") or "YOUR_GITHUB_ID"
+    repo = manifest.get("repo") or "clash-source"
     for name, nodes in per_source_nodes.items():
         dump_yaml({"proxies": nodes},
                   "# clash-source 自动生成 —— 源 %s，共 %d 节点\n"
@@ -105,11 +107,14 @@ def write_dist(dist_dir, per_source_nodes, all_nodes, profile, manifest, base):
               os.path.join(nodes_dir, "all.yaml"))
     dump_yaml(profile,
               "# clash-source 自动生成 —— 手机订阅入口\n"
-              "# %s/profile.yaml\n"
-              "# 备用（若 github.io 不可达）：\n"
-              "#   https://gh-proxy.com/raw.githubusercontent.com/%s/gh-pages/profile.yaml\n"
-              "# 备用：https://gh-proxy.com/raw.githubusercontent.com/%s/main/dist/profile.yaml"
-              % (base, base.split("//")[1].split("/")[0], base.split("//")[1].split("/")[0]),
+              "# 主:  %s/profile.yaml\n"
+              "# 备1 jsdelivr（免 Pages 设置，国内直连实测可达）:\n"
+              "#   https://cdn.jsdelivr.net/gh/%s/%s@gh-pages/profile.yaml\n"
+              "# 备2 gh-proxy raw（github.io 不达时）:\n"
+              "#   https://gh-proxy.com/raw.githubusercontent.com/%s/%s/gh-pages/profile.yaml\n"
+              "# 备3 gh-proxy raw（main 分支）:\n"
+              "#   https://gh-proxy.com/raw.githubusercontent.com/%s/%s/main/dist/profile.yaml"
+              % (base, owner, repo, owner, repo, owner, repo),
               os.path.join(dist_dir, "profile.yaml"))
     with open(os.path.join(dist_dir, "manifest.json"), "w", encoding="utf-8") as f:
         json.dump(manifest, f, ensure_ascii=False, indent=2)

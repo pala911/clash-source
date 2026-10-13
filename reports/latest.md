@@ -1,6 +1,6 @@
 # clash-source 运行报告
 
-- 生成时间：2026-10-13 23:40:30（UTC 记录：2026-10-13T15:40:23Z）
+- 生成时间：2026-10-13 23:44:50（UTC 记录：2026-10-13T15:44:43Z）
 - AI 模式：`off`
 - 订阅入口：`https://YOUR_GITHUB_ID.github.io/clash-source/profile.yaml`
 - 备用入口（github.io 不达时）：`https://gh-proxy.com/raw.githubusercontent.com/YOUR_GITHUB_ID/gh-pages/profile.yaml`
@@ -10,7 +10,7 @@
 
 | 源 | 原始 | 产出 | AI 剔除 | 镜像回退 | 备注 |
 |---|---:|---:|---:|---|---|
-| yypool | 1725 | 900 | 0 | 是 | 直连失败走镜像 |
+| yypool | 1725 | 900 | 0 | 否 | - |
 | anaer | 39 | 33 | 0 | 否 | - |
 | passcro | 149 | 145 | 0 | 否 | - |
 | automerge | 512 | 235 | 0 | 否 | - |
