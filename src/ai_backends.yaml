@@ -1,0 +1,34 @@
+# AI 后端清单（多后端自动故障转移）
+#
+# key 不写在这里，只写「从哪个环境变量读」——不进 git、不落文件。
+# 本地/CI 注入方式：
+#   $env:AI_KEY_SILICONFLOW = "sk-..."
+#   $env:AI_KEY_OPENROUTER  = "sk-or-..."
+#
+# 顺序即优先级：某个后端连续失败（429/超时/非 JSON）会自动切下一个，
+# 报告 reports/latest.md 里会记每个后端实际服务了多少批。
+
+backends:
+  - name: siliconflow_qwen3_8b
+    base_url: https://api.siliconflow.cn/v1
+    model: Qwen/Qwen3-8B
+    env_key: AI_KEY_SILICONFLOW
+    timeout: 120
+    retries: 3
+    note: 首选。非推理模型、输出短，本任务（挑出要删的节点）够用且快；1500 max_tokens 足够
+
+  - name: siliconflow_xing
+    base_url: https://api.siliconflow.cn/v1
+    model: XingChenAGI/Xing4.0-29B
+    env_key: AI_KEY_SILICONFLOW
+    timeout: 240
+    retries: 2
+    note: 备用。推理模型思维链吃 token，60 条批次实测会 read timeout，故超时调大、max_tokens 放大重试
+
+  - name: openrouter_gemma
+    base_url: https://openrouter.ai/api/v1
+    model: google/gemma-4-31b-it:free
+    env_key: AI_KEY_OPENROUTER
+    timeout: 180
+    retries: 4
+    note: 末位备份。2026-10-14 两次实测均 429（Google AI Studio 共享池被抢满）；限流恢复时自动顶上，国内可直连

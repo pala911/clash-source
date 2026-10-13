@@ -30,9 +30,9 @@ jobs:
 
       - name: 跑流水线（抓取→归一→硬过滤→AI→产出）
         env:
-          AI_BASE_URL: ${{ secrets.AI_BASE_URL }}
-          AI_API_KEY: ${{ secrets.AI_API_KEY }}
-          AI_MODEL: ${{ secrets.AI_MODEL }}
+          # 多后端 AI：顺序与超时见 src/ai_backends.yaml
+          AI_KEY_SILICONFLOW: ${{ secrets.AI_KEY_SILICONFLOW }}
+          AI_KEY_OPENROUTER: ${{ secrets.AI_KEY_OPENROUTER }}
           GITHUB_REPOSITORY_OWNER: ${{ github.repository_owner }}
           GITHUB_REPOSITORY: ${{ github.repository }}
         run: python src/run.py --ai-mode auto --keep-raw

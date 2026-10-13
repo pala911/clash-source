@@ -42,12 +42,18 @@ def main():
                     help="覆盖订阅基址，如 https://cdn.jsdelivr.net/gh/you/clash-source@gh-pages")
     ap.add_argument("--timeout", type=int, default=45)
     ap.add_argument("--keep-raw", action="store_true")
+    ap.add_argument("--sources", default=None,
+                    help="逗号分隔，只跑指定源（调试用）")
     args = ap.parse_args()
 
     with open(os.path.join(HERE, "sources.yaml"), encoding="utf-8") as f:
         cfg = yaml.safe_load(f)
     exclude_default = cfg.get("exclude_filter_default") or ""
     enabled = [s for s in cfg["sources"] if s.get("enabled", True)]
+    if args.sources:
+        want = {x.strip() for x in args.sources.split(",")}
+        enabled = [s for s in enabled if s["name"] in want]
+        log("调试模式：只跑 %s" % ", ".join(s["name"] for s in enabled))
     # 逐源 exclude-filter（生产实测值）：统一化会误杀好节点，见 sources.yaml 注释
     excl_map = {s["name"]: (s.get("exclude_filter") or exclude_default) for s in enabled}
     log("源清单：%d 个启用（另有 %d 个已评估排除）"
@@ -56,7 +62,8 @@ def main():
     mode = ai_review.resolve_mode(args.ai_mode)
     aicfg = ai_review.config_from_env()
     if mode == "http":
-        log("AI 后端：http（%s / %s）" % (aicfg["base_url"], aicfg["model"]))
+        names = aicfg.get("_names") or ["env-single"]
+        log("AI 后端：http（%s）" % " → ".join(names))
     elif mode == "opencode":
         log("AI 后端：opencode CLI（%s）" % aicfg["opencode_exe"])
     else:
@@ -163,6 +170,14 @@ def main():
                             "YOUR_GITHUB_ID（CI 上会自动取真实值；本地预览请传 --owner）")
         log("订阅基址：%s" % base)
 
+    debug = bool(args.sources)
+    if debug:
+        # 局部调试跑：只写节点文件，不生成 profile（模板引用全部源，局部跑必然断言失败）
+        log("调试模式：只写 nodes/，跳过 profile 生成")
+        build.write_nodes(os.path.join(ROOT, "dist"), per_source, all_nodes)
+        log("完成（调试）：%d 源 / 产出 %d 节点 / AI=%s" % (len(per_source), len(all_nodes), mode))
+        return 0
+
     profile, _ = build.build_profile(enabled, excl_map, owner, repo)
     if args.pages_base:
         for n, p in profile["proxy-providers"].items():
@@ -212,6 +227,30 @@ def main():
                          os.path.join(dist, "raw", "%s.yaml" % name))
     report.write_report(os.path.join(ROOT, "reports", "latest.md"),
                         manifest, metas, warnings, per_source)
+
+    # AI 逐条留痕：删了哪个节点、模型给的理由（调 prompt / 复核误杀都靠它）
+    ai_rows = []
+    for m in metas:
+        for d in ((m.get("ai") or {}).get("drop_detail") or []):
+            ai_rows.append((m["name"], d))
+    ai_path = os.path.join(ROOT, "reports", "ai_dropped.md")
+    with open(ai_path, "w", encoding="utf-8") as f:
+        f.write("# AI 审核逐条留痕（生成于 %s，模型 `%s`）\n\n"
+                % (manifest["generated_at"], manifest["ai_mode"]))
+        if not ai_rows:
+            f.write("本轮 AI 未剔除任何节点（或未启用 AI）。\n")
+        else:
+            f.write("共剔除 %d 条。若发现误杀，把节点名与理由贴回来即可针对性收窄 prompt。\n\n"
+                    % len(ai_rows))
+            cur = None
+            for src, d in ai_rows:
+                if src != cur:
+                    cur = src
+                    f.write("\n## %s\n\n| 节点名 | 类型 | server | 模型理由 |\n|---|---|---|---|\n" % src)
+                f.write("| %s | %s | %s | %s |\n"
+                        % (str(d.get("name"))[:60], d.get("type"), d.get("server"),
+                           str(d.get("why"))[:40]))
+    log("AI 逐条留痕 -> %s（%d 条）" % (ai_path, len(ai_rows)))
     log("完成：%d 源 / 产出 %d 节点（合并 %d）/ AI=%s -> %s"
         % (len(per_source), manifest["totals"]["kept"], len(all_nodes), mode, dist))
     return 0

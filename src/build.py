@@ -90,6 +90,21 @@ def dump_yaml(obj, header, path):
         yaml.safe_dump(obj, f, allow_unicode=True, sort_keys=False, width=4096)
 
 
+def write_nodes(dist_dir, per_source_nodes, all_nodes, base=""):
+    """只写节点文件（调试 --sources 局部跑时用，避免 profile 断言/覆盖）。"""
+    nodes_dir = os.path.join(dist_dir, "nodes")
+    os.makedirs(nodes_dir, exist_ok=True)
+    for name, nodes in per_source_nodes.items():
+        dump_yaml({"proxies": nodes},
+                  "# clash-source 自动生成（局部调试跑）—— 源 %s，共 %d 节点"
+                  % (name, len(nodes)),
+                  os.path.join(nodes_dir, "%s.yaml" % name))
+    if all_nodes is not None:
+        dump_yaml({"proxies": all_nodes},
+                  "# clash-source 自动生成（局部调试跑）—— 合并 %d 节点" % len(all_nodes),
+                  os.path.join(nodes_dir, "all.yaml"))
+
+
 def write_dist(dist_dir, per_source_nodes, all_nodes, profile, manifest, base):
     nodes_dir = os.path.join(dist_dir, "nodes")
     os.makedirs(nodes_dir, exist_ok=True)
