@@ -14,6 +14,7 @@ import argparse
 import datetime
 import os
 import sys
+import time
 
 import yaml
 
@@ -93,21 +94,18 @@ def main():
     raw_keep = {}
     ai_reviewed = {}
 
-    for s in enabled:
+    # ================= 阶段一：抓取 + 硬过滤（源间并发） =================
+    # 抓取是纯网络 IO、互不依赖，源间并发能把这一段从 12×N 秒压到约 N 秒。
+    # AI 判定则延后到阶段二统一并发（见下）。
+    def prep_one(s):
+        """返回 (name, kept, meta, reasons)。异常在内部兜住，不影响其他源。"""
         name = s["name"]
         raw_nodes, meta = fetch.fetch_source(s, timeout=args.timeout)
-        metas.append(meta)
         if meta.get("error"):
-            warnings.append("%s 抓取失败：%s（本轮产出空文件，不影响其他源）" % (name, meta["error"]))
-            per_source[name] = []
-            continue
-        log("→ %s：原始 %d 节点 / %d bytes / %.1fs%s"
-            % (name, len(raw_nodes), meta.get("bytes", 0), meta.get("fetch_sec", 0),
-               "（已回退镜像）" if meta.get("mirror_used") else ""))
+            return name, [], meta, {}
         if args.keep_raw:
             raw_keep[name] = list(raw_nodes)
 
-        # 1) 同源去重：同 server:port+协议+凭据 只留一个
         seen = set()
         dedup = []
         for p in raw_nodes:
@@ -123,7 +121,6 @@ def main():
             seen.add(k)
             dedup.append(p)
 
-        # 2) 硬过滤
         drop_types = s.get("drop_types") or ()
         kept, reasons = [], {}
         for p in dedup:
@@ -133,99 +130,109 @@ def main():
             else:
                 key = why.split("(")[0].strip()
                 reasons[key] = reasons.get(key, 0) + 1
-        log("   去重 %d -> 硬过滤后 %d%s"
-            % (len(dedup), len(kept),
+        return name, kept, meta, reasons
+
+    fetch_workers = max(1, int(os.environ.get("FETCH_CONCURRENCY", "6")))
+    if fetch_workers > 1:
+        import concurrent.futures as cf
+        with cf.ThreadPoolExecutor(max_workers=fetch_workers) as pool:
+            prepared = list(pool.map(prep_one, enabled))
+    else:
+        prepared = [prep_one(s) for s in enabled]
+
+    cluster_jobs = []      # (源名, 簇列表, 代表节点全集) —— 阶段二统一并发
+    prepared_by_name = {}
+
+    for name, kept, meta, reasons in prepared:
+        metas.append(meta)
+        prepared_by_name[name] = kept
+        if meta.get("error"):
+            warnings.append("%s 抓取失败：%s（本轮产出空文件，不影响其他源）" % (name, meta["error"]))
+            per_source[name] = []
+            continue
+        log("→ %s：原始 %d 节点 / %d bytes / %.1fs%s"
+            % (name, meta.get("raw_nodes", 0), meta.get("bytes", 0),
+               meta.get("fetch_sec", 0),
+               "（已回退镜像）" if meta.get("mirror_used") else ""))
+        log("   去重后 %d -> 硬过滤后 %d%s"
+            % (meta.get("raw_nodes", 0), len(kept),
                ("（丢弃 TOP：%s）" % "，".join("%s×%d" % (k, v)
                                         for k, v in sorted(reasons.items(), key=lambda x: -x[1])[:4]))
                if reasons else ""))
-
-        # 3) AI 裁决（簇级：判一次清一整簇同族克隆节点）
-        #
-        # token 账（2026-10-14 实测）：单节点送审一批 60 条 prompt≈6263 字符≈4.5k token，
-        # 12 源全量≈81 批≈40 万 token/轮；簇级后 nomorewalls 的 290 个同族广告位
-        # 只占 1 簇，全 12 源预计 <20 批 ≈ 1.5 万 token —— 省 95%+。
-        #   --ai-unit node    旧的单节点模式（保留作对照/兜底）
-        #   --ai-unit cluster 簇级模式（默认）
-        ai_reviewed[name] = 0
-        if mode != "off" and kept:
+        if kept:
+            clusters = filters.group_clusters(kept)
             if args.ai_unit == "cluster":
-                clusters = filters.group_clusters(kept)
                 cap = args.ai_max_clusters
                 if cap and len(clusters) > cap:
-                    clusters = clusters[:cap]          # 已按簇大小降序，保留信息量最大的
-                drop_c, cstats = ai_review.review_clusters(
-                    clusters, kept, mode, aicfg, name, log)
-                astats = cstats
-                if cstats.get("error"):
-                    warnings.append("%s AI 簇级审核不可用（保留全部节点）：%s"
-                                    % (name, cstats["error"]))
-                if cstats.get("rolled_back"):
-                    warnings.append("%s AI 剔除超阈值，已整体回滚" % name)
-                if drop_c:
-                    kill = set()
-                    for ci in drop_c:
-                        kill.update(clusters[ci][1])
-                    kept = [p for i, p in enumerate(kept) if i not in kill]
-                    log("   AI 剔除 %d 簇 / %d 节点%s"
-                        % (len(drop_c), len(kill),
-                           ("（%s）" % "，".join(cstats.get("top_reasons") or []))
-                           if cstats.get("top_reasons") else ""))
-                if cstats.get("skipped_budget"):
-                    warnings.append("%s AI 因墙钟预算耗尽被跳过（该源按纯规则产出）" % name)
-                    log("   [ai] 预算耗尽，跳过本源剩余簇")
+                    clusters = clusters[:cap]      # 已按簇大小降序，保留信息量最大的
                 ai_reviewed[name] = len(clusters)
-                log("   簇审：%d 节点 -> %d 簇（送审 %d 簇）"
-                    % (len(kept) + len(kill if drop_c else []), len(clusters),
-                       len(clusters)))
+                cluster_jobs.append((name, clusters, kept))
             else:
-                review_idx = []
-                if scope == "all":
-                    review_idx = list(range(len(kept)))
-                elif scope == "flagged":
-                    review_idx = [i for i, p in enumerate(kept) if filters.soft_hits(p["name"])]
-                else:
-                    flg = [i for i, p in enumerate(kept) if filters.soft_hits(p["name"])]
-                    rest = [i for i in range(len(kept)) if i not in set(flg)]
-                    if rest and args.ai_sample > 0:
-                        step = max(1, len(rest) // max(1, args.ai_sample))
-                        review_idx = sorted(set(flg) | set(rest[::step][:args.ai_sample]))
-                    else:
-                        review_idx = sorted(set(flg))
-                subset = [kept[i] for i in review_idx]
-                soft_map = {p["name"]: filters.soft_hits(p["name"]) for p in subset
-                            if filters.soft_hits(p["name"])}
-                log("   AI 送审 %d/%d 条（scope=%s）" % (len(subset), len(kept), scope))
-                drop_local, astats = ai_review.review_source(
-                    subset, soft_map, mode, aicfg, name, log)
-                drop_idx = [review_idx[i] for i in drop_local]
-                ai_reviewed[name] = len(subset)
-                if astats.get("error"):
-                    warnings.append("%s 部分批次 AI 不可用（相关批次保留全部节点）：%s"
-                                    % (name, astats["error"]))
-                if astats.get("rolled_back"):
-                    warnings.append("%s AI 剔除比例超阈值，已整体回滚" % name)
-                if drop_idx:
-                    ds = set(drop_idx)
-                    kept = [p for i, p in enumerate(kept) if i not in ds]
-                    log("   AI 剔除 %d%s" % (len(drop_idx),
-                                             ("（%s）" % "，".join(astats.get("top_reasons") or []))
-                                             if astats.get("top_reasons") else ""))
-        else:
-            astats = {"mode": mode}
+                ai_reviewed[name] = len(kept)      # node 模式整源一批，见阶段二
 
-        # 4) 数量上限（控手机 health-check 规模）
+    log("阶段一完成：%d 个源 / 产出 %d 节点 / 待 AI 审核 %d 个簇任务"
+        % (len(prepared_by_name), sum(len(v) for v in prepared_by_name.values()), len(cluster_jobs)))
+
+    # ================= 阶段二：AI 审核（全源簇任务统一并发） =================
+    # 为什么单独一段：原先是「源与源串行、源内 3 路并发」，大源一堵就卡住整条流水线。
+    # 现在把所有簇任务摊平进一个队列，天然负载均衡；配合 ai_review 的
+    # TPM 速率闸门（5 个后端同属一个硅基账号，额度共享，加并发必须配速率控制）。
+    if cluster_jobs and mode != "off":
+        import concurrent.futures as cf
+        ai_workers = max(1, int(os.environ.get("AI_CONCURRENCY", "6")))
+
+        def judge(job):
+            name, clusters, kept = job
+            drops, st = ai_review.review_clusters(
+                clusters, kept, mode, aicfg, name, log)
+            return name, drops, st
+
+        t_ai = time.time()
+        log("阶段二：%d 个簇任务交给 %d 路并发 AI" % (len(cluster_jobs), ai_workers))
+        with cf.ThreadPoolExecutor(max_workers=ai_workers) as pool:
+            ai_results = list(pool.map(judge, cluster_jobs))
+        log("阶段二完成，用时 %.0fs" % (time.time() - t_ai))
+
+        for name, drops, st in ai_results:
+            clusters = next(c[1] for c in cluster_jobs if c[0] == name)
+            kept = prepared_by_name[name]
+            astats = st
+            if st.get("error"):
+                warnings.append("%s AI 部分批次不可用（相关批次保留全部节点）：%s"
+                                % (name, st["error"]))
+            if st.get("rolled_back"):
+                warnings.append("%s AI 剔除超阈值，已整体回滚" % name)
+            if st.get("skipped_budget"):
+                warnings.append("%s AI 因墙钟预算耗尽被跳过（该源按纯规则产出）" % name)
+            if drops:
+                kill = set()
+                for ci in drops:
+                    kill.update(clusters[ci][1])
+                kept = [p for i, p in enumerate(kept) if i not in kill]
+                log("   %s：AI 剔除 %d 簇 / %d 节点%s"
+                    % (name, len(drops), len(kill),
+                       ("（%s）" % "，".join(st.get("top_reasons") or []))
+                       if st.get("top_reasons") else ""))
+            else:
+                log("   %s：AI 未剔除（簇数 %d）" % (name, len(clusters)))
+            prepared_by_name[name] = kept
+
+    # 汇总产物
+    for s in enabled:
+        name = s["name"]
+        kept = prepared_by_name.get(name, [])
         mx = int(s.get("max_nodes") or 0)
         if mx and len(kept) > mx:
-            log("   超过 max_nodes=%d，截断至 %d" % (mx, mx))
-            warnings.append("%s 产出 %d 超过 max_nodes=%d，已截断（考虑淘汰最差尾部）" % (name, len(kept), mx))
+            log("   %s 超过 max_nodes=%d，截断至 %d" % (name, mx, mx))
+            warnings.append("%s 产出 %d 超过 max_nodes=%d，已截断" % (name, len(kept), mx))
             kept = kept[:mx]
-
         filters.unique_names(kept, "")
         per_source[name] = kept
-        meta["kept"] = len(kept)
-        meta["ai"] = astats
-        meta["hard_drop_reasons"] = reasons
-        log("   产出 %d 节点" % len(kept))
+        meta = next((m for m in metas if m["name"] == name), None)
+        if meta is not None:
+            meta["kept"] = len(kept)
+        log("   产出 %d 节点：%s" % (len(kept), name))
+
 
     # 合并池（带源前缀，名字全局唯一）
     all_nodes = []

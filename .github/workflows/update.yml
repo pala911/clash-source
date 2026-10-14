@@ -48,7 +48,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A dist reports
+          git add -A dist reports state src/sources.yaml archive
           if git diff --cached --quiet; then
             echo "本轮无变化，跳过提交"
           else
@@ -62,11 +62,72 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git checkout --orphan gh-pages-new
           git rm -rf --cached . >/dev/null 2>&1 || true
-          rm -rf .github src reports
+          rm -rf .github src reports state archive
           mv dist/* .
           rmdir dist 2>/dev/null || true
           touch .nojekyll
           git add -A
           git commit -m "pages: $(date -u +%FT%TZ)"
           git push -f origin gh-pages-new:gh-pages
-          echo "订阅入口: https://${{ github.repository_owner }}.github.io/${{ github.repository }}/profile.yaml"
+          echo "订阅入口: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/profile.yaml"
+
+      # ========== 源健康体检（只读，不影响上面已发布的产物） ==========
+      # mihomo linux 版，用于跑真实 youtube 探针。缓存下载结果，避免每轮重下 22MB。
+      - name: 缓存 mihomo 内核
+        id: mihomo
+        uses: actions/cache@v4
+        with:
+          path: .tools
+          key: mihomo-${{ runner.os }}-${{ hashFiles('.tools/VERSION') }}
+
+      - name: 准备 mihomo 内核
+        run: |
+          mkdir -p .tools
+          VER=$(cat .tools/VERSION 2>/dev/null || echo "v1.19.32")
+          if [ ! -x ".tools/mihomo" ]; then
+            curl -fsSL --retry 3 \
+              "https://github.com/MetaCubeX/mihomo/releases/download/${VER}/mihomo-linux-amd64-${VER}.gz" \
+              | gunzip > .tools/mihomo
+            chmod +x .tools/mihomo
+            echo "$VER" > .tools/VERSION
+          fi
+          .tools/mihomo -v | head -1
+
+      - name: 真探针（给每个源打可用性分数）
+        run: |
+          git checkout main
+          python src/probe.py --mihomo "$PWD/.tools/mihomo" --budget 1500
+
+      - name: 源健康档案（差源降级 / 变好回收）
+        run: python src/health.py
+
+      - name: 提交健康档案
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A state archive src/sources.yaml
+          if git diff --cached --quiet; then
+            echo "健康档案无变化"
+          else
+            git commit -m "chore: 源健康档案 $(date -u +%FT%TZ)"
+            git push
+          fi
+
+      # ========== 新源发现（只进候选池，绝不自动入池） ==========
+      # 发现的源必须经真探针评估才由人移入 sources.yaml —— README 说"测速筛选"不可信。
+      - name: 发现新共享源（进候选池）
+        if: github.run_number % 2 == 0
+        run: python src/discover.py
+
+      - name: 提交候选池
+        if: github.run_number % 2 == 0
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A data
+          if git diff --cached --quiet; then
+            echo "候选池无变化"
+          else
+            git commit -m "chore: 新源候选池 $(date -u +%FT%TZ)"
+            git push
+          fi

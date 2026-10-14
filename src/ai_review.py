@@ -128,12 +128,44 @@ def usage_report():
     return dict(USAGE)
 
 
+# ---------- TPM 速率闸门 ----------
+# 5 个后端全在同一个硅基流动账号下 => TPM 额度是**共享**的，换模型并不能绕过限流。
+# 加并发时如果不管速率，很容易撞 429 并触发退避，反而更慢。
+# 这里按滑动窗口统计实际消耗的 token，超过阈值就短暂让路。
+_TPM = {"window": [], "limit": int(os.environ.get("AI_TPM_LIMIT", "36000")),
+        "waited": 0.0}
+
+
+def _tpm_wait(need=2000):
+    """在发起一次调用前等一会儿，直到滑动窗口内的 token 消耗 + need 不超阈值。"""
+    limit = _TPM["limit"]
+    if limit <= 0:
+        return
+    w = _TPM["window"]
+    while True:
+        now = time.time()
+        while w and now - w[0][0] > 60:
+            w.pop(0)
+        if sum(t for _, t in w) + need <= limit:
+            return
+        sleep_for = min(10.0, max(1.0, 60 - (now - w[0][0])))
+        time.sleep(sleep_for)
+        _TPM["waited"] += sleep_for
+
+
+def tpm_stats():
+    return {"limit_per_min": _TPM["limit"],
+            "recent_tokens": sum(t for _, t in _TPM["window"]),
+            "waited_sec": round(_TPM["waited"], 1)}
+
+
 def _add_usage(backend, u):
     p = int(u.get("prompt_tokens") or 0)
     c = int(u.get("completion_tokens") or 0)
     USAGE["prompt"] += p
     USAGE["completion"] += c
     USAGE["calls"] += 1
+    _TPM["window"].append((time.time(), p + c))      # 喂给 TPM 闸门做滑动窗口
     b = USAGE["by_backend"].setdefault(backend, {"calls": 0, "prompt": 0, "completion": 0})
     b["calls"] += 1
     b["prompt"] += p
@@ -332,6 +364,7 @@ def _call_http_raw(prompt, system, cfg, max_tokens, timeout_cap=None):
     to = cfg["timeout"]
     if timeout_cap is not None:
         to = max(15, min(to, int(timeout_cap)))
+    _tpm_wait(need=int(len(prompt) / 2.5))     # 粗估 prompt token（含中文，约 2.5 字符/token）
     body = {"model": cfg["model"], "temperature": 0, "max_tokens": max_tokens,
             "messages": [{"role": "system", "content": system},
                          {"role": "user", "content": prompt}]}
