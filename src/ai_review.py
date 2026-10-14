@@ -56,6 +56,8 @@ CLUSTER_PROMPT = """你是 Clash 免费节点审核员。输入是「同族节�
 # 15 簇/批：实测 15 簇 prompt 约 800 字符，48-50s 完成；30 簇会让
 # 非推理模型输出膨胀到近 4000 token 而拖到 160s+（2026-10-14 实测）
 CLUSTER_CHUNK = int(os.environ.get("AI_CLUSTER_CHUNK", "15"))
+# 单批最多试几个后端（2026-10-14：5 个后端 × 最长超时叠加会吃掉整个墙钟预算）
+MAX_BACKENDS_PER_CHUNK = int(os.environ.get("AI_MAX_BACKENDS", "3"))
 # 单源 AI 剔除比例超过这个值 -> 判定为模型误读，回滚该源全部剔除
 DROP_RATIO_GUARD = 0.6
 
@@ -411,7 +413,9 @@ def review_clusters(clusters, nodes, mode, cfg, source_name, log):
     def one(job):
         off, part = job
         prompt = _fmt_clusters(part, nodes)
-        for b in (cfg.get("backends") or [cfg]):
+        # 后端轮换上限：防止「N 个后端依次重试」把单批最坏耗时叠加到十几分钟。
+        # 超出的后端本批不试（下一批还会从头试），保证墙钟预算不被单批吃掉。
+        for b in (cfg.get("backends") or [cfg])[:MAX_BACKENDS_PER_CHUNK]:
             left = budget_left()
             if left is not None and left <= 0:
                 return off, part, None, None

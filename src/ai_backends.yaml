@@ -1,45 +1,64 @@
 # AI 后端清单（多后端自动故障转移）
 #
 # key 不写在这里，只写「从哪个环境变量读」——不进 git、不落文件。
-# 本地/CI 注入方式：
 #   $env:AI_KEY_SILICONFLOW = "sk-..."
 #   $env:AI_KEY_OPENROUTER  = "sk-or-..."
 #
 # 顺序即优先级：某个后端连续失败（429/超时/非 JSON）会自动切下一个，
-# 报告 reports/latest.md 里会记每个后端实际服务了多少批。
+# 但单批最多试 AI_MAX_BACKENDS（默认 3）个，防止重试叠加吃掉整个墙钟预算。
+# 报告 reports/latest.md 会记每个后端实际服务了多少批。
+#
+# 2026-10-14 横向实测（15 簇 / 821 字符的真实簇审 prompt，同一时刻）：
+#   Xing4.0-29B                 22.5s /  843 tok  ← 最快最省
+#   Qwen3-8B                    96.7s / 2459 tok  （会逐簇解释，啰嗦）
+#   DeepSeek-R1-0528-Qwen3-8B  108.4s / 2018 tok
+#   GLM-Z1-9B-0414             104.2s / 3970 tok  （思维链最长）
+# 但**延迟会随机翻转**（同一模型有时 22s、有时 245s 超时），所以「多后端轮换」本身就是对症，
+# 不要指望某个模型永远最快。拥堵压测：4 个后端 3 个超时，qwen3 顶上了一批。
 
 backends:
   - name: siliconflow_xing
     base_url: https://api.siliconflow.cn/v1
     model: XingChenAGI/Xing4.0-29B
     env_key: AI_KEY_SILICONFLOW
-    timeout: 180
+    timeout: 150
     retries: 1
     max_tokens: 8000
-    note: >-
-      首选（2026-10-14 实测反直觉：它比 Qwen3-8B 更快更省）。
-      15 簇真实 prompt：49.7s / completion 1651 token / finish=stop / JSON 可解析。
-      推理模型会先想再答，结论比非推理模型干净。
+    note: 首选。实测最快（22.5s/843tok）且输出精简，只报要删的、不会逐簇解释
 
-  - name: siliconflow_qwen3_8b
+  - name: siliconflow_qwen3
     base_url: https://api.siliconflow.cn/v1
     model: Qwen/Qwen3-8B
     env_key: AI_KEY_SILICONFLOW
-    timeout: 200
+    timeout: 150
     retries: 1
     max_tokens: 1200
-    note: >-
-      备用（原先是首选，实测被推翻）。
-      同样的 15 簇 prompt：167.9s / completion 3957 token —— 它会把每个簇都解释一遍，
-      慢的根源是输出啰嗦而非输入；max_tokens 限 1200 逼它只报要删的，
-      若被截断（finish=length）走「放大重试」一次。
+    note: 备用。慢且啰嗦（96.7s/2459tok），max_tokens 限 1200 逼它只报要删的
+
+  - name: siliconflow_deepseek_r1
+    base_url: https://api.siliconflow.cn/v1
+    model: deepseek-ai/DeepSeek-R1-0528-Qwen3-8B
+    env_key: AI_KEY_SILICONFLOW
+    timeout: 180
+    retries: 1
+    max_tokens: 8000
+    note: 备用。108.4s/2018tok，结论与 Xing 一致（剔除同批簇号）
+
+  - name: siliconflow_glm_z1
+    base_url: https://api.siliconflow.cn/v1
+    model: THUDM/GLM-Z1-9B-0414
+    env_key: AI_KEY_SILICONFLOW
+    timeout: 180
+    retries: 1
+    max_tokens: 8000
+    note: 末位硅基备份。思维链很长（3970tok），但实测在 Xing 拥堵时能顶上来
 
   - name: openrouter_gemma
     base_url: https://openrouter.ai/api/v1
     model: google/gemma-4-31b-it:free
     env_key: AI_KEY_OPENROUTER
-    timeout: 60
+    timeout: 45
     retries: 1
     note: >-
-      末位备份。免费共享池常 429（2026-10-14 全天实测基本没成功过），
-      国内到 openrouter 偶发 WinError 10060；只试 1 次 60s 意思一下即可。
+      跨云备份（硅基全堵时才有用）。免费共享池常 429（2026-10-14 全天基本没成功过），
+      国内到 openrouter 偶发 WinError 10060，故只给 45s 试一次。
