@@ -32,7 +32,8 @@ jobs:
 
       - name: 跑流水线（抓取→归一→硬过滤→AI→产出）
         env:
-          # 多后端 AI：顺序与超时见 src/ai_backends.yaml
+          # 多后端 AI：顺序与超时见 src/ai_backends.yaml（腾讯 tokenhub / 硅基流动 / OpenRouter 三云冗余）
+          AI_KEY_TENCENT: ${{ secrets.AI_KEY_TENCENT }}
           AI_KEY_SILICONFLOW: ${{ secrets.AI_KEY_SILICONFLOW }}
           AI_KEY_OPENROUTER: ${{ secrets.AI_KEY_OPENROUTER }}
           # AI 阶段墙钟预算（秒）。上游延迟随机波动（实测同 prompt 在 41s~245s 之间跳），
