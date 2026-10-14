@@ -67,20 +67,64 @@ dist/                     产物（工作流提交到 main 并推 gh-pages）
 reports/latest.md         每次运行的可审计报告
 ```
 
-## AI 阶段的安全边界（重要）
+## AI 阶段：多后端 + 簇级审核
 
-- **AI 只做裁决，不做改写**：LLM 输出 `{序号: keep/drop, 理由}`，剔除动作由脚本按节点精确执行。改写 `server/port/uuid` 的幻觉会产出坏配置，比不过滤更糟。
-- **fail-soft**：没配 key / 接口报错 / 解析失败 → 全部保留，只在报告里记警告。AI 挂了不会清空池子。
-- **比例熔断**：单源 AI 剔除 > 60% 判定为模型误读 → 整体回滚该源剔除并告警。
-- **双后端**：`AI_MODE=http`（任意 OpenAI 兼容接口：OpenAI/DeepSeek/通义/Moonshot）或 `opencode`（`opencode run` CLI，适合低频）。没配 `AI_BASE_URL`/`AI_API_KEY` 时自动关闭。
+### 为什么按「簇」审而不是按「节点」审
 
-仓库 Secrets（Settings → Secrets）：
+免费源里同一条目会有几十到几百个克隆位。实测 12 源 4831 个节点归一后只有 **1683 个簇**（2.9x），
+其中 **92 个 ≥8 节点的簇覆盖了 2321 个节点（一半）**：
 
-| 名称 | 说明 |
+```
+passcro / ermaozi / automerge / nomorewalls / yypool   "ro speednode"  ×118
+autojiedian   "美国 reston cloudflare, inc. claude"    ×104
+autojiedian   "claude"                                 ×76
+yypool        "[free ] 未知"                           ×63
+```
+
+单节点审要 165 次调用；簇级审（`--ai-unit cluster`，默认）约 **26 次**——AI 判一次整簇清掉。
+
+### 多后端故障转移
+
+`src/ai_backends.yaml` 里配顺序，某个后端连续失败（429 / 超时 / 非 JSON）自动切下一个：
+
+| 顺序 | 后端 | 实测 |
+|---|---|---|
+| 1 | 硅基流动 `Qwen/Qwen3-8B` | 首选，非推理模型，0.7s 级响应 |
+| 2 | 硅基流动 `XingChenAGI/Xing4.0-29B` | 推理模型，思维链吃 token，`finish_reason=length` 会截断 JSON → 自动放大 max_tokens 重试 |
+| 3 | OpenRouter `google/gemma-4-31b-it:free` | 末位备份，免费共享池常 429；国内可直连 |
+
+### AI 能做什么、不能做什么
+
+| | |
 |---|---|
-| `AI_BASE_URL` | 如 `https://api.deepseek.com`（自动补 `/v1`） |
-| `AI_API_KEY` | 接口密钥 |
-| `AI_MODEL` | 默认 `gpt-4o-mini` |
+| ✅ 抓正则抓不到的语义垃圾 | `防范境外势力渗透` ×290 —— 正则在这些名字上一个关键词都匹配不上，AI 一次识别整簇清掉 |
+| ✅ 删同族冗余克隆位 | `RO 02` = `RO 01` 的克隆（IP 差 1） |
+| ✅ 不被「广告字样」骗 | prompt 里写死了反例：`🇮🇩 机场推荐:dafei.de 印尼 01` 是**可用节点**（实测 44% 通过率），必须保留 |
+| ❌ **不能提高可用率** | 连通性只能靠真探针测，CI 跑在美国机。AI 只减冗余、不增供给 |
+
+### 安全护栏（都实测触发过）
+
+- **只输出要删的**：`{"drop":[{"c":簇号,"why":"≤12字"}]}`。让 pass 保持默认——早期协议让模型逐条输出 keep，一批 4.5k token，90s 超时直接全废（真烧钱且零效果）
+- **比例熔断**：单源判掉 >60% 节点 → 整体回滚，防模型误读
+- **fail-soft 到单 chunk**：某批失败只影响那批，其余照常；全部批次都失败才算「AI 不可用」
+- **逐条留痕**：`reports/ai_dropped.md` 记录每簇节点名/类型/server/理由/簇大小。发现误杀就把节点名贴回来，针对性收窄 prompt
+
+### 调参
+
+```bash
+AI_UNIT=cluster|node      # 簇级(默认) / 单节点(对照)
+AI_MAX_CLUSTERS=150       # 每源送审簇数上限（按簇大小降序取前 N）
+AI_CLUSTER_CHUNK=30       # 每批簇数
+AI_CONCURRENCY=3          # 并发路数
+AI_TIMEOUT / AI_RETRIES   # 全局覆盖后端自带配置
+```
+
+额度参考：L0（TPM 50k / RPM 1000）下簇级方案约占 TPM **4%**。**瓶颈从来不是 token，是上游延迟**
+（实测故障全是 `RemoteDisconnected` / `read timeout` / `429 shared pool`），所以优化方向是并发 + 快速换后端。
+
+### 接新后端
+
+编辑 `src/ai_backends.yaml` 加一条，`env_key` 指定环境变量名，key **只放环境变量 / Actions secrets，不进仓库**。
 
 ## 本地跑 / 验证
 

@@ -1,7 +1,7 @@
 # clash-source 运行报告
 
-- 生成时间：2026-10-13 23:49:38（UTC 记录：2026-10-13T15:49:31Z）
-- AI 模式：`off`
+- 生成时间：2026-10-14 01:00:49（UTC 记录：2026-10-13T17:00:37Z）
+- AI 模式：`http`
 - 订阅入口：`https://pala911.github.io/clash-source/profile.yaml`
 - 备用入口（github.io 不达时）：`https://gh-proxy.com/raw.githubusercontent.com/pala911/gh-pages/profile.yaml`
 - jsdelivr 备用：`https://cdn.jsdelivr.net/gh/pala911/clash-source@gh-pages/profile.yaml`
@@ -15,7 +15,7 @@
 | passcro | 149 | 145 | 0 | 否 | - |
 | automerge | 512 | 235 | 0 | 否 | - |
 | ermaozi | 534 | 500 | 0 | 否 | - |
-| zhuhaiuk | 34 | 34 | 0 | 否 | - |
+| zhuhaiuk | 31 | 31 | 0 | 否 | - |
 | ssrsub | 176 | 175 | 0 | 否 | - |
 | ruk1ng001 | 500 | 480 | 0 | 否 | - |
 | snakem982 | 54 | 53 | 0 | 否 | - |
@@ -23,13 +23,25 @@
 | autojiedian | 2137 | 2093 | 0 | 否 | - |
 | shaoyouvip | 1 | 1 | 0 | 否 | - |
 
-合计产出 **4852** 节点（合并池 4852）。
+合计产出 **4849** 节点（合并池 4849）。
 
 > 注意：节点数 ≠ 可用性。真实质量门禁是 **youtube/generate_204 探针**（手机/PC 侧 mihomo 自己跑）；CI 在美国机，连通性检查只能删明显死的。
 
 ## ⚠ 本次告警
 
+- yypool AI 调用失败（已保留全部节点）：The read operation timed out
 - yypool 产出 1433 超过 max_nodes=900，已截断（考虑淘汰最差尾部）
+- anaer AI 调用失败（已保留全部节点）：The read operation timed out
+- passcro AI 调用失败（已保留全部节点）：The read operation timed out
+- automerge AI 调用失败（已保留全部节点）：The read operation timed out
+- ermaozi AI 调用失败（已保留全部节点）：The read operation timed out
+- zhuhaiuk AI 调用失败（已保留全部节点）：The read operation timed out
+- ssrsub AI 调用失败（已保留全部节点）：The read operation timed out
+- ruk1ng001 AI 调用失败（已保留全部节点）：The read operation timed out
+- snakem982 AI 调用失败（已保留全部节点）：The read operation timed out
+- nomorewalls AI 调用失败（已保留全部节点）：The read operation timed out
+- autojiedian AI 调用失败（已保留全部节点）：The read operation timed out
+- shaoyouvip AI 调用失败（已保留全部节点）：The read operation timed out
 
 ## 硬过滤命中 TOP（按源）
 
@@ -44,7 +56,18 @@
 
 ## AI 处置摘要
 
-本轮未启用 AI（未配置 `AI_BASE_URL`/`AI_API_KEY`，或显式 `--ai-mode off`）。
+- **yypool**：审 0，剔除 0
+- **anaer**：审 0，剔除 0
+- **passcro**：审 0，剔除 0
+- **automerge**：审 0，剔除 0
+- **ermaozi**：审 0，剔除 0
+- **zhuhaiuk**：审 0，剔除 0
+- **ssrsub**：审 0，剔除 0
+- **ruk1ng001**：审 0，剔除 0
+- **snakem982**：审 0，剔除 0
+- **nomorewalls**：审 0，剔除 0
+- **autojiedian**：审 0，剔除 0
+- **shaoyouvip**：审 0，剔除 0
 
 ## 产物
 
