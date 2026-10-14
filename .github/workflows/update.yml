@@ -115,9 +115,10 @@ jobs:
           fi
 
       # ========== 新源发现（只进候选池，绝不自动入池） ==========
-      # 发现的源必须经真探针评估才由人移入 sources.yaml —— README 说"测速筛选"不可信。
+      # 手动触发时跳过（cron 那次才跑）—— 新源发现不需要很勤，候选池要经真探针评估才值得动
+      # ⚠ 不能用 `github.run_number % 2` —— GitHub Actions 表达式**不支持取模**，会直接 422 拒解析
       - name: 发现新共享源（进候选池）
-        if: github.run_number % 2 == 0
+        if: ${{ github.event_name == 'schedule' }}
         run: python src/discover.py
 
       - name: 提交候选池
