@@ -49,7 +49,11 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A dist reports state src/sources.yaml archive
+          # ⚠ 不能对可能不存在的目录直接 git add（2026-10-14 实测：
+          #   `git add -A dist reports state` 在 state/ 尚未生成时会 fatal:
+          #   pathspec 'state' did not match any files -> 整步失败 -> 后续步骤全被跳过）
+          git add -A dist reports || true
+          git add -A state archive src/sources.yaml 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "本轮无变化，跳过提交"
           else
@@ -106,7 +110,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A state archive src/sources.yaml
+          git add -A state archive src/sources.yaml 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "健康档案无变化"
           else
@@ -126,7 +130,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A data
+          git add -A data 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "候选池无变化"
           else
