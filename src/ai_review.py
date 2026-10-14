@@ -53,7 +53,9 @@ CLUSTER_PROMPT = """你是 Clash 免费节点审核员。输入是「同族节�
 只输出 JSON，不要其他文字：
 {"drop":[{"c":簇序号,"why":"不超过12字理由"}]}
 没有要剔除的就输出 {"drop":[]}。不要改写节点内容。"""
-CLUSTER_CHUNK = int(os.environ.get("AI_CLUSTER_CHUNK", "30"))
+# 15 簇/批：实测 15 簇 prompt 约 800 字符，48-50s 完成；30 簇会让
+# 非推理模型输出膨胀到近 4000 token 而拖到 160s+（2026-10-14 实测）
+CLUSTER_CHUNK = int(os.environ.get("AI_CLUSTER_CHUNK", "15"))
 # 单源 AI 剔除比例超过这个值 -> 判定为模型误读，回滚该源全部剔除
 DROP_RATIO_GUARD = 0.6
 
@@ -309,7 +311,7 @@ def _call_http_raw(prompt, system, cfg, max_tokens):
                          {"role": "user", "content": prompt}]}
     data = json.dumps(body).encode("utf-8")
     last = None
-    for a in range(max(1, cfg.get("retries", 3))):
+    for a in range(max(1, cfg.get("retries", 2))):
         try:
             req = urllib.request.Request(
                 base + "/chat/completions", data=data,
@@ -322,26 +324,46 @@ def _call_http_raw(prompt, system, cfg, max_tokens):
             finish = ch.get("finish_reason")
             _add_usage(name, out.get("usage") or {})
             obj = _parse_json(content)
-            if obj is None:
-                last = "非JSON(finish=%s): %s" % (finish, content[:120])
-                if finish == "length":
-                    time.sleep(2)
-                    continue
+            if obj is not None:
+                return obj
+            last = "非JSON(finish=%s): %s" % (finish, content[:120])
+            if finish == "length":
+                # 推理模型思维链把 token 吃光导致 JSON 截断：只在这里单独放大重试一次，
+                # 不进入通用重试循环（否则最坏路径会被重试×退避拖成十几分钟）
+                big = max(int(max_tokens or 0) * 4, 8000)
+                last += " -> 放大 max_tokens=%d 再试一次" % big
+                body["max_tokens"] = big
+                data = json.dumps(body).encode("utf-8")
+                try:
+                    req2 = urllib.request.Request(
+                        base + "/chat/completions", data=data,
+                        headers={"Content-Type": "application/json",
+                                 "Authorization": "Bearer " + cfg["api_key"]})
+                    with urllib.request.urlopen(req2, timeout=cfg["timeout"] * 2) as r:
+                        out2 = json.loads(r.read().decode("utf-8"))
+                    _add_usage(name, out2.get("usage") or {})
+                    ch2 = (out2.get("choices") or [{}])[0]
+                    obj2 = _parse_json((ch2.get("message") or {}).get("content") or "")
+                    if obj2 is not None:
+                        return obj2
+                    last = "放大后仍非JSON(finish=%s)" % ch2.get("finish_reason")
+                except Exception as e:
+                    last += "；放大重试失败 %s" % str(e)[:80]
                 raise RuntimeError(last)
-            return obj
+            raise RuntimeError(last)
         except urllib.error.HTTPError as e:
             last = "HTTP %d %s" % (e.code, e.read()[:200].decode("utf-8", "replace"))
-            if e.code in (429, 500, 502, 503, 504):
-                time.sleep(min(60, 5 * (a + 1) ** 2))
+            if e.code in (429, 500, 502, 503, 504) and a + 1 < max(1, cfg.get("retries", 2)):
+                time.sleep(min(20, 4 * (a + 1)))    # 短退避：留给下一后端的时间预算
                 continue
             raise RuntimeError(last)
         except RuntimeError:
             raise
         except Exception as e:
             USAGE["timeouts"] += 1
-            _add_usage(name, {"prompt_tokens": int(cfg.get("max_tokens", 1500) * 0.5)})
+            _add_usage(name, {"prompt_tokens": int(cfg.get("max_tokens", 1200) * 0.5)})
             last = "%s: %s" % (type(e).__name__, str(e)[:160])
-            time.sleep(min(30, 3 * (a + 1)))
+            time.sleep(min(10, 3 * (a + 1)))
     raise RuntimeError(last or "未知错误")
 
 

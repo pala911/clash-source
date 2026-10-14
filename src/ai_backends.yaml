@@ -9,27 +9,37 @@
 # 报告 reports/latest.md 里会记每个后端实际服务了多少批。
 
 backends:
-  - name: siliconflow_qwen3_8b
-    base_url: https://api.siliconflow.cn/v1
-    model: Qwen/Qwen3-8B
-    env_key: AI_KEY_SILICONFLOW
-    timeout: 90
-    retries: 3
-    max_tokens: 1200
-    note: 首选。非推理模型、输出短；超时给 90s 是因为额度不是瓶颈、卡的是上游排队（观察到的失败是 RemoteDisconnected/timeout，不是 429）
-
   - name: siliconflow_xing
     base_url: https://api.siliconflow.cn/v1
     model: XingChenAGI/Xing4.0-29B
     env_key: AI_KEY_SILICONFLOW
-    timeout: 240
-    retries: 2
-    note: 备用。推理模型思维链吃 token，60 条批次实测会 read timeout，故超时调大、max_tokens 放大重试
+    timeout: 180
+    retries: 1
+    max_tokens: 8000
+    note: >-
+      首选（2026-10-14 实测反直觉：它比 Qwen3-8B 更快更省）。
+      15 簇真实 prompt：49.7s / completion 1651 token / finish=stop / JSON 可解析。
+      推理模型会先想再答，结论比非推理模型干净。
+
+  - name: siliconflow_qwen3_8b
+    base_url: https://api.siliconflow.cn/v1
+    model: Qwen/Qwen3-8B
+    env_key: AI_KEY_SILICONFLOW
+    timeout: 200
+    retries: 1
+    max_tokens: 1200
+    note: >-
+      备用（原先是首选，实测被推翻）。
+      同样的 15 簇 prompt：167.9s / completion 3957 token —— 它会把每个簇都解释一遍，
+      慢的根源是输出啰嗦而非输入；max_tokens 限 1200 逼它只报要删的，
+      若被截断（finish=length）走「放大重试」一次。
 
   - name: openrouter_gemma
     base_url: https://openrouter.ai/api/v1
     model: google/gemma-4-31b-it:free
     env_key: AI_KEY_OPENROUTER
-    timeout: 180
-    retries: 4
-    note: 末位备份。2026-10-14 两次实测均 429（Google AI Studio 共享池被抢满）；限流恢复时自动顶上，国内可直连
+    timeout: 60
+    retries: 1
+    note: >-
+      末位备份。免费共享池常 429（2026-10-14 全天实测基本没成功过），
+      国内到 openrouter 偶发 WinError 10060；只试 1 次 60s 意思一下即可。
