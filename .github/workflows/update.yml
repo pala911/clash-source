@@ -98,12 +98,14 @@ jobs:
           fi
           .tools/mihomo -v | head -1
 
-      - name: 真探针（给每个源打可用性分数）
+      - name: 真探针（美国口径：只判死，不判优）
         run: |
           git checkout main
-          python src/probe.py --mihomo "$PWD/.tools/mihomo" --budget 1500
+          # 显式 --scope ci：runner 在美国，只能判「是否彻底死了」，不能横向比质量
+          # （实测美国口径虚高 1.8~13 倍，Spearman rho 仅 0.48；shaoyouvip 美国#4/国内#11）
+          python src/probe.py --mihomo "$PWD/.tools/mihomo" --budget 1500 --scope ci
 
-      - name: 源健康档案（差源降级 / 变好回收）
+      - name: 源健康档案（降级只认 CI 口径；回收只认本机口径）
         run: python src/health.py
 
       - name: 提交健康档案

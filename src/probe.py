@@ -26,7 +26,16 @@ ROOT = os.path.dirname(HERE)
 API_PORT = int(os.environ.get("PROBE_API_PORT", "19099"))
 MIXED_PORT = int(os.environ.get("PROBE_MIXED_PORT", "17899"))
 SECRET = "probe-secret"
+
+# 双口径（2026-10-14 用户选定）：
+#   YOUTUBE = 真实出墙能力（= 业务可用性）。**CI runner 在美国，口径会系统性偏高**：
+#     实测 ssrsub CI 90% vs 国内 45.6%、autojiedian CI 88% vs 国内 ~12%
+#     —— 境内中转节点从美国绕一圈也能到 youtube，所以 CI 只能判「是否彻底死了」。
+#   CN_PROBE = 国内可达性。CI 上必然大面积失败（它在美国），但用于**自检**：
+#     若某源 cn_alive 高得离谱，说明探针口径/网络有问题，不该拿它下结论。
+# 本机跑（国内网络）时 cn_alive 才有意义 —— 健康档案的质量判据只信本机。
 YOUTUBE = "https://www.youtube.com/generate_204"
+CN_PROBE = "https://www.gstatic.com/generate_204"
 
 
 def api_get(port, path, timeout=25):
@@ -163,6 +172,9 @@ def main():
     ap.add_argument("--archive-nodes", default=os.path.join(ROOT, "state", "archive_nodes"))
     ap.add_argument("--out", default=os.path.join(ROOT, "state", "probe_latest.json"))
     ap.add_argument("--budget", type=int, default=1500)
+    ap.add_argument("--scope", default=os.environ.get("PROBE_SCOPE", "ci"),
+                    choices=["ci", "local"],
+                    help="ci=美国 runner（只用于判死）/ local=国内本机（口径可信）")
     args = ap.parse_args()
 
     mihomo = args.mihomo
@@ -188,10 +200,14 @@ def main():
         return 1
     os.makedirs(os.path.dirname(args.out), exist_ok=True)
     json.dump({"probed_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-               "caveat": "runner 在美国，只能判是否彻底死，不能横向比质量（坑 §40）",
+               "scope": args.scope,
+               "caveat": ("CI runner 在美国：youtube 通过率会系统性偏高，只能判是否彻底死，"
+                          "不能横向比质量（实测 ssrsub CI 90% vs 国内 45.6%）。"
+                          if args.scope == "ci" else
+                          "本机（国内）口径，与业务同源，质量判据可信。"),
                "sources": rows},
               open(args.out, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
-    print("[probe] 结果 -> %s" % args.out)
+    print("[probe] 结果 -> %s（scope=%s）" % (args.out, args.scope))
     for n, v in sorted(rows.items()):
         print("  %-26s %5d 节点 %5d 活 %6.1f%%  最快 %sms" %
               (n, v["nodes"], v["alive"], v["rate"],
