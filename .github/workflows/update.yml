@@ -37,9 +37,11 @@ jobs:
           AI_KEY_OPENROUTER: ${{ secrets.AI_KEY_OPENROUTER }}
           # AI 阶段墙钟预算（秒）。上游延迟随机波动（实测同 prompt 在 41s~245s 之间跳），
           # 用预算兜底保证流水线不会被 CI 超时掐断；超预算后剩余源按纯规则产出。
-          AI_TIME_BUDGET: "600"
+          AI_TIME_BUDGET: "1500"
           GITHUB_REPOSITORY_OWNER: ${{ github.repository_owner }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
+          # ⚠️ 必须是纯仓库名，不能用 github.repository（那是 owner/repo，
+          #    会让 src/build.py 拼出 https://<ID>.github.io/<ID>/<repo>/ 这种坏路径）
+          GITHUB_REPOSITORY: ${{ github.event.repository.name }}
         run: python src/run.py --ai-mode auto --keep-raw
 
       - name: 提交产物到 main（dist/ 是事实来源，reports/ 是审计留痕）

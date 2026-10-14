@@ -31,7 +31,14 @@ def resolve_owner_repo(owner, repo):
 
 
 def pages_base(owner, repo):
-    return "https://%s.github.io/%s" % (owner, repo)
+    base = "https://%s.github.io/%s" % (owner, repo)
+    # 坑（2026-10-14 CI 实测踩到）：GitHub Actions 的 github.repository 是 "owner/repo"，
+    # 直接拼会得到 https://<ID>.github.io/<ID>/<repo>/ 这种手机 404 的坏路径。
+    # 这里做硬校验，宁可流水线失败也不要静默产出坏订阅地址。
+    tail = base.split("//", 1)[1]
+    if tail.count("/") != 1 or tail.startswith(owner + "/"):
+        raise ValueError("pages 基址非法: %s（repo 应为纯仓库名，不能含 owner/）" % base)
+    return base
 
 
 def provider_block(name, url, exclude_filter):
