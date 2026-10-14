@@ -55,6 +55,9 @@ def main():
     ap.add_argument("--ai-max-clusters", type=int,
                     default=int(os.environ.get("AI_MAX_CLUSTERS", "150")),
                     help="每源送审簇数上限（按簇大小降序取前 N）")
+    ap.add_argument("--ai-time-budget", type=int,
+                    default=int(os.environ.get("AI_TIME_BUDGET", "0")),
+                    help="AI 阶段墙钟预算（秒，0=不限）。超预算后剩余源按纯规则产出")
     args = ap.parse_args()
 
     with open(os.path.join(HERE, "sources.yaml"), encoding="utf-8") as f:
@@ -73,6 +76,9 @@ def main():
     mode = ai_review.resolve_mode(args.ai_mode)
     aicfg = ai_review.config_from_env()
     scope = args.ai_scope
+    ai_review.set_time_budget(args.ai_time_budget)   # 墙钟预算：保证流水线不被 AI 拖死
+    if args.ai_time_budget:
+        log("AI 墙钟预算: %ds" % args.ai_time_budget)
     if mode == "http":
         names = aicfg.get("_names") or ["env-single"]
         log("AI 后端：http（%s）" % " → ".join(names))
@@ -164,6 +170,9 @@ def main():
                         % (len(drop_c), len(kill),
                            ("（%s）" % "，".join(cstats.get("top_reasons") or []))
                            if cstats.get("top_reasons") else ""))
+                if cstats.get("skipped_budget"):
+                    warnings.append("%s AI 因墙钟预算耗尽被跳过（该源按纯规则产出）" % name)
+                    log("   [ai] 预算耗尽，跳过本源剩余簇")
                 ai_reviewed[name] = len(clusters)
                 log("   簇审：%d 节点 -> %d 簇（送审 %d 簇）"
                     % (len(kept) + len(kill if drop_c else []), len(clusters),

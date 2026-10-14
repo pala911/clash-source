@@ -101,6 +101,26 @@ def _norm_base(base):
 
 USAGE = {"prompt": 0, "completion": 0, "calls": 0, "timeouts": 0, "by_backend": {}}
 
+# 墙钟预算（秒）：上游延迟随机波动很大（2026-10-14 实测同一个 6 簇 prompt 在
+# 41s 与 245s 之间跳），无法靠选模型解决。预算耗尽后 review_* 立即返回空决策，
+# 剩余源按纯规则产出，保证 CI 不会因为 AI 慢而超时被取消。
+_DEADLINE = [None]
+
+
+def set_time_budget(seconds):
+    _DEADLINE[0] = (time.time() + float(seconds)) if seconds and float(seconds) > 0 else None
+
+
+def budget_left():
+    if not _DEADLINE[0]:
+        return None
+    return _DEADLINE[0] - time.time()
+
+
+def budget_exhausted():
+    left = budget_left()
+    return left is not None and left <= 0
+
 
 def usage_report():
     return dict(USAGE)
@@ -300,12 +320,16 @@ def _fmt_clusters(clusters, nodes):
     return "\n".join(lines)
 
 
-def _call_http_raw(prompt, system, cfg, max_tokens):
+def _call_http_raw(prompt, system, cfg, max_tokens, timeout_cap=None):
+    """timeout_cap：墙钟预算剩余秒数，用它给本次超时封顶，避免单个批次拖光预算。"""
     import urllib.error
     import urllib.request
 
     base = _norm_base(cfg["base_url"])
     name = cfg.get("_name", "backend")
+    to = cfg["timeout"]
+    if timeout_cap is not None:
+        to = max(15, min(to, int(timeout_cap)))
     body = {"model": cfg["model"], "temperature": 0, "max_tokens": max_tokens,
             "messages": [{"role": "system", "content": system},
                          {"role": "user", "content": prompt}]}
@@ -317,7 +341,7 @@ def _call_http_raw(prompt, system, cfg, max_tokens):
                 base + "/chat/completions", data=data,
                 headers={"Content-Type": "application/json",
                          "Authorization": "Bearer " + cfg["api_key"]})
-            with urllib.request.urlopen(req, timeout=cfg["timeout"]) as r:
+            with urllib.request.urlopen(req, timeout=to) as r:
                 out = json.loads(r.read().decode("utf-8"))
             ch = (out.get("choices") or [{}])[0]
             content = (ch.get("message") or {}).get("content") or ""
@@ -339,7 +363,7 @@ def _call_http_raw(prompt, system, cfg, max_tokens):
                         base + "/chat/completions", data=data,
                         headers={"Content-Type": "application/json",
                                  "Authorization": "Bearer " + cfg["api_key"]})
-                    with urllib.request.urlopen(req2, timeout=cfg["timeout"] * 2) as r:
+                    with urllib.request.urlopen(req2, timeout=to * 2) as r:
                         out2 = json.loads(r.read().decode("utf-8"))
                     _add_usage(name, out2.get("usage") or {})
                     ch2 = (out2.get("choices") or [{}])[0]
@@ -368,13 +392,16 @@ def _call_http_raw(prompt, system, cfg, max_tokens):
 
 
 def review_clusters(clusters, nodes, mode, cfg, source_name, log):
-    """簇级审核（并发）。返回 (要剔除的簇下标集合, 统计dict)。簇下标是 clusters 的 0-based 位置。"""
+    """簇级审核（并发 + 墙钟预算）。返回 (要剔除的簇下标集合, 统计dict)。"""
     import concurrent.futures as cf
 
     stats = {"mode": mode, "chunks": 0, "chunks_failed": 0, "clusters": len(clusters),
              "dropped_clusters": 0, "dropped_nodes": 0, "rolled_back": False,
-             "error": None, "served": {}}
+             "error": None, "served": {}, "skipped_budget": False}
     if mode == "off" or not clusters:
+        return set(), stats
+    if budget_exhausted():
+        stats["skipped_budget"] = True
         return set(), stats
     drops, reasons = {}, []
 
@@ -385,15 +412,19 @@ def review_clusters(clusters, nodes, mode, cfg, source_name, log):
         off, part = job
         prompt = _fmt_clusters(part, nodes)
         for b in (cfg.get("backends") or [cfg]):
+            left = budget_left()
+            if left is not None and left <= 0:
+                return off, part, None, None
             try:
-                obj = _call_http_raw(prompt, CLUSTER_PROMPT, b, b.get("max_tokens", 1200))
+                obj = _call_http_raw(prompt, CLUSTER_PROMPT, b, b.get("max_tokens", 1200),
+                                      timeout_cap=left)
                 return off, part, obj, b.get("_name", "?")
             except Exception as e:
                 log("  [ai] %s cluster-chunk@%d %s 失败: %s"
                     % (source_name, off, b.get("_name", "?"), str(e)[:110]))
         return off, part, None, None
 
-    # 并发：TPM 50k / RPM 1k 的额度下，3 路并发约占 6-10%，能把墙钟时间压到 1/3
+    # 并发：TPM 50k / RPM 1k 的额度下 3 路并发约占 6-10%，能把墙钟时间压到 1/3
     workers = max(1, int(os.environ.get("AI_CONCURRENCY", "3")))
     results = []
     with cf.ThreadPoolExecutor(max_workers=workers) as pool:
@@ -404,6 +435,8 @@ def review_clusters(clusters, nodes, mode, cfg, source_name, log):
         stats["chunks"] += 1
         if obj is None:
             stats["chunks_failed"] += 1
+            if budget_exhausted():
+                stats["skipped_budget"] = True
             continue
         stats["served"][used] = stats["served"].get(used, 0) + 1
         for d in (obj.get("drop") or obj.get("decisions") or []):

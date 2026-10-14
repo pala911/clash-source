@@ -17,7 +17,9 @@ concurrency:
 jobs:
   update:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    # 抓取 12 个源本身就要 5-15 分钟（上游抖动），AI 阶段有墙钟预算兜底
+    # （src/run.py 的 AI_TIME_BUDGET，默认 600s），所以给到 60 分钟绰绰有余
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
 
@@ -33,6 +35,9 @@ jobs:
           # 多后端 AI：顺序与超时见 src/ai_backends.yaml
           AI_KEY_SILICONFLOW: ${{ secrets.AI_KEY_SILICONFLOW }}
           AI_KEY_OPENROUTER: ${{ secrets.AI_KEY_OPENROUTER }}
+          # AI 阶段墙钟预算（秒）。上游延迟随机波动（实测同 prompt 在 41s~245s 之间跳），
+          # 用预算兜底保证流水线不会被 CI 超时掐断；超预算后剩余源按纯规则产出。
+          AI_TIME_BUDGET: "600"
           GITHUB_REPOSITORY_OWNER: ${{ github.repository_owner }}
           GITHUB_REPOSITORY: ${{ github.repository }}
         run: python src/run.py --ai-mode auto --keep-raw
