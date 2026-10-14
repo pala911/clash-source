@@ -32,7 +32,28 @@ SYSTEM_PROMPT = """你是 Clash 免费节点审核员。输入是一批待审节
 {"drop":[{"n":序号,"why":"不超过12字理由"}]}
 没有需要剔除的就输出 {"drop":[]}。绝对不要改写节点内容。"""
 
-CHUNK = 60
+CHUNK = int(os.environ.get("AI_CHUNK", "30"))
+
+# 簇级审核：把「同族克隆节点」当一条目审，判一次整簇处置。
+# 2026-10-14 实测依据：nomorewalls 里 290 个 `防范境外势力渗透 #1..#290` 是一个簇，
+# 单节点审要 10 批；簇级审 1 批，且判定结论可泛化到整簇。
+CLUSTER_PROMPT = """你是 Clash 免费节点审核员。输入是「同族节点簇」，每行：序号|协议|代表节点名|server|同簇节点数。
+
+同一簇 = 同一条目的克隆位（例如 290 个「防范境外势力渗透 #1..#290」其实是一个广告位；
+200 个「机场推荐:dafei.de 印尼 01..200」是同一个机场的不同节点）。
+
+需要**整簇剔除**的情况：
+1. 引流/广告/机场促销/导航站/群组引流/订阅地址本身
+2. 占位符、示例、失效提示（过期、剩余流量、官网、公告、维护中）
+3. 明显伪装：名称声称某国，但 server 看起来像境内中转/批量克隆的营销位
+
+必须保留：免费机场的正常节点常带「机场/推荐/订阅」字样（如「🇮🇩 机场推荐:dafei.de 印尼 01」），
+这类是**可用节点**；拿不准一律保留 —— 宁可放过垃圾，不可误杀好节点。
+
+只输出 JSON，不要其他文字：
+{"drop":[{"c":簇序号,"why":"不超过12字理由"}]}
+没有要剔除的就输出 {"drop":[]}。不要改写节点内容。"""
+CLUSTER_CHUNK = int(os.environ.get("AI_CLUSTER_CHUNK", "30"))
 # 单源 AI 剔除比例超过这个值 -> 判定为模型误读，回滚该源全部剔除
 DROP_RATIO_GUARD = 0.6
 
@@ -76,8 +97,27 @@ def _norm_base(base):
     return base
 
 
+USAGE = {"prompt": 0, "completion": 0, "calls": 0, "timeouts": 0, "by_backend": {}}
+
+
+def usage_report():
+    return dict(USAGE)
+
+
+def _add_usage(backend, u):
+    p = int(u.get("prompt_tokens") or 0)
+    c = int(u.get("completion_tokens") or 0)
+    USAGE["prompt"] += p
+    USAGE["completion"] += c
+    USAGE["calls"] += 1
+    b = USAGE["by_backend"].setdefault(backend, {"calls": 0, "prompt": 0, "completion": 0})
+    b["calls"] += 1
+    b["prompt"] += p
+    b["completion"] += c
+
+
 def _call_http(nodes, soft_map, cfg, max_tokens=None):
-    """一次调用。返回 (obj, finish_reason)。
+    """一次调用。返回 (obj, finish_reason, usage)。
 
     推理模型（Xing4.0 / 带 reasoning_content 的）会把 token 花在思维链上，
     可能 finish_reason=length 导致 JSON 被截断 -> 上层负责放大 max_tokens 重试。
@@ -86,6 +126,7 @@ def _call_http(nodes, soft_map, cfg, max_tokens=None):
     import urllib.request
 
     base = _norm_base(cfg["base_url"])
+    name = cfg.get("_name", "backend")
     body = {
         "model": cfg["model"],
         "temperature": 0,
@@ -108,6 +149,8 @@ def _call_http(nodes, soft_map, cfg, max_tokens=None):
             ch = (out.get("choices") or [{}])[0]
             content = (ch.get("message") or {}).get("content") or ""
             finish = ch.get("finish_reason")
+            usage = out.get("usage") or {}
+            _add_usage(name, usage)
             obj = _parse_json(content)
             if obj is None:
                 last = "非JSON(finish=%s): %s" % (finish, content[:120])
@@ -116,7 +159,7 @@ def _call_http(nodes, soft_map, cfg, max_tokens=None):
                     time.sleep(2)
                     continue
                 raise RuntimeError(last)
-            return obj, finish
+            return obj, finish, usage
         except urllib.error.HTTPError as e:
             last = "HTTP %d %s" % (e.code, e.read()[:200].decode("utf-8", "replace"))
             if e.code in (429, 500, 502, 503, 504):
@@ -126,6 +169,10 @@ def _call_http(nodes, soft_map, cfg, max_tokens=None):
         except RuntimeError:
             raise
         except Exception as e:
+            # 超时/连接错误：服务端可能仍在计费生成，这里记账以便算真实开销
+            USAGE["timeouts"] += 1
+            est = int(cfg.get("max_tokens", 1500) * 0.5)
+            _add_usage(name, {"prompt_tokens": est, "completion_tokens": 0})
             last = "%s: %s" % (type(e).__name__, str(e)[:160])
             time.sleep(min(30, 3 * (a + 1)))            # 超时等瞬时错误也退避重试
     raise RuntimeError(last or "未知错误")
@@ -200,7 +247,8 @@ def review_source(nodes, soft_map, mode, cfg, source_name, log):
                         obj = _call_opencode(chunk, soft_map, b)
                         used_backend = "opencode"
                         break
-                    obj, _finish = _call_http(chunk, soft_map, b, max_tokens=(mt * 4 if grow else mt))
+                    obj, _finish, _usage = _call_http(
+                        chunk, soft_map, b, max_tokens=(mt * 4 if grow else mt))
                     used_backend = b.get("_name", "backend%d" % bi)
                     break
                 except Exception as e:
@@ -237,6 +285,138 @@ def review_source(nodes, soft_map, mode, cfg, source_name, log):
                              "server": nodes[i].get("server"), "why": w}
                             for i, w in sorted(drops.items())][:200]
     return sorted(drops.keys()), stats
+
+
+def _fmt_clusters(clusters, nodes):
+    """clusters: [(key, [idx...]), ...] -> 送审文本（含代表节点与簇规模）"""
+    lines = []
+    for ci, (key, idxs) in enumerate(clusters, 1):
+        rep = nodes[idxs[0]]
+        lines.append("%d|%s|%s|%s|%d" % (ci, rep.get("type", "?"),
+                                          str(rep.get("name", ""))[:44],
+                                          str(rep.get("server", ""))[:40], len(idxs)))
+    return "\n".join(lines)
+
+
+def _call_http_raw(prompt, system, cfg, max_tokens):
+    import urllib.error
+    import urllib.request
+
+    base = _norm_base(cfg["base_url"])
+    name = cfg.get("_name", "backend")
+    body = {"model": cfg["model"], "temperature": 0, "max_tokens": max_tokens,
+            "messages": [{"role": "system", "content": system},
+                         {"role": "user", "content": prompt}]}
+    data = json.dumps(body).encode("utf-8")
+    last = None
+    for a in range(max(1, cfg.get("retries", 3))):
+        try:
+            req = urllib.request.Request(
+                base + "/chat/completions", data=data,
+                headers={"Content-Type": "application/json",
+                         "Authorization": "Bearer " + cfg["api_key"]})
+            with urllib.request.urlopen(req, timeout=cfg["timeout"]) as r:
+                out = json.loads(r.read().decode("utf-8"))
+            ch = (out.get("choices") or [{}])[0]
+            content = (ch.get("message") or {}).get("content") or ""
+            finish = ch.get("finish_reason")
+            _add_usage(name, out.get("usage") or {})
+            obj = _parse_json(content)
+            if obj is None:
+                last = "非JSON(finish=%s): %s" % (finish, content[:120])
+                if finish == "length":
+                    time.sleep(2)
+                    continue
+                raise RuntimeError(last)
+            return obj
+        except urllib.error.HTTPError as e:
+            last = "HTTP %d %s" % (e.code, e.read()[:200].decode("utf-8", "replace"))
+            if e.code in (429, 500, 502, 503, 504):
+                time.sleep(min(60, 5 * (a + 1) ** 2))
+                continue
+            raise RuntimeError(last)
+        except RuntimeError:
+            raise
+        except Exception as e:
+            USAGE["timeouts"] += 1
+            _add_usage(name, {"prompt_tokens": int(cfg.get("max_tokens", 1500) * 0.5)})
+            last = "%s: %s" % (type(e).__name__, str(e)[:160])
+            time.sleep(min(30, 3 * (a + 1)))
+    raise RuntimeError(last or "未知错误")
+
+
+def review_clusters(clusters, nodes, mode, cfg, source_name, log):
+    """簇级审核（并发）。返回 (要剔除的簇下标集合, 统计dict)。簇下标是 clusters 的 0-based 位置。"""
+    import concurrent.futures as cf
+
+    stats = {"mode": mode, "chunks": 0, "chunks_failed": 0, "clusters": len(clusters),
+             "dropped_clusters": 0, "dropped_nodes": 0, "rolled_back": False,
+             "error": None, "served": {}}
+    if mode == "off" or not clusters:
+        return set(), stats
+    drops, reasons = {}, []
+
+    parts = [(off, clusters[off:off + CLUSTER_CHUNK])
+             for off in range(0, len(clusters), CLUSTER_CHUNK)]
+
+    def one(job):
+        off, part = job
+        prompt = _fmt_clusters(part, nodes)
+        for b in (cfg.get("backends") or [cfg]):
+            try:
+                obj = _call_http_raw(prompt, CLUSTER_PROMPT, b, b.get("max_tokens", 1200))
+                return off, part, obj, b.get("_name", "?")
+            except Exception as e:
+                log("  [ai] %s cluster-chunk@%d %s 失败: %s"
+                    % (source_name, off, b.get("_name", "?"), str(e)[:110]))
+        return off, part, None, None
+
+    # 并发：TPM 50k / RPM 1k 的额度下，3 路并发约占 6-10%，能把墙钟时间压到 1/3
+    workers = max(1, int(os.environ.get("AI_CONCURRENCY", "3")))
+    results = []
+    with cf.ThreadPoolExecutor(max_workers=workers) as pool:
+        for r in pool.map(one, parts):
+            results.append(r)
+
+    for off, part, obj, used in results:
+        stats["chunks"] += 1
+        if obj is None:
+            stats["chunks_failed"] += 1
+            continue
+        stats["served"][used] = stats["served"].get(used, 0) + 1
+        for d in (obj.get("drop") or obj.get("decisions") or []):
+            try:
+                c = int(d.get("c", d.get("n", d.get("idx"))))
+            except (TypeError, ValueError):
+                continue
+            if 1 <= c <= len(part):
+                gi = off + c - 1
+                drops[gi] = str(d.get("why", ""))[:40]
+                reasons.append(drops[gi])
+
+    if stats["chunks_failed"] and stats["chunks_failed"] == stats["chunks"]:
+        stats["error"] = "全部批次失败"
+        return set(), stats
+
+    # 熔断：判掉的「节点占比」超阈值就整体回滚（防模型误读）
+    hit_nodes = sum(len(clusters[i][1]) for i in drops)
+    total_nodes = sum(len(c[1]) for c in clusters)
+    ratio = hit_nodes / max(1, total_nodes)
+    if ratio > DROP_RATIO_GUARD:
+        stats["rolled_back"] = True
+        log("  [ai] %s 簇级剔除将影响 %.0f%% 节点 > 阈值 %.0f%% -> 全部回滚"
+            % (source_name, ratio * 100, DROP_RATIO_GUARD * 100))
+        return set(), stats
+    stats["dropped_clusters"] = len(drops)
+    stats["dropped_nodes"] = hit_nodes
+    stats["top_reasons"] = sorted(set(reasons), key=reasons.count, reverse=True)[:5]
+    stats["drop_detail"] = [
+        {"name": str(nodes[clusters[i][1][0]].get("name"))[:60],
+         "type": nodes[clusters[i][1][0]].get("type"),
+         "server": nodes[clusters[i][1][0]].get("server"),
+         "why": w, "count": len(clusters[i][1])}
+        for i, w in sorted(drops.items())][:200]
+    return set(drops.keys()), stats
 
 
 def resolve_mode(arg_mode):

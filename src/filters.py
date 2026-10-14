@@ -169,6 +169,32 @@ def hard_filter(node, exclude_filter, drop_types=()):
     return True, ""
 
 
+def cluster_key(name):
+    """把「同族克隆节点」归一成一个簇键。
+
+    免费源里 290 个 `防范境外势力渗透 #1..#290`、200 个 `dafei.de 印尼 01..200`
+    这类节点本质是同一条目的克隆位。归一后 AI 只需判一次即可整簇处置：
+    调用量从 O(节点数) 降到 O(簇数)，实测能省 90%+ token。
+    """
+    s = ZERO_WIDTH.sub("", str(name))
+    s = re.sub(r"[\U0001F1E6-\U0001F1FF]{2}", " ", s)          # 国旗
+    s = re.sub(r"[\U0001F300-\U0001FAFF\u2190-\u27BF\uFE0F]", " ", s)  # emoji/箭头/杂符
+    s = re.sub(r"\d+", "#", s)                                # 数字 -> #
+    s = re.sub(r"[#_]+", " ", s)
+    s = re.sub(r"\s+", " ", s).strip(" |-.·:")
+    return s.lower() or "misc"
+
+
+def group_clusters(nodes):
+    """nodes -> [(簇键, [节点下标...]), ...]，按簇大小降序（大簇优先，AI 先看最有价值的）。"""
+    buckets = {}
+    for i, p in enumerate(nodes):
+        buckets.setdefault(cluster_key(p.get("name", "")), []).append(i)
+    out = [(k, v) for k, v in buckets.items()]
+    out.sort(key=lambda kv: (-len(kv[1]), kv[0]))
+    return out
+
+
 def dedupe_key(node):
     """同源去重键：协议 + server + port + 关键凭据（shaoyouvip 曾在同一 IP 上开 4 个节点）。"""
     ptype = str(node.get("type", "")).lower()

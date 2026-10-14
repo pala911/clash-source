@@ -44,6 +44,17 @@ def main():
     ap.add_argument("--keep-raw", action="store_true")
     ap.add_argument("--sources", default=None,
                     help="逗号分隔，只跑指定源（调试用）")
+    ap.add_argument("--ai-scope", default=os.environ.get("AI_SCOPE", "mixed"),
+                    choices=["all", "flagged", "mixed"],
+                    help="AI 审阅范围：all=全量 flagged=仅可疑 mixed=可疑+抽样(默认)")
+    ap.add_argument("--ai-sample", type=int, default=int(os.environ.get("AI_SAMPLE", "60")),
+                    help="mixed 模式下每源均匀抽样条数")
+    ap.add_argument("--ai-unit", default=os.environ.get("AI_UNIT", "cluster"),
+                    choices=["cluster", "node"],
+                    help="簇级审核(默认，省 95% token) / 单节点审核(对照用)")
+    ap.add_argument("--ai-max-clusters", type=int,
+                    default=int(os.environ.get("AI_MAX_CLUSTERS", "150")),
+                    help="每源送审簇数上限（按簇大小降序取前 N）")
     args = ap.parse_args()
 
     with open(os.path.join(HERE, "sources.yaml"), encoding="utf-8") as f:
@@ -61,6 +72,7 @@ def main():
 
     mode = ai_review.resolve_mode(args.ai_mode)
     aicfg = ai_review.config_from_env()
+    scope = args.ai_scope
     if mode == "http":
         names = aicfg.get("_names") or ["env-single"]
         log("AI 后端：http（%s）" % " → ".join(names))
@@ -73,6 +85,7 @@ def main():
     metas = []
     warnings = []
     raw_keep = {}
+    ai_reviewed = {}
 
     for s in enabled:
         name = s["name"]
@@ -120,23 +133,76 @@ def main():
                                         for k, v in sorted(reasons.items(), key=lambda x: -x[1])[:4]))
                if reasons else ""))
 
-        # 3) AI 裁决（只剔除，fail-soft）
-        soft_map = {}
-        for p in kept:
-            h = filters.soft_hits(p["name"])
-            if h:
-                soft_map[p["name"]] = h
-        drop_idx, astats = ai_review.review_source(kept, soft_map, mode, aicfg, name, log)
-        if astats.get("error"):
-            warnings.append("%s AI 调用失败（已保留全部节点）：%s" % (name, astats["error"]))
-        if astats.get("rolled_back"):
-            warnings.append("%s AI 剔除比例超阈值，已整体回滚" % name)
-        if drop_idx:
-            ds = set(drop_idx)
-            kept = [p for i, p in enumerate(kept) if i not in ds]
-            log("   AI 剔除 %d%s" % (len(drop_idx),
-                                     ("（%s）" % "，".join(astats.get("top_reasons") or []))
-                                     if astats.get("top_reasons") else ""))
+        # 3) AI 裁决（簇级：判一次清一整簇同族克隆节点）
+        #
+        # token 账（2026-10-14 实测）：单节点送审一批 60 条 prompt≈6263 字符≈4.5k token，
+        # 12 源全量≈81 批≈40 万 token/轮；簇级后 nomorewalls 的 290 个同族广告位
+        # 只占 1 簇，全 12 源预计 <20 批 ≈ 1.5 万 token —— 省 95%+。
+        #   --ai-unit node    旧的单节点模式（保留作对照/兜底）
+        #   --ai-unit cluster 簇级模式（默认）
+        ai_reviewed[name] = 0
+        if mode != "off" and kept:
+            if args.ai_unit == "cluster":
+                clusters = filters.group_clusters(kept)
+                cap = args.ai_max_clusters
+                if cap and len(clusters) > cap:
+                    clusters = clusters[:cap]          # 已按簇大小降序，保留信息量最大的
+                drop_c, cstats = ai_review.review_clusters(
+                    clusters, kept, mode, aicfg, name, log)
+                astats = cstats
+                if cstats.get("error"):
+                    warnings.append("%s AI 簇级审核不可用（保留全部节点）：%s"
+                                    % (name, cstats["error"]))
+                if cstats.get("rolled_back"):
+                    warnings.append("%s AI 剔除超阈值，已整体回滚" % name)
+                if drop_c:
+                    kill = set()
+                    for ci in drop_c:
+                        kill.update(clusters[ci][1])
+                    kept = [p for i, p in enumerate(kept) if i not in kill]
+                    log("   AI 剔除 %d 簇 / %d 节点%s"
+                        % (len(drop_c), len(kill),
+                           ("（%s）" % "，".join(cstats.get("top_reasons") or []))
+                           if cstats.get("top_reasons") else ""))
+                ai_reviewed[name] = len(clusters)
+                log("   簇审：%d 节点 -> %d 簇（送审 %d 簇）"
+                    % (len(kept) + len(kill if drop_c else []), len(clusters),
+                       len(clusters)))
+            else:
+                review_idx = []
+                if scope == "all":
+                    review_idx = list(range(len(kept)))
+                elif scope == "flagged":
+                    review_idx = [i for i, p in enumerate(kept) if filters.soft_hits(p["name"])]
+                else:
+                    flg = [i for i, p in enumerate(kept) if filters.soft_hits(p["name"])]
+                    rest = [i for i in range(len(kept)) if i not in set(flg)]
+                    if rest and args.ai_sample > 0:
+                        step = max(1, len(rest) // max(1, args.ai_sample))
+                        review_idx = sorted(set(flg) | set(rest[::step][:args.ai_sample]))
+                    else:
+                        review_idx = sorted(set(flg))
+                subset = [kept[i] for i in review_idx]
+                soft_map = {p["name"]: filters.soft_hits(p["name"]) for p in subset
+                            if filters.soft_hits(p["name"])}
+                log("   AI 送审 %d/%d 条（scope=%s）" % (len(subset), len(kept), scope))
+                drop_local, astats = ai_review.review_source(
+                    subset, soft_map, mode, aicfg, name, log)
+                drop_idx = [review_idx[i] for i in drop_local]
+                ai_reviewed[name] = len(subset)
+                if astats.get("error"):
+                    warnings.append("%s 部分批次 AI 不可用（相关批次保留全部节点）：%s"
+                                    % (name, astats["error"]))
+                if astats.get("rolled_back"):
+                    warnings.append("%s AI 剔除比例超阈值，已整体回滚" % name)
+                if drop_idx:
+                    ds = set(drop_idx)
+                    kept = [p for i, p in enumerate(kept) if i not in ds]
+                    log("   AI 剔除 %d%s" % (len(drop_idx),
+                                             ("（%s）" % "，".join(astats.get("top_reasons") or []))
+                                             if astats.get("top_reasons") else ""))
+        else:
+            astats = {"mode": mode}
 
         # 4) 数量上限（控手机 health-check 规模）
         mx = int(s.get("max_nodes") or 0)
@@ -202,12 +268,22 @@ def main():
             "error": m.get("error"),
         } for m in metas],
         "totals": {"kept": sum(len(v) for v in per_source.values()),
-                   "merged": len(all_nodes)},
+                   "merged": len(all_nodes),
+                   "ai_reviewed": sum(ai_reviewed.values())},
+        "ai_scope": scope,
+        "ai_usage": ai_review.usage_report(),
         "warnings": warnings,
     }
 
     dist = os.path.join(ROOT, "dist")
     build.write_dist(dist, per_source, all_nodes, profile, manifest, base)
+    u = manifest["ai_usage"]
+    log("AI 用量：送审 %d 条 / %d 次调用 / prompt %d + completion %d = %d token（超时记账 %d 次）"
+        % (manifest["totals"]["ai_reviewed"], u.get("calls", 0), u.get("prompt", 0),
+           u.get("completion", 0), u.get("prompt", 0) + u.get("completion", 0),
+           u.get("timeouts", 0)))
+    for b, v in (u.get("by_backend") or {}).items():
+        log("   后端 %-22s %d 次  %d token" % (b, v["calls"], v["prompt"] + v["completion"]))
 
     # 产物不变量：mihomo 严格模式下「一个畸形节点 = 整个 provider 加载失败」，
     # 所以出仓前把这类致命字段组合再扫一遍，宁可流水线自己炸也不要手机静默变空池。

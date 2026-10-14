@@ -13,9 +13,10 @@ backends:
     base_url: https://api.siliconflow.cn/v1
     model: Qwen/Qwen3-8B
     env_key: AI_KEY_SILICONFLOW
-    timeout: 120
+    timeout: 90
     retries: 3
-    note: 首选。非推理模型、输出短，本任务（挑出要删的节点）够用且快；1500 max_tokens 足够
+    max_tokens: 1200
+    note: 首选。非推理模型、输出短；超时给 90s 是因为额度不是瓶颈、卡的是上游排队（观察到的失败是 RemoteDisconnected/timeout，不是 429）
 
   - name: siliconflow_xing
     base_url: https://api.siliconflow.cn/v1
