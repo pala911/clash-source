@@ -1,6 +1,6 @@
 # clash-source 运行报告
 
-- 生成时间：2026-10-14 11:46:51（UTC 记录：2026-10-14T03:46:47Z）
+- 生成时间：2026-10-14 06:33:00（UTC 记录：2026-10-14T06:32:57Z）
 - AI 模式：`http`
 - 订阅入口：`https://pala911.github.io/clash-source/profile.yaml`
 - 备用入口（github.io 不达时）：`https://gh-proxy.com/raw.githubusercontent.com/pala911/gh-pages/profile.yaml`
@@ -10,32 +10,42 @@
 
 | 源 | 原始 | 产出 | AI 剔除 | 镜像回退 | 备注 |
 |---|---:|---:|---:|---|---|
-| yypool | 1767 | 900 | - | 否 | - |
+| yypool | 1700 | 900 | - | 否 | - |
 | anaer | 21 | 14 | - | 否 | - |
-| passcro | 149 | 144 | - | 否 | - |
-| automerge | 534 | 262 | - | 否 | - |
-| ermaozi | 598 | 548 | - | 否 | - |
-| zhuhaiuk | 35 | 35 | - | 否 | - |
-| ssrsub | 177 | 176 | - | 否 | - |
-| ruk1ng001 | 500 | 479 | - | 否 | - |
-| snakem982 | 60 | 59 | - | 否 | - |
-| nomorewalls | 533 | 261 | - | 否 | - |
+| passcro | 149 | 145 | - | 否 | - |
+| automerge | 524 | 247 | - | 否 | - |
+| ermaozi | 598 | 564 | - | 否 | - |
+| zhuhaiuk | 32 | 31 | - | 否 | - |
+| ssrsub | 161 | 160 | - | 否 | - |
+| ruk1ng001 | 500 | 480 | - | 否 | - |
+| snakem982 | 61 | 60 | - | 否 | - |
+| nomorewalls | 533 | 271 | - | 否 | - |
 | autojiedian | 944 | 905 | - | 否 | - |
-| shaoyouvip | 100 | 100 | - | 否 | - |
+| shaoyouvip | 95 | 94 | - | 否 | - |
 
-合计产出 **3883** 节点（合并池 3883）。
+合计产出 **3871** 节点（合并池 3871）。
 
 > 注意：节点数 ≠ 可用性。真实质量门禁是 **youtube/generate_204 探针**（手机/PC 侧 mihomo 自己跑）；CI 在美国机，连通性检查只能删明显死的。
 
 ## ⚠ 本次告警
 
-- yypool 产出 1375 超过 max_nodes=900，已截断（考虑淘汰最差尾部）
+- yypool 产出 1400 超过 max_nodes=900，已截断（考虑淘汰最差尾部）
+- passcro AI 剔除超阈值，已整体回滚
+- ermaozi AI 簇级审核不可用（保留全部节点）：全部批次失败
+- ermaozi AI 因墙钟预算耗尽被跳过（该源按纯规则产出）
+- zhuhaiuk AI 因墙钟预算耗尽被跳过（该源按纯规则产出）
+- ssrsub AI 因墙钟预算耗尽被跳过（该源按纯规则产出）
+- ruk1ng001 AI 因墙钟预算耗尽被跳过（该源按纯规则产出）
+- snakem982 AI 因墙钟预算耗尽被跳过（该源按纯规则产出）
+- nomorewalls AI 因墙钟预算耗尽被跳过（该源按纯规则产出）
+- autojiedian AI 因墙钟预算耗尽被跳过（该源按纯规则产出）
+- shaoyouvip AI 因墙钟预算耗尽被跳过（该源按纯规则产出）
 
 ## 硬过滤命中 TOP（按源）
 
-- **yypool**：命名命中 exclude-filter×314，不支持的协议 hysteria×3
+- **yypool**：命名命中 exclude-filter×243，不支持的协议 hysteria×3
 - **anaer**：不支持的协议 hysteria×2
-- **automerge**：命名命中 exclude-filter×240，不支持的协议 hysteria×3
+- **automerge**：命名命中 exclude-filter×241，不支持的协议 hysteria×3
 - **ermaozi**：命名命中 exclude-filter×11，不支持的协议 hysteria×3
 - **ssrsub**：命名命中 exclude-filter×1
 - **snakem982**：不支持的协议 hysteria×1
@@ -44,16 +54,16 @@
 
 ## AI 处置摘要
 
-- **yypool**：审 0，剔除 0；理由 TOP：广告位，同server，server字段异常，占位符，失效提示日期
-- **anaer**：审 0，剔除 0；理由 TOP：占位符说明
-- **passcro**：审 0，剔除 0；理由 TOP：占位符失效提示
-- **automerge**：审 0，剔除 0；理由 TOP：广告引流节点
-- **ermaozi**：审 0，剔除 0；理由 TOP：伪装，广告位，引流/广告/群组引流
+- **yypool**：审 0，剔除 0；理由 TOP：广告占位符，广告克隆位，广告/引流，广告克隆节点，占位符
+- **anaer**：审 0，剔除 0；理由 TOP：占位符示例失效
+- **passcro**：审 0，剔除 0（超阈值已回滚）
+- **automerge**：审 0，剔除 0；理由 TOP：引流广告节点，占位符示例节点
+- **ermaozi**：审 0，剔除 0
 - **zhuhaiuk**：审 0，剔除 0
 - **ssrsub**：审 0，剔除 0
-- **ruk1ng001**：审 0，剔除 0；理由 TOP：广告节点簇
+- **ruk1ng001**：审 0，剔除 0
 - **snakem982**：审 0，剔除 0
-- **nomorewalls**：审 0，剔除 0；理由 TOP：广告引流节点
+- **nomorewalls**：审 0，剔除 0
 - **autojiedian**：审 0，剔除 0
 - **shaoyouvip**：审 0，剔除 0
 
