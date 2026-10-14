@@ -1,6 +1,6 @@
 # clash-source 运行报告
 
-- 生成时间：2026-10-14 06:33:00（UTC 记录：2026-10-14T06:32:57Z）
+- 生成时间：2026-10-14 07:01:46（UTC 记录：2026-10-14T07:01:42Z）
 - AI 模式：`http`
 - 订阅入口：`https://pala911.github.io/clash-source/profile.yaml`
 - 备用入口（github.io 不达时）：`https://gh-proxy.com/raw.githubusercontent.com/pala911/gh-pages/profile.yaml`
@@ -12,26 +12,24 @@
 |---|---:|---:|---:|---|---|
 | yypool | 1700 | 900 | - | 否 | - |
 | anaer | 21 | 14 | - | 否 | - |
-| passcro | 149 | 145 | - | 否 | - |
-| automerge | 524 | 247 | - | 否 | - |
-| ermaozi | 598 | 564 | - | 否 | - |
+| passcro | 149 | 144 | - | 否 | - |
+| automerge | 524 | 116 | - | 否 | - |
+| ermaozi | 598 | 490 | - | 否 | - |
 | zhuhaiuk | 32 | 31 | - | 否 | - |
 | ssrsub | 161 | 160 | - | 否 | - |
 | ruk1ng001 | 500 | 480 | - | 否 | - |
 | snakem982 | 61 | 60 | - | 否 | - |
 | nomorewalls | 533 | 271 | - | 否 | - |
 | autojiedian | 944 | 905 | - | 否 | - |
-| shaoyouvip | 95 | 94 | - | 否 | - |
+| shaoyouvip | 16 | 16 | - | 否 | - |
 
-合计产出 **3871** 节点（合并池 3871）。
+合计产出 **3587** 节点（合并池 3587）。
 
 > 注意：节点数 ≠ 可用性。真实质量门禁是 **youtube/generate_204 探针**（手机/PC 侧 mihomo 自己跑）；CI 在美国机，连通性检查只能删明显死的。
 
 ## ⚠ 本次告警
 
-- yypool 产出 1400 超过 max_nodes=900，已截断（考虑淘汰最差尾部）
-- passcro AI 剔除超阈值，已整体回滚
-- ermaozi AI 簇级审核不可用（保留全部节点）：全部批次失败
+- yypool 产出 1154 超过 max_nodes=900，已截断（考虑淘汰最差尾部）
 - ermaozi AI 因墙钟预算耗尽被跳过（该源按纯规则产出）
 - zhuhaiuk AI 因墙钟预算耗尽被跳过（该源按纯规则产出）
 - ssrsub AI 因墙钟预算耗尽被跳过（该源按纯规则产出）
@@ -54,11 +52,11 @@
 
 ## AI 处置摘要
 
-- **yypool**：审 0，剔除 0；理由 TOP：广告占位符，广告克隆位，广告/引流，广告克隆节点，占位符
-- **anaer**：审 0，剔除 0；理由 TOP：占位符示例失效
-- **passcro**：审 0，剔除 0（超阈值已回滚）
-- **automerge**：审 0，剔除 0；理由 TOP：引流广告节点，占位符示例节点
-- **ermaozi**：审 0，剔除 0
+- **yypool**：审 0，剔除 0；理由 TOP：广告位引流，广告位批量克隆，订阅地址本身，server为占位符，广告位
+- **anaer**：审 0，剔除 0；理由 TOP：占位符示例节点
+- **passcro**：审 0，剔除 0；理由 TOP：占位符示例节点
+- **automerge**：审 0，剔除 0；理由 TOP：speednode测试节点，境外势力渗透广告，占位符节点
+- **ermaozi**：审 0，剔除 0；理由 TOP：广告位，伪装境内中转，群组引流广告位，广告域名，占位符
 - **zhuhaiuk**：审 0，剔除 0
 - **ssrsub**：审 0，剔除 0
 - **ruk1ng001**：审 0，剔除 0
