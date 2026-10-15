@@ -77,7 +77,9 @@ def show(tag, rc, out):
 
 
 def main():
-    work = os.path.join(tempfile.gettempdir(), "codeup_work")
+    # 用带 pid 的唯一目录：固定名会在上一次失败后残留，导致 git clone 报
+    # "destination path ... already exists and is not an empty directory"
+    work = os.path.join(tempfile.gettempdir(), "codeup_work_%d" % os.getpid())
     shutil.rmtree(work, ignore_errors=True)
 
     rc, out = run([GIT] + PROXY + AUTH + ["ls-remote", AUTH_URL], timeout=120)
