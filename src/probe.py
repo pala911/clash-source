@@ -193,7 +193,8 @@ def probe(node_files, mihomo, workdir, budget=1500, log=print, hc_timeout=8000,
     import yaml
     cpath, _ = build_config(node_files, workdir, health_check_timeout=hc_timeout)
     r = subprocess.run([mihomo, "-t", "-f", cpath, "-d", workdir],
-                       capture_output=True, text=True, timeout=180)
+                       stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                       universal_newlines=True, timeout=180)
     if r.returncode != 0:
         log("  [probe] 配置校验失败: %s" % ((r.stdout or r.stderr)[-300:]))
         return {}

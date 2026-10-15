@@ -106,8 +106,12 @@ def main():
     chk("监听本地端口", bool(val), "端口 %s" % val if val else str(err))
 
     # ---- 4) 子进程 + git ----
-    # 注：git 不是致命项 —— 仓库已经放在 Codeup 里了，正常流程是从 Codeup 拉，
-    # 不必 clone GitHub。这里只是顺带告诉你「能不能直接从 GitHub 同步」。
+    # 注：git/clone 都**不是**致命项 —— 仓库已放在 Codeup 里，流水线本来就从
+    # Codeup 拉代码，不需要 clone GitHub。这里只是告诉你「能不能顺带同步 GitHub」。
+    #
+    # ⚠ 2026-10-15 实测：杭州 runner clone GitHub **时好时坏**
+    #    （13:58 那轮 2 秒成功，14:29 那轮 Failed to connect）。所以这个信号
+    #    单次不可信，要看多次；更不能因为一次成功就断定"国内 CI 能直连 GitHub"。
     if shutil.which("git") is None:
         chk("git 命令", None, "环境里没有 git（无妨：从 Codeup 拉代码不需要它）")
     else:
@@ -120,13 +124,13 @@ def main():
             return p.returncode, (p.stderr or p.stdout or "")[-200:]
         val, dt, err = go(clone)
         if val is None:
-            chk("clone GitHub 仓库", None, "%s（%.0fs）——无妨，代码从 Codeup 拉" % (err, dt))
+            chk("clone GitHub 仓库", None, "%s（%.0fs）" % (err, dt))
         else:
             rc, out = val
             good = (rc == 0) and os.path.isdir(os.path.join(d, "c", "src"))
-            chk("clone GitHub 仓库", None if good else False,
-                "%.0fs ✓ 可直连 GitHub" % dt if good
-                else out.replace("\n", " ")[:100] + " —— 无妨，代码从 Codeup 拉")
+            chk("clone GitHub 仓库", None,
+                "%.0fs ✓ 本轮成功（**单轮不可信，该平台实测时好时坏**）" % dt
+                if good else "本轮失败 —— 无妨，代码从 Codeup 拉")
 
     # ---- 5) 回传路径 ----
     val, dt, err = go(lambda: http_get("https://api.github.com/rate_limit"))
@@ -158,7 +162,11 @@ def main():
             print("   ! %s —— %s" % (n, note))
     print("=" * 64)
     shutil.rmtree(d, ignore_errors=True)
-    return 1 if bad else 0
+    # ⚠ 永远 exit 0：云效的 step 会在第一条命令非零时**直接中断**，
+    #   `python3 a.py; python3 b.py` 里的 b 就不会执行（2026-10-15 实测）。
+    #   所以判定结果只看日志最后那行「结论」，退出码必须恒为 0，
+    #   否则后面的前置检查会被静默跳过。
+    return 0
 
 
 if __name__ == "__main__":

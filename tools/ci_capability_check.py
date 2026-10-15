@@ -129,7 +129,8 @@ def main():
         if shutil.which("git") is None:
             raise RuntimeError("环境里没有 git 命令")
         p = subprocess.run(["git", "clone", "--depth", "1", REPO, dst],
-                           capture_output=True, text=True, timeout=120)
+                           stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                universal_newlines=True, timeout=120)
         return p.returncode, (p.stderr or p.stdout)[-200:]
 
     val, dt, err = timed(do_clone)
@@ -164,7 +165,8 @@ def main():
         mihomo = os.path.join(workdir, "mihomo")
         open(mihomo, "wb").write(raw)
         os.chmod(mihomo, 0o755)
-        p = subprocess.run([mihomo, "-v"], capture_output=True, text=True, timeout=30)
+        p = subprocess.run([mihomo, "-v"], stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                universal_newlines=True, timeout=30)
         rec("2b", "mihomo 可执行", p.returncode == 0,
             (p.stdout or "").strip().splitlines()[0][:60] if p.returncode == 0
             else "退出码 %d" % p.returncode)
@@ -191,7 +193,8 @@ def main():
             cf = os.path.join(workdir, "c.yaml")
             json.dump(cfg, open(cf, "w"))
             p = subprocess.run([mihomo, "-t", "-f", cf, "-d", workdir],
-                               capture_output=True, text=True, timeout=60)
+                               stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                universal_newlines=True, timeout=60)
             return p.returncode, (p.stdout + p.stderr)[-200:]
         val, dt, err = timed(boot)
         if val is None:
