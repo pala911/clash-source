@@ -30,11 +30,24 @@ SCRIPTS = ["ci_check_paste.py", "ci_preflight.py", "ci_probe_run.py",
 SRC_MODULES = ["probe.py", "health.py"]
 
 
+def _dest_name(name):
+    """决定文件在云端仓库里的落地路径。
+
+    ⚠ shell 脚本必须放 tools/，不能放根目录：
+      sync_and_probe.sh 内部用 `dirname "$0"/..` 推算仓库根，
+      放根目录就会指向仓库的上一级，逻辑全错。
+      这个错的表现极难查 —— 流水线报
+      `bash tools/sync_and_probe.sh: No such file or directory`，
+      而文件明明就在仓库里（只是位置不对），看起来像"没推上去"。
+    """
+    return "tools/" + name if name.endswith(".sh") else name
+
+
 def payload_items():
     """返回 [(相对路径, 绝对源路径, 说明)]，供各推送脚本使用。"""
     items = []
     for n in SCRIPTS:
-        items.append((n, os.path.join(HERE, n), "脚本"))
+        items.append((_dest_name(n), os.path.join(HERE, n), "脚本"))
     for n in SRC_MODULES:
         items.append((n, os.path.join(ROOT, "src", n), "主仓模块"))
     gz = os.path.join(ROOT, ".tools", "mihomo-linux-amd64.gz")
