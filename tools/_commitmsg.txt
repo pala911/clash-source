@@ -1,0 +1,42 @@
+feat: 抽样探针 + 国内 CI 判定脚本 + 本机每周计划任务，并修掉 2 个静默数据 bug
+
+一、抽样探针（给额度紧张的国内 CI 用）
+  --sample N  按服务器 IP 网段**分层**抽样（确定性可复现）
+    实测 automerge 源随机抽 30 个只覆盖 15.2 个网段（半数样本挤在同一网段，
+    地域偏倚严重），分层抽样稳定覆盖 30 个、偏差 0
+  实测国内口径耗时：抽样 20/源 67s、30/源 76s、50/源 88s，12 源全部 settle
+  抽样数据永不参与降级（n=20、真实通过率 10% 时全死概率 0.9^20≈12%）
+  新增 scope=cnci：国内第三方 CI 口径，只记录、只交叉验证，不触发任何自动变更
+
+二、两个静默数据 bug（都会毁掉数据但看不出来）
+  1) 退出条件只等「provider 加载完」，不等「健康检查跑完」——
+     加载 1 秒、检查几分钟，结果 12 个源里 10 个只测了 5~40% 就退出。
+     yypool 报 rate 13.0%（真值 13.1%，几乎看不出异常）但 alive 报 6（真值 118）。
+     因为「变好」判据是 alive>=5，低估会让好源看起来变差 -> good_streak 清零 ->
+     回收永不触发。**只看通过率发现不了这种 bug。**
+     修：等「已测总数连续 4 轮不增长」才收敛；每源加 settled 标记，
+         health.py 拒绝用未测完的数据做自动判定。
+  2) hc_timeout 直接线性偏置 alive。shaoyouvip 单源实测：
+     2s/3s->0 活，5s->1 活，8s->4 活，15s->6 活（41/46 是明文 HTTP 代理）。
+     调小它 = 批量制造假死亡。修：health.py 检测参数变更并清空 streak
+     （前后口径不可比）。**上一轮建议「国内用 3000ms 省钱」是错的**——
+     让国内 CI 跑快的正确解法是抽样，不是调小超时。
+
+三、本机每周计划任务
+  tools/run_local_probe.cmd + Windows 任务 clash-source-local-probe
+  每周日 03:07，StartWhenAvailable（到点关机则开机补跑），失败重试 2 次
+  已实测：任务拉起 -> 全量探针 -> 健康档案 -> 推回 main 全链路通
+  计划任务里踩到的四个坑一并修掉：
+   - .cmd 必须纯 ASCII：cmd.exe 按 OEM 码页(936)读 .cmd，UTF-8 中文注释
+     会把行结构搞乱，报「xxx 不是内部或外部命令」
+   - .cmd 必须 CRLF：LF-only 会让 %ERRORLEVEL% 变空，退出码永远传不出来
+   - pull --rebase 必须加 --autostash：工作区有未暂存改动时 rebase 直接拒绝，
+     导致「push 被拒 -> rebase -> 重试」必然二次失败，本地数据永远传不上去
+   - git 说「没东西可提交」有两种措辞（nothing to commit / no changes added），
+     少挡一种就会让每轮正常情况都误报 exit=1
+
+四、tools/ci_capability_check.py（纯标准库，可直接贴进任何国内 CI 跑）
+  5 分钟给出「这条路走不走得通」的结论：clone GitHub / 下 mihomo /
+  装并启动 / 出网到境外 / api.github.com 可达性 / 出口延迟。
+  本机实测正好复现了国内环境：4 个致命项全挂，但 api.github.com PASS
+  （印证：API 在国内可直连，raw.githubusercontent.com 必墙）

@@ -21,6 +21,12 @@
      除非上游整体轮换）。真正的日频刚需是「节点新鲜度」，那是 CI 抓取在解决，
      与探针无关。所以每天探一遍是浪费，一周一次足够。
 
+  4) **hc_timeout 一律保持 8000ms 默认值，别为了快调小**。
+     它直接线性偏置 alive（shaoyouvip 实测：3s->0 活、8s->4 活、15s->6 活），
+     调小等于批量制造假死亡。国内全量一轮约 5~30 分钟，每周一次无所谓。
+     真要省时间就用 `--sample 30`（实测 76 秒跑完 12 源且全部 settle），
+     那是「少测点」而不是「测得不实」。
+
 用法：
     python src/local_probe.py                # 探针 + 健康档案 + 推回 GitHub
     python src/local_probe.py --no-push      # 只探针，不推送
@@ -58,6 +64,14 @@ def run_probe(args):
         env=env, cwd=ROOT).returncode
 
 
+def _nothing_to_commit(out):
+    """git 的「无内容可提交」有两种措辞，漏挡一种就会把正常当失败。"""
+    low = out.lower()
+    return ("nothing to commit" in low
+            or "no changes added to commit" in low
+            or "working tree clean" in low)
+
+
 def push_to_github():
     """把健康数据推回 main。CI 也会推 dist，两边并发时 push 会失败 -> rebase 重试。"""
     if not os.path.exists(GIT):
@@ -70,24 +84,39 @@ def push_to_github():
               "commit", "-m", "chore: 本机探针(国内口径) %s" % stamp]
     push = [GIT, "-c", "http.proxy=" + PROXY, "-c", "https.proxy=" + PROXY,
             "push", "origin", "main"]
+    # ⚠ --autostash 是必需的（2026-10-15 实踩）：
+    #   工作区只要有**未暂存**改动，`git pull --rebase` 就会直接拒绝
+    #   （cannot pull with rebase: You have unstaged changes），
+    #   于是「push 被拒 -> rebase -> 重试」的重试链必然二次失败，
+    #   结果本地健康数据永远传不上去，而且日志里看不出真正原因。
     pull = [GIT, "-c", "http.proxy=" + PROXY, "-c", "https.proxy=" + PROXY,
-            "pull", "--rebase", "origin", "main"]
+            "pull", "--rebase", "--autostash", "origin", "main"]
     for c in (add, commit):
         p = subprocess.run(c, cwd=ROOT, capture_output=True, text=True, timeout=180)
         out = (p.stdout + p.stderr).strip()
         if out:
             print("  " + out.splitlines()[-1][:150])
-        if p.returncode != 0 and "nothing to commit" not in out:
+        # ⚠ git 说「没东西可提交」有两种措辞，少挡一种就会把正常情况当失败：
+        #    nothing to commit, working tree clean          （连改动都没有）
+        #    no changes added to commit (use "git add" ...) （有改动但没 add）
+        # 2026-10-15 实踩：只挡了前一种，计划任务每轮都误报 exit=1。
+        if p.returncode != 0 and not _nothing_to_commit(out):
             print("[local] 步骤失败: %s" % " ".join(c[:3]))
             return p.returncode
     p = subprocess.run(push, cwd=ROOT, capture_output=True, text=True, timeout=180)
     out = (p.stdout + p.stderr).strip()
     if p.returncode != 0:
         # 最常见原因：CI 刚推过，远端领先 -> rebase 后重试一次
-        subprocess.run(pull, cwd=ROOT, capture_output=True, text=True, timeout=180)
+        pr = subprocess.run(pull, cwd=ROOT, capture_output=True, text=True, timeout=180)
+        pout = (pr.stdout + pr.stderr).strip()
+        if pr.returncode != 0:
+            print("  rebase 失败: %s" % (pout.splitlines()[-1][:150] if pout else "?"))
         p = subprocess.run(push, cwd=ROOT, capture_output=True, text=True, timeout=180)
         out = (p.stdout + p.stderr).strip()
     print("  push: %s" % (out.splitlines()[-1][:150] if out else "OK"))
+    if p.returncode != 0:
+        print("[local] ⚠ 推送失败：本地数据仍在 state/，但远端不会更新。"
+              "多半是代理(%s)没开或 PAT 过期。" % PROXY)
     return p.returncode
 
 

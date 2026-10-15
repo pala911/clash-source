@@ -125,14 +125,26 @@ def main():
     #   同一秒内的两次调用会被误判成同一轮而**漏计**（实测踩到：连续 3 轮 0 活
     #   只攒出 bad_streak=1，降级永远不触发）。
     ts = probe.get("probed_at") or ("%s#%d" % (now, time.time_ns()))
-    h["last_probe"] = {"ts": ts, "scope": scope}
+    hc_to = probe.get("hc_timeout_ms")
+    h["last_probe"] = {"ts": ts, "scope": scope, "hc_timeout_ms": hc_to}
 
     changed_enabled = []
     dup_sources = []
+    unsettled = {}
     for name, r in sorted(rows.items()):
         if r.get("incomplete"):
             print("[health] %-24s 跳过本轮（探针未完成：%s/%s 节点已加载）"
                   % (name, r.get("nodes"), r.get("expected")))
+            continue
+        # ⚠ 未 settle（还有节点没跑到探测结果）的源，alive 被**系统性低估** ——
+        #   2026-10-15 实踩：yypool 只测了 5.1% 就退出，alive 报 6（真值 118），
+        #   而 rate 却是 13.0%（真值 13.1%）几乎看不出异常。只看 rate 根本发现不了。
+        #   因为「变好」判据是 alive >= 5，低估会让好源看起来变差 -> good_streak
+        #   被清零 -> 回收永远不触发。这类源只记录、不参与自动判定。
+        if not r.get("settled", True):
+            unsettled[name] = r
+            print("[health] %-24s 跳过本轮（未测完：%s/%s 已测，alive 低估不可用）"
+                  % (name, r.get("tested"), r.get("nodes")))
             continue
         rec = hs.setdefault(name, {"runs": [], "bad_streak": 0, "good_streak": 0, "state": "active"})
         runs = rec.setdefault("runs", [])
@@ -140,10 +152,23 @@ def main():
         if is_dup:
             dup_sources.append(name)
             continue
-        runs.append({"ts": ts, "scope": scope, "nodes": r["nodes"],
-                     "alive": r["alive"], "rate": r["rate"], "best_ms": r["best_ms"]})
+        runs.append({"ts": ts, "scope": scope, "sampled": bool(r.get("is_sampled")),
+                     "hc_timeout_ms": hc_to,
+                     "nodes": r["nodes"], "alive": r["alive"], "rate": r["rate"],
+                     "best_ms": r["best_ms"]})
         rec["runs"] = runs[-KEEP_RUNS:]
+        # ⚠ hc_timeout 直接线性偏置 alive（shaoyouvip 单源实测：
+        #   2s/3s -> 0 活，5s -> 1 活，8s -> 4 活，15s -> 6 活）。
+        #   换了这个参数，前后两轮的 alive 就不可比了 —— 拿旧口径攒的 streak
+        #   去判新口径的升降级是错的。参数一变就清零重新攒。
+        prev_to = next((x.get("hc_timeout_ms") for x in reversed(runs[:-1])
+                        if x.get("hc_timeout_ms") is not None), None)
+        if prev_to is not None and hc_to is not None and prev_to != hc_to:
+            rec["bad_streak"] = rec["good_streak"] = 0
+            print("[health] %-24s ⚠ hc_timeout %s -> %s ms，测量口径已变，"
+                  "连续计数清零重新攒" % (name, prev_to, hc_to))
         alive, rate = r["alive"], r["rate"]
+        sampled = bool(r.get("is_sampled"))
 
         # --- 判定（2026-10-14 修正，这里原有真实 bug）---
         # 两条计数器**各自独占一种口径**，对称且互不干扰：
@@ -159,10 +184,16 @@ def main():
         #     「变好回收」永远达不到 GOOD_STREAK —— 那是死代码。
         #     美国口径也不该参与：实测 ssrsub 美国#2/国内#2 尚可，但 shaoyouvip
         #     美国 81.2%(#4) / 国内 6.2%(#11 垫底)，Spearman rho 仅 0.48，不可信。
+        #
+        # 另加两条护栏（给「国内第三方 CI + 抽样」这条路用的）：
+        #   抽样数据永远不参与降级。n=30、真实通过率 10% 时抽 30 个全死的概率
+        #   = 0.9^30 ≈ 4.2%，一轮 12 源就有 40% 概率至少错判一个。
+        #   scope=cnci 只记录、只交叉验证，不触发任何自动升降级 ——
+        #   云 IDC 到境外的丢包/超时模式与家用宽带不同，不是业务同源口径。
         dead = (alive == 0)
         good = (alive >= GOOD_ALIVE and rate >= GOOD_RATE)
         if dead:
-            if scope == "ci":
+            if scope == "ci" and not sampled:
                 rec["bad_streak"] += 1
             rec["good_streak"] = 0
         else:
@@ -172,8 +203,8 @@ def main():
                 rec["good_streak"] = rec["good_streak"] + 1 if good else 0
 
         if rec["state"] == "active" and rec["bad_streak"] >= DEAD_STREAK:
-            # 二次保险：bad_streak 只可能由 scope==ci 攒出来，这里再挡一次
-            if scope != "ci":
+            # 三重保险：bad_streak 只可能在 scope==ci 且非抽样时累积，这里再挡一次
+            if scope != "ci" or sampled:
                 pass
             elif name in src_by_name:
                 src_by_name[name]["enabled"] = False
@@ -199,8 +230,9 @@ def main():
                 arch_by_name.pop(name, None)
                 rec["state"] = "active"
 
-        print("[health] %-24s scope=%-5s alive=%-4d rate=%-5s 坏%s/好%s 状态=%s"
-              % (name, scope, alive, rate, rec["bad_streak"], rec["good_streak"], rec["state"]))
+        print("[health] %-24s scope=%-5s%s alive=%-4d rate=%-5s 坏%s/好%s 状态=%s"
+              % (name, scope, "[抽样]" if sampled else "     ", alive, rate,
+                 rec["bad_streak"], rec["good_streak"], rec["state"]))
 
     if changed_enabled:
         write_src_cfg(cfg)
@@ -210,6 +242,9 @@ def main():
     if dup_sources:
         print("[health] 其中 %d 个源识别为「同一轮探针」（ts=%s）已跳过重复计数"
               % (len(dup_sources), ts))
+    if unsettled:
+        print("[health] ⚠ %d 个源未测完，本轮不参与自动判定（alive 被低估）：%s"
+              % (len(unsettled), "、".join(sorted(unsettled))))
     if changed_enabled:
         print("[health] 已更新 sources.yaml / archive/sources.yaml: %s" % "，".join(changed_enabled))
     elif not dup_sources:
