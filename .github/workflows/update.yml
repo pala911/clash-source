@@ -19,7 +19,9 @@ jobs:
     runs-on: ubuntu-latest
     # 抓取 12 个源本身就要 5-15 分钟（上游抖动），AI 阶段有墙钟预算兜底
     # （src/run.py 的 AI_TIME_BUDGET，默认 600s），所以给到 60 分钟绰绰有余
-    timeout-minutes: 60
+    # 90 分钟：流水线 ~4 分钟 + 全量探针最多 2400s(40 分钟) + 提交/发布/缓存，
+    # 留足冗余。原来 60 分钟会在探针最坏情况下被砍掉，后面的提交步骤全被跳过。
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
 
@@ -103,7 +105,18 @@ jobs:
           git checkout main
           # 显式 --scope ci：runner 在美国，只能判「是否彻底死了」，不能横向比质量
           # （实测美国口径虚高 1.8~13 倍，Spearman rho 仅 0.48；shaoyouvip 美国#4/国内#11）
-          python src/probe.py --mihomo "$PWD/.tools/mihomo" --budget 1500 --scope ci
+          #
+          # ⚠ 这里**故意用全量、不抽样**：降级判据是 alive==0，只有全量测完这个信号才可信。
+          #   抽样 n 个后全死的误判概率是 (1-r)^n，而且节点失效是**相关**的
+          #   （上游换一批 IP 会成片死），独立性假设不成立，实际比公式更危险。
+          #   本仓是 public，Actions 分钟数免费，多花点时间换判死的可靠性是划算的。
+          #
+          # ⚠ 别用 --hc-timeout 省钱：它直接线性偏置 alive（shaoyouvip 实测
+          #   3s->0 活、8s->4 活、15s->6 活）。CI 的活儿就是判死，**假阴性正是致命伤**。
+          #
+          # 预算要够大：全量 ~3800 节点实测 >25 分钟仍未全部收敛（最大的 autojiedian
+          # 有时整轮都加载不完，会被标 incomplete 自动跳过 —— 这是安全的保守失败）。
+          python src/probe.py --mihomo "$PWD/.tools/mihomo" --budget 2400 --scope ci
 
       - name: 源健康档案（降级只认 CI 口径；回收只认本机口径）
         run: python src/health.py
