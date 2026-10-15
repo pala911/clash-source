@@ -36,7 +36,7 @@ Gitee Go 与阿里云效（Codeup）**共用同一份内容**（见主仓
 ## 流水线里跑
 
 ```bash
-git fetch origin && git reset --hard origin/master && python3 ci_probe_run.py
+bash tools/sync_and_probe.sh
 ```
 
 `git reset --hard` 不是可选的：云端构建会复用带缓存的 workspace，

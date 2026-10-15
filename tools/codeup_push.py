@@ -45,7 +45,7 @@ Gitee 与 Codeup **共用同一份内容**（主仓 `tools/probe_payload.py` 是
 ## 流水线里跑
 
 ```bash
-git fetch origin && git reset --hard origin/master && python3 ci_probe_run.py
+bash tools/sync_and_probe.sh
 ```
 
 `git reset --hard` 不是可选的：云效会复用带缓存的 workspace
@@ -169,7 +169,7 @@ def main():
     rc, out = run([GIT] + PROXY + AUTH + ["ls-remote", "--heads", auth_url])
     print("[5 远端分支] %s" % (out.replace("\n", " ") or "(无)"))
     print("\n✓ Codeup 推送完成。云效流水线脚本步骤里跑：")
-    print("    git fetch origin && git reset --hard origin/master && python3 ci_probe_run.py")
+    print("    bash tools/sync_and_probe.sh")
     shutil.rmtree(work, ignore_errors=True)
     shutil.rmtree(stage, ignore_errors=True)
     return 0

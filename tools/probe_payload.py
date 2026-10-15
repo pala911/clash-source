@@ -25,7 +25,8 @@ import shutil
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 
-SCRIPTS = ["ci_check_paste.py", "ci_preflight.py", "ci_probe_run.py"]
+SCRIPTS = ["ci_check_paste.py", "ci_preflight.py", "ci_probe_run.py",
+           "sync_and_probe.sh"]
 SRC_MODULES = ["probe.py", "health.py"]
 
 
