@@ -69,11 +69,15 @@ python tools\restore_codeup.py --apply --from-gitee
 | 构建集群 | **云效杭州构建集群**（集群系数 1；香港是 2、VPC 需自备资源） |
 | 指定构建节点 | Linux/amd64 |
 
-执行命令粘这一行（见 `tools/ci_probe_command.sh`）：
+执行命令粘这一行（以 `tools/ci_probe_command.sh` 为准）：
 
 ```bash
-bash tools/sync_and_probe.sh
+ok=0; for i in $(seq 1 8); do git fetch origin && git reset --hard origin/master && { ok=1; break; }; sleep 20; done; [ "$ok" = "1" ] && bash tools/sync_and_probe.sh || { echo "同步失败：云效 git 端点抖动，本轮放弃"; exit 1; }
 ```
+
+> ⚠ **别只写 `bash tools/sync_and_probe.sh`。** 云效复用带缓存的 workspace，而那个脚本本身要靠同步才能拿到 ——
+> workspace 太旧时它会直接 `No such file or directory`，等于**自举失败**。
+> 所以同步循环必须写进**命令本身**。
 
 ### 5. 定时触发
 

@@ -180,7 +180,7 @@ def push_result():
     if p.returncode != 0:
         # 并发保护：定时跑和手动跑可能撞车，两者都往 master 推会 non-fast-forward。
         # 先 rebase 再推一次；还失败就如实报出来（不硬推，绝不 --force）。
-        g("pull", "--rebase", "origin", "master")
+        g("pull", "--rebase", "--autostash", "origin", "master")
         p = g("push", "origin", "HEAD:master")
     if p.returncode == 0:
         print("[cnci] 结果已推回 Codeup: results/probe_cnci_%s.json" % stamp)

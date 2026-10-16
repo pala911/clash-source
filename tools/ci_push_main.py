@@ -208,7 +208,7 @@ def commit_status():
         return
     rc, out = g("push", "origin", "HEAD:master")
     if rc != 0:
-        g("pull", "--rebase", "origin", "master")
+        g("pull", "--rebase", "--autostash", "origin", "master")
         rc, out = g("push", "origin", "HEAD:master")
     if rc == 0:
         say("留痕已提交到 Codeup（本机用 python tools/cnci_status.py 读）")
