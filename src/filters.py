@@ -161,9 +161,47 @@ def hard_filter(node, exclude_filter, drop_types=()):
         node.pop("client-fingerprint", None)
 
     out = {"name": name, "type": ptype, "server": str(server).strip(), "port": port}
+    # ⚠ 字段**类型**也必须校验，白名单只管「字段名在不在」，管不了「类型对不对」。
+    #   实测 2026-10-16：autojiedian 第 454 个节点是 `type: hysteria2, sni: false`
+    #   （布尔塞进 string 字段），mihomo 报
+    #       'sni' expected type 'string', got unconvertible type 'bool'
+    #   —— **一个畸形节点让整源 892 个节点全部加载失败**。后果远不止少一个节点：
+    #   该源从此测不出来（health 标 incomplete 不参与判定）、永远进不了 AUTO，
+    #   等于凭空丢掉一个源。这是坑 §33「一个畸形节点=整源加载失败」的根治。
+    #
+    # 判定规则来自逐类型实测（tools/probe_field_types.py，不能靠猜）：
+    #     string 字段里放 bool   -> 拒绝   ← 真凶
+    #     bool   字段里放 str    -> 拒绝
+    #     list   字段里放 str    -> 拒绝（alpn 必须是 slice）
+    #     string 字段里放 null/数字 -> **接受**（Go yaml 会强转，别乱丢）
+    #     bool   字段里放数字    -> 接受
+    # 所以只丢这三种，不做「不是字符串就丢」——那会白白丢掉 226 个
+    # password=null 的节点，而这些节点实测完全正常。
+    STR_FIELDS = {"sni", "servername", "host", "cipher", "password", "username",
+                  "uuid", "network", "ws-path", "path", "flow", "plugin",
+                  "obfs", "client-fingerprint", "sni-h2", "dialer-proxy",
+                  "interface-name", "congestion-controller", "encryption",
+                  "public-key", "packet-addr"}
+    BOOL_FIELDS = {"skip-cert-verify", "udp", "tls", "xudp", "allowInsecure"}
+    LIST_FIELDS = {"alpn", "ports", "passwords"}
+    dropped_fields = []
     for k, v in node.items():
-        if k in extra:
-            out[k] = v
+        if k not in extra:
+            continue
+        bad = False
+        if k in STR_FIELDS and isinstance(v, (bool, list, dict)):
+            bad = True          # null / 数字保留：实测内核接受
+        elif k in BOOL_FIELDS and isinstance(v, (str, list, dict)):
+            bad = True          # 数字保留：实测内核接受
+        elif k in LIST_FIELDS and isinstance(v, (str, bool, int, dict)):
+            bad = True
+        if bad:
+            dropped_fields.append("%s=%r" % (k, v))
+            continue
+        out[k] = v
+    if dropped_fields:
+        _bump("malformed_field_dropped")
+        soft_hits("字段类型非法已丢弃: %s" % (", ".join(dropped_fields),))
     node.clear()
     node.update(out)
     return True, ""
