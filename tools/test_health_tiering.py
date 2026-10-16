@@ -44,15 +44,20 @@ def backup():
     for p in (PROBE_PATH, SRC_YAML, os.path.join(ROOT, "state", "source_health.json")):
         if os.path.exists(p):
             shutil.copy2(p, os.path.join(BK, os.path.basename(p)))
+    # ⚠ probe_cnci_latest.json 也必须一起备份。
+    #   原来 restore() 里有个 `os.remove(CNCI_PATH)`，本意是清掉测试造的假数据，
+    #   但它在**真实文件存在时也照删** —— 于是跑一次测试就把线上真数据删掉了。
+    #   这类「清理测试残留」的动作如果不先判断文件是不是自己造的，就会毁真数据。
+    shutil.copy2(CNCI_PATH, os.path.join(BK, "probe_cnci_latest.json")) \
+        if os.path.exists(CNCI_PATH) else None
 
 
 def restore():
     for fn in os.listdir(BK):
         dst = {"probe_latest.json": PROBE_PATH, "sources.yaml": SRC_YAML,
-               "source_health.json": os.path.join(ROOT, "state", "source_health.json")}[fn]
+               "source_health.json": os.path.join(ROOT, "state", "source_health.json"),
+               "probe_cnci_latest.json": CNCI_PATH}[fn]
         shutil.copy2(os.path.join(BK, fn), dst)
-    if os.path.exists(CNCI_PATH):
-        os.remove(CNCI_PATH)
     shutil.rmtree(BK, ignore_errors=True)
 
 
