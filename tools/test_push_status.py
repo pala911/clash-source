@@ -23,6 +23,7 @@ import json
 import os
 import shutil
 import sys
+import time
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "tools"))
@@ -115,13 +116,52 @@ def main():
           "也没有在 main 仓的 results/ 里塞文件")
     print()
 
+    # ---------- E 快速失败：git 通道必须有墙钟预算 ----------
+    print("E git 后备通道快速失败（预算用完立刻认输，不把整轮拖垮）")
+    setup(with_probe=True)
+    # ⚠ REPO / API_TRIES / GIT_DEADLINE 这些是模块级常量（import 时读环境变量），
+    #   所以测试里得直接打补丁 —— 改 os.environ 没用。
+    saved = {k: getattr(C, k) for k in
+             ("REPO", "API_TRIES", "API_GAP", "GIT_DEADLINE", "GIT_TRIES", "GIT_GAP")}
+    saved_env = {k: os.environ.get(k) for k in ("GH_PAT", "GIT_BIN")}
+    try:
+        C.REPO = "pala911/__nonexistent_repo_for_test__"   # 让 API 通道必然失败
+        C.API_TRIES, C.API_GAP = 1, 0
+        C.GIT_DEADLINE, C.GIT_TRIES, C.GIT_GAP = 0, 1, 0   # 预算 0：一进 git 通道就认输
+        os.environ["GH_PAT"] = "dummy-token-not-used"
+        os.environ["GIT_BIN"] = os.environ.get(
+            "GIT_BIN", r"D:\work\agent\codebuddy\portable-git\bin\cmd\git.exe")
+        t0 = time.time()
+        st = {}
+        rc = C.main(st)
+        dt = time.time() - t0
+        check(rc == 0, "退出码仍为 0（这条链路永不失败）", "rc=%d" % rc)
+        check(st.get("status") == "fail-git-timeout",
+              "status=fail-git-timeout（预算闸门真的挡住了）", str(st.get("status")))
+        check(dt < 60, "耗时没被重试拖长", "%.1f 秒" % dt)
+        C.record_status(st)
+        doc = read_status()
+        check(doc.get("status") == "fail-git-timeout", "留痕记下了「是被预算挡下的」")
+        check(bool(doc.get("api_why")),
+              "同时也留住了 API 那次失败的原因（不然回退后会被覆盖）",
+              str(doc.get("api_why"))[:70])
+    finally:
+        for k, v in saved.items():
+            setattr(C, k, v)
+        for k, v in saved_env.items():
+            if v is None:
+                os.environ.pop(k, None)
+            else:
+                os.environ[k] = v
+    print()
+
     C.HERE = real_here
     shutil.rmtree(WORK, ignore_errors=True)
     print("=" * 66)
     if FAILS:
         print("结果：失败 %d 项 —— %s" % (len(FAILS), "；".join(FAILS)))
         return 1
-    print("结果：全部通过（留痕必落 / 字段够用 / 本机不往主仓塞文件）")
+    print("结果：全部通过（留痕必落 / 字段够用 / 本机不往主仓塞文件 / git 通道快速失败）")
     return 0
 
 

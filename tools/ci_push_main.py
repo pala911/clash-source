@@ -239,6 +239,14 @@ API = "https://api.github.com/repos/%s/contents/%s"
 API_TRIES = int(os.environ.get("API_TRIES", "5"))
 API_GAP = int(os.environ.get("API_GAP", "5"))
 
+# git 后备通道的总预算（秒）—— 「快速失败」。
+#   为什么必须有：实测 API 挂掉后回退 git，这一段把一轮从 90 秒拖到 578 秒
+#   （核分 3 -> 19，6 倍），结果还是失败。云效 -> github.com 的 git 通道
+#   基本不通（Empty reply from server），在这里死磕纯属白烧时间与额度。
+GIT_DEADLINE = int(os.environ.get("PUSH_GIT_DEADLINE", "150"))
+GIT_TRIES = int(os.environ.get("PUSH_GIT_TRIES", "2"))
+GIT_GAP = int(os.environ.get("PUSH_GIT_GAP", "5"))
+
 
 def api_call(url, pat, method="GET", body=None, timeout=60):
     """调一次 GitHub API。重试是必须的：
@@ -428,17 +436,34 @@ def main(st=None):
     work = os.path.join(base, "pushmain_%d_%d" % (os.getpid(), len(os.listdir(base))))
     shutil.rmtree(work, ignore_errors=True)
 
+    # ---- 墙钟预算：git 后备通道**快速失败** ----
+    t_git = time.time()
+
+    def git_left():
+        return GIT_DEADLINE - (time.time() - t_git)
+
+    def git_bail(why):
+        warn("git 后备通道在 %d 秒预算内没搞定，放弃：%s" % (GIT_DEADLINE, why))
+        warn("  这不阻塞探针：结果仍在 Codeup 的 results/ 里，")
+        warn("  需本机中转搬到主仓（见 CI_RECOVERY.md）。")
+        st.update(status="fail-git-timeout", ok=False, channel="git",
+                  detail="git 通道 %d 秒预算内失败：%s" % (GIT_DEADLINE, why[:160]))
+        return 0
+
     # 先探连通性，别一上来就 clone 几百秒才发现连不上
-    for i in range(TRIES):
-        rc, out = run([git] + auth + ["ls-remote", url], timeout=90)
+    for i in range(GIT_TRIES):
+        if git_left() <= 0:
+            return git_bail("ls-remote 阶段就超预算")
+        rc, out = run([git] + auth + ["ls-remote", url],
+                      timeout=int(max(15, min(45, git_left()))))
         if rc == 0:
-            say("git ls-remote 第 %d 次成功" % (i + 1))
+            say("git ls-remote 第 %d 次成功（剩 %ds 预算）" % (i + 1, int(git_left())))
             break
         warn("git ls-remote 第 %d 次失败：%s" % (i + 1, out.strip()[:160]))
-        if i + 1 < TRIES:
-            time.sleep(GAP)
+        if i + 1 < GIT_TRIES:
+            time.sleep(GIT_GAP)
     else:
-        warn("git 通道 %d 次都连不上 %s。" % (TRIES, REPO))
+        warn("git 通道 %d 次都连不上 %s。" % (GIT_TRIES, REPO))
         warn("  结论：国内 -> GitHub 的两条通道（API / git）都断了。")
         warn("  这不阻塞探针：结果仍在 Codeup 的 results/ 里，")
         warn("  改用「本机中转」把数据搬到主仓即可（见 CI_RECOVERY.md）。")
@@ -446,8 +471,11 @@ def main(st=None):
                   detail="API 与 git 两条通道都不通 github.com")
         return 0
 
+    if git_left() <= 0:
+        return git_bail("ls-remote 成功但预算已耗尽")
     rc, out = run([git] + auth + ["clone", "--depth", "1", "--branch", BRANCH,
-                                  url, work], timeout=600)
+                                  url, work],
+                  timeout=int(max(20, min(180, git_left()))))
     if rc != 0:
         warn("git clone 失败：%s" % out.strip()[:200])
         st.update(status="fail-git-clone", ok=False,
@@ -490,9 +518,13 @@ def main(st=None):
             st.update(status="fail-git-commit", ok=False, detail=out.strip()[:200])
             return 0
 
-        for i in range(TRIES):
+        for i in range(GIT_TRIES):
+            if git_left() <= 0:
+                return git_bail("push 阶段超预算")
             rc, out = run([git] + auth + ["push", "origin",
-                                          "HEAD:%s" % BRANCH], cwd=work, timeout=300)
+                                          "HEAD:%s" % BRANCH],
+                          cwd=work,
+                          timeout=int(max(20, min(120, git_left()))))
             if rc == 0:
                 say("git 通道已推回主仓 %s:%s" % (REPO, BRANCH))
                 st.update(status="ok-git", ok=True, channel="git", detail="push ok",
@@ -500,8 +532,8 @@ def main(st=None):
                                  {"path": arch_rel, "ok": True, "why": "git"}])
                 return 0
             warn("git push 第 %d 次失败：%s" % (i + 1, out.strip()[:160]))
-            if i + 1 < TRIES:
-                time.sleep(GAP)
+            if i + 1 < GIT_TRIES:
+                time.sleep(GIT_GAP)
         warn("git 通道推送失败，不影响本轮探针结果（已存在 Codeup 的 results/ 里）")
         st.update(status="fail-git-push", ok=False, channel="git",
                   detail=out.strip()[:200])
