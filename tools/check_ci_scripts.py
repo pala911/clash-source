@@ -15,7 +15,12 @@
     tools/ci_*.py    自带脚本
     src/probe.py     真探针主程序
     src/health.py    健康档案（虽然 cnci 口径不触发变更，但它随仓库一起推）
+    src/node_stability.py   节点级稳定性档案
     tools/yaml_vendor/yaml/*.py    vendor 的第三方 PyYAML
+
+⚠ 被 import 的模块同样要扫：probe.py 会 import node_stability，
+  所以它在云效集群上也会被执行。只扫「直接跑」的入口会漏掉这类依赖
+  （这和第一版漏掉 probe.py 是同一类错误）。
 """
 import ast
 import glob
@@ -30,7 +35,7 @@ PY36_TARGET = (3, 6)
 
 def targets():
     out = sorted(glob.glob(os.path.join(HERE, "ci_*.py")))
-    for n in ("probe.py", "health.py"):
+    for n in ("probe.py", "health.py", "node_stability.py"):
         p = os.path.join(ROOT, "src", n)
         if os.path.exists(p):
             out.append(p)

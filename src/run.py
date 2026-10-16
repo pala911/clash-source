@@ -260,10 +260,16 @@ def main():
         log("完成（调试）：%d 源 / 产出 %d 节点 / AI=%s" % (len(per_source), len(all_nodes), mode))
         return 0
 
-    profile, _, ranking = build.build_profile(enabled, excl_map, owner, repo)
+    stable_nodes, flaky_nodes, stab_note = build.split_by_stability(per_source)
+    log("稳定性加权：%s" % stab_note)
+
+    profile, _, ranking = build.build_profile(enabled, excl_map, owner, repo,
+                                              flaky_sources=sorted(flaky_nodes))
     log("质量分桶（国内口径）：AUTO=%s" % ("、".join(ranking["auto"]) or "无"))
     log("  备用=%s" % ("、".join(ranking["备用"]) or "无"))
     log("  观察=%s" % ("、".join(ranking["观察"]) or "无"))
+    log("  不稳定（不进自动竞速，仅备用组可选）=%s"
+        % ("、".join(ranking["不稳定"]) or "无"))
     if args.pages_base:
         for n, p in profile["proxy-providers"].items():
             p["url"] = p["url"].replace(build.pages_base(owner, repo), base)
@@ -296,7 +302,8 @@ def main():
     }
 
     dist = os.path.join(ROOT, "dist")
-    build.write_dist(dist, per_source, all_nodes, profile, manifest, base)
+    build.write_dist(dist, stable_nodes, all_nodes, profile, manifest, base,
+                     flaky_nodes=flaky_nodes)
     u = manifest["ai_usage"]
     log("AI 用量：送审 %d 条 / %d 次调用 / prompt %d + completion %d = %d token（超时记账 %d 次）"
         % (manifest["totals"]["ai_reviewed"], u.get("calls", 0), u.get("prompt", 0),

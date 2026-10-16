@@ -43,6 +43,56 @@ def pages_base(owner, repo):
 
 HEALTH = os.path.join(ROOT, "state", "source_health.json")
 
+# ---- 稳定性加权（src/node_stability.py 的档案）----
+# 三个开关都必须存在，否则历史不足的那几天会把整池节点判成不稳、清空 AUTO。
+STABILITY_MIN_KNOWN = 100     # 至少这么多节点攒够 MIN_ROUNDS 轮，才敢开始加权
+STABILITY_MIN_PER_SRC = 20    # 单个源至少保留这么多节点
+STABILITY_MIN_RATIO = 0.2     # 单个源最多砍掉的比例（保留比例下限）
+
+
+def split_by_stability(per_source):
+    """按历史可用率把每个源的节点拆成 stable / flaky。
+
+    返回 (stable, flaky, 说明)。flaky 只包含**真的有节点被移出**的源，
+    没有被移出的源不生成额外 provider —— 否则 12 个源变 24 个 provider，
+    profile 体积和 url-test 开销都白翻一倍。
+
+    ⚠ 三重保险，缺一不可（每一条都对应一种「把池子砍空」的失败方式）：
+      1. 历史整体不够（节点满 MIN_ROUNDS 轮的不足 STABILITY_MIN_KNOWN 个）
+         -> **完全不加权**，全部当稳定。宁可暂时不加权，也不要砍空。
+      2. 没有历史的节点一律**保留**。新节点/换配置的节点不该因为「未知」被淘汰。
+      3. 单源保留数不足地板（绝对值或比例）-> 该源整体不砍。
+    """
+    import node_stability as ns
+    data = ns.load()
+    nodes = data.get("nodes") or {}
+    known = [v for v in nodes.values() if v.get("n", 0) >= ns.MIN_ROUNDS]
+    if len(known) < STABILITY_MIN_KNOWN:
+        return per_source, {}, "历史不足（%d/%d 个节点攒够 %d 轮），本轮不稳定性加权" % (
+            len(known), STABILITY_MIN_KNOWN, ns.MIN_ROUNDS)
+    stable, flaky = {}, {}
+    kept = dropped = 0
+    for name, plist in per_source.items():
+        keep, drop = [], []
+        for p in plist:
+            rec = nodes.get(ns.fingerprint(p))
+            if rec is None:
+                keep.append(p)          # 无历史 -> 一律保留，新节点不该被「未知」淘汰
+                continue
+            ok, _ = ns.verdict(rec)
+            (keep if ok else drop).append(p)
+        if drop:
+            floor = max(STABILITY_MIN_PER_SRC, len(plist) * STABILITY_MIN_RATIO)
+            if len(keep) < floor:
+                keep, drop = plist, []
+        stable[name] = keep
+        if drop:
+            flaky[name] = drop
+        kept += len(keep)
+        dropped += len(drop)
+    return stable, flaky, "稳定性加权：保留 %d / 移出 %d 个节点（%d 个源有节点被移出）" % (
+        kept, dropped, len(flaky))
+
 # 质量门槛（与 health.py 的 GOOD_RATE 保持一致）。低于它就不进 AUTO 竞速。
 GOOD_RATE = 8.0
 # AUTO 最多放几个源。url-test 会在这些源的全部节点上竞速，源太多会让
@@ -112,7 +162,7 @@ def _probe_group(name, gtype, members, interval):
             "interval": interval, "timeout": 5000}
 
 
-def build_groups(enabled_names, ranked):
+def build_groups(enabled_names, ranked, flaky_names=()):
     """按质量分桶生成代理组，取代模板里手写的硬编码列表。
 
     ## 为什么要动态生成
@@ -144,6 +194,18 @@ def build_groups(enabled_names, ranked):
     # 需要时在手机上手动切。这样差源只占「可选」不占「自动」。
     spare_members = (["SRC-%s" % n for n in spare + dropped] if (spare or dropped)
                      else ["SRC-%s" % n for n in enabled_names])
+    # 备用组额外挂上「被稳定性加权移出」的 provider —— 它们仍然可用，
+    # 只是不参与 AUTO 的自动竞速。这比直接删掉好：万一路由变了还能手工切回来。
+    # ⚠ 这里必须引用**组名**「不稳定」，不能引用 provider 名 SRCFL-*。
+    #   proxies: 列表里只接受「已定义的组名」或「具体节点名」，
+    #   provider 只能通过 use: 引用。写成 SRCFL-* 时内核报
+    #   `proxy group[14]: 备用: 'SRCFL-xxx' not found` —— 而断言是绿的，
+    #   因为「SRCFL-xxx 在 providers 里」恰好为真，语义却是错的。
+    if flaky_names:
+        groups.append({"name": "不稳定", "type": "url-test",
+                       "use": list(flaky_names), "url": YOUTUBE,
+                       "expected-status": 204, "interval": 300, "timeout": 5000})
+        spare_members = spare_members + ["不稳定"]
     groups.append({"name": "备用", "type": "select", "proxies": spare_members})
     groups.append({"name": "观察", "type": "select",
                    "proxies": ["SRC-%s" % n for n in watch] or spare_members})
@@ -181,7 +243,7 @@ def provider_block(name, url, exclude_filter):
     }
 
 
-def build_profile(enabled_sources, exclude_map, owner, repo):
+def build_profile(enabled_sources, exclude_map, owner, repo, flaky_sources=()):
     with open(TEMPLATE, encoding="utf-8") as f:
         tpl = yaml.safe_load(f)
 
@@ -191,10 +253,17 @@ def build_profile(enabled_sources, exclude_map, owner, repo):
         providers[s["name"]] = provider_block(
             s["name"], base + "/nodes/%s.yaml" % s["name"],
             exclude_map.get(s["name"], ""))
+    # 被稳定性加权移出的节点单独成为一个 provider，只挂到「备用」组。
+    # 命名 SRCFL-<源名>，与源名区分开，避免和 SRC-* 的引用混淆。
+    for n in flaky_sources or ():
+        providers["SRCFL-" + n] = provider_block(
+            "SRCFL-" + n, base + "/nodes/%s--flaky.yaml" % n,
+            exclude_map.get(n, ""))
 
     names = [s["name"] for s in enabled_sources]
     ranked = rank_sources(names)
-    groups, picked, spare, watch = build_groups(names, ranked)
+    flaky_names = ["SRCFL-" + n for n in (flaky_sources or ())]
+    groups, picked, spare, watch = build_groups(names, ranked, flaky_names)
     # 模板里的 proxy-groups 整块丢弃：SRC-*/AUTO/FAILOVER/PROXY 全部改由
     # build_groups 按实测质量动态生成。规则/ dns / 其他键仍保留模板的。
     tpl["proxy-groups"] = groups
@@ -209,8 +278,15 @@ def build_profile(enabled_sources, exclude_map, owner, repo):
         if g["name"].startswith("SRC-"):
             assert g["use"], "%s 没有 use 字段" % g["name"]
     for n in providers:
+        # 不稳定 provider（SRCFL-*）挂在「不稳定」组里，不是 SRC-* 组
+        if n.startswith("SRCFL-"):
+            continue
         assert any(g["name"] == "SRC-%s" % n for g in tpl["proxy-groups"]), \
             "provider %s 没有对应的 SRC- 组" % n
+    for n in providers:
+        if n.startswith("SRCFL-"):
+            assert any(n in (g.get("use") or []) for g in tpl["proxy-groups"]), \
+                "不稳定 provider %s 没有被任何组引用" % n
 
     auto = [g for g in tpl["proxy-groups"] if g.get("url")]
     for g in auto:
@@ -225,7 +301,12 @@ def build_profile(enabled_sources, exclude_map, owner, repo):
     gp = {g["name"] for g in tpl["proxy-groups"]}
     for g in tpl["proxy-groups"]:
         for p in (g.get("proxies") or []):
-            assert p in gp or p in providers, "组 %s 引用了不存在的 %s" % (g["name"], p)
+            # ⚠ 必须断言「p 是一个已定义的**组名**」。
+            #   之前写成 `p in gp or p in providers` 是错的：provider 名也满足它，
+            #   于是「备用: SRCFL-xxx」这种内核根本不接受的形式被放过去了。
+            assert p in gp, ("组 %s 引用了 %s，它不是一个已定义的组。"
+                             "注意 proxies: 里只能放组名，provider 要用 use:"
+                             % (g["name"], p))
     # **规则的目标也必须存在** —— 这是漏掉 Claude/Gemini 那次真正该有的断言。
     # 组内部自洽（proxy 指向存在的组）并不够：rules 可以指向任何名字，
     # 指向一个不存在的组时内核直接拒绝加载配置，而订阅脚本一进去就报错。
@@ -247,6 +328,7 @@ def build_profile(enabled_sources, exclude_map, owner, repo):
     # ⚠ 分桶结果**不要**塞进 tpl：它会被写进 profile.yaml，给用户看一堆
     #   下划线开头的内部字段。单独作为第三个返回值交给 run.py 记进 manifest。
     ranking = {"auto": picked, "备用": spare, "观察": watch,
+               "不稳定": ["SRCFL-" + n for n in (flaky_sources or ())],
                "detail": {k: {"rate": v[0], "why": v[2]} for k, v in ranked.items()}}
     return tpl, base, ranking
 
@@ -273,17 +355,25 @@ def write_nodes(dist_dir, per_source_nodes, all_nodes, base=""):
                   os.path.join(nodes_dir, "all.yaml"))
 
 
-def write_dist(dist_dir, per_source_nodes, all_nodes, profile, manifest, base):
+def write_dist(dist_dir, per_source_nodes, all_nodes, profile, manifest, base,
+               flaky_nodes=None):
     nodes_dir = os.path.join(dist_dir, "nodes")
     os.makedirs(nodes_dir, exist_ok=True)
     owner = manifest.get("owner") or "YOUR_GITHUB_ID"
     repo = manifest.get("repo") or "clash-source"
     for name, nodes in per_source_nodes.items():
         dump_yaml({"proxies": nodes},
-                  "# clash-source 自动生成 —— 源 %s，共 %d 节点\n"
+                  "# clash-source 自动生成 —— 源 %s，共 %d 节点"
+                  "（稳定性加权后留在竞速池内的部分）\n"
                   "# 不要手改；改动会在下次定时任务被覆盖（上游 %s/nodes/%s.yaml）"
                   % (name, len(nodes), base, name),
                   os.path.join(nodes_dir, "%s.yaml" % name))
+    for name, nodes in (flaky_nodes or {}).items():
+        dump_yaml({"proxies": nodes},
+                  "# clash-source 自动生成 —— 源 %s，被稳定性加权移出的 %d 个节点\n"
+                  "# 历史可用率偏低，不参与 AUTO 自动竞速；需要时可从「备用」组手工切。"
+                  % (name, len(nodes)),
+                  os.path.join(nodes_dir, "%s--flaky.yaml" % name))
     dump_yaml({"proxies": all_nodes},
               "# clash-source 自动生成 —— 全源合并，共 %d 节点（名字带源前缀）\n"
               "# 供多源合并场景使用；profile.yaml 默认按源分文件挂载" % len(all_nodes),

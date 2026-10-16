@@ -176,8 +176,31 @@ def write_sampled(src, dst, n):
     return len(nodes), len(picked)
 
 
+def node_fingerprints(node_files):
+    """建 {源名: {节点名: 指纹}} 映射。
+
+    ⚠ 节点名每天都在变（国家标签会改、序号会重排，实测见过 `BY_28` 这类命名），
+      用名字做键会让历史每天错位、可用率被清零重来。
+      指纹取整份配置去掉 name 的哈希 —— 配置没变就是同一个节点。
+    """
+    import node_stability as ns
+    out = {}
+    for name, path in node_files:
+        try:
+            data = yaml.safe_load(open(path, encoding="utf-8")) or {}
+        except Exception:
+            continue
+        m = {}
+        for p in (data.get("proxies") or []):
+            nm = p.get("name")
+            if nm:
+                m[nm] = ns.fingerprint(p)
+        out[name] = m
+    return out
+
+
 def probe(node_files, mihomo, workdir, budget=1500, log=print, hc_timeout=8000,
-           poll=10, settle_polls=4):
+           poll=10, settle_polls=4, node_fp=None, node_out=None):
     """跑一轮真探针。返回 {name: {nodes, tested, alive, rate, best_ms, plain_alive}}
 
     ⚠ 退出条件（2026-10-15 修掉的严重静默 bug）：原来只等「provider 把节点加载完」，
@@ -191,6 +214,8 @@ def probe(node_files, mihomo, workdir, budget=1500, log=print, hc_timeout=8000,
       才算结束；并给每个源标 settled（tested>=nodes），未 settle 的不参与自动判定。
     """
     import yaml
+    # 用调用方传入的 dict 承接，避免改返回值签名（本函数已有别的调用方）
+    node_rows = node_out if node_out is not None else {}
     cpath, _ = build_config(node_files, workdir, health_check_timeout=hc_timeout)
     r = subprocess.run([mihomo, "-t", "-f", cpath, "-d", workdir],
                        stdout=subprocess.PIPE, stderr=subprocess.PIPE,
@@ -242,6 +267,12 @@ def probe(node_files, mihomo, workdir, budget=1500, log=print, hc_timeout=8000,
                         best = d if best is None else min(best, d)
                         if str(tm.get(x.get("name"), "")).lower() in ("http", "socks5", "socks"):
                             plain_alive += 1
+                    # 逐节点留档（原来只汇总到源级就丢掉，稳定性维度因此是空的）
+                    if node_fp is not None:
+                        fp = (node_fp.get(pn) or {}).get(x.get("name"))
+                        if fp:
+                            node_rows[fp] = {"s": pn, "alive": bool(d and d > 0),
+                                             "ms": d if d and d > 0 else 0}
                 rows[pn] = {"nodes": len(px), "tested": tested, "alive": alive,
                             "rate": round(alive / tested * 100, 2) if tested else 0.0,
                             "best_ms": best, "plain_alive": plain_alive,
@@ -345,10 +376,22 @@ def main():
                 new_files.append((name, src))
         files = new_files
 
+    # 节点级稳定性：只在本机全量轮次记录（详见 src/node_stability.py 顶部说明）。
+    # 抽样轮次没被抽到的节点会被当成「这轮不可用」，混进去会污染可用率。
+    node_out = {}
+    node_fp = node_fingerprints(files) if args.scope == "local" else None
     rows = probe(files, mihomo, workdir, budget=args.budget, hc_timeout=args.hc_timeout,
-                 poll=args.poll, settle_polls=args.settle_polls)
+                 poll=args.poll, settle_polls=args.settle_polls,
+                 node_fp=node_fp, node_out=node_out)
     if not rows:
         return 1
+    if node_fp:
+        try:
+            import node_stability as ns
+            n, why = ns.merge(node_out, scope=args.scope)
+            print("[probe] 节点稳定性档案：%s" % why)
+        except Exception as e:
+            print("[probe] ⚠ 稳定性档案写入失败（不影响本轮结果）：%r" % e)
     for n in sampled_names:
         if n in rows:
             rows[n]["is_sampled"] = True
