@@ -31,6 +31,7 @@
 """
 import json
 import os
+import sys
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -98,6 +99,71 @@ def load_cnci():
     return d if d.get("scope") == "cnci" else {}
 
 
+def _num(v, lo=None, hi=None):
+    """把探针字段安全转成 float，不合格返回 None。
+
+    ⚠ 为什么需要：实测把某个源的 rate 改成字符串后，
+      `recent_mean` 里直接 `sum(vals)/len(vals)` 抛
+      `TypeError: '>=' not supported between 'str' and 'float'`，
+      **整个 health.py 带 traceback 崩掉** —— 一个源的字段类型漂移
+      （上游 JSON 改版、人工改文件都可能）就干掉了整轮健康判定。
+
+      更糟的是它崩在 `save_health()` **之前还是之后**取决于代码顺序，
+      也就是说「崩了」和「历史丢了」是同一个 bug 的两种结局。
+
+      探针是本系统里唯一不可信的数据源（它直接吃免费源订阅的内容），
+      所以在**入口**做类型与范围校验，而不是等到用它算数时才炸。
+    """
+    if v is None or isinstance(v, bool):
+        return None
+    try:
+        f = float(v)
+    except (TypeError, ValueError):
+        return None
+    if f != f or f in (float("inf"), float("-inf")):   # NaN / inf
+        return None
+    if lo is not None and f < lo:
+        return None
+    if hi is not None and f > hi:
+        return None
+    return f
+
+
+def sanitize_rows(rows):
+    """把一轮探针结果里每个源的数值字段校验一遍。
+
+    不合格的**只丢那个源**，其余源照常参与判定 ——
+    丢一个源是「少一份信息」，让整轮崩掉是「一份信息都没有」。
+    """
+    bad = []
+    out = {}
+    for name, r in (rows or {}).items():
+        if not isinstance(r, dict):
+            bad.append("%s(不是对象)" % name)
+            continue
+        rate = _num(r.get("rate"), 0.0, 100.0)
+        alive = _num(r.get("alive"), 0)
+        nodes = _num(r.get("nodes"), 0)
+        if rate is None and r.get("rate") is not None:
+            bad.append("%s(rate=%r)" % (name, r.get("rate")))
+        if alive is None:
+            alive = 0
+        if nodes is None:
+            nodes = 0
+        rr = dict(r)
+        if rate is not None:
+            rr["rate"] = rate
+        else:
+            rr["rate"] = None          # recent_mean 会跳过 None
+        rr["alive"] = int(alive)
+        rr["nodes"] = int(nodes)
+        out[name] = rr
+    if bad:
+        print("[health] ⚠ %d 个源的数值字段不合格，已置空（该源本轮不参与均值/达标判定）：%s"
+              % (len(bad), "、".join(bad[:8])))
+    return out
+
+
 def recent_mean(runs, scope, window, field="rate"):
     """取最近 window 轮某口径的均值。
 
@@ -148,15 +214,68 @@ def trim_runs(runs, keep=KEEP_RUNS):
 
 
 def load_health():
-    try:
-        return json.load(open(HEALTH, encoding="utf-8"))
-    except Exception:
+    """读健康档案。
+
+    ⚠⚠ 这里原来写的是 `except Exception: return {"sources": {}}` ——
+      档案损坏时**静默从零开始**。实测后果：把 source_health.json 写坏后
+      再跑一次，anaer 的 5 轮真实历史变成 1 轮，**exit=0、一个字都没说**。
+
+      磁盘满 / 写入中断 / 云效推主仓被截断，任何一个都会触发。
+      而 AUTO 分桶的排序质量正是靠这个多轮均值算的 —— 历史一丢，
+      排名立刻退化成「只看昨天」。
+
+      不一致的后果严重程度完全不对称：
+        跑不成 health.py  -> 质量数据变陈旧，**可恢复**（明天自动补上）
+        覆盖掉损坏文件   -> 多轮历史永久消失，**不可恢复**
+      所以「文件不存在」可以当空档案开始，「文件存在但读不出来」必须
+      **拒绝运行并保留原文件**，绝不静默重建。
+    """
+    if not os.path.exists(HEALTH):
         return {"sources": {}}
+    try:
+        with open(HEALTH, encoding="utf-8") as f:
+            d = json.load(f)
+    except Exception as e:
+        sys.stderr.write(
+            "[health] ═══════════════════════════════════════════════\n"
+            "[health] ✗ 拒绝运行：健康档案已损坏，且**没有**重建它。\n"
+            "[health]   文件    : %s\n"
+            "[health]   原因    : %s: %s\n"
+            "[health]   为什么不能静默重建：档案里是累积的多轮历史，\n"
+            "[health]   覆盖掉就是永久丢失（磁盘满/写入中断都会走到这里）。\n"
+            "[health]   不一致的后果不对称 —— 跑不成只是数据变陈旧（可恢复），\n"
+            "[health]   覆盖掉是历史永久消失（不可恢复）。\n"
+            "[health]   处理    : 先把损坏文件挪走，再跑本脚本即可从零重建。\n"
+            "[health]             mv \"%s\" \"%s.bak\"\n"
+            "[health] ═══════════════════════════════════════════════\n"
+            % (HEALTH, type(e).__name__, str(e)[:80], HEALTH, HEALTH))
+        sys.exit(2)
+    if not isinstance(d, dict) or "sources" not in d:
+        sys.stderr.write("[health] ✗ 拒绝运行：健康档案结构不对（缺 sources 键）：%s\n" % HEALTH)
+        sys.exit(2)
+    return d
+
+
+def _atomic_write(path, text):
+    """先写临时文件再 os.replace —— 崩溃时原文件完好无损。
+
+    之前是 `json.dump(h, open(path, "w"))`，写到一半崩溃就留下**半截 JSON**，
+    而下一次 load_health 又会把它当损坏处理 → 触发一轮历史丢失。
+    两件事叠加，磁盘抖一下历史就没了。
+    """
+    d = os.path.dirname(path)
+    if d:
+        os.makedirs(d, exist_ok=True)
+    tmp = path + ".tmp"
+    with open(tmp, "w", encoding="utf-8") as f:
+        f.write(text)
+        f.flush()
+        os.fsync(f.fileno())          # 真落盘再 rename
+    os.replace(tmp, path)             # 3.3+，同目录内是原子操作
 
 
 def save_health(h):
-    os.makedirs(os.path.dirname(HEALTH), exist_ok=True)
-    json.dump(h, open(HEALTH, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
+    _atomic_write(HEALTH, json.dumps(h, ensure_ascii=False, indent=2))
 
 
 def src_cfg():
@@ -164,14 +283,43 @@ def src_cfg():
     return yaml.safe_load(open(SOURCES, encoding="utf-8")) or {}
 
 
-def write_src_cfg(cfg):
+def write_src_cfg(cfg, prev_count=None):
+    """写回源清单。
+
+    ⚠ 理智守卫：源清单是整个 pipeline 的**唯一事实来源**，而且进 git。
+
+      实测两个失败方式：
+        ·传进 `sources: []`   -> 99 行的 12 源清单被改写成空，然后 commit 上去
+        · 传进只剩 1 个源      -> 同上，只是没这么显眼
+
+      「归零」和「暴跌」是同一类事故。**降级是逐个源、跨多轮、且只改 enabled
+      开关的渐进过程**，任何一次调用都不该把源数量砍掉一半以上——
+      真要那么干，说明上游出事了，而这时候最该做的是停下来报警，不是照写。
+
+      所以：归零、或少于上一轮的一半，一律拒绝。
+      真要人工大批量删源，用 --allow-source-shrink 显式解锁（需人工确认）。
+    """
     import yaml
-    with open(SOURCES, "w", encoding="utf-8") as f:
-        f.write("# 上游源清单 —— pipeline 的唯一事实来源\n"
-                "# 注意：enabled 标志由 src/health.py 依据真探针自动维护\n"
-                "#   连续多轮 0 活 -> enabled: false 并移入 archive/sources.yaml（历史库）\n"
-                "#   达标后自动回填 enabled: true（源本体永不删除，只改开关）\n")
-        yaml.safe_dump(cfg, f, allow_unicode=True, sort_keys=False, width=4096)
+    n = len(cfg.get("sources") or [])
+    if n == 0:
+        raise SystemExit(
+            "[health] ✗ 拒绝写入：源清单里一个源都没有（sources 为空）。\n"
+            "         宁可不改，也不能把 pipeline 的唯一事实来源写成空 ——\n"
+            "         这个文件进 git，一旦提交上去整个仓库的源就全没了。")
+    if (prev_count and n < prev_count * 0.5 and not
+            os.environ.get("ALLOW_SOURCE_SHRINK")):
+        raise SystemExit(
+            "[health] ✗ 拒绝写入：源数量从 %d 骤降到 %d（不到一半）。\n"
+            "         降级只会逐个源、跨多轮、只改 enabled 开关，不会一次砍掉一半。\n"
+            "         这种降幅几乎总是上游出事了（清单被截断/解析失败/变量没展开）。\n"
+            "         确认要删就设 ALLOW_SOURCE_SHRINK=1 再跑。" % (prev_count, n))
+    body = yaml.safe_dump(cfg, allow_unicode=True, sort_keys=False, width=4096)
+    _atomic_write(SOURCES,
+                  "# 上游源清单 —— pipeline 的唯一事实来源\n"
+                  "# 注意：enabled 标志由 src/health.py 依据真探针自动维护\n"
+                  "#   连续多轮 0 活 -> enabled: false 并移入 archive/sources.yaml（历史库）\n"
+                  "#   达标后自动回填 enabled: true（源本体永不删除，只改开关）\n"
+                  + body)
 
 
 def arch_cfg():
@@ -183,15 +331,16 @@ def arch_cfg():
 
 
 def write_arch(cfg):
+    """历史库也走原子写 —— 它同样在 git 里，同样不能被半截 YAML 覆盖。"""
     import yaml
     os.makedirs(os.path.dirname(ARCHIVE), exist_ok=True)
-    with open(ARCHIVE, "w", encoding="utf-8") as f:
-        f.write("# 历史库：曾启用但被判死的源。**源本体永不删除**，只是被摘掉。\n"
-                "# 判据：真探针（youtube/generate_204）连续 %d 轮 0 活。\n"
-                "# 恢复：alive ≥ %d 且通过率 ≥ %s%% 连续 %d 轮 -> health.py 自动回填 enabled: true。\n"
-                "# ⚠ 探针 runner 在美国，判据偏保守（宁可多留，不可错杀）。\n"
-                % (DEAD_STREAK, GOOD_ALIVE, GOOD_RATE, GOOD_STREAK))
-        yaml.safe_dump(cfg, f, allow_unicode=True, sort_keys=False, width=4096)
+    _atomic_write(ARCHIVE,
+                  "# 历史库：曾启用但被判死的源。**源本体永不删除**，只是被摘掉。\n"
+                  "# 判据：真探针（youtube/generate_204）连续 %d 轮 0 活。\n"
+                  "# 恢复：alive ≥ %d 且通过率 ≥ %s%% 连续 %d 轮 -> health.py 自动回填 enabled: true。\n"
+                  "# ⚠ 探针 runner 在美国，判据偏保守（宁可多留，不可错杀）。\n"
+                  % (DEAD_STREAK, GOOD_ALIVE, GOOD_RATE, GOOD_STREAK)
+                  + yaml.safe_dump(cfg, allow_unicode=True, sort_keys=False, width=4096))
 
 
 def main():
@@ -203,9 +352,18 @@ def main():
         print("[health] 无探针数据，跳过（先跑 src/probe.py）")
         return 0
 
+    # ⚠ 在入口校验数值字段，不要等到用它算数时才炸。
+    #   探针是唯一直接吃外部内容的数据源，字段类型漂移是迟早的事；
+    #   而一个源的坏字段不该让整轮健康判定崩掉（只丢那个源即可）。
+    rows = sanitize_rows(rows)
+
     h = load_health()
     hs = h.setdefault("sources", {})
     cfg = src_cfg()
+    # 写回前先记住源数量：write_src_cfg 用它识别「源数量暴跌」。
+    # 降级是逐个源、跨多轮、只改 enabled 开关的渐进过程，
+    # 一次调用砍掉一半以上的源几乎总是上游出事了。
+    prev_src_count = len(cfg.get("sources") or [])
     arch = arch_cfg()
     arch_by_name = {s["name"]: s for s in (arch.get("sources") or [])}
     src_by_name = {s["name"]: s for s in (cfg.get("sources") or [])}
@@ -345,9 +503,17 @@ def main():
         #   scope=cnci **不参与降级**（判死仍然只由美国 CI 口径做，铁律①不动），
         #   但从 2026-10-15 起它对**回收**有否决权（见下面的 tier 闸门）。
         dead = (alive == 0)
-        good = (alive >= GOOD_ALIVE and rate >= GOOD_RATE)
+        # ⚠ rate 可能是 None（sanitize_rows 把不合格的字段置空了）。
+        #   此时**必须整段跳过该源的 streak 累积**，而不是当成「不达标」。
+        #   区别很大：当成不达标 -> good_streak 被清零；而如果 alive 恰好是 0，
+        #   还会去累加 bad_streak -> **触发降级**，那是不可逆的误杀。
+        #   数据坏掉时唯一正确的反应是「这一轮我不知道」，不是「这一轮它差」。
+        rate_unknown = (rate is None)
+        good = (not rate_unknown) and alive >= GOOD_ALIVE and rate >= GOOD_RATE
         if is_new:
-            if dead:
+            if rate_unknown:
+                dup_sources.append(name)      # 复用同一套「本轮跳过」提示
+            elif dead:
                 if scope == "ci" and not sampled:
                     rec["bad_streak"] += 1
                 rec["good_streak"] = 0
@@ -452,7 +618,8 @@ def main():
                  rec["bad_streak"], rec["good_streak"], tier, rec["state"]))
 
     if changed_enabled:
-        write_src_cfg(cfg)
+        # 传上一轮的源数量，让 write_src_cfg 能识别「暴跌」而不只是「归零」
+        write_src_cfg(cfg, prev_count=prev_src_count)
         arch["sources"] = list(arch_by_name.values())
         write_arch(arch)
     save_health(h)
