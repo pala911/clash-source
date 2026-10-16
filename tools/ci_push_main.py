@@ -160,6 +160,10 @@ def record_status(st):
         "repo": REPO,
         "branch": BRANCH,
         "py": sys.version.split()[0],
+        # 每个文件的结果逐个记下来：
+        #   实测踩过一次——state/ 写进去了、results/ 存档没进去，
+        #   而留痕只说 ok-api，完全看不出来。
+        "files": st.get("files") or [],
     }
     try:
         path = os.path.join(d0, STATUS_REL)
@@ -387,7 +391,9 @@ def main(st=None):
         say("API 写入 %s" % why2 if ok2 else "API 存档跳过：%s" % why2)
         say("已推回主仓 %s:%s —— health.py 下一轮就能读它，分级会从「?」变 T1/T2/T3"
             % (REPO, BRANCH))
-        st.update(status="ok-api", ok=True, channel="api", detail=why)
+        st.update(status="ok-api", ok=True, channel="api", detail=why,
+                  files=[{"path": latest_rel, "ok": True, "why": why},
+                         {"path": arch_rel, "ok": bool(ok2), "why": why2}])
         return 0
     warn("Contents API 通道失败：%s" % why)
     warn("  回退到 git 通道（github.com:443 在国内常被挡，可能也不通）")
@@ -478,7 +484,9 @@ def main(st=None):
                                           "HEAD:%s" % BRANCH], cwd=work, timeout=300)
             if rc == 0:
                 say("git 通道已推回主仓 %s:%s" % (REPO, BRANCH))
-                st.update(status="ok-git", ok=True, channel="git", detail="push ok")
+                st.update(status="ok-git", ok=True, channel="git", detail="push ok",
+                          files=[{"path": latest_rel, "ok": True, "why": "git"},
+                                 {"path": arch_rel, "ok": True, "why": "git"}])
                 return 0
             warn("git push 第 %d 次失败：%s" % (i + 1, out.strip()[:160]))
             if i + 1 < TRIES:

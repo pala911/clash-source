@@ -56,12 +56,44 @@ def load_creds():
 
 
 def read_local_status():
-    """读主仓里云效数据的时间戳（health.py 消费的那份）。"""
+    """读**本机**那份（只用于展示，可能没 pull 过）。"""
     try:
         with open(MAIN_LATEST, encoding="utf-8") as f:
             return (json.load(f) or {}).get("probed_at") or ""
     except Exception:
         return ""
+
+
+def read_remote_status():
+    """读**远端主仓**里那份（判据用这个）。
+
+    ⚠ 原来判据用的是本机那份 —— 而本机很可能没 pull，于是刚回传成功也会
+      报「主仓数据仍落后」，纯属误报（实测踩到）。取不到就返回 ""（不判）。
+    """
+    import base64
+    import urllib.error
+    tok_path = os.path.join(ROOT, ".aikey-token")
+    if not os.path.exists(tok_path):
+        return "", "缺 .aikey-token，跳过远端比对"
+    tok = open(tok_path, encoding="utf-8").read().strip()
+    proxy = os.environ.get("PROBE_PROXY", "http://127.0.0.1:7897")
+    url = ("https://api.github.com/repos/pala911/clash-source/contents/"
+           "state/probe_cnci_latest.json?ref=main")
+    for _ in range(3):
+        req = urllib.request.Request(url)
+        req.add_header("Authorization", "Bearer " + tok)
+        req.add_header("Accept", "application/vnd.github+json")
+        req.add_header("User-Agent", "cnci-status")
+        op = urllib.request.build_opener(
+            urllib.request.ProxyHandler({"https": proxy, "http": proxy}))
+        try:
+            with op.open(req, timeout=40) as r:
+                d = json.loads(r.read().decode("utf-8", "replace"))
+            return (json.loads(base64.b64decode(d["content"]).decode("utf-8"))
+                    or {}).get("probed_at") or "", ""
+        except Exception as e:                # noqa: BLE001
+            last = "远端读取失败：%s" % str(e)[:80]
+    return "", last
 
 
 def main():
@@ -117,10 +149,19 @@ def main():
                        if f.startswith("probe_cnci_")) if os.path.isdir(res_dir) else []
         print("")
         print("  Codeup 里最新的探针存档: %s" % (files[-1] if files else "（无）"))
-        print("  主仓里的云效数据时刻    : %s" % (read_local_status() or "（无）"))
+        remote, rerr = read_remote_status()
+        print("  远端主仓的云效数据时刻  : %s%s"
+              % (remote or "（无）", ("  [%s]" % rerr) if rerr else ""))
+        print("  本机这份（仅供参考）    : %s" % (read_local_status() or "（无）"))
 
+        if st.get("files"):
+            print("")
+            print("  每个文件的写入结果：")
+            for f in st["files"]:
+                print("    %s %s  %s" % ("✓" if f.get("ok") else "✗",
+                                         f.get("path"), str(f.get("why"))[:70]))
         print("")
-        verdict, rc = verdict_of(st, res_dir, files)
+        verdict, rc = verdict_of(st, res_dir, files, remote)
         print("  " + verdict)
         print("=" * 68)
         return rc
@@ -128,7 +169,7 @@ def main():
         shutil.rmtree(tmp, ignore_errors=True)
 
 
-def verdict_of(st, res_dir, files):
+def verdict_of(st, res_dir, files, remote=None):
     newest = ""
     if files:
         try:
@@ -136,7 +177,7 @@ def verdict_of(st, res_dir, files):
                 newest = (json.load(f) or {}).get("probed_at") or ""
         except Exception:
             newest = ""
-    local = read_local_status()
+    local = remote or read_local_status()
     if not st:
         return "⚠ 还没留痕过 —— 等云效跑一轮新版脚本再看", 1
     if not st.get("ok"):
@@ -149,6 +190,11 @@ def verdict_of(st, res_dir, files):
     if newest and local and newest > local:
         return ("⚠ 上一轮回传成功了，但主仓数据仍落后（Codeup %s > 主仓 %s）"
                 % (newest, local)), 1
+    bad = [f for f in (st.get("files") or []) if not f.get("ok")]
+    if bad:
+        return ("⚠ 回传基本正常，但有文件没写成功：%s\n    %s"
+                % ("；".join(f.get("path") for f in bad),
+                   str(bad[0].get("why"))[:160])), 1
     return "✓ 回传正常：主仓的云效数据与 Codeup 最新一轮一致（%s）" % (local or "无"), 0
 
 
