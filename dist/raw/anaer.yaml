@@ -1,5 +1,19 @@
 # 未过滤原始快照（对比用，勿订阅）—— 源 anaer
 proxies:
+- name: 其他-001
+  type: vmess
+  server: guanwang.awsno.com
+  port: 443
+  network: ws
+  uuid: 6a89a215-22bf-4bd7-9642-b95b2e09583a
+  skip-cert-verify: true
+  tls: true
+  alterId: 0
+  cipher: auto
+  ws-opts:
+    headers:
+      Host: guanwang.awsno.com
+    path: /hls/cctv5phd.m3u8
 - name: 德国-001 |1.6MB/s
   type: hysteria
   server: 5.83.129.90
@@ -28,21 +42,6 @@ proxies:
   up: 500
   down: 1000
   auth_str: dongtaiwang.com
-- name: 法国-001
-  type: vless
-  server: 57.128.177.198
-  port: 443
-  network: ws
-  uuid: 7b102311-43fd-4e8f-877e-8090623c101d
-  servername: vp58.cc.cd
-  skip-cert-verify: false
-  tls: true
-  udp: true
-  ws-opts:
-    headers:
-      Host: vp58.cc.cd
-    path: /Telegram🇨🇳
-  client-fingerprint: chrome
 - name: 澳大利亚-001 |3.0MB/s|TK-AU|YT-AU|GPT⁺-AU
   type: http
   server: 159.13.44.228
@@ -85,16 +84,16 @@ proxies:
   skip-cert-verify: true
   tls: true
   sni: www.bing.com
-- name: 罗马尼亚-006 |1.1MB/s
+- name: 罗马尼亚-006 |1.1MB/s|TK-RO|GPT⁺-RO|GM-RO
   type: http
-  server: 193.176.84.40
+  server: 193.176.84.30
   port: 9002
   skip-cert-verify: true
   tls: true
   sni: www.bing.com
-- name: 罗马尼亚-007 |1.1MB/s|TK-RO|GPT⁺-RO|GM-RO
+- name: 罗马尼亚-007 |1.1MB/s
   type: http
-  server: 193.176.84.30
+  server: 193.176.84.40
   port: 9002
   skip-cert-verify: true
   tls: true
@@ -190,22 +189,30 @@ proxies:
   skip-cert-verify: true
   tls: true
   sni: www.bing.com
-- name: 美国-001 |3.3MB/s|TK-US|YT-US|GPT⁺-US|GM-US
+- name: 美国-001
+  type: vless
+  server: 200.165.231.209
+  port: 443
+  network: ws
+  uuid: ff0b6ba8-bed0-4c4d-bbc9-23af47582615
+  servername: wstg.datasynctrue.online
+  skip-cert-verify: false
+  tls: true
+  udp: true
+  ws-opts:
+    headers:
+      Host: wstg.datasynctrue.online
+    path: /api/connect
+- name: 美国-002 |3.3MB/s|TK-US|YT-US|GPT⁺-US|GM-US
   type: http
   server: 138.199.35.215
   port: 9002
   skip-cert-verify: true
   tls: true
-- name: 美国-002 |3.2MB/s|TK-US|YT-US|GPT⁺-US|GM-US
+- name: 美国-003 |3.2MB/s|TK-US|YT-US|GPT⁺-US|GM-US
   type: http
   server: 38.28.193.188
   port: 443
-  skip-cert-verify: true
-  tls: true
-- name: 美国-003 |1.5MB/s|TK-US|YT-US|GPT⁺-US|GM-US
-  type: http
-  server: 209.148.53.153
-  port: 8090
   skip-cert-verify: true
   tls: true
 - name: 美国-004 |1.0MB/s|TK-US|GPT⁺-US
@@ -214,7 +221,13 @@ proxies:
   port: 9002
   skip-cert-verify: true
   tls: true
-- name: 美国-005
+- name: 美国-005 |1.5MB/s|TK-US|YT-US|GPT⁺-US|GM-US
+  type: http
+  server: 209.148.53.153
+  port: 8090
+  skip-cert-verify: true
+  tls: true
+- name: 美国-006
   type: vless
   server: 63.141.128.30
   port: 8880
@@ -230,24 +243,33 @@ proxies:
   port: 9002
   skip-cert-verify: true
   tls: true
-- name: 荷兰-002 |1.8MB/s|TK-NL|GPT⁺-NL|GM-NL
-  type: http
-  server: 5.255.118.82
-  port: 443
-  skip-cert-verify: true
-  tls: true
-- name: 荷兰-003 |1.8MB/s|TK-NL|GPT⁺-NL
+- name: 荷兰-002 |1.8MB/s|TK-NL|GPT⁺-NL
   type: http
   server: 51.159.225.196
   port: 23856
   skip-cert-verify: true
   tls: true
-- name: 荷兰-004 |1.6MB/s|TK-NL|GPT⁺-NL|GM-NL
+- name: 荷兰-003 |1.6MB/s|TK-NL|GPT⁺-NL|GM-NL
   type: http
   server: 84.17.47.147
   port: 9002
   skip-cert-verify: true
   tls: true
+- name: 荷兰-004 |1.8MB/s|TK-NL|GPT⁺-NL|GM-NL
+  type: http
+  server: 5.255.118.82
+  port: 443
+  skip-cert-verify: true
+  tls: true
+- name: 韩国-001
+  type: vmess
+  server: 43.108.103.167
+  port: 123
+  network: http
+  uuid: 35aa0fda-175a-4aec-c468-0231dee1a121
+  skip-cert-verify: true
+  alterId: 0
+  cipher: auto
 - name: '说明-来源: anaer.github.io/Sub'
   type: trojan
   server: 127.0.0.1
@@ -255,14 +277,14 @@ proxies:
   password: dummy
   udp: true
   skip-cert-verify: true
-- name: '说明-清洗结果: 清理 0 个节点、转译 122 个字符'
+- name: '说明-清洗结果: 清理 0 个节点、转译 124 个字符'
   type: trojan
   server: 127.0.0.1
   port: 443
   password: dummy
   udp: true
   skip-cert-verify: true
-- name: '说明-更新时间: 2026-10-15 06:54 (CST)'
+- name: '说明-更新时间: 2026-10-16 10:30 (CST)'
   type: trojan
   server: 127.0.0.1
   port: 443

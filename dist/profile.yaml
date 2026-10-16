@@ -45,234 +45,196 @@ dns:
   - xbox.*.*.microsoft.com
   - +.stun.playstation.net
 proxy-groups:
-- name: SRC-anaer
-  type: url-test
-  use:
-  - anaer
-  url: https://www.youtube.com/generate_204
-  expected-status: 204
-  interval: 120
-  tolerance: 200
-  timeout: 4000
-  lazy: true
-- name: SRC-autojiedian
-  type: url-test
-  use:
-  - autojiedian
-  url: https://www.youtube.com/generate_204
-  expected-status: 204
-  interval: 180
-  tolerance: 200
-  timeout: 4000
-  lazy: true
-- name: SRC-automerge
-  type: url-test
-  use:
-  - automerge
-  url: https://www.youtube.com/generate_204
-  expected-status: 204
-  interval: 180
-  tolerance: 200
-  timeout: 4000
-  lazy: true
-- name: SRC-ermaozi
-  type: url-test
-  use:
-  - ermaozi
-  url: https://www.youtube.com/generate_204
-  expected-status: 204
-  interval: 120
-  tolerance: 200
-  timeout: 4000
-  lazy: true
-- name: SRC-nomorewalls
-  type: url-test
-  use:
-  - nomorewalls
-  url: https://www.youtube.com/generate_204
-  expected-status: 204
-  interval: 120
-  tolerance: 200
-  timeout: 4000
-  lazy: true
-- name: SRC-passcro
-  type: url-test
-  use:
-  - passcro
-  url: https://www.youtube.com/generate_204
-  expected-status: 204
-  interval: 120
-  tolerance: 200
-  timeout: 4000
-  lazy: true
-- name: SRC-ruk1ng001
-  type: url-test
-  use:
-  - ruk1ng001
-  url: https://www.youtube.com/generate_204
-  expected-status: 204
-  interval: 120
-  tolerance: 200
-  timeout: 4000
-  lazy: true
-- name: SRC-shaoyouvip
-  type: url-test
-  use:
-  - shaoyouvip
-  url: https://www.youtube.com/generate_204
-  expected-status: 204
-  interval: 120
-  tolerance: 200
-  timeout: 4000
-  lazy: true
-- name: SRC-snakem982
-  type: url-test
-  use:
-  - snakem982
-  url: https://www.youtube.com/generate_204
-  expected-status: 204
-  interval: 120
-  tolerance: 200
-  timeout: 4000
-  lazy: true
-- name: SRC-ssrsub
-  type: url-test
-  use:
-  - ssrsub
-  url: https://www.youtube.com/generate_204
-  expected-status: 204
-  interval: 120
-  tolerance: 200
-  timeout: 4000
-  lazy: true
 - name: SRC-yypool
   type: url-test
   use:
   - yypool
   url: https://www.youtube.com/generate_204
   expected-status: 204
-  interval: 180
-  tolerance: 200
-  timeout: 4000
-  lazy: true
+  interval: 300
+  timeout: 5000
+- name: SRC-anaer
+  type: url-test
+  use:
+  - anaer
+  url: https://www.youtube.com/generate_204
+  expected-status: 204
+  interval: 300
+  timeout: 5000
+- name: SRC-passcro
+  type: url-test
+  use:
+  - passcro
+  url: https://www.youtube.com/generate_204
+  expected-status: 204
+  interval: 300
+  timeout: 5000
+- name: SRC-automerge
+  type: url-test
+  use:
+  - automerge
+  url: https://www.youtube.com/generate_204
+  expected-status: 204
+  interval: 300
+  timeout: 5000
+- name: SRC-ermaozi
+  type: url-test
+  use:
+  - ermaozi
+  url: https://www.youtube.com/generate_204
+  expected-status: 204
+  interval: 300
+  timeout: 5000
 - name: SRC-zhuhaiuk
   type: url-test
   use:
   - zhuhaiuk
   url: https://www.youtube.com/generate_204
   expected-status: 204
-  interval: 120
-  tolerance: 200
-  timeout: 4000
-  lazy: true
+  interval: 300
+  timeout: 5000
+- name: SRC-ssrsub
+  type: url-test
+  use:
+  - ssrsub
+  url: https://www.youtube.com/generate_204
+  expected-status: 204
+  interval: 300
+  timeout: 5000
+- name: SRC-ruk1ng001
+  type: url-test
+  use:
+  - ruk1ng001
+  url: https://www.youtube.com/generate_204
+  expected-status: 204
+  interval: 300
+  timeout: 5000
+- name: SRC-snakem982
+  type: url-test
+  use:
+  - snakem982
+  url: https://www.youtube.com/generate_204
+  expected-status: 204
+  interval: 300
+  timeout: 5000
+- name: SRC-nomorewalls
+  type: url-test
+  use:
+  - nomorewalls
+  url: https://www.youtube.com/generate_204
+  expected-status: 204
+  interval: 300
+  timeout: 5000
+- name: SRC-autojiedian
+  type: url-test
+  use:
+  - autojiedian
+  url: https://www.youtube.com/generate_204
+  expected-status: 204
+  interval: 300
+  timeout: 5000
+- name: SRC-shaoyouvip
+  type: url-test
+  use:
+  - shaoyouvip
+  url: https://www.youtube.com/generate_204
+  expected-status: 204
+  interval: 300
+  timeout: 5000
 - name: AUTO
   type: url-test
-  lazy: false
+  proxies:
+  - SRC-anaer
+  - SRC-ssrsub
+  - SRC-zhuhaiuk
+  - SRC-ruk1ng001
+  - SRC-automerge
+  - SRC-shaoyouvip
   url: https://www.youtube.com/generate_204
   expected-status: 204
   interval: 120
-  tolerance: 200
-  timeout: 4000
+  timeout: 5000
+- name: 备用
+  type: select
   proxies:
-  - SRC-anaer
-  - SRC-zhuhaiuk
-  - SRC-ssrsub
-  - SRC-yypool
-  - SRC-ruk1ng001
   - SRC-passcro
-  - SRC-ermaozi
+  - SRC-yypool
   - SRC-nomorewalls
+- name: 观察
+  type: select
+  proxies:
   - SRC-snakem982
+  - SRC-ermaozi
+  - SRC-autojiedian
 - name: FAILOVER
   type: fallback
-  lazy: false
+  proxies:
+  - AUTO
+  - SRC-yypool
+  - SRC-anaer
+  - SRC-passcro
+  - SRC-automerge
+  - SRC-ermaozi
+  - SRC-zhuhaiuk
+  - SRC-ssrsub
+  - SRC-ruk1ng001
+  - SRC-snakem982
+  - SRC-nomorewalls
+  - SRC-autojiedian
+  - SRC-shaoyouvip
   url: https://www.youtube.com/generate_204
   expected-status: 204
   interval: 60
-  timeout: 4000
-  proxies:
-  - AUTO
-  - SRC-zhuhaiuk
-  - SRC-anaer
-  - SRC-yypool
-  - SRC-ssrsub
-  - SRC-ruk1ng001
-  - SRC-passcro
-  - SRC-ermaozi
-  - SRC-shaoyouvip
-  - SRC-nomorewalls
-  - SRC-snakem982
-  - SRC-automerge
-  - SRC-autojiedian
+  timeout: 5000
 - name: PROXY
   type: select
   proxies:
   - FAILOVER
   - AUTO
-  - SRC-zhuhaiuk
-  - SRC-anaer
+  - 备用
+  - 观察
   - SRC-yypool
+  - SRC-anaer
+  - SRC-passcro
+  - SRC-automerge
+  - SRC-ermaozi
+  - SRC-zhuhaiuk
   - SRC-ssrsub
   - SRC-ruk1ng001
-  - SRC-passcro
-  - SRC-ermaozi
-  - SRC-shaoyouvip
-  - SRC-nomorewalls
   - SRC-snakem982
-  - SRC-automerge
+  - SRC-nomorewalls
   - SRC-autojiedian
+  - SRC-shaoyouvip
 - name: Claude
   type: select
   use:
+  - yypool
   - anaer
-  - autojiedian
+  - passcro
   - automerge
   - ermaozi
-  - nomorewalls
-  - passcro
-  - ruk1ng001
-  - shaoyouvip
-  - snakem982
-  - ssrsub
-  - yypool
   - zhuhaiuk
-  proxies:
-  - PROXY
-  - FAILOVER
-  - AUTO
-  - SRC-autojiedian
-  - SRC-ruk1ng001
-  - SRC-zhuhaiuk
-  - SRC-shaoyouvip
-  - SRC-nomorewalls
-  - SRC-ssrsub
-  - SRC-snakem982
+  - ssrsub
+  - ruk1ng001
+  - snakem982
+  - nomorewalls
+  - autojiedian
+  - shaoyouvip
 - name: Gemini
   type: select
   use:
+  - yypool
   - anaer
-  - autojiedian
+  - passcro
   - automerge
   - ermaozi
-  - nomorewalls
-  - passcro
-  - ruk1ng001
-  - shaoyouvip
-  - snakem982
-  - ssrsub
-  - yypool
   - zhuhaiuk
-  proxies:
-  - PROXY
-  - FAILOVER
-  - AUTO
-  - SRC-autojiedian
-  - SRC-ruk1ng001
-  - SRC-zhuhaiuk
-  - SRC-shaoyouvip
-  - SRC-nomorewalls
-  - SRC-ssrsub
-  - SRC-snakem982
+  - ssrsub
+  - ruk1ng001
+  - snakem982
+  - nomorewalls
+  - autojiedian
+  - shaoyouvip
 rule-providers:
   LocalAreaNetwork:
     type: http
