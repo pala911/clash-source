@@ -6,6 +6,12 @@
   B 源太少 -> 达标源不足 3 个时**必须构建失败**（宁可不出也不给空自动组）
   C 有源被停用 -> 不能崩。原模板把 SRC-* 写死，停用任一源会让
      「模板引用了未提供的 provider」断言炸掉，整条流水线挂掉。
+
+⚠ 三个场景都跑在**自己种的合成健康档案**上（build.HEALTH 指到临时文件）。
+   原来直接读线上档案，于是 2026-10-16 线上数据一变（autojiedian 修掉 sni 后
+   本机测出 31.62%、均值 4.0% -> 17.8%），「场景 B 只剩 2 个达标源」的前提
+   就碎了 —— 测试挂掉，但产品其实是在对的方向上变化。
+   **测试的隐含前提依赖会漂移的线上状态，本身就是坏味道。**
 """
 import os
 import sys
@@ -13,6 +19,10 @@ import sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "src"))
 os.chdir(ROOT)
+
+import io                       # noqa: E402
+import json                      # noqa: E402
+import tempfile                  # noqa: E402
 
 import yaml                      # noqa: E402
 import build                     # noqa: E402
@@ -26,6 +36,29 @@ LOCAL = {"anaer": 78.57, "autojiedian": 4.0, "automerge": 29.3, "ermaozi": 2.9,
          "nomorewalls": 13.2, "passcro": 25.9, "ruk1ng001": 10.3,
          "shaoyouvip": 24.4, "snakem982": 15.4, "ssrsub": 63.5,
          "yypool": 13.0, "zhuhaiuk": 46.7}
+
+
+# 把合成档案种好：build.rank_sources() 读的是 build.HEALTH 指向的文件，
+# 不指过去的话它读的就是**线上真档案**（会随每天的探针结果漂移）。
+_HEALTH_TMP = os.path.join(tempfile.gettempdir(), "bg_test_health.json")
+
+
+def _seed(rates):
+    doc = {"v": 1, "updated": "test-fixture", "sources": {}}
+    for n, r in rates.items():
+        doc["sources"][n] = {
+            # cnci_runs 给 7：让分级处于「已生效」状态，与线上一致
+            "tier_rates": {"local": r, "cnci": 0.0, "cnci_runs": 7},
+            "tier": "T1" if r >= 8.0 else "T4",
+            "tier_why": "test fixture",
+            "runs": [], "state": "active",
+            "bad_streak": 0, "good_streak": 0, "bad_since": None}
+    with io.open(_HEALTH_TMP, "w", encoding="utf-8") as f:
+        json.dump(doc, f, ensure_ascii=False)
+    build.HEALTH = _HEALTH_TMP
+
+
+_seed(LOCAL)
 
 
 def show(t, groups, names):
