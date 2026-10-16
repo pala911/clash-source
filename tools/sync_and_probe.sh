@@ -57,4 +57,16 @@ if grep -q capture_output probe.py 2>/dev/null; then
 fi
 
 echo "[sync] 校验通过，开始探针"
-exec python3 ci_probe_run.py $PROBE_ARGS
+python3 ci_probe_run.py $PROBE_ARGS
+rc=$?
+
+# 推主仓（让云效数据参与双视角分级）。
+# ⚠ 用 `;` 而不是 `&&`：探针失败也要试推 —— probe_cnci.json 可能已经生成了，
+#   而那正是我们想拿回来的东西。ci_push_main.py 自己保证任何异常都 exit 0。
+# ⚠ 注意路径是根目录不是 tools/ —— probe_payload._dest_name() 只把 *.sh 放 tools/，
+#   .py 一律留根目录（和 ci_probe_run.py 同位置，所以能找到同一个 probe_cnci.json）。
+echo ""
+echo "[sync] 推送结果到主仓（供 health.py 双视角分级使用）"
+python3 ci_push_main.py || echo "[sync] ci_push_main 异常返回，已忽略（不影响探针结果）"
+
+exit $rc
