@@ -384,8 +384,17 @@ def main():
             tier, why = "T1", "两视角均达标"
         elif lrate >= GOOD_RATE:
             tier, why = "T2", "本机 %.1f%%/云效 %.1f%% -> 位置敏感" % (lrate, crate)
-        else:
+        elif crate >= GOOD_RATE:
             tier, why = "T3", "本机 %.1f%%/云效 %.1f%% -> 机房友好" % (lrate, crate)
+        else:
+            # ⚠ 这一格以前不存在。四格表（README §7）里第4 行是「两边都差 ->
+            #   到处都不行」，但代码只有三个分支，else 把「本机差+云效也差」
+            #   和「本机差+云效达标」混在一起，统统标成 T3「机房友好」。
+            #   危害不是显示难看：T3 按规划要用于**降优先级**，一个到处都不行的
+            #   源被标成「机房友好」等于**主动误导**——运维看到 T3 会以为
+            #   「家里不行但机房能用，值得留」，而事实是两头都不行。
+            #   真实数据里 snakem982 就是这一格：本机 4 轮均值 5.5% / 云效 0.0%。
+            tier, why = "T4", "本机 %.1f%%/云效 %.1f%% -> 两视角都不达标" % (lrate, crate)
         rec["tier"], rec["tier_why"] = tier, why
         rec["tier_rates"] = {"local": lrate, "cnci": crate, "cnci_runs": cn}
         tiers[name] = tier
@@ -462,14 +471,15 @@ def main():
     if tiers:
         print("")
         print("[health] === 双视角分级（本机 vs 云效，两个固定视角，手机位置是移动的）===")
-        buckets = {"T1": [], "T2": [], "T3": [], "?": []}
+        buckets = {"T1": [], "T2": [], "T3": [], "T4": [], "?": []}
         for nm in sorted(tiers):
             buckets.setdefault(tiers[nm], []).append(nm)
         label = {"T1": "两视角都达标，到处能用",
                  "T2": "本机行/云效不行 -> 位置敏感，自动回收会排除它",
                  "T3": "本机不行/云效行 -> 机房友好",
+                 "T4": "两视角都不行 -> 到处都不行，该考虑降级",
                  "?": "数据不足，暂不判定"}
-        for k in ("T1", "T2", "T3", "?"):
+        for k in ("T1", "T2", "T3", "T4", "?"):
             if not buckets.get(k):
                 continue
             print("[health] %-3s %-38s %s" % (k, label.get(k, ""), "、".join(buckets[k])))
