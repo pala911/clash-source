@@ -1,11 +1,11 @@
-# clash-source 自动生成 —— 源 zhuhaiuk，共 31 节点（稳定性加权后留在竞速池内的部分）
+# clash-source 自动生成 —— 源 zhuhaiuk，共 26 节点（稳定性加权后留在竞速池内的部分）
 # 不要手改；改动会在下次定时任务被覆盖（上游 https://pala911.github.io/clash-source/nodes/zhuhaiuk.yaml）
 proxies:
 - name: Public Welfare - zhuhai.uk
   type: vless
   server: v.toe.dpdns.org
   port: 443
-  uuid: ef1cdd29-0612-4d55-9f6a-d1d2f48702b1
+  uuid: 8f56cdf4-061f-4548-a6b5-09dd09a5c0a5
   tls: true
   servername: pw.toc.dpdns.org
   network: ws
@@ -13,173 +13,123 @@ proxies:
     path: /vplaetshs
     headers:
       Host: pw.toc.dpdns.org
-- name: HK - zhuhai.uk
-  type: vless
-  server: 3696b38bsg.murphyweb.sbs
-  port: 32134
-  uuid: 5b01dc2d-6892-49b8-8289-3f73a32e00e4
-  flow: xtls-rprx-vision
+- name: TW - zhuhai.uk
+  type: anytls
+  server: er8u54dh.df6h451rh.xin
+  port: 443
+  password: 0324fbc29561
+  udp: true
+  sni: px.ads.linkedin.com
+  skip-cert-verify: true
+- name: RO - zhuhai.uk
+  type: http
+  server: 193.176.84.23
+  port: 9002
   tls: true
-  servername: buylite.music.apple.com
-  client-fingerprint: firefox
-  reality-opts:
-    public-key: OdTELUjAUKO_qr-O-uihaAZJAhA8GyIWVI6CpozVCU4
-    short-id: 6c6c7c97
+  sni: www.bing.com
+  skip-cert-verify: true
+- name: NL - zhuhai.uk
+  type: http
+  server: 152.53.107.196
+  port: 443
+  tls: true
+  skip-cert-verify: true
 - name: US - zhuhai.uk
   type: http
-  server: 38.28.193.188
+  server: tzoa.fun
   port: 443
-  username: 'null'
-  password: 'null'
+  username: bnVsbDpudWxs
+  tls: true
+- name: RO - zhuhai.uk 02
+  type: http
+  server: 193.176.84.20
+  port: 9002
+  tls: true
+  skip-cert-verify: true
+- name: DE - zhuhai.uk
+  type: http
+  server: 149.36.50.129
+  port: 443
   tls: true
   skip-cert-verify: true
 - name: US - zhuhai.uk 02
   type: http
-  server: zebpay.site
-  port: 443
-  username: 'null'
-  password: 'null'
-  tls: true
-- name: US - zhuhai.uk 03
-  type: http
-  server: 138.199.35.199
-  port: 9002
-  tls: true
-  skip-cert-verify: true
-- name: CN - zhuhai.uk
-  type: vmess
-  server: 39.108.113.127
-  port: 10086
-  uuid: 2b910c43-51e3-4b15-9be8-b658106ba35e
-  alterId: 0
-  cipher: auto
-  network: ws
-  ws-opts: null
-- name: US - zhuhai.uk 04
-  type: http
-  server: 138.199.35.206
-  port: 9002
-  username: 'null'
-  password: None
-  tls: true
-  skip-cert-verify: true
-- name: TW - zhuhai.uk
-  type: anytls
-  server: 684616s4.df6h451rh.xin
-  port: 443
-  password: ec74bb6a86c2
-  udp: true
-  sni: px.ads.linkedin.com
-  skip-cert-verify: true
-- name: NL - zhuhai.uk
-  type: http
-  server: 84.17.47.147
-  port: 9002
-  tls: true
-  skip-cert-verify: true
-- name: US - zhuhai.uk 05
-  type: http
-  server: 138.199.35.207
-  port: 9002
-  username: 'null'
-  password: None
-  tls: true
-  skip-cert-verify: true
-- name: US - zhuhai.uk 06
-  type: http
-  server: 137.175.22.45
-  port: 443
-  tls: true
-  skip-cert-verify: true
-- name: FR - zhuhai.uk
-  type: vmess
-  server: 2001:bc8:32d7:1a9::3
-  port: 18901
-  uuid: 3a966d20-7b9d-48cc-ba2c-8d38161b6d3a
-  alterId: 0
-  cipher: auto
-  network: ws
-  ws-opts:
-    path: /github.com/Alvin9999-newpac/fanqiang
-- name: US - zhuhai.uk 07
-  type: http
-  server: 44.229.69.166
+  server: 44.248.167.117
   port: 8443
+  tls: true
+  skip-cert-verify: true
+- name: DE - zhuhai.uk 02
+  type: http
+  server: 176.94.74.21
+  port: 443
   tls: true
   skip-cert-verify: true
 - name: JP - zhuhai.uk
   type: http
   server: fan.571589.xyz
   port: 443
-  username: bnVsbDpudWxs
+  username: 'null'
+  password: 'null'
   tls: true
   sni: fan.571589.xyz
-  skip-cert-verify: true
-- name: FR - zhuhai.uk 02
+- name: SE - zhuhai.uk
   type: http
-  server: 217.181.201.254
-  port: 8090
-  tls: true
-  skip-cert-verify: true
-- name: CY - zhuhai.uk
-  type: http
-  server: 213.207.130.34
+  server: 146.70.242.130
   port: 443
   tls: true
   skip-cert-verify: true
-- name: JP - zhuhai.uk 02
-  type: vless
-  server: t5.qifei.app
-  port: 443
-  uuid: b98d4c6e-6770-4a31-8256-a4750cdea0e7
-  flow: xtls-rprx-vision
-  tls: true
-  servername: s3.ap-east-1.amazonaws.com
-  client-fingerprint: random
-  reality-opts:
-    public-key: 0i_xAxYgSNx5NMpK2lOaWGS-CvAiD_LneYPO0MF0owo
-    short-id: 1a
-- name: RO - zhuhai.uk
+- name: US - zhuhai.uk 03
   type: http
-  server: 193.176.84.27
-  port: 9002
+  server: goedkoopgeluid.icu
+  port: 443
   tls: true
-  sni: www.bing.com
+  sni: goedkoopgeluid.icu
   skip-cert-verify: true
-- name: SG - zhuhai.uk
+- name: NL - zhuhai.uk 02
   type: vless
-  server: 147.93.173.45
-  port: 10444
-  uuid: 75c5f51b-d548-4eab-a26e-aa10fc3dbc7b
-  flow: xtls-rprx-vision
-  tls: true
-  servername: video.yandex.ru
-  client-fingerprint: safari
-  reality-opts:
-    public-key: 0oTkcqwLTUNLnSOP-VUWErmy6usAIg-biBE6ioZO-Vo
-    short-id: 8debcf36f1cc69ff
-- name: HK - zhuhai.uk 02
-  type: vless
-  server: 152.233.71.81
+  server: seal-nl1.bypassme.online
   port: 443
-  uuid: 741809be-e44e-000b-b411-bf66f0ae3860
+  uuid: e625f8ef-f935-4c7d-a259-0f154b6842fd
   flow: xtls-rprx-vision
   tls: true
-  servername: brointelengence.com
-  client-fingerprint: chrome
+  servername: seal-nl1.bypassme.online
+  client-fingerprint: firefox
   reality-opts:
-    public-key: 6VMgXXhZdJCiOG05EyK_zTHh00kpFGrZJeZIEPgqhjY
-    short-id: 1c3e8241a8743df9
-- name: RO - zhuhai.uk 02
+    public-key: jQC3Kmmbu-CfUKlQaeuSn4I8dbqAZhpgihZhWu1SvBk
+    short-id: 6b69118a7847c4c3
+- name: US - zhuhai.uk 04
   type: http
-  server: 193.176.84.33
+  server: 138.199.35.215
   port: 9002
   username: 'null'
   password: 'null'
   tls: true
-  sni: 193.176.84.33
   skip-cert-verify: true
-- name: US - zhuhai.uk 08
+- name: DE - zhuhai.uk 03
+  type: http
+  server: 158.173.154.1
+  port: 9002
+  tls: true
+  skip-cert-verify: true
+- name: FR - zhuhai.uk
+  type: http
+  server: 138.199.47.247
+  port: 9443
+  tls: true
+  skip-cert-verify: true
+- name: SG - zhuhai.uk
+  type: vless
+  server: sg2-8sb.6121999.dpdns.org
+  port: 19825
+  uuid: 2d1ad594-80a4-4bfb-87a6-038e39701f51
+  flow: xtls-rprx-vision
+  tls: true
+  servername: sg2-8sb.6121999.dpdns.org
+  client-fingerprint: chrome
+  reality-opts:
+    public-key: GvvkY8xYb9QjvwvzYq_uNC4tOGd0DCxRnz6770-xgkI
+    short-id: 6ba85179e30d4fc2
+- name: US - zhuhai.uk 05
   type: vless
   server: funagfrdfs.alixxplay.com
   port: 47672
@@ -191,14 +141,39 @@ proxies:
   reality-opts:
     public-key: tBvlo8F8hKRXSK-EHRAfzEH-x3e4uvheGloO-9bPKx4
     short-id: 70ab6d813e
-- name: RU - zhuhai.uk
+- name: RO - zhuhai.uk 03
   type: http
-  server: chalo-ru.nexorcdn.com
-  port: 12318
-  username: ef37886e2aacd6fa622e3de3810299c2
-  password: 9jkvAVV-9ufV6IGd
+  server: 193.176.84.26
+  port: 9002
   tls: true
-- name: RU - zhuhai.uk 02
+  sni: www.bing.com
+  skip-cert-verify: true
+- name: DE - zhuhai.uk 04
+  type: http
+  server: 213.177.229.161
+  port: 443
+  tls: true
+  skip-cert-verify: true
+- name: TW - zhuhai.uk 02
+  type: anytls
+  server: er8u54dh.df6h451rh.xin
+  port: 443
+  password: ec74bb6a86c2
+  udp: true
+  skip-cert-verify: true
+- name: VN - zhuhai.uk
+  type: vless
+  server: funagfrdfs.alixxplay.com
+  port: 55688
+  uuid: 57beeeb0-03fc-4fc9-94da-7604488a7134
+  flow: xtls-rprx-vision
+  tls: true
+  servername: bilibili-vn.biliimg.com
+  client-fingerprint: firefox
+  reality-opts:
+    public-key: KeV1nArisy7FO5DjqTSmn0hBnlNd38rzhbIMMpe-MBw
+    short-id: a46bb5972cf50671
+- name: RU - zhuhai.uk
   type: http
   server: chalo-ru.nexorcdn.com
   port: 35694
@@ -206,81 +181,32 @@ proxies:
   password: 9jkvAVV-9ufV6IGd
   tls: true
   sni: chalo-ru.nexorcdn.com
-- name: US - zhuhai.uk 09
-  type: http
-  server: berniesbodybla.fun
-  port: 443
-  tls: true
-  sni: berniesbodybla.fun
-- name: RU - zhuhai.uk 03
-  type: http
-  server: chalo-ru.nexorcdn.com
-  port: 36774
-  username: ef37886e2aacd6fa622e3de3810299c2
-  password: 9jkvAVV-9ufV6IGd
-  tls: true
-- name: TH - zhuhai.uk
+- name: HK - zhuhai.uk
   type: vless
-  server: funagfrdfs.alixxplay.com
-  port: 56415
-  uuid: 57beeeb0-03fc-4fc9-94da-7604488a7134
+  server: 152.233.71.81
+  port: 443
+  uuid: 741809be-e44e-000b-b411-bf66f0ae3860
   flow: xtls-rprx-vision
   tls: true
-  servername: www.kaidee.com
-  client-fingerprint: ios
+  servername: brointelengence.com
+  skip-cert-verify: true
+  client-fingerprint: random
   reality-opts:
-    public-key: EG-jzQw1RyOwAM4L9rMKondSx7cyFmPyv1OP7xXkIk4
-    short-id: cbd39bea0805e2
-- name: VN - zhuhai.uk
+    public-key: 6VMgXXhZdJCiOG05EyK_zTHh00kpFGrZJeZIEPgqhjY
+    short-id: 1c3e8241a8743df9
+- name: KR - zhuhai.uk
+  type: socks5
+  server: 121.169.46.116
+  port: 1090
+  username: VDJjbE0wUWxNMFE2VDJjbE0wUWxNMFE9Og==
+- name: US - zhuhai.uk 01
   type: vless
-  server: 8dwou5alze.chhbuv.cn
-  port: 59178
-  uuid: d9109567-3fc3-4e08-9cac-4d9162ef5a9f
-  flow: xtls-rprx-vision
-  tls: true
-  servername: www.tue.nl
-  client-fingerprint: chrome
-  reality-opts:
-    public-key: AavBPGGJUpyGWiriV_Fbx-SrAvR5t-9mHeQY8uIltyo
-    short-id: 41b9cb10b696
-- name: PL - zhuhai.uk 01
-  type: vless
-  server: 45.198.0.24
-  port: 443
-  uuid: e5544327-834c-455a-9db5-2454c788fa17
+  server: www.epicgames.com
+  port: 2095
+  uuid: 86c50e3a-5b87-49dd-bd20-03c7f2735e40
   udp: true
-  network: tcp
-  flow: xtls-rprx-vision
-  tls: true
-  servername: pl.ru-msk.club
-  client-fingerprint: chrome
-  reality-opts:
-    public-key: nFJCJ2tvxLdLrc9G-O1laW8KDir5SDnaOTmYndVaOGQ
-    short-id: 7a3f9e2b1c8d4f6a
-- name: RU - zhuhai.uk 01
-  type: vless
-  server: 37.143.15.206
-  port: 443
-  uuid: 4599572f-bcfa-461e-bc73-d80e1ea65aa6
-  udp: true
-  network: tcp
-  flow: xtls-rprx-vision
-  tls: true
-  servername: 5post-gate.x5.ru
-  client-fingerprint: chrome
-  reality-opts:
-    public-key: OCRYYq4e92sQ-wWFRX6WX9pdvuFBWOqybLhpSiv3nFA
-    short-id: '111111'
-- name: AE - zhuhai.uk 01
-  type: vless
-  server: 45.59.120.217
-  port: 443
-  uuid: 8732f92b-ba85-48f7-92e4-ad029f1cd4e7
-  udp: true
-  network: tcp
-  tls: true
-  servername: strm.yandex.net
-  client-fingerprint: chrome
-  reality-opts:
-    public-key: mWxcYeYE-M3iE0RBjTzG88QI9kj2wivJDoIYDu_aG3w
-    short-id: 29c2dd1e3ef7c4d4
+  network: ws
+  ws-opts:
+    path: /
+    headers:
+      Host: openapi.next-ai.us.ci
