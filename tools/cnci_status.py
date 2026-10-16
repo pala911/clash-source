@@ -72,7 +72,8 @@ def read_remote_status():
     """
     import base64
     import urllib.error
-    tok_path = os.path.join(ROOT, ".aikey-token")
+    import urllib.request          # ⚠ 必须显式 import：这个文件从没引过它，
+    tok_path = os.path.join(ROOT, ".aikey-token")   # 漏了就是 AttributeError 崩掉
     if not os.path.exists(tok_path):
         return "", "缺 .aikey-token，跳过远端比对"
     tok = open(tok_path, encoding="utf-8").read().strip()
@@ -154,6 +155,9 @@ def main():
               % (remote or "（无）", ("  [%s]" % rerr) if rerr else ""))
         print("  本机这份（仅供参考）    : %s" % (read_local_status() or "（无）"))
 
+        if st.get("api_why"):
+            print("")
+            print("  ⚠ API 通道当时失败的原因: %s" % str(st["api_why"])[:160])
         if st.get("files"):
             print("")
             print("  每个文件的写入结果：")

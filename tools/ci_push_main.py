@@ -164,6 +164,9 @@ def record_status(st):
         #   实测踩过一次——state/ 写进去了、results/ 存档没进去，
         #   而留痕只说 ok-api，完全看不出来。
         "files": st.get("files") or [],
+        # 回退到 git 之后，最终状态会覆盖掉 API 那次失败的原因 —— 而那个原因
+        # 恰恰是最该看的（这次实测就吃了亏）。所以单独留一份。
+        "api_why": st.get("api_why") or "",
     }
     try:
         path = os.path.join(d0, STATUS_REL)
@@ -230,8 +233,11 @@ def commit_status():
 API = "https://api.github.com/repos/%s/contents/%s"
 
 
-API_TRIES = int(os.environ.get("API_TRIES", "3"))
-API_GAP = int(os.environ.get("API_GAP", "3"))
+# API 是主通道（实测能通），git 从国内基本不通（Empty reply from server）。
+# 所以多花点时间在 API 上重试划算：失败一轮的代价（一整轮探针白跑 +
+# 双视角分级少一轮）远大于多等十几秒。
+API_TRIES = int(os.environ.get("API_TRIES", "5"))
+API_GAP = int(os.environ.get("API_GAP", "5"))
 
 
 def api_call(url, pat, method="GET", body=None, timeout=60):
@@ -397,7 +403,12 @@ def main(st=None):
         return 0
     warn("Contents API 通道失败：%s" % why)
     warn("  回退到 git 通道（github.com:443 在国内常被挡，可能也不通）")
-    st.update(status="fail-api", ok=False, channel="", detail="API: %s" % why)
+    # ⚠ 2026-10-16 实测证据（云效杭州 -> github.com）：
+    #     fatal: unable to access ...：Empty reply from server
+    #   → git 通道从云效这边基本没照（典型的国内出口行为），主通道只有 Contents API。
+    #   这也是为什么要把 API 的重试预算调得比 git 多。
+    st.update(status="fail-api", ok=False, channel="",
+              detail="API: %s" % why, api_why=why)
 
     # ---- 通道 2：git clone + push ----
     git = find_git()
