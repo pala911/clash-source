@@ -253,9 +253,15 @@ L3（云效）**只有否决权、没有决定权**：
 | 达标 | 达标 | **T1** | 到处能用 |
 | 达标 | 不达标 | **T2** | 位置敏感，自动回收会排除它 |
 | 不达标 | 达标 | **T3** | 机房友好，低优先级 |
-| 不达标 | 不达标 | — | 到处都不行 |
+| 不达标 | 不达标 | **T4** | 两视角都不行，该考虑降级 |
 
 实测印证：`snakem982` 云效 0% / 本机 15.4% → **T2 位置敏感**（该源 63 个节点里 40 个是域名型免费中转，普遍封禁机房 IP）；`ermaozi` 云效 13.3% / 本机 2.9% → **T3 机房友好**。
+
+> ⚠ **T4 这一格曾经根本不存在。** 代码只有三个分支，`else` 同时吃掉了
+> 「本机差+云效达标」和「本机差+云效也差」，于是**到处都不行的源被标成
+> 「机房友好」**——而 T3 按规划要用于降优先级，这个标签是主动误导。
+> 更巧的是 12 个真实源里**没有一个落在第 4 格**，所以测试全绿也说明不了问题。
+> 现在 `test_health_tiering.py` 用合成源 `demo_t4` 覆盖该格，并断言**四格全覆盖**。
 
 > ⚠ 云效轮次不足 7 轮时分级显示 `?` 且**不参与回收判定**。
 > 单轮噪声实测 avg 5.5pp / max 16.7pp，与 8% 阈值同量级，单轮不可用于判定。
@@ -301,21 +307,25 @@ ok=0; for i in $(seq 1 8); do git fetch origin && git reset --hard origin/master
 ```powershell
 python tools\check_ci_scripts.py      # Python 3.6 静态门禁
 python tools\test_probe_wiring.py     # 探针 ↔ 稳定性档案 的接线
-python tools\test_health_tiering.py   # 双视角分级
+python tools\test_health_tiering.py   # 双视角分级（四格全覆盖）
 python tools\test_build_groups.py     # 质量分桶
 python tools\test_stability.py        # 节点稳定性加权
 python tools\test_flaky_reprobe.py    # 被移出的节点能否翻盘
+python tools\test_fault_injection.py  # 坏数据进来时是否明确报错
 python tools\verify_profile.py        # 真 mihomo 内核校验
 python tools\probe_field_types.py     # mihomo 接受哪些字段类型
 ```
 
-> ⚠️ **`test_probe_wiring.py` 是补漏加的**，而且它补的是一个真实的、长期存在
-> 的静默失败：`probe.node_fingerprints()` 漏 `import yaml`，每次调用抛
-> `NameError` 被 `except Exception: continue` 吞掉 → 稳定性档案**压根没生成**，
-> 而探针照常打印正常结果、退出码 0，**没有任何异常信号**。
->
-> `test_stability.py` 那时是全绿的 —— 因为它测的是 `node_stability.merge()` 这个
-> **模块**，而坏掉的是**模块与探针之间的连线**。
+> ⚠️ **`test_fault_injection.py`** 逐个把输入搞坏（截断 JSON、字段类型漂移、
+> 越界数值、空源清单），断言系统是**明确报错/明确降级**而不是静默按默认值走。
+> 它逮到过三个静默失败：健康档案损坏会**静默从零开始**（丢光累积的多轮历史）、
+> `sources: []` 会被**照单全收写回**（源清单进 git）、单源字段类型漂移会**崩掉整轮**。
+
+> ⚠️ **`test_probe_wiring.py`** 补的是一个真实的、长期存在的静默失败：
+> `probe.node_fingerprints()` 漏 `import yaml`，每次调用抛 `NameError` 被
+> `except Exception: continue` 吞掉 → 稳定性档案**压根没生成**，而探针照常
+> 打印正常结果、退出码 0。`test_stability.py` 那时是全绿的 —— 因为它测的是
+> `node_stability.merge()` 这个**模块**，坏掉的是**模块与探针之间的连线**。
 > **测模块不等于测接线。**
 
 ### ⚠ 为什么最后一道不能省
