@@ -18,18 +18,48 @@ def write_report(path, manifest, metas, warnings, per_source):
     L.append("- jsdelivr 备用：`https://cdn.jsdelivr.net/gh/%s/%s@gh-pages/profile.yaml`"
              % (manifest["owner"], manifest["repo"]))
     L.append("")
+    # 质量分桶必须写在报告最显眼处 —— 「为什么这个源在那组」是这套系统里
+    # 最需要向人解释、也最容易被质疑的决策。
+    rank = manifest.get("ranking") or {}
+    if rank:
+        L.append("## 质量分桶（决定手机上 AUTO 组里有哪些源）")
+        L.append("")
+        L.append("| 组 | 含义 | 源 |")
+        L.append("|---|---|---|")
+        L.append("| AUTO | 参与自动竞速 | %s |"
+                 % ("、".join(rank.get("auto") or []) or "-"))
+        L.append("| 备用 | 不自动竞速，手动切 | %s |"
+                 % ("、".join(rank.get("备用") or []) or "-"))
+        L.append("| 观察 | 本机实测不达标 | %s |"
+                 % ("、".join(rank.get("观察") or []) or "-"))
+        L.append("")
+        L.append("排序依据是**国内口径**（本机全量探针的多轮均值）。"
+                 "美国 CI 口径不用来排序 —— 实测 Spearman rho 仅 0.48，排名不可信。")
+        L.append("")
+        L.append("| 源 | 多轮均值 | 分组依据 |")
+        L.append("|---|---:|---|")
+        for n in sorted((rank.get("detail") or {})):
+            d = rank["detail"][n]
+            L.append("| %s | %s | %s |" % (n, ("%.1f%%" % d["rate"]) if d.get("rate") is not None else "-", d.get("why") or "-"))
+        L.append("")
     L.append("## 各源漏斗")
     L.append("")
-    L.append("| 源 | 原始 | 产出 | AI 剔除 | 镜像回退 | 备注 |")
-    L.append("|---|---:|---:|---:|---|---|")
+    L.append("| 源 | 原始 | 产出 | AI 剔除 | 镜像回退 | 分组 | 备注 |")
+    L.append("|---|---:|---:|---:|---|---|---|")
+    detail = (rank or {}).get("detail") or {}
+    bucket = {}
+    for b in ("auto", "备用", "观察"):
+        for n in (rank.get(b) or []):
+            bucket[n] = b
     for m in metas:
         note = m.get("error") or ""
         if m.get("mirror_used"):
             note = (note + " " if note else "") + "直连失败走镜像"
-        L.append("| %s | %s | %s | %s | %s | %s |"
+        L.append("| %s | %s | %s | %s | %s | %s | %s |"
                  % (m["name"], m.get("raw_nodes", "-"), m.get("kept", "-"),
                     (m.get("ai") or {}).get("dropped", "-"),
-                    "是" if m.get("mirror_used") else "否", note or "-"))
+                    "是" if m.get("mirror_used") else "否",
+                    bucket.get(m["name"], "-"), note or "-"))
     L.append("")
     L.append("合计产出 **%d** 节点（合并池 %d）。"
              % (manifest["totals"]["kept"], manifest["totals"]["merged"]))

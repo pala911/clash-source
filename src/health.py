@@ -100,11 +100,20 @@ def recent_mean(runs, scope, window, field="rate"):
 
     ⚠ 只用**已 settle 且非 incomplete** 的轮次。alive 在未测完时被系统性低估
       （实测 yypool 只测 5.1% 就退出，alive 报 6、真值 118），混进均值会污染。
+
+    ⚠ window 曾经收了却没用（文档说「最近 window 轮」，实现是「全部轮次」）。
+      单口径时代看不出问题，因为总轮数本来就 ≤ 12；但 build.py 的 AUTO 分桶
+      直接拿这个均值排序，窗口不封顶就等于让半年前的一轮和昨天的一轮等权 ——
+      源的质量变了排名却不动。必须真的按时间取最后 window 轮。
     """
-    vals = [r.get(field) for r in runs
-            if r.get("scope") == scope and r.get("settled", True)
-            and not r.get("incomplete") and r.get(field) is not None]
-    return (sum(vals) / len(vals), len(vals)) if vals else (None, 0)
+    picked = [r for r in runs
+              if r.get("scope") == scope and r.get("settled", True)
+              and not r.get("incomplete") and r.get(field) is not None]
+    picked = picked[-window:]
+    if not picked:
+        return None, 0
+    vals = [r.get(field) for r in picked]
+    return sum(vals) / len(vals), len(vals)
 
 
 def is_dup_run(runs, ts, scope):

@@ -41,6 +41,129 @@ def pages_base(owner, repo):
     return base
 
 
+HEALTH = os.path.join(ROOT, "state", "source_health.json")
+
+# 质量门槛（与 health.py 的 GOOD_RATE 保持一致）。低于它就不进 AUTO 竞速。
+GOOD_RATE = 8.0
+# AUTO 最多放几个源。url-test 会在这些源的全部节点上竞速，源太多会让
+# 探测开销和「靠数量取胜」的概率一起上升 —— 差源的节点数天然是多源的 4~6 倍。
+AUTO_MAX = 6
+AUTO_MIN = 3          # 少于这么多个就直接构建失败，宁可不更新也不要空组
+
+
+def load_health():
+    try:
+        import json
+        return json.load(open(HEALTH, encoding="utf-8")) or {}
+    except Exception:
+        return {}
+
+
+def rank_sources(names):
+    """按**国内口径**给源排序，决定它们进哪个组。
+
+    ## 为什么用国内口径而不是 CI（美国）的
+
+    实测 Spearman rho（美国 vs 国内）只有 0.48，排名不可信；且
+    shaoyouvip 美国 81.2%(#4) / 国内 6.2%(#11 垫底)。所以排序只能用国内。
+
+    ## 为什么主排序只看「本机」
+
+    健康档案里的 tier 是本机 × 云效的联合判定，但在云效攒够 7 轮之前
+    tier 恒为 "?"。若等 tier 才排序，等于让整个产出停摆。所以：
+      主排序 = 本机 rate（唯一有权判优的口径，已积累 23 轮）
+      tier=T2（位置敏感）额外降级到备用 —— 这一条等云效数据到位才生效
+
+    返回 {name: (rate, bucket, reason)}，bucket ∈ AUTO/备用/观察
+    """
+    hs = (load_health().get("sources") or {})
+    out = {}
+    for n in names:
+        rec = hs.get(n) or {}
+        rates = rec.get("tier_rates") or {}
+        # tier_rates 是最近若干轮的均值，比单轮稳；没有则回退到最后一轮
+        rate = rates.get("local")
+        if rate is None:
+            last = [r for r in (rec.get("runs") or []) if r.get("scope") == "local"]
+            rate = last[-1].get("rate") if last else None
+        tier = rec.get("tier") or "?"
+        if rate is None:
+            out[n] = (None, "观察", "无本机探针数据")
+        elif tier == "T2":
+            out[n] = (rate, "备用", "位置敏感（本机 %.1f%%/云效 %.1f%%）" % (rate, rates.get("cnci") or 0))
+        elif rate >= GOOD_RATE:
+            out[n] = (rate, "AUTO", "本机 %.1f%%" % rate)
+        elif rate > 0:
+            out[n] = (rate, "观察", "本机 %.1f%% 低于 %.0f%%" % (rate, GOOD_RATE))
+        else:
+            out[n] = (0.0, "观察", "本机 0 活")
+    return out
+
+
+def _src_group(name):
+    return {"name": "SRC-%s" % name, "type": "url-test", "use": [name],
+            "url": YOUTUBE, "expected-status": 204,
+            "interval": 300, "timeout": 5000}
+
+
+def _probe_group(name, gtype, members, interval):
+    return {"name": name, "type": gtype, "proxies": list(members),
+            "url": YOUTUBE, "expected-status": 204,
+            "interval": interval, "timeout": 5000}
+
+
+def build_groups(enabled_names, ranked):
+    """按质量分桶生成代理组，取代模板里手写的硬编码列表。
+
+    ## 为什么要动态生成
+
+    原模板把 AUTO 的 9 个候选写死，结果和实测质量是**反的**：
+      在 AUTO 里   ermaozi 本机 2.9%（通过率最低之一）
+      不在 AUTO 里 shaoyouvip 24.4%、automerge 29.3%（更好却被排除）
+    写得再仔细也一定会漂移 —— 源质量天天变，没有任何静态列表能跟上。
+    """
+    auto = sorted([n for n in enabled_names if ranked.get(n, (None,))[1] == "AUTO"],
+                  key=lambda n: -(ranked[n][0] or 0))
+    spare = sorted([n for n in enabled_names if ranked.get(n, (None,))[1] == "备用"],
+                   key=lambda n: -(ranked[n][0] or 0))
+    watch = sorted([n for n in enabled_names if ranked.get(n, (None,))[1] == "观察"],
+                   key=lambda n: -(ranked[n][0] or 0))
+    picked, dropped = auto[:AUTO_MAX], auto[AUTO_MAX:]
+
+    assert len(picked) >= AUTO_MIN, (
+        "达标源只有 %d 个（%s），不足 %d —— AUTO 组会变得不可用。"
+        "宁可构建失败也不要给你一个空/残缺的自动组。"
+        "（本机探针若长期没跑，这里就会失败，是预期行为）"
+        % (len(picked), "、".join(auto) or "无", AUTO_MIN))
+
+    groups = [_src_group(n) for n in enabled_names]
+    if picked:
+        groups.append(_probe_group("AUTO", "url-test",
+                                   ["SRC-%s" % n for n in picked], 120))
+    # 备用/观察用 select 而非 url-test：不参与自动竞速（省掉一半 url-test 开销），
+    # 需要时在手机上手动切。这样差源只占「可选」不占「自动」。
+    spare_members = (["SRC-%s" % n for n in spare + dropped] if (spare or dropped)
+                     else ["SRC-%s" % n for n in enabled_names])
+    groups.append({"name": "备用", "type": "select", "proxies": spare_members})
+    groups.append({"name": "观察", "type": "select",
+                   "proxies": ["SRC-%s" % n for n in watch] or spare_members})
+    # FAILOVER 兜底保留**全部**启用源 —— 自动组出问题时的安全网不能被质量分桶削掉
+    groups.append(_probe_group("FAILOVER", "fallback",
+                               ["AUTO"] + ["SRC-%s" % n for n in enabled_names], 60))
+    groups.append({"name": "PROXY", "type": "select",
+                   "proxies": ["FAILOVER", "AUTO", "备用", "观察"] +
+                              ["SRC-%s" % n for n in enabled_names]})
+    # ⚠ Claude / Gemini 也必须在这里重建，不能留在模板里。
+    #   它们是 rules 里唯二指向自定义组的目标（rule-set claude -> [Claude]）。
+    #   第一版替换整个 proxy-groups 时漏了这两个，内核 -t 直接报
+    #   `rules[43] [RULE-SET,claude,Claude] error: proxy [Claude] not found` ——
+    #   产出物在手机上**一进去就报错**，而所有 Python 断言都是绿的。
+    #   这就是为什么必须用真内核校验，断言只能验证你想到的东西。
+    for svc in ("Claude", "Gemini"):
+        groups.append({"name": svc, "type": "select", "use": list(enabled_names)})
+    return groups, picked, spare, watch
+
+
 def provider_block(name, url, exclude_filter):
     return {
         "type": "http",
@@ -69,16 +192,27 @@ def build_profile(enabled_sources, exclude_map, owner, repo):
             s["name"], base + "/nodes/%s.yaml" % s["name"],
             exclude_map.get(s["name"], ""))
 
+    names = [s["name"] for s in enabled_sources]
+    ranked = rank_sources(names)
+    groups, picked, spare, watch = build_groups(names, ranked)
+    # 模板里的 proxy-groups 整块丢弃：SRC-*/AUTO/FAILOVER/PROXY 全部改由
+    # build_groups 按实测质量动态生成。规则/ dns / 其他键仍保留模板的。
+    tpl["proxy-groups"] = groups
     tpl["proxy-providers"] = providers
-    # 组在模板里按 use: [provider名] 引用，provider 名沿用源名 -> 组无需改动
-    used = {n for g in tpl.get("proxy-groups", []) for n in (g.get("use") or [])}
-    missing = used - set(providers)
-    assert not missing, "模板里引用了未提供的 provider: %s" % missing
 
     # ---- 校验链（失败即中止，不产出坏 profile）----
+    used = {n for g in tpl["proxy-groups"] for n in (g.get("use") or [])}
+    missing = used - set(providers)
+    assert not missing, "生成的组引用了未提供的 provider: %s" % missing
+    # 每个 SRC-* 组都必须有对应的 provider，且每个 provider 都必须有一个 SRC-*
+    for g in tpl["proxy-groups"]:
+        if g["name"].startswith("SRC-"):
+            assert g["use"], "%s 没有 use 字段" % g["name"]
+    for n in providers:
+        assert any(g["name"] == "SRC-%s" % n for g in tpl["proxy-groups"]), \
+            "provider %s 没有对应的 SRC- 组" % n
+
     auto = [g for g in tpl["proxy-groups"] if g.get("url")]
-    assert len(auto) == len(providers) + 2, \
-        "自动组应为 len(SRC)+AUTO+FAILOVER = %d，实为 %d" % (len(providers) + 2, len(auto))
     for g in auto:
         assert g["url"] == YOUTUBE, "%s 探针非 youtube: %s" % (g["name"], g["url"])
     for n, p in providers.items():
@@ -87,7 +221,34 @@ def build_profile(enabled_sources, exclude_map, owner, repo):
         assert ".github.io/" in p["url"], "%s provider URL 未走 github.io" % n
     raw = yaml.safe_dump(tpl, allow_unicode=True, sort_keys=False, width=4096)
     assert "gstatic" not in raw, "残留 gstatic"
-    return tpl, base
+    # PROXY 必须引用存在的组，否则手机上一进去就报错
+    gp = {g["name"] for g in tpl["proxy-groups"]}
+    for g in tpl["proxy-groups"]:
+        for p in (g.get("proxies") or []):
+            assert p in gp or p in providers, "组 %s 引用了不存在的 %s" % (g["name"], p)
+    # **规则的目标也必须存在** —— 这是漏掉 Claude/Gemini 那次真正该有的断言。
+    # 组内部自洽（proxy 指向存在的组）并不够：rules 可以指向任何名字，
+    # 指向一个不存在的组时内核直接拒绝加载配置，而订阅脚本一进去就报错。
+    BUILTIN = {"DIRECT", "REJECT", "REJECT-DROP", "PASS", "COMPATIBLE", "GLOBAL"}
+    for r in (tpl.get("rules") or []):
+        parts = [x.strip() for x in r.split(",")]
+        if len(parts) < 2:
+            continue
+        tgt = parts[-2] if parts[-1] == "no-resolve" else parts[-1]
+        if tgt in BUILTIN or tgt in gp or tgt in providers:
+            continue
+        # 内核自带的规则类型（MATCH/DOMAIN-SUFFIX/...）第一段不是代理名
+        if parts[0] in ("MATCH", "FINAL"):
+            continue
+        raise AssertionError(
+            "规则 %r 指向不存在的目标 %r —— 现有组: %s。"
+            "订阅加载时会直接失败（之前漏掉 Claude/Gemini 就是这个症状）"
+            % (r, tgt, "、".join(sorted(gp))))
+    # ⚠ 分桶结果**不要**塞进 tpl：它会被写进 profile.yaml，给用户看一堆
+    #   下划线开头的内部字段。单独作为第三个返回值交给 run.py 记进 manifest。
+    ranking = {"auto": picked, "备用": spare, "观察": watch,
+               "detail": {k: {"rate": v[0], "why": v[2]} for k, v in ranked.items()}}
+    return tpl, base, ranking
 
 
 def dump_yaml(obj, header, path):

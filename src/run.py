@@ -260,7 +260,10 @@ def main():
         log("完成（调试）：%d 源 / 产出 %d 节点 / AI=%s" % (len(per_source), len(all_nodes), mode))
         return 0
 
-    profile, _ = build.build_profile(enabled, excl_map, owner, repo)
+    profile, _, ranking = build.build_profile(enabled, excl_map, owner, repo)
+    log("质量分桶（国内口径）：AUTO=%s" % ("、".join(ranking["auto"]) or "无"))
+    log("  备用=%s" % ("、".join(ranking["备用"]) or "无"))
+    log("  观察=%s" % ("、".join(ranking["观察"]) or "无"))
     if args.pages_base:
         for n, p in profile["proxy-providers"].items():
             p["url"] = p["url"].replace(build.pages_base(owner, repo), base)
@@ -274,6 +277,7 @@ def main():
         "repo": repo,
         "pages_base": base,
         "ai_mode": mode,
+        "ranking": ranking,
         "sources": [{
             "name": m["name"],
             "raw": m.get("raw_nodes"),
