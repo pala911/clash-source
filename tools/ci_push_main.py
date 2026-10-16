@@ -179,13 +179,17 @@ def commit_status():
     ⚠ 为什么必须提交：工作区跑完就被回收，不提交等于没留。
       失败同样只告警 —— 这条链路的铁律是「绝不因回传而让流水线变红」。
       并发保护照抄 ci_probe_run.push_result（先 rebase 再推一次，绝不 --force）。
+
+    ⚠ 用 find_git() 而不是 shutil.which("git")：本机没有系统 git，只有
+      portable-git。原来那样写会让「本机彩排」直接跳过这一整段 ——
+      于是最需要被验证的那部分代码，恰恰是**唯一没法在本机跑到的**。
     """
     d0 = status_dir()
     if not d0:
         return
-    git = shutil.which("git")
+    git = find_git()
     if not git:
-        warn("留痕提交跳过：PATH 里没有 git")
+        warn("留痕提交跳过：找不到 git（GIT_BIN / PATH / portable-git 都没有）")
         return
 
     def g(*a):
@@ -222,18 +226,44 @@ def commit_status():
 API = "https://api.github.com/repos/%s/contents/%s"
 
 
+API_TRIES = int(os.environ.get("API_TRIES", "3"))
+API_GAP = int(os.environ.get("API_GAP", "3"))
+
+
 def api_call(url, pat, method="GET", body=None, timeout=60):
-    req = urllib.request.Request(url, method=method)
-    req.add_header("Authorization", "token " + pat)
-    req.add_header("Accept", "application/vnd.github.v3+json")
-    req.add_header("User-Agent", "clash-source-cnci")
-    data = None
-    if body is not None:
-        data = json.dumps(body).encode("utf-8")
-        req.add_header("Content-Type", "application/json; charset=utf-8")
-    with urllib.request.urlopen(req, data=data, timeout=timeout) as r:
-        raw = r.read().decode("utf-8", "replace")
-    return json.loads(raw) if raw else {}
+    """调一次 GitHub API。重试是必须的：
+
+    ⚠ 2026-10-16 实测（本机 7897 代理）：urllib 会间歇性抛
+      `ssl.SSLEOFError: EOF occurred in violation of protocol` / `URLError`，
+      同一个 URL 立刻重试就成功。而单次抖动就会让
+      **整条 API 通道失败**：这条通道是主选（国内可直连），
+      退下去就是国内大概率也不通的 git 通道，这一轮就全废了。
+
+    ⚠ `HTTPError` **不重试**：那是明确的业务答复（比如 404 = 文件不存在），
+      重试只会把错误掩盖成慢。调用方按语义处理。
+    """
+    last = None
+    for i in range(API_TRIES):
+        req = urllib.request.Request(url, method=method)
+        req.add_header("Authorization", "token " + pat)
+        req.add_header("Accept", "application/vnd.github.v3+json")
+        req.add_header("User-Agent", "clash-source-cnci")
+        data = None
+        if body is not None:
+            data = json.dumps(body).encode("utf-8")
+            req.add_header("Content-Type", "application/json; charset=utf-8")
+        try:
+            with urllib.request.urlopen(req, data=data, timeout=timeout) as r:
+                raw = r.read().decode("utf-8", "replace")
+            return json.loads(raw) if raw else {}
+        except urllib.error.HTTPError:
+            raise
+        except Exception as e:                    # noqa: BLE001
+            last = e
+            if i + 1 < API_TRIES:
+                warn("API 第 %d 次抖动：%r，%d 秒后重试" % (i + 1, e, API_GAP))
+                time.sleep(API_GAP)
+    raise last
 
 
 def remote_stamp(repo, path_in_repo, pat):
