@@ -182,12 +182,22 @@ def node_fingerprints(node_files):
       用名字做键会让历史每天错位、可用率被清零重来。
       指纹取整份配置去掉 name 的哈希 —— 配置没变就是同一个节点。
     """
+    import yaml                      # ← 必须在这里导
     import node_stability as ns
     out = {}
+    skipped = []
     for name, path in node_files:
         try:
             data = yaml.safe_load(open(path, encoding="utf-8")) or {}
-        except Exception:
+        except Exception as e:
+            # ⚠ 只容忍「这个文件读不了」，不容忍任何别的错误。
+            #   这里原来写的是裸 `except Exception: continue`，结果一次
+            #   NameError（函数内漏 import yaml）被 12 个文件各吞一次，
+            #   整个函数静默返回 {}，稳定性档案**压根没生成**，
+            #   而探针照常打印正常结果、退出码 0 —— 没有任何异常信号。
+            #   一个连日志都没有的失败比报错更难查，所以这里必须把
+            #   跳过的文件逐个报出来。
+            skipped.append("%s(%s)" % (name, type(e).__name__))
             continue
         m = {}
         for p in (data.get("proxies") or []):
@@ -195,6 +205,9 @@ def node_fingerprints(node_files):
             if nm:
                 m[nm] = ns.fingerprint(p)
         out[name] = m
+    if skipped:
+        print("[probe] ⚠ %d 个节点文件无法生成指纹（稳定性档案会漏掉它们）：%s"
+              % (len(skipped), "、".join(skipped[:6])))
     return out
 
 
@@ -377,6 +390,11 @@ def main():
 
     # 节点级稳定性：只在本机全量轮次记录（详见 src/node_stability.py 顶部说明）。
     # 抽样轮次没被抽到的节点会被当成「这轮不可用」，混进去会污染可用率。
+    #
+    # ⚠ 判断条件用 scope 而不是 `if node_fp:`。空字典是 falsy，
+    #   那样写的话「一个指纹都没算出来」会**整段跳过且一个字都不打印** ——
+    #   这正是它第一次不生效时的情况（函数内漏 import yaml 被 except 吞掉）。
+    #   现在即使算不出指纹也照样走进去，把「为什么没有数据」说出来。
     node_out = {}
     node_fp = node_fingerprints(files) if args.scope == "local" else None
     rows = probe(files, mihomo, workdir, budget=args.budget, hc_timeout=args.hc_timeout,
@@ -384,7 +402,12 @@ def main():
                  node_fp=node_fp, node_out=node_out)
     if not rows:
         return 1
-    if node_fp:
+    if args.scope == "local":
+        if not node_fp:
+            print("[probe] ⚠ 稳定性档案：一个节点的指纹都没算出来，本轮不写入")
+        elif not node_out:
+            print("[probe] ⚠ 稳定性档案：指纹映射非空但没采到任何节点结果，"
+                  "本轮不写入（节点名对不上？）")
         try:
             import node_stability as ns
             n, why = ns.merge(node_out, scope=args.scope)

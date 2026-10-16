@@ -300,11 +300,23 @@ ok=0; for i in $(seq 1 8); do git fetch origin && git reset --hard origin/master
 
 ```powershell
 python tools\check_ci_scripts.py      # Python 3.6 静态门禁
+python tools\test_probe_wiring.py     # 探针 ↔ 稳定性档案 的接线
 python tools\test_health_tiering.py   # 双视角分级
 python tools\test_build_groups.py     # 质量分桶
 python tools\test_stability.py        # 节点稳定性加权
+python tools\test_flaky_reprobe.py    # 被移出的节点能否翻盘
 python tools\verify_profile.py        # 真 mihomo 内核校验
+python tools\probe_field_types.py     # mihomo 接受哪些字段类型
 ```
+
+> ⚠️ **`test_probe_wiring.py` 是补漏加的**，而且它补的是一个真实的、长期存在
+> 的静默失败：`probe.node_fingerprints()` 漏 `import yaml`，每次调用抛
+> `NameError` 被 `except Exception: continue` 吞掉 → 稳定性档案**压根没生成**，
+> 而探针照常打印正常结果、退出码 0，**没有任何异常信号**。
+>
+> `test_stability.py` 那时是全绿的 —— 因为它测的是 `node_stability.merge()` 这个
+> **模块**，而坏掉的是**模块与探针之间的连线**。
+> **测模块不等于测接线。**
 
 ### ⚠ 为什么最后一道不能省
 
