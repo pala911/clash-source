@@ -70,6 +70,9 @@ KEEP_RUNS = 12         # 每源保留最近 N 轮历史（**每个口径各留 N
 #   （理论噪声 5.5/sqrt(7) ≈ 2.1pp）后才参与回收判定。攒够之前只做展示分级。
 #   **两周后用实际累积数据回来校准 CNCI 的阈值**，别在此之前调这些常数。
 CNCI = os.path.join(ROOT, "state", "probe_cnci_latest.json")
+# 稳定性加权写出的「移出竞速池」节点文件的后缀（见 src/build.py 的 write_dist）。
+# 探针会测量它们（否则无法翻盘），但它们不是独立的源。
+FLAKY_SUFFIX = "--flaky"
 TIER_MIN_CNCI_RUNS = 7    # cnci 轮次不足就不参与回收判定（只展示分级）
 TIER_WINDOW = 7            # 取最近 N 轮算均值
 TIER_REQUIRE_CNCI = True   # True=回收需双视角同意；False=退回本机单视角
@@ -261,6 +264,15 @@ def main():
     unsettled = {}
     tiers = {}
     for name, r in sorted(rows.items()):
+        # ⚠ 跳过「不稳定节点」那部分产生的伪源名。
+        #   稳定性加权会把移出竞速池的节点写进 dist/nodes/<源>--flaky.yaml，
+        #   而探针的发现逻辑是 glob('*.yaml')，所以它们**确实会被测量** ——
+        #   这是刻意的：不测就永远无法翻盘。但它们不该作为独立「源」进档案。
+        #   今天不跳过也不会误降级（降级有 `name in src_by_name` 兜底），
+        #   但档案里会凭空多出「anaer--flaky」这种不存在的源、reports 里出现噪声，
+        #   攒到 bad_streak=3 还会让人误以为真出了个新源。直接过滤干净。
+        if name.endswith(FLAKY_SUFFIX):
+            continue
         if r.get("incomplete"):
             print("[health] %-24s 跳过本轮（探针未完成：%s/%s 节点已加载）"
                   % (name, r.get("nodes"), r.get("expected")))

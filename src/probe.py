@@ -29,7 +29,6 @@ Au1rxx 自测只保 TCP 存活、1745 个节点只有 2 个能穿 youtube）。
 
 产出：state/probe_latest.json（每源 nodes/tested/alive/rate/best_ms/settled）
 """
-import collections
 import glob
 import json
 import os
