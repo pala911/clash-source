@@ -101,7 +101,16 @@ def run(args, cwd=None, timeout=300):
     # ⚠ 故意用 stdout/stderr=PIPE 而不是 capture_output=（3.7+）
     p = subprocess.run(args, cwd=cwd, stdout=subprocess.PIPE,
                        stderr=subprocess.STDOUT, timeout=timeout, env=ENV)
-    return p.returncode, (p.stdout or b"").decode("utf-8", "replace")
+    out = (p.stdout or b"").decode("utf-8", "replace")
+    # ⚠ 必须脱敏。git 后备通道把令牌嵌在 URL 里
+    #   （https://x-access-token:<PAT>@github.com/...），
+    #   而 git 失败时的报错**经常把整个 URL 原样回显**。
+    #   那些输出会进 warn() -> 流水线日志 -> 云效组织内任何有日志权限的人可见。
+    #   codeup_push.py 早就做了这层（.replace(pw, "***")），这里漏了。
+    pat = os.environ.get("GH_PAT", "").strip()
+    if pat and pat in out:
+        out = out.replace(pat, "***")
+    return p.returncode, out
 
 
 def stamp_of(path):
