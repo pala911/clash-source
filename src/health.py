@@ -17,11 +17,14 @@
   **它的 IP 被 GFW 阻断、我根本连不上**。两者在数据上长得一模一样。
   美国 runner 能直连全球节点 IP，它说「0 活」才近似等于「这节点真废了」。
 
-  所以：**CI 每日判死，本机每周判优**（2026-10-14 决定不新增云资源、本机探针降频；
-  CI 每日跑是因为抓取更新才是日频刚需，跟探针无关）。
+  所以：**CI 判死，本机判优**（2026-10-14 决定不新增云资源；
+  本机探针 12:30 每日跑，CI 从 2026-10-16 起每 6 小时跑）。
 
 阈值：
-  - **降级极保守**：CI 连续 3 轮 0 活才进历史库，且永远只是 enabled=false 不删数据。
+  - **降级极保守**：CI 连续 3 轮 0 活、**且这些轮次横跨 ≥ 48 小时**才进历史库，
+    且永远只是 enabled=false 不删数据。
+    （跨度这条是 2026-10-16 加的：L1 的 cron 从每周提到每 6 小时后，
+     只数轮数会让判死从 3 周变成 18 小时 —— 见 DEAD_STREAK_HOURS。）
   - **回收积极**：本机 alive ≥ 5 且通过率 ≥ 8% 连续 2 轮就自动放回（宁可多试，不可错杀好源）。
   - 探针不完整（incomplete，大源没加载完）**不参与判定**，否则会把 2000 节点的
     autojiedian 误判成死源。
@@ -42,6 +45,14 @@ SOURCES = os.path.join(HERE, "sources.yaml")
 PROBE = os.path.join(ROOT, "state", "probe_latest.json")
 
 DEAD_STREAK = 3        # 连续 N 轮 0 活 -> 降级
+# 判死还必须**横跨**这么多小时。为什么不是只看轮数：
+#   「连续 3 轮 0 活」这条规则的本意是「持续观察三段时间」，不是「数三次」。
+#   2026-10-16 把 L1 的 cron 从「每周一」提到「每 6 小时」时会顺手把它变成
+#   **18 小时就判死**（原来是 3 周），而本机+云效的回收闸门要 2 轮本机 + 7 轮云效，
+#   代价不对称：误杀一个源要等好几天才可能收回来。
+#   所以改成「轮数 ≥ DEAD_STREAK **且** 首末轮相隔 ≥ DEAD_STREAK_HOURS」——
+#   对任何 cron 频率都自动等价于「观察满两天」，改频率不必再回来调常数。
+DEAD_STREAK_HOURS = 48
 GOOD_STREAK = 2        # 连续 N 轮达标 -> 回收
 GOOD_ALIVE = 5         # 「变好」的活节点下限（绝对值，不是比例）
 GOOD_RATE = 8.0        # 「变好」的通过率下限（%）
@@ -183,6 +194,21 @@ def recent_mean(runs, scope, window, field="rate"):
         return None, 0
     vals = [r.get(field) for r in picked]
     return sum(vals) / len(vals), len(vals)
+
+
+def _hours_between(t0, t1):
+    """两个 ISO(UTC) 时间戳之间的小时数。解析不了返回 None。
+
+    ⚠ 用 calendar.timegm + strptime 而不是 datetime.fromisoformat：
+      `fromisoformat` 是 Python 3.7+，而本仓有 3.6.8 的运行环境（云效）。
+    """
+    import calendar
+    try:
+        a = calendar.timegm(time.strptime(t0, "%Y-%m-%dT%H:%M:%SZ"))
+        b = calendar.timegm(time.strptime(t1, "%Y-%m-%dT%H:%M:%SZ"))
+    except Exception:
+        return None
+    return (b - a) / 3600.0
 
 
 def is_dup_run(runs, ts, scope):
@@ -336,10 +362,10 @@ def write_arch(cfg):
     os.makedirs(os.path.dirname(ARCHIVE), exist_ok=True)
     _atomic_write(ARCHIVE,
                   "# 历史库：曾启用但被判死的源。**源本体永不删除**，只是被摘掉。\n"
-                  "# 判据：真探针（youtube/generate_204）连续 %d 轮 0 活。\n"
+                  "# 判据：真探针（youtube/generate_204）连续 %d 轮 0 活，且横跨 ≥ %d 小时。\n"
                   "# 恢复：alive ≥ %d 且通过率 ≥ %s%% 连续 %d 轮 -> health.py 自动回填 enabled: true。\n"
                   "# ⚠ 探针 runner 在美国，判据偏保守（宁可多留，不可错杀）。\n"
-                  % (DEAD_STREAK, GOOD_ALIVE, GOOD_RATE, GOOD_STREAK)
+                  % (DEAD_STREAK, DEAD_STREAK_HOURS, GOOD_ALIVE, GOOD_RATE, GOOD_STREAK)
                   + yaml.safe_dump(cfg, allow_unicode=True, sort_keys=False, width=4096))
 
 
@@ -445,7 +471,8 @@ def main():
             print("[health] %-24s 跳过本轮（未测完：%s/%s 已测，alive 低估不可用）"
                   % (name, r.get("tested"), r.get("nodes")))
             continue
-        rec = hs.setdefault(name, {"runs": [], "bad_streak": 0, "good_streak": 0, "state": "active"})
+        rec = hs.setdefault(name, {"runs": [], "bad_streak": 0, "good_streak": 0,
+                                   "bad_since": None, "state": "active"})
         runs = rec.setdefault("runs", [])
         is_dup = is_dup_run(runs, ts, scope)
         if is_dup:
@@ -477,6 +504,7 @@ def main():
                             and x.get("hc_timeout_ms") is not None), None)
             if prev_to is not None and hc_to is not None and prev_to != hc_to:
                 rec["bad_streak"] = rec["good_streak"] = 0
+                rec["bad_since"] = None
                 print("[health] %-24s ⚠ hc_timeout %s -> %s ms，测量口径已变，"
                       "连续计数清零重新攒" % (name, prev_to, hc_to))
         alive, rate = r["alive"], r["rate"]
@@ -515,11 +543,22 @@ def main():
                 dup_sources.append(name)      # 复用同一套「本轮跳过」提示
             elif dead:
                 if scope == "ci" and not sampled:
+                    if not rec["bad_streak"]:
+                        # 记下「连续 0 活」是从哪一轮开始的。判死要用它算跨度，
+                        # 而不是数轮数 —— 理由见 DEAD_STREAK_HOURS 的注释。
+                        rec["bad_since"] = ts
+                    elif not rec.get("bad_since"):
+                        # 老档案（本次改动之前建的）没有这个字段。
+                        # 保守起见把起点当成「现在」：宁可晚判死，不可早判死。
+                        rec["bad_since"] = ts
+                        print("[health] %-24s 旧档案缺 bad_since，跨度从本轮重新起算"
+                              % name)
                     rec["bad_streak"] += 1
                 rec["good_streak"] = 0
             else:
                 # 两个口径一致认同的一点：只要有活节点，「没死」这个事实就成立
                 rec["bad_streak"] = 0
+                rec["bad_since"] = None
                 if scope == "local":
                     rec["good_streak"] = rec["good_streak"] + 1 if good else 0
 
@@ -576,17 +615,34 @@ def main():
 
         if rec["state"] == "active" and rec["bad_streak"] >= DEAD_STREAK:
             # 三重保险：bad_streak 只可能在 scope==ci 且非抽样时累积，这里再挡一次
+            span = _hours_between(rec.get("bad_since") or ts, ts)
             if scope != "ci" or sampled:
                 pass
+            elif span is None:
+                # 时间戳解析不出来 = 「我不知道这跨度有多久」，唯一正确的反应是
+                # 不判死（判死不可逆，回收要等好几天），但**必须说出来**，
+                # 否则又是一次静默失败。
+                print("[health] %-24s ⚠ 轮次时间戳无法解析（bad_since=%r），"
+                      "本轮不判死" % (name, rec.get("bad_since")))
+            # 再加一道**跨度**闸门：轮数够了还要看这些轮次横跨了多久。
+            # 只看轮数会随着 cron 提速而自动变激进（每 6 小时 = 18 小时判死，
+            # 原来是 3 周），而回收的代价高得多 —— 见 DEAD_STREAK_HOURS 的注释。
+            elif span < DEAD_STREAK_HOURS:
+                print("[health] %-24s 连续 %d 轮 0 活，但只横跨 %.1fh（< %dh）："
+                      "判死不提速（cron 变快不等于判死变快）"
+                      % (name, rec["bad_streak"], span, DEAD_STREAK_HOURS))
             elif name in src_by_name:
                 src_by_name[name]["enabled"] = False
-                src_by_name[name]["quarantine_reason"] = "真探针连续 %d 轮 0 活" % DEAD_STREAK
+                src_by_name[name]["quarantine_reason"] = \
+                    "真探针连续 %d 轮 0 活（横跨 %.0fh）" % (DEAD_STREAK, span)
                 changed_enabled.append("%s -> 降级入历史库" % name)
                 arch_by_name.setdefault(name, {})
                 arch_by_name[name].update({
                     "name": name, "url": src_by_name[name]["url"],
                     "note": src_by_name[name].get("note", ""),
-                    "quarantined_at": now, "quarantine_reason": "真探针连续 %d 轮 0 活" % DEAD_STREAK,
+                    "quarantined_at": now,
+                    "quarantine_reason": "真探针连续 %d 轮 0 活（横跨 %.0fh）"
+                                         % (DEAD_STREAK, span),
                 })
                 rec["state"] = "quarantined"
         elif rec["state"] == "quarantined" and rec["good_streak"] >= GOOD_STREAK:

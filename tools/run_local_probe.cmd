@@ -1,6 +1,7 @@
 @echo off
 REM ============================================================
-REM  clash-source local (China-scope) probe -- weekly entry point
+REM  clash-source local (China-scope) probe -- daily entry point
+REM  Scheduled task: \clash-source-local-probe, every day at 12:30.
 REM
 REM  NOTE: this file is ASCII-only ON PURPOSE. cmd.exe reads .cmd using the
 REM  OEM codepage (936/GBK on Chinese Windows). A UTF-8 .cmd with Chinese
@@ -12,10 +13,9 @@ REM  Manual runs (args are passed through to local_probe.py):
 REM    tools\run_local_probe.cmd --scope-only   skip probing, only archive+push
 REM    tools\run_local_probe.cmd --no-push      probe only, do not push
 REM
-REM  Why weekly and not daily: the China-scope probe only serves
-REM  "recall a recovered source" + "quality ranking". Source quality drifts on a
-REM  week/month scale. The actual daily need (node freshness) is handled by the
-REM  CI fetch pipeline and has nothing to do with probing.
+REM  This entry point NEVER touches dist/ -- it only pushes state/, archive/,
+REM  reports/ and src/sources.yaml. Node freshness is L1's job (every 6h).
+REM  (An earlier comment here claimed "weekly"; the scheduled task is daily.)
 REM ============================================================
 setlocal
 set ROOT=D:\work\agent\codebuddy\clash-source

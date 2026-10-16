@@ -37,8 +37,12 @@ profile 含两层，节点更新不必等 profile 刷新：
 
 | 层 | 文件 | 更新频率 |
 |---|---|---|
-| 结构层 | `profile.yaml` | 低频（每日） |
-| 节点层 | `nodes/*.yaml` | **每小时** |
+| 结构层 | `profile.yaml` | 每 6 小时（= L1 流水线一轮） |
+| 节点层 | `nodes/*.yaml` | 每 6 小时（同一条流水线里一起产出） |
+
+> ⚠ **两层是同一轮流水线一起重建的**，不是两个独立任务。
+> 而 **L2（本机探针）只推 `state/`，从不碰 `dist/`** ——
+> 所以「节点新不新鲜」完全取决于 L1 跑得勤不勤（见 §3）。
 
 ---
 
@@ -46,7 +50,7 @@ profile 含两层，节点更新不必等 profile 刷新：
 
 ```
     ┌────────────────────────────────────────────────────────────┐
-    │  每日（自动）  GitHub Actions（美国 runner）                 │
+    │  每 6 小时（自动）  GitHub Actions（美国 runner）            │
     │  抓取 12 源 → 硬过滤 → AI 审核 → build                     │
     │                                          │                  │
     │                              ┌───────────┴────────────┐     │
@@ -69,15 +73,24 @@ profile 含两层，节点更新不必等 profile 刷新：
        │                    │  与手机同源，唯一有权判优      │
        │                    └───────────────────────────────┘
        │
-       │   ┌────────────────────────────────┐      ┌──────────────────────────┐
-       ├──▶│ 每日 04:23 云效杭州（第二视角）│      │ 每日 美国 CI（判死唯一） │
-       │   │ scope=cnci，抽样 30/源，~75 秒 │      │ 连续 3 轮 0 活 → 降级    │
-       │   │ 结果推回主仓 state/            │      └──────────────────────────┘
+       │   ┌────────────────────────────────┐      ┌──────────────────────────────┐
+       ├──▶│ 每日 04:23 云效杭州（第二视角）│      │ 每 6 小时 美国 CI（判死唯一）│
+       │   │ scope=cnci，抽样 30/源，~75 秒 │      │ 连续 0 活且横跨 48h → 降级   │
+       │   │ 结果推回主仓 state/            │      └──────────────────────────────┘
        │   │ 对回收有**否决权**（无决定权）  │
        │   └────────────────────────────────┘
 ```
 
 云效那一层的数据经 `tools/ci_push_main.py` 推到主仓（Contents API 优先，git 兜底）。**推失败不影响探针**，结果仍安全存在 Codeup 的 `results/`。
+
+> ⚠ **截至 2026-10-16，这条回传管道一次都没真跑过。** 它 10-16 09:26 才随 payload
+> 部署到 Codeup，而当天 04:24 那轮跑的是旧内容。主仓里现有的 `results/` 与
+> `state/probe_cnci_latest.json` **全是本机手工补进去的**（历史里能看到
+> 「删除误推的合成存档」这类提交），不能当回传成功的证据。
+>
+> 第一次真跑 = **2026-10-17 04:23** 那轮。判据很简单：主仓
+> `state/probe_cnci_latest.json` 的 `probed_at` 自己变成当天。
+> 前提是云效流水线的变量里有 `GH_PAT` —— 没有它脚本会**直接跳过且不报错**。
 
 ---
 
@@ -85,7 +98,7 @@ profile 含两层，节点更新不必等 profile 刷新：
 
 | 层 | 位置 | 频率 | 规模 | **权限** | 成本 |
 |---|---|---|---|---|---|
-| **L1** | 美国 GitHub Actions | 每日 | 全量（~3800 节点） | **唯一有权判死**（降级） | public 仓免费 |
+| **L1** | 美国 GitHub Actions | **每 6 小时** | 全量（~3800 节点） | **唯一有权判死**（降级） | public 仓免费 |
 | **L2** | 你的 PC（计划任务） | **每日 12:30** | 全量 | **主判优**（排序分桶、节点加权） | 0 |
 | **L3** | 云效杭州 | 每日 04:23 | 抽样 30/源，75s | **回收的否决权** | 3000 核分额度用 **3.0%** |
 | 备份 | Gitee `andywx/ci-probe-test` | — | — | 内容与 Codeup 逐字节一致 | 0 |
@@ -96,7 +109,7 @@ profile 含两层，节点更新不必等 profile 刷新：
 
 ## 4. 各个模块的作用
 
-### 主流程（`src/`，每日 CI 跑）
+### 主流程（`src/`，每 6 小时的 CI 跑）
 
 | 模块 | 作用 | 关键点 |
 |---|---|---|
@@ -112,7 +125,8 @@ profile 含两层，节点更新不必等 profile 刷新：
 
 维护 `state/source_health.json`，就地改写 `sources.yaml` 的 `enabled`。
 
-- **降级**：CI 口径连续 3 轮 `alive == 0` → `enabled: false` + 移入 `archive/`
+- **降级**：CI 口径连续 3 轮 `alive == 0`，**且这些轮次横跨 >= 48 小时** → `enabled: false` + 移入 `archive/`
+  （跨度这条是 2026-10-16 加的：cron 从每周提到每 6 小时后，只数轮数会把判死从 3 周变成 18 小时）
 - **回收**：本机口径达标 2 轮 **且** 云效不否决 → `enabled: true`
 - **双视角分级**：本机 × 云效交叉，分 T1/T2/T3（见 §7）
 - 永不删除源本体，只改开关
@@ -278,7 +292,7 @@ L3（云效）**只有否决权、没有决定权**：
 | **L3 挂了** | 回收失去否决权（退回本机单视角）；订阅不受影响 | 低 | 主仓 `state/probe_cnci_latest.json` 停止更新 |
 | **本机连不上 GitHub** | 云效结果进不了主仓 | 低 | 分级显示「无云效口径数据」，其余正常 |
 | AI 后端全挂 | 不再剔除广告节点 | 中 | 节点名里出现引流信息 |
-| 某个源挂了 | 连续 3 轮 0 活后自动降级 | 无 | `sources.yaml` 里 `enabled: false` |
+| 某个源挂了 | 连续 3 轮 0 活、横跨 >= 48h 后自动降级 | 无 | `sources.yaml` 里 `enabled: false` |
 | **稳定性档案被污染** | 池子被误砍 | 中 | AUTO 里节点数骤减 |
 | 云效组织被删 | L3 停摆 + Codeup 仓库丢失 | 中（有备份） | `restore_codeup.py --apply` + 按 `CI_RECOVERY.md` 重建 |
 
@@ -302,19 +316,35 @@ tools\run_local_probe.cmd              # 跑 L2（+ --no-push / --scope-only）
 ok=0; for i in $(seq 1 8); do git fetch origin && git reset --hard origin/master && { ok=1; break; }; sleep 20; done; [ "$ok" = "1" ] && bash tools/sync_and_probe.sh || { echo "同步失败"; exit 1; }
 ```
 
-### 交付前必跑（全部四道）
+### 交付前必跑（全部九道）
 
 ```powershell
 python tools\check_ci_scripts.py      # Python 3.6 静态门禁
 python tools\test_probe_wiring.py     # 探针 ↔ 稳定性档案 的接线
-python tools\test_health_tiering.py   # 双视角分级（四格全覆盖）
+python tools\test_health_tiering.py   # 双视角分级（四格全覆盖）+ 判死轮数/跨度双闸门
 python tools\test_build_groups.py     # 质量分桶
 python tools\test_stability.py        # 节点稳定性加权
 python tools\test_flaky_reprobe.py    # 被移出的节点能否翻盘
 python tools\test_fault_injection.py  # 坏数据进来时是否明确报错
+python tools\test_provider_load.py    # 一个畸形节点会不会让整源加载失败（真内核）
 python tools\verify_profile.py        # 真 mihomo 内核校验
 python tools\probe_field_types.py     # mihomo 接受哪些字段类型
 ```
+
+> ⚠️ **`test_provider_load.py`** 补的是「**真内核跑起来整源消失**」这一类 ——
+> 2026-10-16 实测：`dist/nodes/autojiedian.yaml` 里一个 `sni: false`（布尔塞进
+> string 字段）让 mihomo 报 `'sni' expected type 'string'`，**892 个节点一个都没
+> 加载进来**，而当时 7 道门禁全绿：
+>
+> | 为什么没抓到 | 它验的是什么 |
+> |---|---|
+> | `test_fault_injection.py` | 坏**数据**进不进来（这个是合法 YAML、字段名也在白名单里） |
+> | `verify_profile.py` / `test_stability.py` 的 `mihomo -t` | **`-t` 不加载 provider** —— provider 的解析错误只在实例启动时才出现 |
+> | `probe_field_types.py` | 逐类型规则本身对不对，不是「产出物能不能加载」 |
+>
+> 和坑 §33 同一类：**provider 级失败是全有全无、不报错、只少一个源**。
+> 所以这个测试的**场景 A 必须复现基线**（原文件喂内核必须被拒），否则后面的
+> 「修复后能加载」什么都不证明。
 
 > ⚠️ **`test_fault_injection.py`** 逐个把输入搞坏（截断 JSON、字段类型漂移、
 > 越界数值、空源清单），断言系统是**明确报错/明确降级**而不是静默按默认值走。
@@ -354,6 +384,10 @@ python tools\probe_field_types.py     # mihomo 接受哪些字段类型
 | `.cmd` 用 LF 行尾 | 退出码传不出来 | **必须 CRLF** |
 | `grep -c` 掐死 `&&` 链 | 计数为 0 时后续不执行 | 写 `$(grep -c x f \|\| true)` |
 | 云端日志面板不可靠 | 跑满 67 秒只渲染部分输出 | 所以结果必须 commit 回仓库，**日志只用于排查** |
+| `mihomo -t` 不校验 provider | 配置校验 exit=0，实例一启动整源消失 | provider 的解析错误**只在实例启动时**才打进日志；`-t` 只验配置结构 |
+| 一个畸形节点毁掉整源 | 892 个节点 0 加载，日志只有一行 error | provider 级失败**全有全无**；字段**类型**不在白名单检查范围内（坑 §33） |
+| 测试把源清单改坏 | 跑一次 `test_health_tiering`，`src/sources.yaml` 变成历史库的内容 | 备份文件名用了 `os.path.basename` → `src/` 与 `archive/` 的 `sources.yaml` **撞名**互盖 |
+| 测试往源清单里追加合成源 | 报 `mapping values are not allowed here` | `sources:` 的条目缩进 2 格，且文件末尾是另一个顶层键 `excluded:` |
 
 ---
 
@@ -365,7 +399,7 @@ python tools\probe_field_types.py     # mihomo 接受哪些字段类型
 4. 跑 `python src\local_probe.py --no-push` 看真实国内通过率
 5. 通过率 < 5% 且稳定的，别加
 
-`src/discover.py` 每日自动从 GitHub 扫新共享源，但**只进 `data/discovered_pool.json` 候选池，绝不自动入池** —— 源的结论必须来自真探针。
+`src/discover.py` 每轮（schedule 触发时）自动从 GitHub 扫新共享源，但**只进 `data/discovered_pool.json` 候选池，绝不自动入池** —— 源的结论必须来自真探针。
 
 ---
 
