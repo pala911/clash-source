@@ -162,6 +162,7 @@ profile 含两层，节点更新不必等 profile 刷新：
 | `ci_probe_run.py` | 云端探针执行器：解压内核、vendor yaml、跑探针、commit 结果 |
 | `ci_push_main.py` | 把云效结果推回主仓（Contents API 优先，git 兜底，**永不失败**）；本轮结果落成 `results/push_main_last.json` |
 | `cnci_status.py` | 本机读上面那份留痕，直接给结论：回传通没通、为什么没通 |
+| `cnci_trigger.py` | 用云效 OpenAPI 触发/查看 L3 流水线（**接入点别弄错**，见 §9） |
 | `check_ci_scripts.py` | **Python 3.6 静态门禁**（28 个文件，交付前必跑） |
 | `test_stability.py` / `test_build_groups.py` / `test_health_tiering.py` | 三组回归测试 |
 | `verify_profile.py` | **用真 mihomo 内核校验生成的 profile**（见 §9） |
@@ -312,6 +313,8 @@ python tools\dispatch_workflow.py      # 触发 L1
 python tools\check_run.py              # 看运行状态
 tools\run_local_probe.cmd              # 跑 L2（+ --no-push / --scope-only）
 python tools\cnci_status.py            # 看 L3 -> 主仓 的回传通没通（不用翻云效日志）
+python tools\cnci_trigger.py            # 触发一轮云效探针，盯到结束，再自动读回传留痕
+python tools\cnci_trigger.py --status   # 只看云效最近几次运行，不触发
 ```
 
 > **`cnci_status.py`** 是 L3 那一层唯一的可读信号。回传链路刻意「绝不失败」
@@ -319,6 +322,17 @@ python tools\cnci_status.py            # 看 L3 -> 主仓 的回传通没通（�
 > `ci_push_main.py` 每轮往 Codeup 仓落一份 `results/push_main_last.json`，
 > 这个脚本 shallow-clone 出来直接给结论（回传正常 / 不通 + 原因 / 还没留痕过）。
 > 退出码 0=正常、1=不通或主仓落后、2=读不到。
+>
+> ⚠ **云效有两套 OpenAPI 接入点，用错必然 404/401**（2026-10-16 在这上面栽了整轮）：
+>
+> | 版本 | 接入点 | 流水线路径 |
+> |---|---|---|
+> | 中心版 | `https://openapi-rdc.aliyuncs.com` | `/oapi/v1/flow/organizations/{orgId}/pipelines` |
+> | **Region 版（我们）** | `https://{实例访问域名}` = 控制台那个 host | `/oapi/v1/flow/pipelines`（**不带 organizationId**） |
+>
+> 鉴权头一律 `x-yunxiao-token: pt-...`。找接口时的判据：
+> `401 InvalidToken` = 路由存在但鉴权没过；`404 NotFound` = 没有这条路由；
+> `200 + HTML` = 被控制台 SPA 兜底了、根本不是接口。
 
 云效 → 流水线 → 运行。命令行：
 

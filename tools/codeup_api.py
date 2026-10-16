@@ -1,11 +1,24 @@
 # -*- coding: utf-8 -*-
-"""Codeup(云效) API 探路：列出组织 / 仓库，定位用户刚建的空仓。
+"""Codeup(云效) API 探路：列出组织 / 仓库。
 
-API 接入点按地域区分（云效 Region 版本）：
-  devops.cn-shenzhen.aliyuncs.com   <- 用户控制台是 cn-shenzhen
-  devops.cn-hangzhou.aliyuncs.com
-  devops.aliyuncs.com               <- 经典版
-鉴权头：x-yunxiao-token: <个人访问令牌>
+⚠ 下面这组 host 是**错的**（2026-10-16 实测）：`devops.cn-shenzhen.aliyuncs.com`
+  在阿里 DNS / 114 上都是 NXDOMAIN。云效只有两套接入点：
+
+    中心版 : https://openapi-rdc.aliyuncs.com
+             /oapi/v1/flow/organizations/{organizationId}/pipelines/...
+    Region版: https://{实例访问域名}      <- 就是控制台那个 host
+             /oapi/v1/flow/pipelines/...    <- **不带 organizationId**
+
+  我们是 Region 版：host = myxk-cn-shenzhen.devops.aliyuncs.com。
+  鉴权头一律 `x-yunxiao-token: pt-...`。
+
+  判据（找接口时极好用，省一整轮瞎猜）：
+    401 InvalidToken -> 路由存在、鉴权没过
+    404 NotFound     -> 这条路由不存在
+    200 + HTML       -> 被控制台 SPA 兜底了，不是接口
+
+  已经跑通的调用见 tools/cnci_trigger.py（触发流水线）
+  与 tools/cnci_status.py（读回传留痕）。
 """
 import json
 import os

@@ -112,6 +112,16 @@ ok=0; for i in $(seq 1 8); do git fetch origin && git reset --hard origin/master
 
 然后去 Codeup 仓库确认出现了 `results/` 目录 —— **那才说明采集数据开始积累了**。
 
+也可以不进控制台，直接在本机触发并看结果：
+
+```powershell
+python tools\cnci_trigger.py            # 触发一轮 + 盯到结束 + 读回传留痕
+python tools\cnci_trigger.py --status   # 只看运行历史
+```
+
+> ⚠ 接入点别弄错：中心版是 `openapi-rdc.aliyuncs.com`，**Region 版用实例访问域名**（就是控制台那个 host），路径也不一样（Region 版不带 organizationId）。
+
+
 再确认一件同样重要的事：**回传主仓有没有真的成功**。
 
 ```powershell
