@@ -95,6 +95,10 @@ profile 含两层，节点更新不必等 profile 刷新：
 > （`fatal: unable to access ...：Empty reply from server`），
 > Contents API 才是主通道，而且**会间歇失败**（同一天 19 ✓ / 20 ✗ / 21 ✓）——
 > 所以 API 重试提到了 5 次，留痕也会把 API 那次失败的原因单独记下来。
+>
+> ⚠ git 后备通道现在有**总墙钟预算**（`PUSH_GIT_DEADLINE`，默认 150 秒）：
+> 预算用完就认输（`status=fail-git-timeout`）。加它是因为实测一次回退把一轮
+> 从 90 秒拖到 **578 秒（核分 3 → 19，6 倍）**，而结果还是失败。
 
 ---
 
