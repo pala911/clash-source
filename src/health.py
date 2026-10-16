@@ -457,6 +457,50 @@ def write_arch(cfg):
                   + yaml.safe_dump(cfg, allow_unicode=True, sort_keys=False, width=4096))
 
 
+def compute_tier(rec):
+    """按**历史轮次**算双视角分级，写回 rec，返回 tier。
+
+    ⚠ 为什么独立成函数：分级读的是 runs 里的历史，与「本轮数据完不完整」无关，
+      所以它必须在 incomplete / 未测完 的跳过判断**之外**无条件调用。
+      原来它嵌在 `continue` 之后，于是本机测不完的源分级会被永久冻结 ——
+      实测 autojiedian 云效已 9 轮，界面还显示「云效仅 1/7 轮」。
+
+    cnci 只看 rate、绝不看 alive：抽样 30 个节点时 alive>=5 相当于通过率
+    >= 16.7%，而本机全量 300 节点时 alive>=5 只相当于 >= 1.7%，
+    同一个绝对阈值在两边含义差 10 倍，直接比会得出荒谬结论。
+    """
+    runs = rec.get("runs") or []
+    lrate, ln = recent_mean(runs, "local", TIER_WINDOW)
+    crate, cn = recent_mean(runs, "cnci", TIER_WINDOW)
+    if os.environ.get("HEALTH_DEBUG"):
+        # 留着的理由：这个块曾经静默失效过一次（主探针重复轮次提前 continue，
+        # 分级永远停在第一次快照），症状是「云效明明跑了却没反应」——
+        # 光看 code 很难看出来。设 HEALTH_DEBUG=1 能看到它到底看见了什么。
+        import collections
+        print("[DEBUG] runs列表长=%d 各口径=%s cnci轮=%d" %
+              (len(runs), dict(collections.Counter(
+                  x.get("scope") for x in runs)), cn))
+    cnci_ready = cn >= TIER_MIN_CNCI_RUNS
+    if lrate is None:
+        tier, why = "?", "无本机口径数据"
+    elif crate is None:
+        tier, why = "?", "无云效口径数据"
+    elif not cnci_ready:
+        tier, why = "?", "云效仅 %d/%d 轮，样本不足" % (cn, TIER_MIN_CNCI_RUNS)
+    elif lrate >= GOOD_RATE and crate >= GOOD_RATE:
+        tier, why = "T1", "两视角均达标"
+    elif lrate >= GOOD_RATE:
+        tier, why = "T2", "本机 %.1f%%/云效 %.1f%% -> 位置敏感" % (lrate, crate)
+    elif crate >= GOOD_RATE:
+        tier, why = "T3", "本机 %.1f%%/云效 %.1f%% -> 机房友好" % (lrate, crate)
+    else:
+        # ⚠ 这一格以前不存在（四格表里第 4 行被 else 吃掉了，T3 主动误导）。
+        tier, why = "T4", "本机 %.1f%%/云效 %.1f%% -> 两视角都不达标" % (lrate, crate)
+    rec["tier"], rec["tier_why"] = tier, why
+    rec["tier_rates"] = {"local": lrate, "cnci": crate, "cnci_runs": cn}
+    return tier
+
+
 def main():
     import yaml
     probe = load_probe()
@@ -545,152 +589,127 @@ def main():
         #   攒到 bad_streak=3 还会让人误以为真出了个新源。直接过滤干净。
         if name.endswith(FLAKY_SUFFIX):
             continue
-        if r.get("incomplete"):
-            print("[health] %-24s 跳过本轮（探针未完成：%s/%s 节点已加载）"
-                  % (name, r.get("nodes"), r.get("expected")))
-            continue
-        # ⚠ 未 settle（还有节点没跑到探测结果）的源，alive 被**系统性低估** ——
-        #   2026-10-15 实踩：yypool 只测了 5.1% 就退出，alive 报 6（真值 118），
-        #   而 rate 却是 13.0%（真值 13.1%）几乎看不出异常。只看 rate 根本发现不了。
-        #   因为「变好」判据是 alive >= 5，低估会让好源看起来变差 -> good_streak
-        #   被清零 -> 回收永远不触发。这类源只记录、不参与自动判定。
-        if not r.get("settled", True):
-            unsettled[name] = r
-            print("[health] %-24s 跳过本轮（未测完：%s/%s 已测，alive 低估不可用）"
-                  % (name, r.get("tested"), r.get("nodes")))
-            continue
         rec = hs.setdefault(name, {"runs": [], "bad_streak": 0, "good_streak": 0,
                                    "bad_since": None, "state": "active"})
         runs = rec.setdefault("runs", [])
-        is_dup = is_dup_run(runs, ts, scope)
-        if is_dup:
-            dup_sources.append(name)
-            # ⚠ 这里原来是无条件 continue，那是个真 bug：
-            #   主探针重复（local_probe --scope-only / CI 重试 / 手动再跑一次）
-            #   时会**整段跳过**下面的分级计算 —— 而云效那一轮恰恰是刚刚
-            #   新追加进来的。结果是：云效每天都跑了新数据，分级却永远停在
-            #   第一次的快照上，看起来像「云效的数据没生效」。
-            #   所以改成：只跳过 streak 累积与升降级，分级照算。
-            is_new = False
-        else:
-            is_new = True
-            runs.append({"ts": ts, "scope": scope, "sampled": bool(r.get("is_sampled")),
-                         "hc_timeout_ms": hc_to,
-                         "nodes": r["nodes"], "alive": r["alive"], "rate": r["rate"],
-                         "best_ms": r["best_ms"]})
-            # ⚠ 同上：回写局部变量，否则下面的 recent_mean 读到的是旧列表。
-            runs = trim_runs(runs)
-            rec["runs"] = runs
-            # ⚠ hc_timeout 直接线性偏置 alive（shaoyouvip 单源实测：
-            #   2s/3s -> 0 活，5s -> 1 活，8s -> 4 活，15s -> 6 活）。
-            #   换了这个参数，前后两轮的 alive 就不可比了 —— 拿旧口径攒的 streak
-            #   去判新口径的升降级是错的。参数一变就清零重新攒。
-            #   ⚠ 只跟**同一口径**的历史比：cnci 改了超时不该把本机的 streak 清零，
-            #   反之亦然（那是两个不同视角的测量口径，各自独立）。
-            prev_to = next((x.get("hc_timeout_ms") for x in reversed(runs[:-1])
-                            if x.get("scope") == scope
-                            and x.get("hc_timeout_ms") is not None), None)
-            if prev_to is not None and hc_to is not None and prev_to != hc_to:
-                rec["bad_streak"] = rec["good_streak"] = 0
-                rec["bad_since"] = None
-                print("[health] %-24s ⚠ hc_timeout %s -> %s ms，测量口径已变，"
-                      "连续计数清零重新攒" % (name, prev_to, hc_to))
-        alive, rate = r["alive"], r["rate"]
-        sampled = bool(r.get("is_sampled"))
-
-        # --- 判定（2026-10-14 修正，这里原有真实 bug）---
-        # 两条计数器**各自独占一种口径**，对称且互不干扰：
-        #
-        #   bad_streak  只由 CI（美国）口径累积 —— 判死。
-        #     因为从国内看 alive=0 是**歧义的**：节点真死了？或它的 IP 被 GFW 阻断、
-        #     我们根本连不上？美国 runner 能直连全球节点 IP，它说 0 活才可信。
-        #     （反过来说，也正因为如此，「判死」不能搬到任何国内机器上去做。）
-        #
-        #   good_streak 只由本机（国内）口径累积 —— 判优 / 回收。
-        #     原实现里 else 分支（alive>0 但 rate 未达标）会无条件清零 good_streak，
-        #     而 CI 每天都在跑，于是本机攒的 good_streak 每天被抹掉，
-        #     「变好回收」永远达不到 GOOD_STREAK —— 那是死代码。
-        #     美国口径也不该参与：实测 ssrsub 美国#2/国内#2 尚可，但 shaoyouvip
-        #     美国 81.2%(#4) / 国内 6.2%(#11 垫底)，Spearman rho 仅 0.48，不可信。
-        #
-        # 另加两条护栏（给「国内第三方 CI + 抽样」这条路用的）：
-        #   抽样数据永远不参与降级。n=30、真实通过率 10% 时抽 30 个全死的概率
-        #   = 0.9^30 ≈ 4.2%，一轮 12 源就有 40% 概率至少错判一个。
-        #   scope=cnci **不参与降级**（判死仍然只由美国 CI 口径做，铁律①不动），
-        #   但从 2026-10-15 起它对**回收**有否决权（见下面的 tier 闸门）。
-        dead = (alive == 0)
-        # ⚠ rate 可能是 None（sanitize_rows 把不合格的字段置空了）。
-        #   此时**必须整段跳过该源的 streak 累积**，而不是当成「不达标」。
-        #   区别很大：当成不达标 -> good_streak 被清零；而如果 alive 恰好是 0，
-        #   还会去累加 bad_streak -> **触发降级**，那是不可逆的误杀。
-        #   数据坏掉时唯一正确的反应是「这一轮我不知道」，不是「这一轮它差」。
-        rate_unknown = (rate is None)
-        good = (not rate_unknown) and alive >= GOOD_ALIVE and rate >= GOOD_RATE
-        if is_new:
-            if rate_unknown:
-                dup_sources.append(name)      # 复用同一套「本轮跳过」提示
-            elif dead:
-                if scope == "ci" and not sampled:
-                    if not rec["bad_streak"]:
-                        # 记下「连续 0 活」是从哪一轮开始的。判死要用它算跨度，
-                        # 而不是数轮数 —— 理由见 DEAD_STREAK_HOURS 的注释。
-                        rec["bad_since"] = ts
-                    elif not rec.get("bad_since"):
-                        # 老档案（本次改动之前建的）没有这个字段。
-                        # 保守起见把起点当成「现在」：宁可晚判死，不可早判死。
-                        rec["bad_since"] = ts
-                        print("[health] %-24s 旧档案缺 bad_since，跨度从本轮重新起算"
-                              % name)
-                    rec["bad_streak"] += 1
-                rec["good_streak"] = 0
+        # 本轮能不能用（incomplete / 未测完）：只影响 streak 与升降级，
+        # **不影响分级** —— 分级读的是历史轮次，见下面分级那段的注释。
+        skip = None
+        if r.get("incomplete"):
+            skip = "incomplete"
+        elif not r.get("settled", True):
+            skip = "unsettled"
+            unsettled[name] = r
+        is_new = False
+        if skip is None:
+            is_dup = is_dup_run(runs, ts, scope)
+            if is_dup:
+                dup_sources.append(name)
+                # ⚠ 这里原来是无条件 continue，那是个真 bug：
+                #   主探针重复（local_probe --scope-only / CI 重试 / 手动再跑一次）
+                #   时会**整段跳过**下面的分级计算 —— 而云效那一轮恰恰是刚刚
+                #   新追加进来的。结果是：云效每天都跑了新数据，分级却永远停在
+                #   第一次的快照上，看起来像「云效的数据没生效」。
+                #   所以改成：只跳过 streak 累积与升降级，分级照算。
+                is_new = False
             else:
-                # 两个口径一致认同的一点：只要有活节点，「没死」这个事实就成立
-                rec["bad_streak"] = 0
-                rec["bad_since"] = None
-                if scope == "local":
-                    rec["good_streak"] = rec["good_streak"] + 1 if good else 0
+                is_new = True
+                runs.append({"ts": ts, "scope": scope, "sampled": bool(r.get("is_sampled")),
+                             "hc_timeout_ms": hc_to,
+                             "nodes": r["nodes"], "alive": r["alive"], "rate": r["rate"],
+                             "best_ms": r["best_ms"]})
+                # ⚠ 同上：回写局部变量，否则下面的 recent_mean 读到的是旧列表。
+                runs = trim_runs(runs)
+                rec["runs"] = runs
+                # ⚠ hc_timeout 直接线性偏置 alive（shaoyouvip 单源实测：
+                #   2s/3s -> 0 活，5s -> 1 活，8s -> 4 活，15s -> 6 活）。
+                #   换了这个参数，前后两轮的 alive 就不可比了 —— 拿旧口径攒的 streak
+                #   去判新口径的升降级是错的。参数一变就清零重新攒。
+                #   ⚠ 只跟**同一口径**的历史比：cnci 改了超时不该把本机的 streak 清零，
+                #   反之亦然（那是两个不同视角的测量口径，各自独立）。
+                prev_to = next((x.get("hc_timeout_ms") for x in reversed(runs[:-1])
+                                if x.get("scope") == scope
+                                and x.get("hc_timeout_ms") is not None), None)
+                if prev_to is not None and hc_to is not None and prev_to != hc_to:
+                    rec["bad_streak"] = rec["good_streak"] = 0
+                    rec["bad_since"] = None
+                    print("[health] %-24s ⚠ hc_timeout %s -> %s ms，测量口径已变，"
+                          "连续计数清零重新攒" % (name, prev_to, hc_to))
+            alive, rate = r["alive"], r["rate"]
+            sampled = bool(r.get("is_sampled"))
+
+            # --- 判定（2026-10-14 修正，这里原有真实 bug）---
+            # 两条计数器**各自独占一种口径**，对称且互不干扰：
+            #
+            #   bad_streak  只由 CI（美国）口径累积 —— 判死。
+            #     因为从国内看 alive=0 是**歧义的**：节点真死了？或它的 IP 被 GFW 阻断、
+            #     我们根本连不上？美国 runner 能直连全球节点 IP，它说 0 活才可信。
+            #     （反过来说，也正因为如此，「判死」不能搬到任何国内机器上去做。）
+            #
+            #   good_streak 只由本机（国内）口径累积 —— 判优 / 回收。
+            #     原实现里 else 分支（alive>0 但 rate 未达标）会无条件清零 good_streak，
+            #     而 CI 每天都在跑，于是本机攒的 good_streak 每天被抹掉，
+            #     「变好回收」永远达不到 GOOD_STREAK —— 那是死代码。
+            #     美国口径也不该参与：实测 ssrsub 美国#2/国内#2 尚可，但 shaoyouvip
+            #     美国 81.2%(#4) / 国内 6.2%(#11 垫底)，Spearman rho 仅 0.48，不可信。
+            #
+            # 另加两条护栏（给「国内第三方 CI + 抽样」这条路用的）：
+            #   抽样数据永远不参与降级。n=30、真实通过率 10% 时抽 30 个全死的概率
+            #   = 0.9^30 ≈ 4.2%，一轮 12 源就有 40% 概率至少错判一个。
+            #   scope=cnci **不参与降级**（判死仍然只由美国 CI 口径做，铁律①不动），
+            #   但从 2026-10-15 起它对**回收**有否决权（见下面的 tier 闸门）。
+            dead = (alive == 0)
+            # ⚠ rate 可能是 None（sanitize_rows 把不合格的字段置空了）。
+            #   此时**必须整段跳过该源的 streak 累积**，而不是当成「不达标」。
+            #   区别很大：当成不达标 -> good_streak 被清零；而如果 alive 恰好是 0，
+            #   还会去累加 bad_streak -> **触发降级**，那是不可逆的误杀。
+            #   数据坏掉时唯一正确的反应是「这一轮我不知道」，不是「这一轮它差」。
+            rate_unknown = (rate is None)
+            good = (not rate_unknown) and alive >= GOOD_ALIVE and rate >= GOOD_RATE
+            if is_new:
+                if rate_unknown:
+                    dup_sources.append(name)      # 复用同一套「本轮跳过」提示
+                elif dead:
+                    if scope == "ci" and not sampled:
+                        if not rec["bad_streak"]:
+                            # 记下「连续 0 活」是从哪一轮开始的。判死要用它算跨度，
+                            # 而不是数轮数 —— 理由见 DEAD_STREAK_HOURS 的注释。
+                            rec["bad_since"] = ts
+                        elif not rec.get("bad_since"):
+                            # 老档案（本次改动之前建的）没有这个字段。
+                            # 保守起见把起点当成「现在」：宁可晚判死，不可早判死。
+                            rec["bad_since"] = ts
+                            print("[health] %-24s 旧档案缺 bad_since，跨度从本轮重新起算"
+                                  % name)
+                        rec["bad_streak"] += 1
+                    rec["good_streak"] = 0
+                else:
+                    # 两个口径一致认同的一点：只要有活节点，「没死」这个事实就成立
+                    rec["bad_streak"] = 0
+                    rec["bad_since"] = None
+                    if scope == "local":
+                        rec["good_streak"] = rec["good_streak"] + 1 if good else 0
 
         # --- 双视角分级（2026-10-15 新增，见文件头 TIER_* 常量的说明）---
         # 两个视角都是**固定**的，而用户的手机在移动。所以单点达标不等于
         # 到处可用；反过来，单点不达标也不等于到处不可用。分歧要单独标出来。
-        lrate, ln = recent_mean(runs, "local", TIER_WINDOW)
-        crate, cn = recent_mean(runs, "cnci", TIER_WINDOW)
-        if os.environ.get("HEALTH_DEBUG"):
-            # 留着的理由：这个块曾经静默失效过一次（主探针重复轮次提前 continue，
-            # 分级永远停在第一次快照），而症状是「云效明明跑了却没反应」——
-            # 光看 code 很难看出来。设 HEALTH_DEBUG=1 就能看到它到底看见了什么。
-            import collections
-            print("[DEBUG] %s runs列表长=%d 各口径=%s cnci轮=%d" %
-                  (name, len(runs), dict(collections.Counter(
-                      x.get("scope") for x in runs)), cn))
-        # cnci 只看 rate、绝不看 alive：抽样 30 个节点时 alive>=5 相当于
-        # 通过率 >= 16.7%，而本机全量 300 节点时 alive>=5 只相当于 >= 1.7%，
-        # 同一个绝对阈值在两边的含义差 10 倍，直接比会得出荒谬结论。
-        cnci_ready = cn >= TIER_MIN_CNCI_RUNS
-        if lrate is None:
-            tier, why = "?", "无本机口径数据"
-        elif crate is None:
-            tier, why = "?", "无云效口径数据"
-        elif not cnci_ready:
-            tier, why = "?", "云效仅 %d/%d 轮，样本不足" % (cn, TIER_MIN_CNCI_RUNS)
-        elif lrate >= GOOD_RATE and crate >= GOOD_RATE:
-            tier, why = "T1", "两视角均达标"
-        elif lrate >= GOOD_RATE:
-            tier, why = "T2", "本机 %.1f%%/云效 %.1f%% -> 位置敏感" % (lrate, crate)
-        elif crate >= GOOD_RATE:
-            tier, why = "T3", "本机 %.1f%%/云效 %.1f%% -> 机房友好" % (lrate, crate)
-        else:
-            # ⚠ 这一格以前不存在。四格表（README §7）里第4 行是「两边都差 ->
-            #   到处都不行」，但代码只有三个分支，else 把「本机差+云效也差」
-            #   和「本机差+云效达标」混在一起，统统标成 T3「机房友好」。
-            #   危害不是显示难看：T3 按规划要用于**降优先级**，一个到处都不行的
-            #   源被标成「机房友好」等于**主动误导**——运维看到 T3 会以为
-            #   「家里不行但机房能用，值得留」，而事实是两头都不行。
-            #   真实数据里 snakem982 就是这一格：本机 4 轮均值 5.5% / 云效 0.0%。
-            tier, why = "T4", "本机 %.1f%%/云效 %.1f%% -> 两视角都不达标" % (lrate, crate)
-        rec["tier"], rec["tier_why"] = tier, why
-        rec["tier_rates"] = {"local": lrate, "cnci": crate, "cnci_runs": cn}
+        #
+        # ⚠ 必须在「本轮跳过」判断**之外**算：分级读的是**历史轮次**（含云效），
+        #   跟本轮完不完整毫无关系。原实现把分级放在两个 `continue` 之后，
+        #   于是**本机探针测不完的源，分级永远冻在最后一次能算的那轮上** ——
+        #   实测 autojiedian 云效已经有 9 轮了，界面还显示「云效仅 1/7 轮」。
+        #   这与「重复轮次不得跳过分级」是同一个坑的另一条漏网。
+        tier = compute_tier(rec)
         tiers[name] = tier
+
+        if skip == "incomplete":
+            print("[health] %-24s 跳过本轮（探针未完成：%s/%s 节点已加载）"
+                  % (name, r.get("nodes"), r.get("expected")))
+            continue
+        if skip == "unsettled":
+            print("[health] %-24s 跳过本轮（未测完：%s/%s 已测，alive 低估不可用）"
+                  % (name, r.get("tested"), r.get("nodes")))
+            continue
 
         # ⚠ 升降级只在**新增**轮次时执行。重复轮次上重复执行会让
         #   「刚被降级、紧接着重跑一次」立刻又升回来，等于取消降级。
