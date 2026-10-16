@@ -25,6 +25,7 @@ L1 那样的可调用入口。这次是把云效 OpenAPI 摸清了才补上的�
 
     python tools\\cnci_trigger.py            # 触发一轮，盯到结束，再读留痕
     python tools\\cnci_trigger.py --status   # 只看最近几次运行，不触发
+    python tools\\cnci_trigger.py --triggers # 读定时触发配置（改完用它核对）
     python tools\\cnci_trigger.py --wait 900 # 自定义等待上限（秒）
 
 ⚠ 触发**不改**任何配置，只是让流水线跑一轮（和定时触发同一件事）。
@@ -95,6 +96,56 @@ def show(runs):
                  bj(r.get("startTime")), bj(r.get("endTime"))))
 
 
+def show_triggers():
+    """把 pipelineConfig.triggers 翻译成人话。
+
+    ⚠ 触发器没有 OpenAPI（只能控制台改），所以这是**改完核对**的唯一手段。
+      云效定时触发有两种：
+        周期触发 -> type=PERIOD，在 from~to 时间段内**每 interval 分钟触发一次**
+                    （所以窗口不是"每天一次"，窗口越宽跑得越多）
+        单次触发 -> 每天（勾周一~周日）某一个时间点一次
+    """
+    code, body = call("/oapi/v1/flow/pipelines/%d" % PIPELINE_ID)
+    if code != 200:
+        print("✗ 读流水线失败 HTTP %s %s" % (code, body[:160]))
+        return 2
+    d = json.loads(body)
+    tr = (d.get("pipelineConfig") or {}).get("triggers")
+    if isinstance(tr, str):
+        try:
+            tr = json.loads(tr)
+        except Exception:
+            pass
+    print("流水线: %s（id=%d）" % (d.get("name"), PIPELINE_ID))
+    print("定时触发配置：")
+    if not tr:
+        print("  （无触发器）")
+        return 0
+    for t in (tr if isinstance(tr, list) else [tr]):
+        kind = t.get("type")
+        print("  - 类型: %s" % kind)
+        if kind == "SCHEDULED":
+            s = t.get("scheduled") or {}
+            st = s.get("type")
+            days = s.get("daysOfWeek")
+            print("      子类型: %s" % st)
+            print("      星期  : %s（1..7 = 周一..周日）" % days)
+            if st == "PERIOD":
+                print("      时间段: %s -> %s" % (s.get("from"), s.get("to")))
+                print("      间隔  : %s 分钟" % s.get("interval"))
+                print("      ⇒ 周期触发：在这个时间段内**每 %s 分钟触发一次**，"
+                      % s.get("interval"))
+                print("        所以一天会跑多轮（不是一天一轮）")
+            else:
+                print("      时间  : %s" % s.get("fixedTime"))
+                print("      ⇒ 单次触发：每天在固定时间跑一次")
+            if s.get("timezone"):
+                print("      时区  : %s" % s.get("timezone"))
+        elif t.get("webhookUrl"):
+            print("      webhook: %s" % t.get("webhookUrl"))
+    return 0
+
+
 def main():
     args = sys.argv[1:]
     wait = 900
@@ -108,6 +159,9 @@ def main():
         return 2
     name = (json.loads(body) or {}).get("name")
     print("流水线: %s（id=%d，host=%s）" % (name, PIPELINE_ID, HOST))
+
+    if "--triggers" in args:
+        return show_triggers()
 
     runs, err = list_runs()
     if runs is None:
