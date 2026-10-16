@@ -338,6 +338,8 @@ def run_ci_rounds(ts_list):
 
 backup()
 add_fake_source()
+N_COMMENTS = sum(1 for ln in open(SRC_YAML, encoding="utf-8")
+                 if ln.lstrip().startswith("#"))
 try:
     # ---- C1：轮数够、跨度只有 2 小时 ----
     print("C1  3 轮 0 活，每轮隔 1 小时（跨度 2h）")
@@ -364,6 +366,13 @@ try:
     arch = yaml.safe_load(open(ARCHIVE_YAML, encoding="utf-8")) or {}
     names = [s.get("name") for s in (arch.get("sources") or [])]
     check(FAKE in names, "已移入历史库 archive/sources.yaml", "；".join(names))
+    # 真跑一遍 write_src_cfg（上面那次降级已经触发它）之后，注释必须一行不少。
+    # 这是端到端的那一侧：单测 tools/test_src_cfg_write.py 测的是函数本身，
+    # 这里测的是「health.py 真跑起来、真去改开关」时注释还在不在。
+    now_comments = sum(1 for ln in open(SRC_YAML, encoding="utf-8")
+                       if ln.lstrip().startswith("#"))
+    check(now_comments == N_COMMENTS, "write_src_cfg 没有抹掉注释",
+          "%d -> %d 行" % (N_COMMENTS, now_comments))
     print()
 
     # ---- C3：老档案（没有 bad_since）不该立刻判死 ----
@@ -383,4 +392,4 @@ print("=" * 72)
 if FAILS:
     print("结果：失败 %d 项 —— %s" % (len(FAILS), "；".join(FAILS)))
     sys.exit(1)
-print("结果：全部通过（A 数据不足不判定 / B 四格全覆盖 / C 判死轮数与跨度双闸门）")
+print("结果：全部通过（A 数据不足不判定 / B 四格全覆盖 / C 判死双闸门 + 注释零丢失）")

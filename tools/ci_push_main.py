@@ -122,6 +122,97 @@ def stamp_of(path):
 
 
 # ---------------------------------------------------------------------------
+# 回传结果留痕（2026-10-16 新增）
+# ---------------------------------------------------------------------------
+# 问题：这条管道刻意「永不失败」（连异常都吞掉、不改流水线状态），因为云效的
+#   日志面板实测渲染不全，把流水线染红只会掩盖真正的失败。于是「回传到底通没通」
+#   在云效那边**没有任何信号** —— 只能靠人盯着主仓那个文件有没有自己变新。
+#   实测后果：它从部署到被发现「一次都没真跑过」，中间隔了一天，谁都看不出来。
+#
+# 所以把结果落成仓库里的一个文件（`results/push_main_last.json`），由
+#   `tools/sync_and_probe.sh` 提交 —— Codeup 的 git 是云端唯一稳定可读的通道。
+#   看它 = `python tools/cnci_status.py`（本机），不用去翻流水线日志。
+STATUS_REL = os.path.join("results", "push_main_last.json")
+
+
+def status_dir():
+    """留痕落点 = **仓库根**（云效上 probe_payload 把 .py 一律放在根目录）。
+
+    本机开发时脚本在 `tools/` 下 —— 那就不留痕（本机跑这一趟，成败在终端里
+    直接就能看到），免得往主仓塞一个只有本机才有意义的文件。
+    """
+    return None if os.path.basename(HERE).lower() == "tools" else HERE
+
+
+def record_status(st):
+    """把这一轮的回传结果写进工作区（永不抛异常）。"""
+    d0 = status_dir()
+    if not d0:
+        say("本机（tools/）跳过留痕")
+        return
+    doc = {
+        "at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        "probe_cnci_at": stamp_of(os.path.join(HERE, "probe_cnci.json")),
+        "ok": bool(st.get("ok")),
+        "status": st.get("status") or "unknown",
+        "channel": st.get("channel") or "",
+        "detail": (st.get("detail") or "")[:300],
+        "repo": REPO,
+        "branch": BRANCH,
+        "py": sys.version.split()[0],
+    }
+    try:
+        path = os.path.join(d0, STATUS_REL)
+        d = os.path.dirname(path)
+        if d and not os.path.isdir(d):
+            os.makedirs(d)
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(doc, f, ensure_ascii=False, indent=2)
+        say("回传结果已留痕: %s（status=%s）" % (STATUS_REL, doc["status"]))
+    except Exception as e:                        # noqa: BLE001
+        warn("留痕失败（不影响别的）：%r" % e)
+
+
+def commit_status():
+    """把留痕提交回 Codeup。
+
+    ⚠ 为什么必须提交：工作区跑完就被回收，不提交等于没留。
+      失败同样只告警 —— 这条链路的铁律是「绝不因回传而让流水线变红」。
+      并发保护照抄 ci_probe_run.push_result（先 rebase 再推一次，绝不 --force）。
+    """
+    d0 = status_dir()
+    if not d0:
+        return
+    git = shutil.which("git")
+    if not git:
+        warn("留痕提交跳过：PATH 里没有 git")
+        return
+
+    def g(*a):
+        return run([git] + list(a), cwd=d0, timeout=300)
+
+    g("config", "user.name", "cnci-probe")
+    g("config", "user.email", "cnci-probe@users.noreply.github.com")
+    rc, out = g("add", "-A", STATUS_REL)
+    rc, out = g("commit", "-m", "回传留痕 %s"
+                % time.strftime("%Y%m%d-%H%M", time.gmtime()))
+    if "nothing to commit" in out or "nothing added to commit" in out:
+        say("留痕无变化，跳过提交")
+        return
+    if rc != 0:
+        warn("留痕提交失败: %s" % out.strip()[:200])
+        return
+    rc, out = g("push", "origin", "HEAD:master")
+    if rc != 0:
+        g("pull", "--rebase", "origin", "master")
+        rc, out = g("push", "origin", "HEAD:master")
+    if rc == 0:
+        say("留痕已提交到 Codeup（本机用 python tools/cnci_status.py 读）")
+    else:
+        warn("留痕推送失败: %s" % out.strip()[:200])
+
+
+# ---------------------------------------------------------------------------
 # 写入通道：Contents API（主） / git（后备）
 # ---------------------------------------------------------------------------
 # 为什么 API 优先：本机（国内）实测 **github.com:443 连不上**，云效在杭州、
@@ -214,21 +305,27 @@ def api_put(repo, path_in_repo, local_path, message, branch, pat):
         return False, "PUT %s 失败: %r" % (path_in_repo, e)
 
 
-def main():
+def main(st=None):
+    """跑一轮回传。结果记进 st（{"ok","status","channel","detail"}），供留痕。"""
+    st = st if st is not None else {}
     src = os.path.join(HERE, "probe_cnci.json")
     if not os.path.exists(src):
         warn("没有 probe_cnci.json，跳过（探针没跑成功？）")
+        st.update(status="no-probe", ok=False, detail="工作区没有 probe_cnci.json")
         return 0
 
     pat = os.environ.get("GH_PAT", "").strip()
     if not pat:
         warn("未设置 GH_PAT —— 云效数据不会进主仓，双视角分级会一直显示「无云效数据」")
         warn("  配法：云效流水线 -> 环境变量 -> GH_PAT = 只对 %s 有写权限的令牌" % REPO)
+        st.update(status="no-pat", ok=False, channel="",
+                  detail="流水线变量里没有 GH_PAT（脚本直接跳过、不报错）")
         return 0
 
     new_ts = stamp_of(src)
     if not new_ts:
         warn("probe_cnci.json 里没有 probed_at，不推送（无法判断新旧）")
+        st.update(status="no-stamp", ok=False, detail="probe_cnci.json 缺 probed_at")
         return 0
 
     stamp = new_ts.split("#")[0].replace(":", "").replace("-", "")
@@ -245,6 +342,8 @@ def main():
     remote_ts = remote_stamp(REPO, latest_rel, pat)
     if remote_ts and remote_ts > new_ts and not force:
         say("主仓已有更新的数据（%s > %s），跳过，不覆盖" % (remote_ts, new_ts))
+        st.update(status="skipped-newer", ok=False, channel="api",
+                  detail="主仓已有更新数据 %s > %s（护栏，非故障）" % (remote_ts, new_ts))
         return 0
     if force and remote_ts and remote_ts > new_ts:
         warn("PUSH_FORCE=1：强行覆盖更新的数据（%s -> %s）" % (remote_ts, new_ts))
@@ -258,9 +357,11 @@ def main():
         say("API 写入 %s" % why2 if ok2 else "API 存档跳过：%s" % why2)
         say("已推回主仓 %s:%s —— health.py 下一轮就能读它，分级会从「?」变 T1/T2/T3"
             % (REPO, BRANCH))
+        st.update(status="ok-api", ok=True, channel="api", detail=why)
         return 0
     warn("Contents API 通道失败：%s" % why)
     warn("  回退到 git 通道（github.com:443 在国内常被挡，可能也不通）")
+    st.update(status="fail-api", ok=False, channel="", detail="API: %s" % why)
 
     # ---- 通道 2：git clone + push ----
     git = find_git()
@@ -269,6 +370,8 @@ def main():
         warn("  这**不是 GitHub 连通性问题**，别顺着这条去查网络。")
         warn("  云效集群上 git 在 PATH 里；若在这里报错说明测试环境缺 git。")
         warn("  设 GIT_BIN=<git绝对路径> 可覆盖。")
+        st.update(status="no-git", ok=False,
+                  detail="找不到 git（不是网络问题）：%s" % (st.get("detail") or ""))
         return 0
 
     url = "https://x-access-token:%s@github.com/%s.git" % (pat, REPO)
@@ -292,12 +395,16 @@ def main():
         warn("  结论：国内 -> GitHub 的两条通道（API / git）都断了。")
         warn("  这不阻塞探针：结果仍在 Codeup 的 results/ 里，")
         warn("  改用「本机中转」把数据搬到主仓即可（见 CI_RECOVERY.md）。")
+        st.update(status="fail-both", ok=False,
+                  detail="API 与 git 两条通道都不通 github.com")
         return 0
 
     rc, out = run([git] + auth + ["clone", "--depth", "1", "--branch", BRANCH,
                                   url, work], timeout=600)
     if rc != 0:
         warn("git clone 失败：%s" % out.strip()[:200])
+        st.update(status="fail-git-clone", ok=False,
+                  detail="git clone 失败：%s" % out.strip()[:200])
         return 0
 
     try:
@@ -305,6 +412,8 @@ def main():
         old_ts = stamp_of(dst) if os.path.exists(dst) else ""
         if old_ts and old_ts > new_ts and not force:
             say("远端已有更新的数据（%s > %s），跳过，不覆盖" % (old_ts, new_ts))
+            st.update(status="skipped-newer", ok=False, channel="git",
+                      detail="主仓已有更新数据 %s > %s（护栏，非故障）" % (old_ts, new_ts))
             return 0
 
         os.makedirs(os.path.dirname(dst), exist_ok=True)
@@ -319,6 +428,7 @@ def main():
         rc, out = run([git, "add", "-A", "state", "results"], cwd=work)
         if rc != 0:
             warn("git add 失败：%s" % out.strip()[:160])
+            st.update(status="fail-git-add", ok=False, detail=out.strip()[:200])
             return 0
         rc, out = run([git, "commit", "-m", "cnci 探针 %s" % stamp], cwd=work)
         if rc != 0:
@@ -326,8 +436,11 @@ def main():
             if "nothing to commit" in out or "无文件 to commit" in out \
                     or "nothing added to commit" in out:
                 say("内容无变化，上一轮已推过")
+                st.update(status="ok-git-dup", ok=True, channel="git",
+                          detail="内容与主仓一致（上一轮已推过）")
                 return 0
             warn("git commit 失败：%s" % out.strip()[:200])
+            st.update(status="fail-git-commit", ok=False, detail=out.strip()[:200])
             return 0
 
         for i in range(TRIES):
@@ -335,19 +448,23 @@ def main():
                                           "HEAD:%s" % BRANCH], cwd=work, timeout=300)
             if rc == 0:
                 say("git 通道已推回主仓 %s:%s" % (REPO, BRANCH))
+                st.update(status="ok-git", ok=True, channel="git", detail="push ok")
                 return 0
             warn("git push 第 %d 次失败：%s" % (i + 1, out.strip()[:160]))
             if i + 1 < TRIES:
                 time.sleep(GAP)
         warn("git 通道推送失败，不影响本轮探针结果（已存在 Codeup 的 results/ 里）")
+        st.update(status="fail-git-push", ok=False, channel="git",
+                  detail=out.strip()[:200])
         return 0
     finally:
         shutil.rmtree(work, ignore_errors=True)
 
 
 if __name__ == "__main__":
+    _st = {}
     try:
-        sys.exit(main())
+        sys.exit(main(_st))
     except Exception as e:
         # 这一层的存在意义就是「不因推主仓而让流水线变红」，所以连异常也要吞掉。
         # 但必须**分得清**两类失败，否则排查时会往错的方向跑：
@@ -360,4 +477,10 @@ if __name__ == "__main__":
         warn("脚本自身错误（不是网络问题、不是令牌问题）—— 请改代码：")
         print("[push-main] " + traceback.format_exc().replace("\n", "\n[push-main] "))
         print("[push-main] " + "!" * 62)
+        _st.update(status="script-error", ok=False, detail=repr(e))
         sys.exit(0)
+    finally:
+        # ⚠ 留痕放在 finally：所有提前 `return 0` 的路径也要落文件，
+        #   否则「没有留痕」会被误读成「脚本根本没跑」。
+        record_status(_st)
+        commit_status()

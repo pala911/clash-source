@@ -88,9 +88,11 @@ profile 含两层，节点更新不必等 profile 刷新：
 > `state/probe_cnci_latest.json` **全是本机手工补进去的**（历史里能看到
 > 「删除误推的合成存档」这类提交），不能当回传成功的证据。
 >
-> 第一次真跑 = **2026-10-17 04:23** 那轮。判据很简单：主仓
-> `state/probe_cnci_latest.json` 的 `probed_at` 自己变成当天。
-> 前提是云效流水线的变量里有 `GH_PAT` —— 没有它脚本会**直接跳过且不报错**。
+> 第一次真跑 = **2026-10-17 04:23** 那轮。现在不用猜了 —— 跑
+> `python tools\cnci_status.py` 直接看结论（它读 Codeup 里的
+> `results/push_main_last.json`，那是每轮回传自己落的痕）。
+> 前提是云效流水线变量里有 `GH_PAT`；**缺了它脚本会直接跳过且不报错**，
+> 而留痕恰好把这件事变成可见的 `status=no-pat`。
 
 ---
 
@@ -158,7 +160,8 @@ profile 含两层，节点更新不必等 profile 刷新：
 | `probe_payload.py` | 云端仓库内容的**唯一来源**（Codeup 与 Gitee 共用） |
 | `sync_and_probe.sh` | 云端探针唯一入口：同步（带重试）→ 跑探针 → 推主仓 |
 | `ci_probe_run.py` | 云端探针执行器：解压内核、vendor yaml、跑探针、commit 结果 |
-| `ci_push_main.py` | 把云效结果推回主仓（Contents API 优先，git 兜底，**永不失败**） |
+| `ci_push_main.py` | 把云效结果推回主仓（Contents API 优先，git 兜底，**永不失败**）；本轮结果落成 `results/push_main_last.json` |
+| `cnci_status.py` | 本机读上面那份留痕，直接给结论：回传通没通、为什么没通 |
 | `check_ci_scripts.py` | **Python 3.6 静态门禁**（28 个文件，交付前必跑） |
 | `test_stability.py` / `test_build_groups.py` / `test_health_tiering.py` | 三组回归测试 |
 | `verify_profile.py` | **用真 mihomo 内核校验生成的 profile**（见 §9） |
@@ -308,7 +311,14 @@ L3（云效）**只有否决权、没有决定权**：
 python tools\dispatch_workflow.py      # 触发 L1
 python tools\check_run.py              # 看运行状态
 tools\run_local_probe.cmd              # 跑 L2（+ --no-push / --scope-only）
+python tools\cnci_status.py            # 看 L3 -> 主仓 的回传通没通（不用翻云效日志）
 ```
+
+> **`cnci_status.py`** 是 L3 那一层唯一的可读信号。回传链路刻意「绝不失败」
+> （云效日志面板实测渲染不全，把流水线染红只会掩盖真失败），所以
+> `ci_push_main.py` 每轮往 Codeup 仓落一份 `results/push_main_last.json`，
+> 这个脚本 shallow-clone 出来直接给结论（回传正常 / 不通 + 原因 / 还没留痕过）。
+> 退出码 0=正常、1=不通或主仓落后、2=读不到。
 
 云效 → 流水线 → 运行。命令行：
 
@@ -316,20 +326,29 @@ tools\run_local_probe.cmd              # 跑 L2（+ --no-push / --scope-only）
 ok=0; for i in $(seq 1 8); do git fetch origin && git reset --hard origin/master && { ok=1; break; }; sleep 20; done; [ "$ok" = "1" ] && bash tools/sync_and_probe.sh || { echo "同步失败"; exit 1; }
 ```
 
-### 交付前必跑（全部九道）
+### 交付前必跑（全部十二道）
 
 ```powershell
 python tools\check_ci_scripts.py      # Python 3.6 静态门禁
 python tools\test_probe_wiring.py     # 探针 ↔ 稳定性档案 的接线
-python tools\test_health_tiering.py   # 双视角分级（四格全覆盖）+ 判死轮数/跨度双闸门
+python tools\test_health_tiering.py   # 双视角分级（四格全覆盖）+ 判死轮数/跨度双闸门 + 注释零丢失
 python tools\test_build_groups.py     # 质量分桶
 python tools\test_stability.py        # 节点稳定性加权
 python tools\test_flaky_reprobe.py    # 被移出的节点能否翻盘
 python tools\test_fault_injection.py  # 坏数据进来时是否明确报错
 python tools\test_provider_load.py    # 一个畸形节点会不会让整源加载失败（真内核）
+python tools\test_src_cfg_write.py    # 写回源清单只改 enabled，不抹注释
+python tools\test_push_status.py      # 云效回传的留痕必落且本机不留垃圾
 python tools\verify_profile.py        # 真 mihomo 内核校验
 python tools\probe_field_types.py     # mihomo 接受哪些字段类型
 ```
+
+> ⚠️ **`test_src_cfg_write.py`** 守的是一个静默数据丢失：`write_src_cfg` 原来是
+> `yaml.safe_dump(cfg) + 4 行固定表头`，**一次降级就把 `src/sources.yaml` 的注释从
+> 23 行抹到 4 行**（实测）。丢掉的正是「为什么 `exclude_filter` 必须逐源」
+> 「12% 通过率但 2100+ 节点」这类唯一留痕 —— `note:` 字段能留下结论，
+> 留不下「为什么这么定」。现在改成**就地只改 `enabled:` 值**，
+> 并加了一道「文本里的源与 cfg 对不上就整轮不写」的守卫。
 
 > ⚠️ **`test_provider_load.py`** 补的是「**真内核跑起来整源消失**」这一类 ——
 > 2026-10-16 实测：`dist/nodes/autojiedian.yaml` 里一个 `sni: false`（布尔塞进

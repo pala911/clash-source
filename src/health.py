@@ -309,8 +309,79 @@ def src_cfg():
     return yaml.safe_load(open(SOURCES, encoding="utf-8")) or {}
 
 
+def _src_entries(text):
+    """把顶层 `sources:` 段拆成 [(源名, 起始行, 结束行)]。
+
+    ⚠ 只看顶层 `sources:`。这个文件末尾还有个顶层 `excluded:`（已评估未纳入），
+      里面同样是 `- name:` 条目 —— 不分段就会把「候选排除清单」里的条目
+      当成源去改 enabled（而它压根没有 enabled 字段）。
+
+    ⚠ 结束行要精确：取「下一个条目 / 下一个顶层键 / 文件末」的最小者，
+      否则会把别的条目的字段算进本条目。
+    """
+    import re
+    name_re = re.compile(r"^\s*-\s+name:\s*(\S+?)\s*$")
+    lines = text.split("\n")
+    out, section, start, name = [], None, None, None
+    for i, ln in enumerate(lines):
+        if ln and not ln[0].isspace():          # 顶层键
+            if section == "sources" and name is not None:
+                out.append((name, start, i))
+            section = ln.split(":", 1)[0].strip()
+            name, start = None, None
+            continue
+        m = name_re.match(ln)
+        if m:
+            if section == "sources" and name is not None:
+                out.append((name, start, i))
+            name = m.group(1).strip("\"'")
+            start = i
+    if section == "sources" and name is not None:
+        out.append((name, start, len(lines)))
+    return out
+
+
+def _rewrite_enabled(text, want):
+    """就地改 `sources:` 段里各源的 enabled 值，**其余一字不动**。
+
+    want: {源名: bool}。返回新文本。
+
+    ⚠ 为什么必须这么做（2026-10-16 实测）：原来写回是
+      `yaml.safe_dump(cfg) + 4 行固定表头`，**一次降级就把 sources.yaml 的
+      注释从 23 行抹到 4 行** —— 那些注释正是「为什么 exclude_filter 必须逐源」
+      「12% 通过率但 2100+ 节点」这类唯一留痕（`note:` 字段能留下结论，
+      留不下「为什么这么定」）。注释不进任何数据结构，丢了就找不回来。
+    """
+    import re
+    lines = text.split("\n")
+    edits, inserts = {}, []
+    for name, s, e in _src_entries(text):
+        if name not in want:
+            continue
+        val = "true" if want[name] else "false"
+        for i in range(s + 1, e):
+            m = re.match(r"^(\s*)enabled:\s*", lines[i])
+            if m:
+                edits[i] = "%senabled: %s" % (m.group(1), val)
+                break
+        else:
+            # 条目里压根没有 enabled 字段：照其他字段的缩进补一行
+            indent = "    "
+            for i in range(s + 1, e):
+                m = re.match(r"^(\s+)\S", lines[i])
+                if m:
+                    indent = m.group(1)
+                    break
+            inserts.append((s + 1, "%senabled: %s" % (indent, val)))
+    for i, ln in edits.items():
+        lines[i] = ln
+    for idx, ln in sorted(inserts, reverse=True):     # 倒序插，避免行号漂移
+        lines.insert(idx, ln)
+    return "\n".join(lines)
+
+
 def write_src_cfg(cfg, prev_count=None):
-    """写回源清单。
+    """写回源清单 —— **只改 enabled 开关**，注释/格式原样保留（见 _rewrite_enabled）。
 
     ⚠ 理智守卫：源清单是整个 pipeline 的**唯一事实来源**，而且进 git。
 
@@ -324,8 +395,12 @@ def write_src_cfg(cfg, prev_count=None):
 
       所以：归零、或少于上一轮的一半，一律拒绝。
       真要人工大批量删源，用 --allow-source-shrink 显式解锁（需人工确认）。
+
+    ⚠ 另一道守卫：文本里的源和 cfg 里的源必须**一一对应**。对不上就整轮不写
+      （enabled 保持原样，代价是这一轮没改开关，可逆），而不是退化成整份重写
+      —— 重写正是注释丢失的根源。
     """
-    import yaml
+    import re                                     # noqa: F401  （_src_entries 内部也用）
     n = len(cfg.get("sources") or [])
     if n == 0:
         raise SystemExit(
@@ -339,13 +414,26 @@ def write_src_cfg(cfg, prev_count=None):
             "         降级只会逐个源、跨多轮、只改 enabled 开关，不会一次砍掉一半。\n"
             "         这种降幅几乎总是上游出事了（清单被截断/解析失败/变量没展开）。\n"
             "         确认要删就设 ALLOW_SOURCE_SHRINK=1 再跑。" % (prev_count, n))
-    body = yaml.safe_dump(cfg, allow_unicode=True, sort_keys=False, width=4096)
-    _atomic_write(SOURCES,
-                  "# 上游源清单 —— pipeline 的唯一事实来源\n"
-                  "# 注意：enabled 标志由 src/health.py 依据真探针自动维护\n"
-                  "#   连续多轮 0 活 -> enabled: false 并移入 archive/sources.yaml（历史库）\n"
-                  "#   达标后自动回填 enabled: true（源本体永不删除，只改开关）\n"
-                  + body)
+    want = {}
+    for s in cfg.get("sources") or []:
+        nm = s.get("name")
+        if not nm:
+            raise SystemExit("[health] ✗ 拒绝写入：cfg 里有源没有 name：%r" % s)
+        want[str(nm)] = bool(s.get("enabled", True))
+
+    text = open(SOURCES, encoding="utf-8").read()
+    found = {name for name, _s, _e in _src_entries(text)}
+    missing = sorted(set(want) - found)
+    extra = sorted(found - set(want))
+    if missing or extra:
+        raise SystemExit(
+            "[health] ✗ 拒绝写入：文本里的源和 cfg 里的源对不上。\n"
+            "         文本里有、cfg 里没有：%s\n"
+            "         cfg 里有、文本里找不到：%s\n"
+            "         这说明清单被改坏了（缺 name / 缩进变了 / 段落结构变了）。\n"
+            "         此时**不写**比整份重写安全 —— 重写会把注释全部抹掉。"
+            % (extra or "无", missing or "无"))
+    _atomic_write(SOURCES, _rewrite_enabled(text, want))
 
 
 def arch_cfg():
