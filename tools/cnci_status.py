@@ -130,8 +130,8 @@ def main():
         print("=" * 68)
         if not os.path.exists(st_path):
             print("⚠ 还没有留痕（%s 不存在）" % STATUS_REL)
-            print("  说明云效那边还没跑过「带留痕」的那版脚本。")
-            print("  留痕是 2026-10-16 加的，第一轮应该是 10-17 04:23。")
+            print("  说明带留痕的那版脚本还没在云效上跑过，")
+            print("  或者 Codeup 仓被重建过（留痕存在云效仓库里，重建即清零）。")
             st = {}
         else:
             with open(st_path, encoding="utf-8") as f:

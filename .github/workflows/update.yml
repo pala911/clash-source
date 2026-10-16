@@ -130,8 +130,9 @@ jobs:
           # ⚠ 别用 --hc-timeout 省钱：它直接线性偏置 alive（shaoyouvip 实测
           #   3s->0 活、8s->4 活、15s->6 活）。CI 的活儿就是判死，**假阴性正是致命伤**。
           #
-          # 预算要够大：全量 ~3800 节点实测 >25 分钟仍未全部收敛（最大的 autojiedian
-          # 有时整轮都加载不完，会被标 incomplete 自动跳过 —— 这是安全的保守失败）。
+          # 预算仍留大，但实测已远没有那么久：2026-10-16 修掉 sni 型的畸形节点后，
+          # 全量探针 262 秒就收敛（12/12 源全测完）。以前跑满预算也不收敛，
+          # 真因是一个加载不了的 provider 会让收敛判定永不成立（见 README §9 sni 条）。
           python src/probe.py --mihomo "$PWD/.tools/mihomo" --budget 2400 --scope ci
 
       - name: 源健康档案（降级只认 CI 口径；回收只认本机口径）

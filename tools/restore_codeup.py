@@ -327,9 +327,9 @@ def main():
         if repo_missing:
             print("  （组织被删的话，先按上面 4 步重建，再跑）")
         print("\n  ⚠ 恢复完仓库后，**流水线还要手工重建**（配置在云效数据库里）：")
-        print("     工具箱 → 流水线 → 新建 → 导入 %s" % os.path.join("tools", "ci_pipeline.yaml"))
-        print("     或按 tools/CI_RECOVERY.md 手工配一遍")
-        print("     cron: 每周日 04:23")
+        print("     ⚠ tools/ci_pipeline.yaml 并不存在 —— 按 tools/CI_RECOVERY.md 手工配，")
+        print("     执行命令用 tools/ci_probe_command.sh 里那一行（必须自包含）")
+        print("     定时触发：单次触发，每天 04:00（别选周期触发，那会一天跑多轮）")
         return 0
 
     # ---------------- 实际恢复 ----------------
