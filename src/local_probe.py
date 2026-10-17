@@ -46,6 +46,15 @@ import time
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 GIT = r"D:\work\agent\codebuddy\portable-git\bin\cmd\git.exe"
+
+# ⚠ pythonw（计划任务静默跑）下 sys.stdout/stderr 是 None，print 直接炸。
+#   接到文件上：本脚本的 print 与子进程（probe.py 继承句柄）都落到这里。
+if sys.stdout is None or sys.stderr is None:
+    _d = os.path.join(ROOT, "logs")
+    os.makedirs(_d, exist_ok=True)
+    _f = open(os.path.join(_d, "local_probe_stdout.log"), "ab", buffering=0)
+    sys.stdout = _f
+    sys.stderr = _f
 PROXY = "http://127.0.0.1:7897"          # github.com 直连被墙，push 必须走代理
 
 
@@ -126,7 +135,10 @@ def main():
     ap.add_argument("--scope-only", action="store_true",
                     help="跳过探针，只跑健康档案并推送（用已有的 probe_latest.json）")
     ap.add_argument("--mihomo", default=r"C:\Program Files\Clash Verge\verge-mihomo.exe")
-    ap.add_argument("--budget", type=int, default=1800, help="探针墙钟预算（秒）")
+    ap.add_argument("--budget", type=int, default=3600, help="探针墙钟预算（秒）")
+    # ⚠ 3600 的由来：2026-10-17 中午轮实测，3549 节点在中午网络下
+    #   1800 秒不够（autojiedian 744/868、yypool 741/900 未测完），
+    #   而机器中午闲着 —— 宁可多给一小时，也别让大源掉出当日判定。
     args = ap.parse_args()
 
     if not args.scope_only:
