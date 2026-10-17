@@ -52,7 +52,8 @@ GIT = r"D:\work\agent\codebuddy\portable-git\bin\cmd\git.exe"
 if sys.stdout is None or sys.stderr is None:
     _d = os.path.join(ROOT, "logs")
     os.makedirs(_d, exist_ok=True)
-    _f = open(os.path.join(_d, "local_probe_stdout.log"), "ab", buffering=0)
+    _f = open(os.path.join(_d, "local_probe_stdout.log"), "a",
+         encoding="utf-8", buffering=1)   # 文本+行缓冲：print 写 str 才不炸
     sys.stdout = _f
     sys.stderr = _f
 PROXY = "http://127.0.0.1:7897"          # github.com 直连被墙，push 必须走代理
@@ -65,12 +66,15 @@ def run_probe(args):
         shutil.rmtree(probe_dir, ignore_errors=True)
     env = dict(os.environ)
     env["PROBE_SCOPE"] = "local"
+    # ⚠ 子进程 probe.py 没有守卫 —— 把父进程重定向后的句柄递给它，
+    #   否则计划任务（pythonw）下子进程的 print 会直接炸掉整轮。
     return subprocess.run(
         [sys.executable, os.path.join(HERE, "probe.py"),
          "--mihomo", args.mihomo, "--scope", "local",
          "--budget", str(args.budget),
          "--out", os.path.join(ROOT, "state", "probe_latest.json")],
-        env=env, cwd=ROOT).returncode
+        env=env, cwd=ROOT,
+        stdout=sys.stdout, stderr=subprocess.STDOUT).returncode
 
 
 def _nothing_to_commit(out):
