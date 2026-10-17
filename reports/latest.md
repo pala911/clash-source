@@ -1,6 +1,6 @@
 # clash-source 运行报告
 
-- 生成时间：2026-10-17 04:35:09（UTC 记录：2026-10-17T04:35:05Z）
+- 生成时间：2026-10-17 10:48:23（UTC 记录：2026-10-17T10:48:20Z）
 - AI 模式：`http`
 - 订阅入口：`https://pala911.github.io/clash-source/profile.yaml`
 - 备用入口（github.io 不达时）：`https://gh-proxy.com/raw.githubusercontent.com/pala911/gh-pages/profile.yaml`
@@ -10,7 +10,7 @@
 
 | 组 | 含义 | 源 |
 |---|---|---|
-| AUTO | 参与自动竞速 | anaer、ssrsub、zhuhaiuk、ruk1ng001、automerge、autojiedian |
+| AUTO | 参与自动竞速 | anaer、ssrsub、zhuhaiuk、ruk1ng001、autojiedian、automerge |
 | 备用 | 不自动竞速，手动切 | - |
 | 观察 | 本机实测不达标 | ermaozi、snakem982 |
 
@@ -18,44 +18,43 @@
 
 | 源 | 多轮均值 | 分组依据 |
 |---|---:|---|
-| anaer | 58.5% | 本机 58.5% |
+| anaer | 64.4% | 本机 64.4% |
 | autojiedian | 17.8% | 本机 17.8% |
-| automerge | 18.2% | 本机 18.2% |
-| ermaozi | 6.8% | 本机 6.8% 低于 8% |
-| nomorewalls | 12.9% | 本机 12.9% |
-| passcro | 13.9% | 本机 13.9% |
-| ruk1ng001 | 23.9% | 本机 23.9% |
-| shaoyouvip | 11.9% | 本机 11.9% |
-| snakem982 | 5.8% | 本机 5.8% 低于 8% |
-| ssrsub | 41.3% | 本机 41.3% |
+| automerge | 17.2% | 本机 17.2% |
+| ermaozi | 7.2% | 本机 7.2% 低于 8% |
+| nomorewalls | 13.9% | 本机 13.9% |
+| passcro | 14.3% | 本机 14.3% |
+| ruk1ng001 | 26.6% | 本机 26.6% |
+| shaoyouvip | 15.2% | 本机 15.2% |
+| snakem982 | 5.9% | 本机 5.9% 低于 8% |
+| ssrsub | 43.4% | 本机 43.4% |
 | yypool | 15.2% | 本机 15.2% |
-| zhuhaiuk | 32.3% | 本机 32.3% |
+| zhuhaiuk | 38.5% | 本机 38.5% |
 
 ## 各源漏斗
 
 | 源 | 原始 | 产出 | AI 剔除 | 镜像回退 | 分组 | 备注 |
 |---|---:|---:|---:|---|---|---|
-| yypool | 1688 | 900 | - | 否 | - | - |
+| yypool | 1635 | 900 | - | 否 | - | - |
 | anaer | 39 | 31 | - | 否 | auto | - |
 | passcro | 149 | 144 | - | 否 | - | - |
-| automerge | 552 | 276 | - | 否 | auto | - |
-| ermaozi | 601 | 539 | - | 否 | 观察 | - |
-| zhuhaiuk | 34 | 32 | - | 否 | auto | - |
+| automerge | 540 | 263 | - | 否 | auto | - |
+| ermaozi | 601 | 507 | - | 否 | 观察 | - |
+| zhuhaiuk | 27 | 27 | - | 否 | auto | - |
 | ssrsub | 223 | 222 | - | 否 | auto | - |
-| ruk1ng001 | 500 | 355 | - | 否 | auto | - |
+| ruk1ng001 | 500 | 418 | - | 否 | auto | - |
 | snakem982 | 60 | 60 | - | 否 | 观察 | - |
-| nomorewalls | 533 | 254 | - | 否 | - | - |
-| autojiedian | 911 | 868 | - | 否 | auto | - |
-| shaoyouvip | 95 | 95 | - | 否 | - | - |
+| nomorewalls | 462 | 191 | - | 否 | - | - |
+| autojiedian | 1005 | 965 | - | 否 | auto | - |
+| shaoyouvip | 11 | 11 | - | 否 | - | - |
 
-合计产出 **3776** 节点（合并池 3776）。
+合计产出 **3739** 节点（合并池 3739）。
 
 > 注意：节点数 ≠ 可用性。真实质量门禁是 **youtube/generate_204 探针**（手机/PC 侧 mihomo 自己跑）；CI 在美国机，连通性检查只能删明显死的。
 
 ## ⚠ 本次告警
 
-- snakem982 AI 剔除超阈值，已整体回滚
-- yypool 产出 1395 超过 max_nodes=900，已截断
+- yypool 产出 1320 超过 max_nodes=900，已截断
 
 ## 硬过滤命中 TOP（按源）
 
