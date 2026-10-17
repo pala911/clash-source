@@ -246,6 +246,8 @@ API_GAP = int(os.environ.get("API_GAP", "5"))
 GIT_DEADLINE = int(os.environ.get("PUSH_GIT_DEADLINE", "150"))
 GIT_TRIES = int(os.environ.get("PUSH_GIT_TRIES", "2"))
 GIT_GAP = int(os.environ.get("PUSH_GIT_GAP", "5"))
+PUT_TRIES = int(os.environ.get("PUSH_PUT_TRIES", "2"))   # Contents API PUT 的重试次数
+PUT_GAP = int(os.environ.get("PUSH_PUT_GAP", "5"))
 
 
 def api_call(url, pat, method="GET", body=None, timeout=60):
@@ -353,6 +355,31 @@ def api_put(repo, path_in_repo, local_path, message, branch, pat):
         return False, "PUT %s 失败: %r" % (path_in_repo, e)
 
 
+def api_put_retry(repo, path_in_repo, local_path, message, branch, pat):
+    """api_put + 一次重试。
+
+    ⚠ 2026-10-17 04:00 轮实测：state/ 成功而 results/ 存档 PUT 报 HTTP 400
+      （"malformed request"），同样的请求本机立刻重放是 201 —— 瞬时异常。
+    ⚠ 重试是**安全的**：api_put 每次先 GET 拿 sha，若上次其实已写成功，
+      内容一致会走「未变，跳过」分支，不会产生重复提交。
+      401/403/404/422 是明确的业务答复，重试没意义，直接返回。
+    """
+    ok, why = "", ""
+    for attempt in range(PUT_TRIES):
+        ok, why = api_put(repo, path_in_repo, local_path, message, branch, pat)
+        if ok:
+            return ok, why
+        if attempt + 1 >= PUT_TRIES:
+            break
+        if "HTTP 401" in why or "HTTP 403" in why or "HTTP 404" in why \
+                or "HTTP 422" in why:
+            break                      # 业务错误，重试没意义
+        warn("PUT 重试 %d/%d（%s）：%s" % (attempt + 1, PUT_TRIES,
+                                           path_in_repo, why[:110]))
+        time.sleep(PUT_GAP)
+    return ok, why
+
+
 def main(st=None):
     """跑一轮回传。结果记进 st（{"ok","status","channel","detail"}），供留痕。"""
     st = st if st is not None else {}
@@ -397,11 +424,12 @@ def main(st=None):
         warn("PUSH_FORCE=1：强行覆盖更新的数据（%s -> %s）" % (remote_ts, new_ts))
 
     # ---- 通道 1：Contents API（推荐，api.github.com 国内实测可直连）----
-    ok, why = api_put(REPO, latest_rel, src, "cnci 探针 %s" % stamp, BRANCH, pat)
+    ok, why = api_put_retry(REPO, latest_rel, src, "cnci 探针 %s" % stamp,
+                            BRANCH, pat)
     if ok:
         say("API 写入 %s" % why)
-        ok2, why2 = api_put(REPO, arch_rel, src, "cnci 探针存档 %s" % stamp,
-                            BRANCH, pat)
+        ok2, why2 = api_put_retry(REPO, arch_rel, src, "cnci 探针存档 %s" % stamp,
+                                  BRANCH, pat)
         say("API 写入 %s" % why2 if ok2 else "API 存档跳过：%s" % why2)
         say("已推回主仓 %s:%s —— health.py 下一轮就能读它，分级会从「?」变 T1/T2/T3"
             % (REPO, BRANCH))
