@@ -1,6 +1,6 @@
 # clash-source 运行报告
 
-- 生成时间：2026-10-17 15:41:53（UTC 记录：2026-10-17T15:41:49Z）
+- 生成时间：2026-10-17 20:42:35（UTC 记录：2026-10-17T20:42:32Z）
 - AI 模式：`http`
 - 订阅入口：`https://pala911.github.io/clash-source/profile.yaml`
 - 备用入口（github.io 不达时）：`https://gh-proxy.com/raw.githubusercontent.com/pala911/gh-pages/profile.yaml`
@@ -35,26 +35,26 @@
 
 | 源 | 原始 | 产出 | AI 剔除 | 镜像回退 | 分组 | 备注 |
 |---|---:|---:|---:|---|---|---|
-| yypool | 1642 | 900 | - | 否 | - | - |
-| anaer | 39 | 32 | - | 否 | auto | - |
+| yypool | 1599 | 900 | - | 否 | - | - |
+| anaer | 39 | 31 | - | 否 | auto | - |
 | passcro | 149 | 144 | - | 否 | - | - |
-| automerge | 472 | 177 | - | 否 | auto | - |
-| ermaozi | 510 | 402 | - | 否 | 观察 | - |
-| zhuhaiuk | 33 | 27 | - | 否 | auto | - |
+| automerge | 449 | 189 | - | 否 | auto | - |
+| ermaozi | 510 | 392 | - | 否 | 观察 | - |
+| zhuhaiuk | 30 | 24 | - | 否 | auto | - |
 | ssrsub | 193 | 192 | - | 否 | auto | - |
-| ruk1ng001 | 500 | 460 | - | 否 | auto | - |
+| ruk1ng001 | 500 | 394 | - | 否 | auto | - |
 | snakem982 | 62 | 62 | - | 否 | 观察 | - |
-| nomorewalls | 449 | 189 | - | 否 | - | - |
-| autojiedian | 966 | 902 | - | 否 | auto | - |
-| shaoyouvip | 4 | 4 | - | 否 | - | - |
+| nomorewalls | 543 | 278 | - | 否 | - | - |
+| autojiedian | 956 | 905 | - | 否 | auto | - |
+| shaoyouvip | 102 | 101 | - | 否 | - | - |
 
-合计产出 **3491** 节点（合并池 3491）。
+合计产出 **3612** 节点（合并池 3612）。
 
 > 注意：节点数 ≠ 可用性。真实质量门禁是 **youtube/generate_204 探针**（手机/PC 侧 mihomo 自己跑）；CI 在美国机，连通性检查只能删明显死的。
 
 ## ⚠ 本次告警
 
-- yypool 产出 1330 超过 max_nodes=900，已截断
+- yypool 产出 1270 超过 max_nodes=900，已截断
 
 ## 硬过滤命中 TOP（按源）
 
