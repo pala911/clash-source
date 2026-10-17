@@ -1,7 +1,9 @@
 @echo off
 REM ============================================================
-REM  clash-source local (China-scope) probe -- daily entry point
-REM  Scheduled task: \clash-source-local-probe, every day at 12:30.
+REM  clash-source local (China-scope) probe -- MANUAL entry point.
+REM  The scheduled task \clash-source-local-probe now runs pythonw.exe
+REM  directly on src\local_probe.py (windowless, since 2026-10-17);
+REM  this .cmd stays for manual/console runs -- same effect.
 REM
 REM  NOTE: this file is ASCII-only ON PURPOSE. cmd.exe reads .cmd using the
 REM  OEM codepage (936/GBK on Chinese Windows). A UTF-8 .cmd with Chinese

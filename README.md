@@ -185,7 +185,7 @@ profile 含两层，节点更新不必等 profile 刷新：
 | 文件 | 作用 |
 |---|---|
 | `local_probe.py` | 本机探针入口，供计划任务调用 |
-| `run_local_probe.cmd` | 计划任务入口（**必须纯 ASCII + CRLF**） |
+| `run_local_probe.cmd` | 手动入口（计划任务已改为 **pythonw 直跑** `src/local_probe.py`，无窗；本 .cmd 仅剩手动用途，效果相同，**必须纯 ASCII + CRLF**） |
 | `probe_payload.py` | 云端仓库内容的**唯一来源**（Codeup 与 Gitee 共用） |
 | `sync_and_probe.sh` | 云端探针唯一入口：同步（带重试）→ 跑探针 → 推主仓 |
 | `ci_probe_run.py` | 云端探针执行器：解压内核、vendor yaml、跑探针、commit 结果 |

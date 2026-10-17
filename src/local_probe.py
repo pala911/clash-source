@@ -29,6 +29,8 @@
 
 用法：
     python src/local_probe.py                # 探针 + 健康档案 + 推回 GitHub
+    （计划任务 \clash-source-local-probe 用 pythonw 直跑本脚本，无窗；
+      run_local_probe.cmd 仅剩手动用途，效果相同）
     python src/local_probe.py --no-push      # 只探针，不推送
     python src/local_probe.py --scope-only   # 跳过探针，只把已有结果存档/推送
 
@@ -145,6 +147,17 @@ def main():
     #   而机器中午闲着 —— 宁可多给一小时，也别让大源掉出当日判定。
     args = ap.parse_args()
 
+    oplog = os.path.join(ROOT, "logs", "local_probe.log")
+    os.makedirs(os.path.dirname(oplog), exist_ok=True)
+
+    def _oplog(msg):
+        # 原 run_local_probe.cmd 的职责：往 local_probe.log 记 start/done。
+        # 任务改 pythonw 直跑后 .cmd 不再参与，这里接手（格式保持一致）。
+        with io.open(oplog, "a", encoding="utf-8") as f:
+            f.write(time.strftime("[%Y/%m/%d %H:%M:%S] ") + msg + "\n")
+
+    _oplog("start local probe (scope=local)%s"
+           % ((" " + " ".join(sys.argv[1:])) if sys.argv[1:] else ""))
     if not args.scope_only:
         print("[local] 本机真探针（scope=local，国内口径）…")
         if run_probe(args) != 0:
@@ -160,10 +173,13 @@ def main():
     for line in buf.getvalue().splitlines():
         print("  " + line)
 
+    rc = 0
     if args.no_push:
         print("[local] --no-push，跳过推送")
-        return 0
-    return push_to_github()
+    else:
+        rc = push_to_github()
+    _oplog("done, exit=%d" % rc)
+    return rc
 
 
 if __name__ == "__main__":
