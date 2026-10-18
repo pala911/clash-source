@@ -1,9 +1,9 @@
 # clash-source 运行报告
 
-- 生成时间：2026-10-18 11:22:27（UTC 记录：2026-10-18T11:22:24Z）
+- 生成时间：2026-10-18 11:44:37（UTC 记录：2026-10-18T11:44:34Z）
 - AI 模式：`http`
 - 订阅入口：`https://pala911.github.io/clash-source/profile.yaml`
-- 备用入口（github.io 不达时）：`https://gh-proxy.com/raw.githubusercontent.com/pala911/gh-pages/profile.yaml`
+- 备用入口（github.io 不达时）：`https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/profile.yaml`
 - jsdelivr 备用：`https://cdn.jsdelivr.net/gh/pala911/clash-source@gh-pages/profile.yaml`
 
 ## 质量分桶（决定手机上 AUTO 组里有哪些源）
@@ -35,28 +35,27 @@
 
 | 源 | 原始 | 产出 | AI 剔除(簇/节点) | 镜像回退 | 分组 | 备注 |
 |---|---:|---:|---:|---|---|---|
-| yypool | 1622 | 900 | 20 簇 / 77 节点 | 否 | - | - |
+| yypool | 1683 | 900 | 9 簇 / 16 节点 | 否 | - | - |
 | anaer | 39 | 33 | 0 节点 | 否 | auto | - |
 | passcro | 149 | 144 | 1 簇 / 1 节点 | 否 | - | - |
-| automerge | 522 | 260 | 2 簇 / 14 节点 | 否 | - | - |
-| ermaozi | 599 | 490 | 12 簇 / 66 节点 | 否 | 观察 | - |
-| zhuhaiuk | 26 | 21 | 0 节点 | 否 | auto | - |
+| automerge | 473 | 201 | 2 簇 / 13 节点 | 否 | - | - |
+| ermaozi | 599 | 519 | 10 簇 / 37 节点 | 否 | 观察 | - |
+| zhuhaiuk | 26 | 11 | 5 簇 / 10 节点 | 否 | auto | - |
 | ssrsub | 196 | 192 | 0 节点 | 否 | auto | - |
-| ruk1ng001 | 500 | 474 | 1 簇 / 1 节点 | 否 | auto | - |
-| snakem982 | 62 | 62 | 0 节点 | 否 | 观察 | - |
-| nomorewalls | 473 | 200 | 2 簇 / 14 节点 | 否 | - | - |
+| ruk1ng001 | 500 | 399 | 25 簇 / 76 节点 | 否 | auto | - |
+| snakem982 | 62 | 54 | 2 簇 / 8 节点 | 否 | 观察 | - |
+| nomorewalls | 473 | 204 | 1 簇 / 10 节点 | 否 | - | - |
 | autojiedian | 1074 | 1004 | 1 簇 / 2 节点 | 否 | auto | - |
-| shaoyouvip | 15 | 15 | 0 节点 | 否 | auto | - |
+| shaoyouvip | 34 | 34 | 0 节点 | 否 | auto | - |
 
-合计产出 **3795** 节点（合并池 3795）。
+合计产出 **3695** 节点（合并池 3695）。
 
 > 注意：节点数 ≠ 可用性。真实质量门禁是 **youtube/generate_204 探针**（手机/PC 侧 mihomo 自己跑）；CI 在美国机，连通性检查只能删明显死的。
 
 ## ⚠ 本次告警
 
 - anaer AI 部分批次不可用（相关批次保留全部节点）：全部批次失败
-- zhuhaiuk AI 剔除超阈值，已整体回滚
-- yypool 产出 1298 超过 max_nodes=900，已截断
+- yypool 产出 1397 超过 max_nodes=900，已截断
 
 ## 硬过滤命中 TOP（按源）
 
@@ -64,18 +63,18 @@
 
 ## AI 处置摘要
 
-- **yypool**：审 1002 节点，剔除 77 节点（20 个簇）；理由 TOP：订阅地址本身，模板占位符，占位符标记，占位符服务器，本地地址占位符
+- **yypool**：审 1030 节点，剔除 16 节点（9 个簇）；理由 TOP：订阅地址本身，占位符非IP，明显伪装，广告/订阅链接
 - **anaer**：审 0 节点，剔除 0 节点（全部批次失败）
-- **passcro**：审 145 节点，剔除 1 节点（1 个簇）；理由 TOP：占位符失效提示
-- **automerge**：审 274 节点，剔除 14 节点（2 个簇）；理由 TOP：引流/广告/群组引流，群组引流地址
-- **ermaozi**：审 541 节点，剔除 66 节点（12 个簇）；理由 TOP：订阅地址克隆，订阅地址本身，占位符服务器名，付费VPN订阅，广告引流位
-- **zhuhaiuk**：审 21 节点，剔除 0 节点（超阈值已回滚）
+- **passcro**：审 145 节点，剔除 1 节点（1 个簇）；理由 TOP：占位符无效地址
+- **automerge**：审 214 节点，剔除 13 节点（2 个簇）；理由 TOP：无效server字段，广告内容
+- **ermaozi**：审 541 节点，剔除 37 节点（10 个簇）；理由 TOP：占位符无节点标识，伪装节点，占位符IP，引流账号，tg频道引流
+- **zhuhaiuk**：审 21 节点，剔除 10 节点（5 个簇）；理由 TOP：server重复且国家名伪装，server格式异常
 - **ssrsub**：审 192 节点，剔除 0 节点
-- **ruk1ng001**：审 232 节点，剔除 1 节点（1 个簇）；理由 TOP：境内中转伪装
-- **snakem982**：审 62 节点，剔除 0 节点
-- **nomorewalls**：审 214 节点，剔除 14 节点（2 个簇）；理由 TOP：广告占位符，引流伪装节点
-- **autojiedian**：审 802 节点，剔除 2 节点（1 个簇）；理由 TOP：可疑伪装域名
-- **shaoyouvip**：审 15 节点，剔除 0 节点
+- **ruk1ng001**：审 232 节点，剔除 76 节点（25 个簇）；理由 TOP：广告位，占位符域名，境内IP伪装
+- **snakem982**：审 62 节点，剔除 8 节点（2 个簇）；理由 TOP：德国节点疑似伪装营销，荷兰节点疑似伪装营销
+- **nomorewalls**：审 214 节点，剔除 10 节点（1 个簇）；理由 TOP：广告内容
+- **autojiedian**：审 802 节点，剔除 2 节点（1 个簇）；理由 TOP：伪装hikvision
+- **shaoyouvip**：审 34 节点，剔除 0 节点
 
 ## 产物
 
