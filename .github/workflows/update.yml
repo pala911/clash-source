@@ -65,19 +65,12 @@ jobs:
 
       - name: 提交产物到 main（dist/ 是事实来源，reports/ 是审计留痕）
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          # ⚠ 不能对可能不存在的目录直接 git add（2026-10-14 实测：
-          #   `git add -A dist reports state` 在 state/ 尚未生成时会 fatal:
-          #   pathspec 'state' did not match any files -> 整步失败 -> 后续步骤全被跳过）
-          git add -A dist reports || true
-          git add -A state archive src/sources.yaml 2>/dev/null || true
-          if git diff --cached --quiet; then
-            echo "本轮无变化，跳过提交"
-          else
-            git commit -m "chore: 源更新 $(date -u +%FT%TZ)"
-            git push
-          fi
+          # ⚠ 提交+推送走 tools/ci_git_push.sh（带重试，三处共用）。
+          #   原来这里是裸 `git push`：2026-10-18 04:41 UTC 本机探针先推了
+          #   078d4e7，CI 25 秒后拿旧基点推 -> 被拒 -> 这一步失败 -> 后面
+          #   9 个步骤（含 gh-pages 发布与判死探针）全部 skip。
+          bash tools/ci_git_push.sh "chore: 源更新 $(date -u +%FT%TZ)" \
+            dist reports state archive src/sources.yaml
 
       - name: 发布到 gh-pages（手机订阅站点根）
         run: |
@@ -140,15 +133,10 @@ jobs:
 
       - name: 提交健康档案
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A state archive src/sources.yaml 2>/dev/null || true
-          if git diff --cached --quiet; then
-            echo "健康档案无变化"
-          else
-            git commit -m "chore: 源健康档案 $(date -u +%FT%TZ)"
-            git push
-          fi
+          # 同样走带重试的推送：这一步失败会让「候选池」那步一起 skip，
+          # 而健康档案少一轮 = CI 口径判死要攒的轮数被悄悄推迟。
+          bash tools/ci_git_push.sh "chore: 源健康档案 $(date -u +%FT%TZ)" \
+            state archive src/sources.yaml
 
       # ========== 新源发现（只进候选池，绝不自动入池） ==========
       # 手动触发时跳过（cron 那次才跑）—— 新源发现不需要很勤，候选池要经真探针评估才值得动
@@ -160,12 +148,4 @@ jobs:
       - name: 提交候选池
         if: ${{ github.event_name == 'schedule' }}
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A data 2>/dev/null || true
-          if git diff --cached --quiet; then
-            echo "候选池无变化"
-          else
-            git commit -m "chore: 新源候选池 $(date -u +%FT%TZ)"
-            git push
-          fi
+          bash tools/ci_git_push.sh "chore: 新源候选池 $(date -u +%FT%TZ)" data

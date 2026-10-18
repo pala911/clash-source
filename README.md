@@ -381,7 +381,7 @@ python tools\cnci_trigger.py --status   # 只看云效最近几次运行，不�
 ok=0; for i in $(seq 1 8); do git fetch origin && git reset --hard origin/master && { ok=1; break; }; sleep 20; done; [ "$ok" = "1" ] && bash tools/sync_and_probe.sh || { echo "同步失败"; exit 1; }
 ```
 
-### 交付前必跑（全部十四道）
+### 交付前必跑（全部十五道）
 
 ```powershell
 python tools\check_ci_scripts.py      # Python 3.6 静态门禁
@@ -396,9 +396,22 @@ python tools\test_src_cfg_write.py    # 写回源清单只改 enabled，不抹�
 python tools\test_push_status.py      # 云效回传的留痕必落且本机不留垃圾
 python tools\test_local_probe_obs.py  # pythonw（计划任务）下 health.py 的输出与失败必须可观测
 python tools\test_report_ai.py        # AI 留痕链：生产端键名 ↔ 报告/manifest
+python tools\test_ci_workflow.py      # CI 推送必须带重试、失败不许染红（连带 skip 下游）
 python tools\verify_profile.py        # 真 mihomo 内核校验
 python tools\probe_field_types.py     # mihomo 接受哪些字段类型
 ```
+
+> ⚠️ **`test_ci_workflow.py`** 守的是「**一次推送撞车 = 一轮 L1 层静默消失**」。
+> 2026-10-18 实测（run #19）：`04:41:07` 本机探针推上 `078d4e7`，
+> `04:41:32` CI 拿 25 秒前检出的旧基点做**裸 `git push`** → non-fast-forward 被拒
+> → step 6 失败 → **后面 9 个步骤全部 skip**：gh-pages 不发布（手机订阅最多
+> 6 小时不更新）、美国口径探针不跑（**唯一有判死权的那层没执行**）、健康档案
+> 不算不提交（判死要攒的轮数被悄悄推迟）。
+> workflow 里这样的裸 `git push` 有**三处**（产物 / 健康档案 / 候选池）。
+> 现在三处都走 `tools/ci_git_push.sh`：被拒就 `pull --rebase --autostash` 再推，
+> 最多 3 次；**绝不是 force**（远端可能有本机探针的提交）；3 次都失败降级成
+> `::warning::` 且 `exit 0` —— 红只会连带 skip 下游，而提交还留在 workspace 里
+> 会被后续步骤带上去，失败方向是「晚一轮」而不是「丢一轮」。
 
 > ⚠️ **`test_health_tiering.py` 的 D 段**守的是一条**从来没被执行过的代码路径**：
 > 回收分支自 2026-10-15 分级抽成 `compute_tier()` 之后就读不到 `cnci_ready`/`cn`
@@ -487,6 +500,7 @@ python tools\probe_field_types.py     # mihomo 接受哪些字段类型
 | 一个畸形节点毁掉整源 | 892 个节点 0 加载，日志只有一行 error | provider 级失败**全有全无**；字段**类型**不在白名单检查范围内（坑 §33） |
 | 测试/临时脚本把源清单改坏 | `src/sources.yaml` 变成 `sources: []` + 4 行历史库表头 | 备份名用了 `os.path.basename` → `src/sources.yaml` 与 `archive/sources.yaml` **撞名**互盖。**已踩三次**（10-16 正式测试、10-17 与 10-18 各一次核实脚本）；第三次还被 `local_probe` 的 `git add -A state archive src/sources.yaml` **连带提交推送**出去了。规矩：备份名一律显式取别名，`.tools/` 下的临时脚本同样受这条约束 |
 | 临时脚本污染 `state/` | `node_stability.json.corrupt-<时间戳>` 被提交进仓库 | 改名留证**是对的**（别丢证据），但 `.gitignore` 要挡住 `state/*.corrupt-*`，测试也要清掉自己造的那些（`test_fault_injection` 现在会核对 `state/` 新增文件） |
+| 一次推送撞车 = 一轮 L1 整层缺失 | CI step 6 被拒 → 后面 9 步 skip：gh-pages 不发布、美国口径判死不跑、健康档案不提交 | L1（GitHub CI，`17 */6 * * *` 会被排队延迟几十分钟）与 L2（本机探针，固定 12:30）**时间窗天然会撞**。三处裸 `git push` 都必须带重试；且失败要降级成 warning 不染红（红只会连带 skip 下游）。见 `tools/ci_git_push.sh` 与 `tools/test_ci_workflow.py` |
 | 测试往源清单里追加合成源 | 报 `mapping values are not allowed here` | `sources:` 的条目缩进 2 格，且文件末尾是另一个顶层键 `excluded:` |
 
 ---
