@@ -37,7 +37,6 @@
 产出：state/probe_latest.json (scope=local) + state/source_health.json + reports/
 """
 import argparse
-import contextlib
 import io
 import os
 import shutil
@@ -167,17 +166,31 @@ def main():
         print("[local] --scope-only：复用现有 state/probe_latest.json")
 
     print("[local] 健康档案（国内口径只判优/回收，判死留给 CI）…")
-    buf = io.StringIO()
-    with contextlib.redirect_stdout(buf):
-        subprocess.run([sys.executable, os.path.join(HERE, "health.py")], cwd=ROOT)
-    for line in buf.getvalue().splitlines():
-        print("  " + line)
+    # ⚠ 必须**显式**把父进程（可能已被重定向到日志文件）的句柄递过去。
+    #   `contextlib.redirect_stdout(buf)` 抓不到子进程 —— 它只改父进程的
+    #   Python 级 sys.stdout，子进程写的是继承来的 OS 句柄，buf 恒空
+    #   （那个转发循环是死代码，2026-10-18 全量审查实锤）。
+    #   但**光删掉 redirect 不够**：pythonw（计划任务）下子进程继承的句柄
+    #   是无效的，输出会静默消失。实测 2026-10-18 12:41 那轮
+    #   logs/local_probe_stdout.log 里一个 [health] 行都没有，
+    #   而 probe.py 因为 run_probe() 显式传了 stdout= 就正常 —— 同一个坑。
+    # ⚠ 还要**查退出码**：health.py 崩了（例如回收分支的 NameError）
+    #   会让整轮数据白丢，而原来这里不看返回码、输出又丢了 => 完全不可观测。
+    hp = subprocess.run([sys.executable, os.path.join(HERE, "health.py")],
+                        cwd=ROOT, stdout=sys.stdout, stderr=subprocess.STDOUT)
+    health_rc = hp.returncode
+    if health_rc != 0:
+        print("[local] ⚠ health.py 失败（exit=%d）：健康档案本轮**未更新**。"
+              "探针结果仍在 state/probe_latest.json，下轮探针会重跑。"
+              % health_rc)
 
     rc = 0
     if args.no_push:
         print("[local] --no-push，跳过推送")
     else:
         rc = push_to_github()
+    if health_rc != 0 and rc == 0:
+        rc = health_rc                 # 健康档案失败必须反映到退出码，不能静默
     _oplog("done, exit=%d" % rc)
     return rc
 

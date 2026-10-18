@@ -62,9 +62,14 @@ def split_by_stability(per_source):
          -> **完全不加权**，全部当稳定。宁可暂时不加权，也不要砍空。
       2. 没有历史的节点一律**保留**。新节点/换配置的节点不该因为「未知」被淘汰。
       3. 单源保留数不足地板（绝对值或比例）-> 该源整体不砍。
+      4. 档案损坏（load 会改名留证并抛）-> 同上不加权。**构建不能因为一个
+         辅助档案坏掉而失败**（CI 每 6 小时跑一次，红了就是 6 小时没新订阅）。
     """
     import node_stability as ns
-    data = ns.load()
+    try:
+        data = ns.load()
+    except RuntimeError as e:
+        return per_source, {}, "稳定性档案损坏，本轮不稳定性加权（%s）" % e
     nodes = data.get("nodes") or {}
     known = [v for v in nodes.values() if v.get("n", 0) >= ns.MIN_ROUNDS]
     if len(known) < STABILITY_MIN_KNOWN:

@@ -44,7 +44,7 @@ def write_report(path, manifest, metas, warnings, per_source):
         L.append("")
     L.append("## 各源漏斗")
     L.append("")
-    L.append("| 源 | 原始 | 产出 | AI 剔除 | 镜像回退 | 分组 | 备注 |")
+    L.append("| 源 | 原始 | 产出 | AI 剔除(簇/节点) | 镜像回退 | 分组 | 备注 |")
     L.append("|---|---:|---:|---:|---|---|---|")
     detail = (rank or {}).get("detail") or {}
     bucket = {}
@@ -55,9 +55,19 @@ def write_report(path, manifest, metas, warnings, per_source):
         note = m.get("error") or ""
         if m.get("mirror_used"):
             note = (note + " " if note else "") + "直连失败走镜像"
+        # AI 剔除同时给出「簇数 / 节点数」：簇数说明模型做了几次判定，
+        # 节点数才与其他列（原始/产出）同量纲。只看簇数会把「1 簇 300 节点」
+        # 读成无关紧要，只看节点数又看不出判定粒度。
+        ai = m.get("ai") or {}
+        if not ai:
+            ai_cell = "-"
+        elif ai.get("dropped_clusters"):
+            ai_cell = "%d 簇 / %d 节点" % (ai["dropped_clusters"], ai.get("dropped", 0) or 0)
+        else:
+            ai_cell = "%d 节点" % (ai.get("dropped", 0) or 0)
         L.append("| %s | %s | %s | %s | %s | %s | %s |"
                  % (m["name"], m.get("raw_nodes", "-"), m.get("kept", "-"),
-                    (m.get("ai") or {}).get("dropped", "-"),
+                    ai_cell,
                     "是" if m.get("mirror_used") else "否",
                     bucket.get(m["name"], "-"), note or "-"))
     L.append("")
@@ -99,9 +109,17 @@ def write_report(path, manifest, metas, warnings, per_source):
             ai = m.get("ai") or {}
             if not ai:
                 continue
-            line = "- **%s**：审 %d，剔除 %d" % (m["name"], ai.get("reviewed", 0), ai.get("dropped", 0))
+            ncl = ai.get("dropped_clusters", 0) or 0
+            line = "- **%s**：审 %d 节点，剔除 %d 节点" % (
+                m["name"], ai.get("reviewed", 0) or 0, ai.get("dropped", 0) or 0)
+            if ncl:
+                line += "（%d 个簇）" % ncl
             if ai.get("rolled_back"):
                 line += "（超阈值已回滚）"
+            if ai.get("skipped_budget"):
+                line += "（墙钟预算用尽，未审）"
+            if ai.get("error"):
+                line += "（%s）" % ai["error"]
             if ai.get("top_reasons"):
                 line += "；理由 TOP：%s" % "，".join(ai["top_reasons"])
             L.append(line)

@@ -763,13 +763,20 @@ def main():
             #   * 云效否决 = 不回收。失败方向是「多留一个源在历史库里」，可逆、无害。
             #   * 云效若能单独放行 = 会把差源捞回池子。那是不可逆的污染。
             # 所以云效只有否决权。没有决定权。
+            # ⚠ cnci_ready/cn/why 是 compute_tier() 的局部变量，这里**够不着** ——
+            #   分级抽成函数后它们没跟着出来，回收分支一进来就 NameError
+            #   （实测：隔离中的源 + 本机连续 2 轮达标 -> exit=1，回收成了死路径）。
+            #   改读 compute_tier 写回 rec 的 tier_rates/tier_why（单一事实来源）。
+            tr = rec.get("tier_rates") or {}
+            cnci_runs = tr.get("cnci_runs") or 0
+            cnci_ready = cnci_runs >= TIER_MIN_CNCI_RUNS
             if scope != "local":
                 print("[health] %-24s CI 口径不判回收（等本机探针确认）" % name)
             elif TIER_REQUIRE_CNCI and not cnci_ready:
                 print("[health] %-24s 暂不回收（云效样本 %d/%d 轮不足，双视角未达成一致）"
-                      % (name, cn, TIER_MIN_CNCI_RUNS))
+                      % (name, cnci_runs, TIER_MIN_CNCI_RUNS))
             elif TIER_REQUIRE_CNCI and tier != "T1":
-                print("[health] %-24s 暂不回收（云效否决：%s）" % (name, why))
+                print("[health] %-24s 暂不回收（云效否决：%s）" % (name, rec.get("tier_why")))
             elif name in src_by_name:
                 src_by_name[name]["enabled"] = True
                 src_by_name[name].pop("quarantine_reason", None)

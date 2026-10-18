@@ -60,6 +60,20 @@ def restore(s):
             os.remove(p)
 
 
+# ⚠ node_stability.load() 损坏时会把坏档案改名成 *.corrupt-<时间戳> 留证。
+#   那是**真实事故**要保留的东西，所以测试只清「本次新造出来的」那些，
+#   不碰跑之前就存在的（否则会把上一次真事故的证据删掉）。
+CORRUPT_BEFORE = set(glob.glob(os.path.join(STATE, "*.corrupt-*")))
+STATE_BEFORE = set(os.listdir(STATE))
+
+
+def cleanup_artifacts():
+    """清掉本次跑出来的改名留证文件；返回 state/ 里新出现的文件（真残留）。"""
+    for p in set(glob.glob(os.path.join(STATE, "*.corrupt-*"))) - CORRUPT_BEFORE:
+        os.remove(p)
+    return sorted(set(os.listdir(STATE)) - STATE_BEFORE)
+
+
 def run(script, *args):
     env = dict(os.environ, PYTHONIOENCODING="utf-8")
     p = subprocess.run([PY, os.path.join(ROOT, "src", script)] + list(args),
@@ -262,10 +276,12 @@ if bad:
 else:
     print("  ✓ 全部用例行为符合预期（坏数据一律「明确报错」或「跳过该源」，无静默通过）")
 
-# 残留检查
+# 残留检查：WATCH 里的文件一个都不能丢，state/ 里也不能多出任何东西。
 left = [p for p in WATCH if not os.path.exists(p)]
+extra = cleanup_artifacts()
 print()
-print("  残留文件: %s" % ([os.path.basename(x) for x in left] or "无"))
+print("  缺失的受监控文件: %s" % ([os.path.basename(x) for x in left] or "无"))
+print("  state/ 新增残留: %s" % (extra or "无"))
 print("  备份目录: %s" % ("残留" if os.path.exists(BK) else "已清理"))
 
-sys.exit(1 if bad else 0)
+sys.exit(1 if (bad or left or extra) else 0)

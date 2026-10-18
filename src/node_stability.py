@@ -68,16 +68,33 @@ def fingerprint(proxy):
 
 
 def load(path=STABILITY):
+    """读稳定性档案。
+
+    ⚠ 损坏时**必须响**，绝不静默返回空档案 —— 那会让 merge 把几千个节点的
+      历史在 save 时整体覆盖掉（health.py 同样的坑修过一次）。坏文件改名
+      留证后抛出，由调用方决定怎么降级（probe.py 已有 try/except 兜底）。
+    """
     try:
-        return json.load(open(path, encoding="utf-8"))
+        with open(path, encoding="utf-8") as f:   # ⚠ with：改名前必须先关句柄，
+            return json.load(f)                   #   Windows 开着句柄 os.replace 会炸
     except Exception:
-        return {"version": 1, "nodes": {}}
+        if os.path.exists(path):
+            bak = "%s.corrupt-%s" % (path, time.strftime("%Y%m%d-%H%M%S"))
+            os.replace(path, bak)
+            raise RuntimeError(
+                "稳定性档案损坏，已改名留证：%s（请人工检查后重建）" % bak)
+        return {"version": 1, "nodes": {}}     # 文件不存在 = 首次使用，正常
 
 
 def save(data, path=STABILITY):
+    """原子写：先写临时文件再 os.replace，写一半被杀也不会留下半截 JSON。"""
     os.makedirs(os.path.dirname(path), exist_ok=True)
-    with open(path, "w", encoding="utf-8") as f:
+    tmp = path + ".tmp"
+    with open(tmp, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, separators=(",", ":"))
+        f.flush()
+        os.fsync(f.fileno())
+    os.replace(tmp, path)                     # 同目录内原子操作
 
 
 def _median(xs):
@@ -93,13 +110,20 @@ def merge(records, scope="local", path=STABILITY, today=None):
 
     返回 (写入的节点数, 跳过原因)。**不抛异常** —— 稳定性档案是辅助功能，
     写坏了不该让整轮探针失败。
+
+    ⚠ 档案损坏时**本轮不写**：load() 已经把坏文件改名留证，这里绝不拿一份
+      「从零起步」的档案覆盖上去（那才是真正的历史丢失）。下一轮 load()
+      看到文件不存在，会重新建一份干净的。
     """
     if scope != "local":
         return 0, "非本机口径（%s），不写入稳定性档案" % scope
     if not records:
         return 0, "没有 per-node 数据"
     today = today or time.strftime("%Y-%m-%d", time.gmtime())
-    data = load(path)
+    try:
+        data = load(path)
+    except RuntimeError as e:
+        return 0, "跳过本轮：%s（下一轮会自动重建）" % e
     nodes = data.setdefault("nodes", {})
     n = 0
     for fp, r in records.items():

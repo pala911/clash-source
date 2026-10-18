@@ -93,6 +93,7 @@ def main():
     warnings = []
     raw_keep = {}
     ai_reviewed = {}
+    ai_stats = {}       # 各源 AI 统计 -> meta["ai"] -> 报告与 ai_dropped.md
 
     # ================= 阶段一：抓取 + 硬过滤（源间并发） =================
     # 抓取是纯网络 IO、互不依赖，源间并发能把这一段从 12×N 秒压到约 N 秒。
@@ -196,7 +197,10 @@ def main():
         for name, drops, st in ai_results:
             clusters = next(c[1] for c in cluster_jobs if c[0] == name)
             kept = prepared_by_name[name]
-            astats = st
+            # ⚠ 必须写进 meta["ai"]：报告与 ai_dropped.md 都从这里读 ——
+            #   原来赋给一个没人读的局部变量（astats），整条 AI 留痕断裂：
+            #   报告显示「审 0 剔除 0」，而 AI 实际跑了几十次。
+            ai_stats[name] = st
             if st.get("error"):
                 warnings.append("%s AI 部分批次不可用（相关批次保留全部节点）：%s"
                                 % (name, st["error"]))
@@ -231,6 +235,8 @@ def main():
         meta = next((m for m in metas if m["name"] == name), None)
         if meta is not None:
             meta["kept"] = len(kept)
+            if name in ai_stats:
+                meta["ai"] = ai_stats[name]
         log("   产出 %d 节点：%s" % (len(kept), name))
 
 
@@ -291,11 +297,15 @@ def main():
             "bytes": m.get("bytes"),
             "mirror": m.get("mirror_used"),
             "ai_dropped": (m.get("ai") or {}).get("dropped"),
+            "ai_dropped_clusters": (m.get("ai") or {}).get("dropped_clusters"),
             "error": m.get("error"),
         } for m in metas],
         "totals": {"kept": sum(len(v) for v in per_source.values()),
                    "merged": len(all_nodes),
-                   "ai_reviewed": sum(ai_reviewed.values())},
+                   # 统一口径 = **节点数**。原来簇级模式塞簇数、源级模式塞节点数，
+                   # 同一个键两个量纲（日志里还把它标成「送审 N 条」）。
+                   "ai_reviewed": (sum((s.get("reviewed") or 0) for s in ai_stats.values())
+                                   if ai_stats else sum(ai_reviewed.values()))},
         "ai_scope": scope,
         "ai_usage": ai_review.usage_report(),
         "warnings": warnings,

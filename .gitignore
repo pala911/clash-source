@@ -21,6 +21,10 @@ venv/
 logs/
 ci_capability_result.json
 
+# 稳定性档案损坏时 load() 的改名留证（*.corrupt-<时间戳>）。
+# 它是本地诊断产物，绝不能被 local_probe 的 `git add -A state` 顺手提交上去。
+state/*.corrupt-*
+
 
 # 云效 Codeup 的 HTTPS 克隆密码（明文，绝不入库）
 *.https

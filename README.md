@@ -381,22 +381,47 @@ python tools\cnci_trigger.py --status   # 只看云效最近几次运行，不�
 ok=0; for i in $(seq 1 8); do git fetch origin && git reset --hard origin/master && { ok=1; break; }; sleep 20; done; [ "$ok" = "1" ] && bash tools/sync_and_probe.sh || { echo "同步失败"; exit 1; }
 ```
 
-### 交付前必跑（全部十二道）
+### 交付前必跑（全部十四道）
 
 ```powershell
 python tools\check_ci_scripts.py      # Python 3.6 静态门禁
 python tools\test_probe_wiring.py     # 探针 ↔ 稳定性档案 的接线
-python tools\test_health_tiering.py   # 双视角分级（四格全覆盖）+ 判死轮数/跨度双闸门 + 注释零丢失
+python tools\test_health_tiering.py   # 双视角分级（四格全覆盖）+ 判死轮数/跨度双闸门 + 注释零丢失 + 判死后回收
 python tools\test_build_groups.py     # 质量分桶
-python tools\test_stability.py        # 节点稳定性加权
+python tools\test_stability.py        # 节点稳定性加权 + 档案损坏时不许静默重建
 python tools\test_flaky_reprobe.py    # 被移出的节点能否翻盘
 python tools\test_fault_injection.py  # 坏数据进来时是否明确报错
 python tools\test_provider_load.py    # 一个畸形节点会不会让整源加载失败（真内核）
 python tools\test_src_cfg_write.py    # 写回源清单只改 enabled，不抹注释
 python tools\test_push_status.py      # 云效回传的留痕必落且本机不留垃圾
+python tools\test_local_probe_obs.py  # pythonw（计划任务）下 health.py 的输出与失败必须可观测
+python tools\test_report_ai.py        # AI 留痕链：生产端键名 ↔ 报告/manifest
 python tools\verify_profile.py        # 真 mihomo 内核校验
 python tools\probe_field_types.py     # mihomo 接受哪些字段类型
 ```
+
+> ⚠️ **`test_health_tiering.py` 的 D 段**守的是一条**从来没被执行过的代码路径**：
+> 回收分支自 2026-10-15 分级抽成 `compute_tier()` 之后就读不到 `cnci_ready`/`cn`
+> （它们成了那个函数的局部变量），一进来就 `NameError` → `health.py` 直接 exit=1。
+> 线上表现是「判死历史库里的源从来没有一个被回收过」。它之所以能藏三天，
+> 是因为退出码没人看、输出又被 pythonw 吞掉（见下一条）——
+> **三个缺陷叠在一起，才会长期看起来一切正常**。
+
+> ⚠️ **`test_local_probe_obs.py`** 守的是「**静默**」本身：本机探针由计划任务用
+> `pythonw` 跑（GUI 子系统，没有控制台，`sys.stdout is None`）。脚本自己把 stdout
+> 接到 `logs/local_probe_stdout.log`、也给 `probe.py` 显式递了句柄，但 `health.py`
+> 那处没有 —— 实测 12:41 那轮日志里 `[probe]` 行有、`[health]` **一行都没有**，
+> 而且它的退出码从来没人看。健康档案那一步跑没跑、是不是崩了，全程不可观测。
+> 现在：显式递句柄 + 检查退出码，失败会写进日志并反映到进程退出码。
+> （⚠ 测试本体在**临时副本**里跑：真跑一轮 health.py 会往真实档案追加轮次、改写
+> `src/sources.yaml`，那是判定历史，不能被测试污染。）
+
+> ⚠️ **`test_report_ai.py`** 守的是一份**看起来很确定的假结论**：`report.py` 读
+> `ai.reviewed`/`ai.dropped`，而线上在用的簇级口径只产出
+> `dropped_clusters`/`dropped_nodes` —— `.get()` 全部落到默认值 0，于是
+> 「AI 处置摘要：审 0，剔除 0」印了三天，而同一份 `manifest.json` 里
+> `ai_usage.calls` 有几十次调用。两个函数各自都是自洽的，只有跨文件的键名对不上
+> —— 所以它有一层是**扫消费端源码**、拿它去要求生产端，专门防这类漂移。
 
 > ⚠️ **`test_src_cfg_write.py`** 守的是一个静默数据丢失：`write_src_cfg` 原来是
 > `yaml.safe_dump(cfg) + 4 行固定表头`，**一次降级就把 `src/sources.yaml` 的注释从
@@ -460,7 +485,8 @@ python tools\probe_field_types.py     # mihomo 接受哪些字段类型
 | 云端日志面板不可靠 | 跑满 67 秒只渲染部分输出 | 所以结果必须 commit 回仓库，**日志只用于排查** |
 | `mihomo -t` 不校验 provider | 配置校验 exit=0，实例一启动整源消失 | provider 的解析错误**只在实例启动时**才打进日志；`-t` 只验配置结构 |
 | 一个畸形节点毁掉整源 | 892 个节点 0 加载，日志只有一行 error | provider 级失败**全有全无**；字段**类型**不在白名单检查范围内（坑 §33） |
-| 测试把源清单改坏 | 跑一次 `test_health_tiering`，`src/sources.yaml` 变成历史库的内容 | 备份文件名用了 `os.path.basename` → `src/` 与 `archive/` 的 `sources.yaml` **撞名**互盖 |
+| 测试/临时脚本把源清单改坏 | `src/sources.yaml` 变成 `sources: []` + 4 行历史库表头 | 备份名用了 `os.path.basename` → `src/sources.yaml` 与 `archive/sources.yaml` **撞名**互盖。**已踩三次**（10-16 正式测试、10-17 与 10-18 各一次核实脚本）；第三次还被 `local_probe` 的 `git add -A state archive src/sources.yaml` **连带提交推送**出去了。规矩：备份名一律显式取别名，`.tools/` 下的临时脚本同样受这条约束 |
+| 临时脚本污染 `state/` | `node_stability.json.corrupt-<时间戳>` 被提交进仓库 | 改名留证**是对的**（别丢证据），但 `.gitignore` 要挡住 `state/*.corrupt-*`，测试也要清掉自己造的那些（`test_fault_injection` 现在会核对 `state/` 新增文件） |
 | 测试往源清单里追加合成源 | 报 `mapping values are not allowed here` | `sources:` 的条目缩进 2 格，且文件末尾是另一个顶层键 `excluded:` |
 
 ---

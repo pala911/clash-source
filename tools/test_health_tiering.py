@@ -87,10 +87,15 @@ def _s(v):
 
 
 def run_health():
+    """跑一轮 health.py，返回 (退出码, stdout+stderr)。
+
+    ⚠ 退出码必须一起返回：场景 D 守的正是「回收分支一进来就 NameError、exit=1」，
+       只看输出文本会漏掉「进程整体崩掉」这一类失败。
+    """
     env = dict(os.environ, PYTHONIOENCODING="utf-8")
     p = subprocess.run([PY, os.path.join(ROOT, "src", "health.py")],
                        capture_output=True, cwd=ROOT, env=env)
-    return _s(p.stdout) + _s(p.stderr)
+    return p.returncode, _s(p.stdout) + _s(p.stderr)
 
 
 def cnci_doc(runs, tag):
@@ -107,10 +112,16 @@ def cnci_doc(runs, tag):
             "hc_timeout_ms": 8000, "sampled": True, "sources": srcs}
 
 
-def seed_local_probe():
-    """把本机全量结果写成 scope=local 的探针文档，供 health.py 读取。"""
+def seed_local_probe(extra=None):
+    """把本机全量结果写成 scope=local 的探针文档，供 health.py 读取。
+
+    extra: {源名: 通过率} —— 额外塞进本轮的**合成源**（场景 D 回收要用）。
+           合成源不在 src/sources.yaml 的 LOCAL 常量里，必须显式给。
+    """
     srcs = {}
-    for name, rate in sorted(LOCAL.items()):
+    rates = dict(LOCAL)
+    rates.update(extra or {})
+    for name, rate in sorted(rates.items()):
         n = 300
         srcs[name] = {"nodes": n, "tested": n, "alive": int(round(rate * n / 100.0)),
                       "rate": rate, "best_ms": 800, "settled": True,
@@ -179,7 +190,7 @@ try:
     seed_local_probe()
     with open(CNCI_PATH, "w", encoding="utf-8") as f:
         json.dump(cnci_doc(1, "A"), f, ensure_ascii=False, indent=2)
-    out = run_health()
+    rc, out = run_health()
     for ln in out.splitlines():
         if "分级" in ln or "暂不回收" in ln or "无云效" in ln:
             print("  " + ln.strip())
@@ -204,7 +215,7 @@ try:
         with open(CNCI_PATH, "w", encoding="utf-8") as f:
             json.dump(cnci_doc(r, "B%d" % r), f, ensure_ascii=False, indent=2)
         run_health()
-    out = run_health()
+    rc, out = run_health()
     for ln in out.splitlines():
         if "分级" in ln or "===" in ln or "云效轮次" in ln:
             print("  " + ln.strip())
@@ -332,8 +343,34 @@ def run_ci_rounds(ts_list):
     for t in ts_list:
         with open(PROBE_PATH, "w", encoding="utf-8") as f:
             json.dump(ci_doc(t, {FAKE}), f, ensure_ascii=False, indent=2)
-        out = run_health()
+        rc, out = run_health()
     return out
+
+
+def archive_names():
+    """历史库里的源名（archive/sources.yaml 不存在时返回空）。"""
+    if not os.path.exists(ARCHIVE_YAML):
+        return []
+    arch = yaml.safe_load(open(ARCHIVE_YAML, encoding="utf-8")) or {}
+    return [s.get("name") for s in (arch.get("sources") or [])]
+
+
+def seeded_runs(scope, n, rate, alive, day0):
+    """造 n 条**历史轮次**记录（字段与 health.py 写回的一模一样）。
+
+    ⚠ hc_timeout_ms 必须和探针文档里的 8000 一致：health.py 见到同一口径的
+      hc_timeout 变了就**清零 streak** —— 口径不一致这个用例永远攒不够回收条件，
+      而症状会是「回收分支没进去」，看起来像另一个 bug。
+    """
+    return [{"ts": "2026-%02d-%02dT%02d:00:00Z"
+                   % (9 if scope == "local" else 10, day0 + i,
+                      12 if scope == "local" else 4),
+             "scope": scope, "sampled": scope == "cnci", "hc_timeout_ms": 8000,
+             "nodes": 300 if scope == "local" else 30,
+             "tested": 300 if scope == "local" else 30,
+             "alive": alive, "rate": rate, "best_ms": 500,
+             "settled": True, "incomplete": False}
+            for i in range(n)]
 
 
 backup()
@@ -388,8 +425,80 @@ finally:
     if os.path.exists(SRC_BASE):
         os.remove(SRC_BASE)
 
+print()
+print("=" * 72)
+print("场景 D：被判死的源攒够条件后能否**自动回收**")
+print("=" * 72)
+print("""
+  背景：回收分支（state=quarantined + good_streak>=2 + 云效 7 轮 + T1）自
+        2026-10-15 分级抽成 compute_tier() 之后就是一条**死路径** ——
+        cnci_ready/cn/why 是那个函数的局部变量，回收分支够不着，一进来就
+        NameError，health.py 直接 exit=1。线上表现：判死历史库里的源
+        从来没有一个被回收过（回收功能上线起 0 次生效）。
+        这条用例走**真实路径**：先让 health.py 真判死，再喂 7 轮云效 +
+        本机达标轮，看它能不能自己回来。
+""")
+backup()
+try:
+    # ---- 1) 先走真实判死：3 轮 CI 0 活、跨度 50h ----
+    # ⚠ SRC_BASE 在 C 段的 finally 里已删掉，这里必须重新造（add_fake_source 会把
+    #   合成源插回 src/sources.yaml 并同步一份到 SRC_BASE）。
+    add_fake_source()
+    shutil.copy2(SRC_BASE, SRC_YAML)
+    if os.path.exists(ARCHIVE_YAML):
+        os.remove(ARCHIVE_YAML)          # 从空历史库起，下面的断言才不含混
+    seed_health_empty({FAKE: {"bad_streak": 0, "bad_since": None}})
+    run_ci_rounds(["2026-10-10T00:00:00Z", "2026-10-11T01:00:00Z",
+                   "2026-10-12T02:00:00Z"])
+    check(enabled_of(FAKE) is False, "前置：health.py 真把它判死了（enabled: false）")
+    check(FAKE in archive_names(), "前置：进了历史库 archive/sources.yaml",
+          "；".join(archive_names()))
+
+    # ---- 2) 灌历史：本机 1 轮达标（本轮再达标 -> good_streak=2）、
+    #          云效 7 轮达标（-> cnci_runs>=7 且 T1「两视角均达标」） ----
+    h = json.load(open(HEALTH_PATH, encoding="utf-8"))
+    rec = (h.get("sources") or {}).get(FAKE)
+    if rec is None:
+        raise SystemExit("[tier-test] 场景 D 前置失败：健康档案里没有 %s 的记录" % FAKE)
+    rec["good_streak"] = 1
+    rec["runs"] = (seeded_runs("cnci", 7, 66.0, 20, 1)
+                   + seeded_runs("local", 1, 33.0, 99, 1)
+                   + list(rec.get("runs") or []))
+    with open(HEALTH_PATH, "w", encoding="utf-8") as f:
+        json.dump(h, f, ensure_ascii=False, indent=2)
+
+    # ---- 3) 本轮：本机全量达标（合成源也在里面），云效文档不含合成源 ----
+    seed_local_probe({FAKE: 33.0})
+    with open(CNCI_PATH, "w", encoding="utf-8") as f:
+        json.dump(cnci_doc(1, "D"), f, ensure_ascii=False, indent=2)
+    n_cmt = sum(1 for ln in open(SRC_YAML, encoding="utf-8")
+                if ln.lstrip().startswith("#"))
+    rc, out = run_health()
+    for ln in out.splitlines():
+        if FAKE in ln or "回收" in ln:
+            print("  " + ln.strip())
+    print()
+    check(rc == 0 and "NameError" not in out, "health.py 正常退出（不再 NameError）",
+          "exit=%s" % rc)
+    check(enabled_of(FAKE) is True, "回收：enabled 回到 true")
+    rec2 = (json.load(open(HEALTH_PATH, encoding="utf-8")).get("sources") or {}).get(FAKE) or {}
+    check(rec2.get("state") == "active", "回收：状态回到 active",
+          "实际 %s" % rec2.get("state"))
+    check(FAKE not in archive_names(), "回收：已从历史库摘掉", "；".join(archive_names()))
+    # 回收要写两处：src/sources.yaml（就地改 enabled）与 archive/sources.yaml。
+    # 这一步同时守住那个反复发作的事故（写归档时把 src 的源清单覆盖成历史库内容）。
+    n2 = sum(1 for ln in open(SRC_YAML, encoding="utf-8") if ln.lstrip().startswith("#"))
+    check(n2 == n_cmt, "write_arch 写的是历史库，没盖到 src/sources.yaml",
+          "%d -> %d 行注释" % (n_cmt, n2))
+    print()
+finally:
+    restore()
+    if os.path.exists(SRC_BASE):
+        os.remove(SRC_BASE)
+
 print("=" * 72)
 if FAILS:
     print("结果：失败 %d 项 —— %s" % (len(FAILS), "；".join(FAILS)))
     sys.exit(1)
-print("结果：全部通过（A 数据不足不判定 / B 四格全覆盖 / C 判死双闸门 + 注释零丢失）")
+print("结果：全部通过（A 数据不足不判定 / B 四格全覆盖 / C 判死双闸门 + 注释零丢失 "
+      "/ D 判死后可回收）")

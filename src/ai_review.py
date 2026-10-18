@@ -283,8 +283,15 @@ def review_source(nodes, soft_map, mode, cfg, source_name, log):
     fail-soft 粒度 = **单个 chunk**：某批全后端都失败只影响那一批；
     只有整源所有批都失败才算「AI 不可用」。
     """
+    # ⚠ 两种审核口径（源级 review_source / 簇级 review_clusters）必须产出**同一套汇总键**：
+    #     reviewed          送去判断的节点数
+    #     dropped           被剔除的节点数（回滚/未审时为 0）
+    #     dropped_clusters  被剔除的簇数（源级口径没有簇概念，恒为 0）
+    #   原来簇级口径只有 dropped_clusters/dropped_nodes、源级只有 reviewed/dropped，
+    #   而 report.py / manifest 读的是 reviewed/dropped —— 于是线上报告
+    #   长期显示「审 0，剔除 0」、ai_dropped 恒为 null，AI 实际跑了几十次却没有任何留痕。
     stats = {"mode": mode, "chunks": 0, "chunks_failed": 0, "reviewed": 0,
-             "dropped": 0, "rolled_back": False, "error": None,
+             "dropped": 0, "dropped_clusters": 0, "rolled_back": False, "error": None,
              "backends": cfg.get("_names"), "served": {}}
     if mode == "off" or not nodes:
         return [], stats
@@ -431,6 +438,7 @@ def review_clusters(clusters, nodes, mode, cfg, source_name, log):
     import concurrent.futures as cf
 
     stats = {"mode": mode, "chunks": 0, "chunks_failed": 0, "clusters": len(clusters),
+             "reviewed": 0, "dropped": 0,
              "dropped_clusters": 0, "dropped_nodes": 0, "rolled_back": False,
              "error": None, "served": {}, "skipped_budget": False}
     if mode == "off" or not clusters:
@@ -493,6 +501,7 @@ def review_clusters(clusters, nodes, mode, cfg, source_name, log):
     # 熔断：判掉的「节点占比」超阈值就整体回滚（防模型误读）
     hit_nodes = sum(len(clusters[i][1]) for i in drops)
     total_nodes = sum(len(c[1]) for c in clusters)
+    stats["reviewed"] = total_nodes          # 统一口径：送去判断的节点数
     ratio = hit_nodes / max(1, total_nodes)
     if ratio > DROP_RATIO_GUARD:
         stats["rolled_back"] = True
@@ -501,6 +510,7 @@ def review_clusters(clusters, nodes, mode, cfg, source_name, log):
         return set(), stats
     stats["dropped_clusters"] = len(drops)
     stats["dropped_nodes"] = hit_nodes
+    stats["dropped"] = hit_nodes             # 统一口径：剔除的节点数
     stats["top_reasons"] = sorted(set(reasons), key=reasons.count, reverse=True)[:5]
     stats["drop_detail"] = [
         {"name": str(nodes[clusters[i][1][0]].get("name"))[:60],

@@ -1,0 +1,218 @@
+# -*- coding: utf-8 -*-
+"""验证 AI 留痕链：生产端（ai_review）-> 组装（run.py 的 meta["ai"]）-> 消费端（report）。
+
+## 为什么要有这个测试
+
+线上 `reports/latest.md` 长期显示「AI 处置摘要：审 0，剔除 0」、
+`dist/manifest.json` 里 `ai_dropped` 恒为 null，而 AI 实际跑了几十次
+（`ai_usage.calls` 有数）。根因是**两边键名对不上**：
+
+    生产端 review_clusters（簇级，线上在用的那个）
+        -> dropped_clusters / dropped_nodes      （没有 reviewed / dropped）
+    生产端 review_source（源级，--ai-unit node 才用）
+        -> reviewed / dropped                    （没有 dropped_clusters）
+    消费端 report.py / run.py
+        -> 读 reviewed / dropped                 （簇级口径一个都没有）
+
+于是 `.get()` 全部落到默认值 0 —— **不报错、不告警，报告上是一份看起来很确定的假结论**。
+这一条只靠肉眼看代码极难发现（两个函数各自都是自洽的），所以必须让测试守。
+
+## 测试分三层
+
+  1. 契约层：消费端源码里读到的每个 ai 键，两种口径都必须提供
+     —— 这层如果早存在，上面那个 bug 上线当天就会红。
+  2. 数值层：屏蔽真后端，喂一个"要剔除第 2 簇"的假回复，
+     断言 reviewed/dropped/dropped_clusters 三个数是**真的算出来的**，不是恒 0。
+  3. 渲染层：用合成 manifest/meta 跑一遍 report.write_report，断言报告正文里
+     真的出现了「N 簇 / M 节点」而不是 0。
+"""
+import os
+import re
+import shutil
+import sys
+import tempfile
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.join(ROOT, "src"))
+
+import ai_review            # noqa: E402
+import report               # noqa: E402
+
+FAILS = []
+
+
+def check(ok, label, detail=""):
+    print("  %s %s%s" % ("✓" if ok else "✗", label,
+                        ("  —— %s" % detail) if detail else ""))
+    if not ok:
+        FAILS.append(label)
+    return ok
+
+
+def log(_msg):
+    pass
+
+
+# ---------------------------------------------------------------------------
+# 1) 契约层：把消费端源码里读的 ai 键扫出来
+# ---------------------------------------------------------------------------
+# 允许被读的键（= 生产端承诺提供的键）。加新键必须先加到这里，
+# 逼着改动者同时在生产端补上 —— 这正是当初漏掉的那一步。
+AI_KEYS = {"reviewed", "dropped", "dropped_clusters", "dropped_nodes",
+           "rolled_back", "top_reasons", "drop_detail", "error",
+           "skipped_budget", "mode", "chunks", "chunks_failed", "clusters"}
+# 汇总口径：两种审核单位都必须提供（报告/manifest 只读这三个）
+SUMMARY = ["reviewed", "dropped", "dropped_clusters"]
+
+PAT_A = re.compile(r'(?:\(m\.get\("ai"\)\s*or\s*\{\}\))\.get\("([a-z_]+)"')
+PAT_B = re.compile(r'\bai\.get\("([a-z_]+)"')
+
+print("=" * 72)
+print("1) 契约层：消费端读的 ai 键必须都在生产端的承诺里")
+print("=" * 72)
+read_keys = set()
+for fn in ("report.py", "run.py"):
+    text = open(os.path.join(ROOT, "src", fn), encoding="utf-8").read()
+    hits = set(PAT_A.findall(text)) | set(PAT_B.findall(text))
+    print("  %-11s 读的 ai 键: %s" % (fn, "、".join(sorted(hits)) or "无"))
+    read_keys |= hits
+unknown = sorted(read_keys - AI_KEYS)
+check(not unknown, "消费端没有读「生产端不存在」的键", "、".join(unknown))
+for k in SUMMARY:
+    check(k in read_keys, "消费端确实在用汇总键 %s（不然等于没接线）" % k)
+
+
+# ---------------------------------------------------------------------------
+# 2) 数值层：屏蔽真后端，断言三个汇总数是真算出来的
+# ---------------------------------------------------------------------------
+print()
+print("=" * 72)
+print("2) 数值层：簇级口径的 reviewed/dropped/dropped_clusters 必须真算")
+print("=" * 72)
+
+NODES = [{"name": "n%d" % i, "type": "ss", "server": "1.1.1.%d" % (i + 1)}
+         for i in range(5)]
+CLUSTERS = [("fp1", [0, 1]), ("fp2", [2, 3]), ("fp3", [4])]
+CFG = {"backends": [{"_name": "fake", "max_tokens": 100}]}
+
+ORIG = ai_review._call_http_raw
+
+
+def fake_drop_second(prompt, system, cfg, max_tokens, timeout_cap=None):
+    """假模型：只剔除第 2 簇（2 个节点）。"""
+    return {"drop": [{"c": 2, "why": "同族 server 全在同一个 /24"}]}
+
+
+ai_review._call_http_raw = fake_drop_second
+try:
+    drops, st = ai_review.review_clusters(CLUSTERS, NODES, "all", CFG, "t_src", log)
+finally:
+    ai_review._call_http_raw = ORIG
+
+print("  review_clusters -> %s" % {k: st.get(k) for k in
+                                   ("reviewed", "dropped", "dropped_clusters",
+                                    "dropped_nodes", "rolled_back")})
+check(drops == {1}, "剔除了第 2 簇（下标 1）", "实际 %s" % sorted(drops))
+check(st.get("reviewed") == 5, "reviewed = 送审节点数 5", "实际 %s" % st.get("reviewed"))
+check(st.get("dropped") == 2, "dropped = 剔除节点数 2（原来这个键根本不存在）",
+      "实际 %s" % st.get("dropped"))
+check(st.get("dropped_clusters") == 1, "dropped_clusters = 1",
+      "实际 %s" % st.get("dropped_clusters"))
+check(bool(st.get("drop_detail")), "drop_detail 有内容（喂给 reports/ai_dropped.md）")
+
+missing = [k for k in SUMMARY if k not in st]
+check(not missing, "簇级口径提供了全部汇总键", "缺 %s" % "、".join(missing))
+
+# 熔断回滚：剔除比例超阈值时，**三个数都必须归零** —— 回滚了却还报「剔除 N」
+# 是另一种假结论（报告说剔了，池子里其实一个没少）。
+# ⚠ 阈值是**严格大于**（`ratio > DROP_RATIO_GUARD`，0.6）：恰好 60% 不触发。
+#   两个用例把这条边界钉住，免得以后有人把 `>` 改成 `>=`（或反过来）没人发现。
+BOUND = [("fp1", [0, 1, 2]), ("fp2", [3, 4])]      # 剔 3/5 = 0.60 -> 不触发
+BIG = [("fp1", [0, 1, 2, 3]), ("fp2", [4])]        # 剔 4/5 = 0.80 -> 触发
+
+
+def fake_drop_first(prompt, system, cfg, max_tokens, timeout_cap=None):
+    return {"drop": [{"c": 1, "why": "全死"}]}
+
+
+ai_review._call_http_raw = fake_drop_first
+try:
+    _, st_b = ai_review.review_clusters(BOUND, NODES, "all", CFG, "t_src", log)
+    drops2, st2 = ai_review.review_clusters(BIG, NODES, "all", CFG, "t_src", log)
+finally:
+    ai_review._call_http_raw = ORIG
+print("  边界 3/5=0.60 -> %s" % {k: st_b.get(k) for k in
+                                ("rolled_back", "dropped")})
+print("  超阈 4/5=0.80 -> %s" % {k: st2.get(k) for k in
+                                ("rolled_back", "dropped", "dropped_clusters")})
+check(st_b.get("rolled_back") is False and st_b.get("dropped") == 3,
+      "恰好 60% 不触发熔断（阈值是严格大于）",
+      "实际 rolled_back=%s dropped=%s" % (st_b.get("rolled_back"), st_b.get("dropped")))
+check(st2.get("rolled_back") is True, "超阈值 -> 已回滚")
+check(drops2 == set(), "回滚时不真剔除任何簇")
+check(st2.get("dropped") == 0 and st2.get("dropped_clusters") == 0,
+      "回滚后 dropped/dropped_clusters 都是 0（不能一边回滚一边报剔除）",
+      "实际 %s/%s" % (st2.get("dropped"), st2.get("dropped_clusters")))
+
+# 源级口径同样要提供汇总键（否则切回 --ai-unit node 就会重演同一个 bug）
+_, st3 = ai_review.review_source(NODES, None, "off", CFG, "t_src", log)
+missing3 = [k for k in SUMMARY if k not in st3]
+print("  review_source(mode=off) 的键: %s" % "、".join(sorted(st3)))
+check(not missing3, "源级口径也提供了全部汇总键", "缺 %s" % "、".join(missing3))
+
+
+# ---------------------------------------------------------------------------
+# 3) 渲染层：报告正文里真的出现数字
+# ---------------------------------------------------------------------------
+print()
+print("=" * 72)
+print("3) 渲染层：reports/latest.md 里的 AI 数字必须是真的")
+print("=" * 72)
+
+manifest = {
+    "generated_at": "2026-10-18T04:20:00Z",
+    "ai_mode": "all",
+    "pages_base": "https://pala911.github.io/clash-source",
+    "owner": "pala911",
+    "repo": "clash-source",
+    "ranking": {"auto": ["anaer"], "备用": [], "观察": ["ermaozi"],
+                "detail": {"anaer": {"rate": 78.6, "why": "两视角均达标"},
+                           "ermaozi": {"rate": 2.9, "why": "机房友好"}}},
+    "totals": {"kept": 100, "merged": 200},
+}
+metas = [
+    {"name": "anaer", "raw_nodes": 868, "kept": 100, "mirror_used": False,
+     "ai": {"mode": "all", "reviewed": 100, "dropped": 12, "dropped_clusters": 2,
+            "dropped_nodes": 12, "rolled_back": False, "top_reasons": ["同族全死"]}},
+    {"name": "ermaozi", "raw_nodes": 744, "kept": 744, "mirror_used": True,
+     "ai": {"mode": "all", "reviewed": 744, "dropped": 0, "dropped_clusters": 0,
+            "rolled_back": True}},
+    {"name": "yypool", "raw_nodes": 900, "kept": 900},      # 没有 ai 记录
+]
+tmp = tempfile.mkdtemp(prefix="rpai_")
+path = os.path.join(tmp, "latest.md")
+try:
+    report.write_report(path, manifest, metas, ["测试告警"], {})
+    md = open(path, encoding="utf-8").read()
+finally:
+    shutil.rmtree(tmp, ignore_errors=True)
+
+for ln in md.splitlines():
+    if "anaer" in ln or "ermaozi" in ln or "yypool" in ln or "审 " in ln:
+        print("    %s" % ln[:118])
+print()
+check("2 簇 / 12 节点" in md, "漏斗表出现「2 簇 / 12 节点」（簇数与节点数都在）")
+check("审 100 节点，剔除 12 节点（2 个簇）" in md,
+      "AI 摘要行同时给出节点数与簇数")
+check("扣除 0" not in md and "审 0，剔除 0" not in md,
+      "不再出现「审 0，剔除 0」这种假结论")
+check("超阈值已回滚" in md, "回滚状态有单独标注（不然读者以为它剔了 0 个是因为没意见）")
+check("| yypool | 900 | 900 | - |" in md,
+      "没有 ai 记录的源显示 -（而不是伪装成 0）")
+
+print()
+print("=" * 72)
+if FAILS:
+    print("结果：失败 %d 项 —— %s" % (len(FAILS), "；".join(FAILS)))
+    sys.exit(1)
+print("结果：全部通过（AI 留痕链：契约一致 / 数值真实 / 报告不为 0）")

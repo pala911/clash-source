@@ -7,6 +7,7 @@
   C 单源几乎全不稳 -> 触发地板保护，该源整体不砍（宁可漏加权，不可砍空）
   D 真内核校验  -> profile.yaml 能被 mihomo -t 接受
 """
+import glob
 import os
 import shutil
 import subprocess
@@ -181,6 +182,54 @@ finally:
     elif os.path.exists(os.path.join(BACKUP, "node_stability.json")):
         shutil.copy2(os.path.join(BACKUP, "node_stability.json"), STAB)
     shutil.rmtree(BACKUP, ignore_errors=True)
+
+# ---------- E 档案损坏：必须「拒绝写入 + 改名留证」，不许从零重建 ----------
+# 这一段只用临时文件（不碰真的 state/node_stability.json），所以放在 try/finally 之外。
+print("")
+print("=" * 66)
+print("场景 E：稳定性档案损坏时不许静默重建")
+print("=" * 66)
+print("""
+  merge() 原来是 exists -> json.load -> 直接当空档案用：
+  档案一坏，这一轮就拿**一份从零开始的档案**覆盖掉累积了几十轮的历史
+  （线上有 3261 个节点），而且 save 不是原子的，写到一半崩溃还会留下半截文件
+  —— 下次 load 又把它当损坏，再来一次「从零重建」。静默、且不可逆。
+
+  现在的契约：
+    load()  坏文件改名成 *.corrupt-<时间戳> 留证，然后抛 RuntimeError
+    merge() 捕获后**本轮不写**（下一轮看到文件不存在会重建一份干净的）
+    build   捕获后「不加权」（构建绝不能因为一个辅助档案坏掉而失败）
+""")
+bad = os.path.join(tempfile.gettempdir(), "ns_corrupt_case.json")
+for p in glob.glob(bad + ".corrupt-*"):
+    os.remove(p)
+if os.path.exists(bad):
+    os.remove(bad)
+with open(bad, "w", encoding="utf-8") as f:
+    f.write("not json at all")
+rec1 = {"fp%d" % i: {"s": "anaer", "alive": True, "ms": 100} for i in range(3)}
+n1, why1 = ns.merge(rec1, scope="local", path=bad)
+corrupt = glob.glob(bad + ".corrupt-*")
+print("  merge(坏档案) -> 写入 %d 个 / why=%s" % (n1, why1))
+print("  留证文件: %s" % ([os.path.basename(p) for p in corrupt] or "无"))
+e1 = (n1 == 0)
+e2 = ("损坏" in (why1 or ""))
+e3 = (not os.path.exists(bad))          # 没有被「从零重建」的档案覆盖
+e4 = (len(corrupt) == 1)                # 坏内容留了证
+for lab, good in (("损坏时拒绝写入（不让空档案覆盖历史）", e1),
+                  ("原因里明说是损坏，不是静默跳过", e2),
+                  ("坏档案没被覆盖，而是改名留证了", e3 and e4)):
+    print("  %s %s" % ("✓" if good else "✗", lab))
+    ok = ok and good
+# 下一轮：坏文件已被改名，load 看到「不存在」-> 正常重建（能自愈）
+n2, why2 = ns.merge({"fp0": {"s": "anaer", "alive": True, "ms": 100}},
+                    scope="local", path=bad)
+print("  下一轮 merge -> 写入 %d 个（应 1）" % n2)
+ok = ok and (n2 == 1)
+for p in corrupt:
+    os.remove(p)
+if os.path.exists(bad):
+    os.remove(bad)
 
 print("")
 print("=" * 66)
