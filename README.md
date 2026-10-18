@@ -409,9 +409,18 @@ python tools\probe_field_types.py     # mihomo 接受哪些字段类型
 > 不算不提交（判死要攒的轮数被悄悄推迟）。
 > workflow 里这样的裸 `git push` 有**三处**（产物 / 健康档案 / 候选池）。
 > 现在三处都走 `tools/ci_git_push.sh`：被拒就 `pull --rebase --autostash` 再推，
-> 最多 3 次；**绝不是 force**（远端可能有本机探针的提交）；3 次都失败降级成
+> 最多 3 次；**绝不是 force**（远端可能有本机探针的提交，force 会抹掉它）；3 次都失败降级成
 > `::warning::` 且 `exit 0` —— 红只会连带 skip 下游，而提交还留在 workspace 里
 > 会被后续步骤带上去，失败方向是「晚一轮」而不是「丢一轮」。
+>
+> 这道门禁**不只看静态**：第 6 段用 portable-git 的 `sh.exe` + 临时 git 仓库**真跑**
+> 那个脚本（空跑 / 基点旧 / 用 `pre-push` 钩子真造出「pull 与 push 之间被插队」/
+> 远端不可达），而且一律带 `-e`（GitHub 的 `run: |` 默认就是 `bash -e`）。
+> 真跑当天就抓出三个坑：① 钩子是在 `GIT_DIR=<本仓>/.git` 的环境里跑的，不 `unset`
+> 的话 `git -C 别的仓 push` 推的还是本仓的 ref（症状：外层 push 变空推、一次就成，
+> 测试假通过）；② 「插队方」自己的基点也得先跟上远端，否则它自己先被 `fetch first` 拒；
+> ③ 本机 `sh.exe` 里**没有 `sleep`**，所以重试间隔用 `CI_PUSH_GAP=0` 关掉
+> （GitHub 上仍是 15 秒）。
 
 > ⚠️ **`test_health_tiering.py` 的 D 段**守的是一条**从来没被执行过的代码路径**：
 > 回收分支自 2026-10-15 分级抽成 `compute_tier()` 之后就读不到 `cnci_ready`/`cn`
@@ -500,6 +509,7 @@ python tools\probe_field_types.py     # mihomo 接受哪些字段类型
 | 一个畸形节点毁掉整源 | 892 个节点 0 加载，日志只有一行 error | provider 级失败**全有全无**；字段**类型**不在白名单检查范围内（坑 §33） |
 | 测试/临时脚本把源清单改坏 | `src/sources.yaml` 变成 `sources: []` + 4 行历史库表头 | 备份名用了 `os.path.basename` → `src/sources.yaml` 与 `archive/sources.yaml` **撞名**互盖。**已踩三次**（10-16 正式测试、10-17 与 10-18 各一次核实脚本）；第三次还被 `local_probe` 的 `git add -A state archive src/sources.yaml` **连带提交推送**出去了。规矩：备份名一律显式取别名，`.tools/` 下的临时脚本同样受这条约束 |
 | 临时脚本污染 `state/` | `node_stability.json.corrupt-<时间戳>` 被提交进仓库 | 改名留证**是对的**（别丢证据），但 `.gitignore` 要挡住 `state/*.corrupt-*`，测试也要清掉自己造的那些（`test_fault_injection` 现在会核对 `state/` 新增文件） |
+| 钩子里的 git 不是你以为的那个仓 | 造竞态时 `git -C B push` 推的还是 A 的 ref，外层 push 变成空推、**测试假通过**（"竞态"根本没发生） | `pre-push` 这类钩子是**在 `GIT_DIR=<本仓>/.git` 的环境里**跑的（git 会把这些变量导出给钩子）。要操作别的仓必须 `( unset GIT_DIR GIT_WORK_TREE GIT_INDEX_FILE GIT_PREFIX; cd 别的仓 && git … )`。同理「插队方」自己的基点也得先跟上远端，否则它先被 `fetch first` 拒 |
 | 一次推送撞车 = 一轮 L1 整层缺失 | CI step 6 被拒 → 后面 9 步 skip：gh-pages 不发布、美国口径判死不跑、健康档案不提交 | L1（GitHub CI，`17 */6 * * *` 会被排队延迟几十分钟）与 L2（本机探针，固定 12:30）**时间窗天然会撞**。三处裸 `git push` 都必须带重试；且失败要降级成 warning 不染红（红只会连带 skip 下游）。见 `tools/ci_git_push.sh` 与 `tools/test_ci_workflow.py` |
 | 测试往源清单里追加合成源 | 报 `mapping values are not allowed here` | `sources:` 的条目缩进 2 格，且文件末尾是另一个顶层键 `excluded:` |
 
