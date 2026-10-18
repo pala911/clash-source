@@ -267,6 +267,26 @@ try:
                                                   "drop_detail": []}}])
     md3 = open(p3, encoding="utf-8").read()
     check("共剔除" not in md3 and "未剔除任何节点" in md3, "零剔除时写「未剔除任何节点」")
+
+    # 4d) 单元格转义：节点名自带 | 会把 5 列的表格撑成 6~7 列（线上 4/53 行中招）；
+    #     理由里的换行同样会破表（漏成新行，后面的行全被解析错）。
+    metas_esc = [{"name": "s|1", "ai": {
+        "dropped": 2, "dropped_clusters": 1,
+        "drop_detail": [{"name": "🇺🇸 美国 | USA #2", "type": "vless",
+                         "server": "a.example|b", "why": "占位\n第二行",
+                         "count": 2}]}}]
+    p4 = os.path.join(tmp2, "ai_dropped4.md")
+    report.write_ai_dropped(p4, {"generated_at": "T", "ai_mode": "http"}, metas_esc)
+    md4 = open(p4, encoding="utf-8").read()
+    data_rows = [l for l in md4.splitlines()
+                 if l.startswith("| ") and "节点名" not in l]
+    widths = [len(re.split(r"(?<!\\)\|", l.strip())) for l in data_rows]
+    check(bool(widths) and set(widths) == {7},
+          "带 | 的节点名转义后表格仍是 5 列（= 未转义竖线切出 7 段）",
+          "各行列数=%s" % (widths,))
+    check("\\| USA #2" in md4 and "占位 第二行" in md4,
+          "| 被转义、理由里的换行被折成空格")
+    check("\n第二行" not in md4, "理由里的换行没有漏成新行（否则后面全串行）")
 finally:
     shutil.rmtree(tmp2, ignore_errors=True)
 

@@ -4,6 +4,18 @@ import datetime
 import os
 
 
+def _cell(x, n):
+    """markdown 表格单元格：先去换行、再截断、最后转义 `|`。
+
+    ⚠ 顺序不能反：先转义后截断，可能把 `\\|` 截成孤立的 `\\`，
+    它会把后面的分隔 ` |` 一起吃掉 → 表格再次错列。
+    线上实测 53 行里有 4 行的节点名自带 `|`（如「🇺🇸 美国 | USA #2」），
+    不转义就把 5 列的表格撑成 6~7 列。
+    """
+    s = str(x).replace("\r", " ").replace("\n", " ")
+    return s[:n].replace("|", "\\|")
+
+
 def write_ai_dropped(path, manifest, metas):
     """写 reports/ai_dropped.md —— AI 逐条留痕（调 prompt / 复核误杀都靠它）。
 
@@ -47,10 +59,11 @@ def write_ai_dropped(path, manifest, metas):
                 if src != cur:
                     cur = src
                     f.write("\n## %s\n\n| 节点名 | 类型 | server | 节点数 | 模型理由 |\n"
-                            "|---|---|---|---|---|\n" % src)
+                            "|---|---|---|---|---|\n" % _cell(src, 40))
                 f.write("| %s | %s | %s | %d | %s |\n"
-                        % (str(d.get("name"))[:60], d.get("type"), d.get("server"),
-                           int(d.get("count") or 1), str(d.get("why"))[:40]))
+                        % (_cell(d.get("name"), 60), _cell(d.get("type"), 20),
+                           _cell(d.get("server"), 60), int(d.get("count") or 1),
+                           _cell(d.get("why"), 40)))
     return clusters, nodes, len(rows), covered
 
 
