@@ -1,10 +1,10 @@
-# clash-source 自动生成 —— 源 snakem982，共 37 节点（稳定性加权后留在竞速池内的部分）
+# clash-source 自动生成 —— 源 snakem982，共 42 节点（稳定性加权后留在竞速池内的部分）
 # 不要手改；改动会在下次定时任务被覆盖（上游 https://pala911.github.io/clash-source/nodes/snakem982.yaml）
 proxies:
-- name: 🇧🇷 巴西 | BRA 2
+- name: 🇪🇪 爱沙尼亚 | EST
   type: vless
-  server: 104.64.59.9
-  port: 443
+  server: 109.120.133.26
+  port: 8443
   uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
   tls: true
   servername: snip.edgeoneai.cc.cd
@@ -15,56 +15,26 @@ proxies:
     headers:
       Host: snip.edgeoneai.cc.cd
   udp: true
-- name: 🇪🇪 爱沙尼亚 | EST
+- name: 🇪🇪 爱沙尼亚 | EST 2
   type: vless
-  server: 130.78.190.134
-  port: 443
-  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  server: 196.198.111.107
+  port: 8443
+  uuid: b3441cc7-1e5f-4eb6-8207-90788eeca21e
   tls: true
-  servername: snip.edgeoneai.cc.cd
+  flow: xtls-rprx-vision
+  servername: api-6ad3c751.adhil.uk
   client-fingerprint: chrome
-  network: ws
-  ws-opts:
-    path: /
-    headers:
-      Host: snip.edgeoneai.cc.cd
+  network: tcp
   udp: true
 - name: 🇫🇷 法国 | FRA
   type: vless
-  server: 189.74.117.22
-  port: 443
-  uuid: 082f5694-9019-4110-b67b-8125dbb9bab8
-  tls: true
-  flow: xtls-rprx-vision
-  reality-opts:
-    public-key: r5WB5FnSCt4eeBC1FJMfkWHbzsMuabo0Rc6wuAhlZUs
-    short-id: a8
-  servername: api.videolaguna.cc
-  client-fingerprint: firefox
+  server: 51.44.197.117
+  port: 22224
+  uuid: e4514801-0d5a-42ba-869f-39bd605aef9e
+  tls: false
   network: tcp
   udp: true
 - name: 🇫🇷 法国 | FRA 2
-  type: hysteria2
-  server: fr167230.cdn-video.pro
-  port: 443
-  password: dd1b14f6-d290-428b-8d22-12105541c4c9
-  sni: fr167230.cdn-video.pro
-  skip-cert-verify: true
-- name: 🇫🇷 法国 | FRA 3
-  type: vless
-  server: api.videolaguna.cc
-  port: 443
-  uuid: 082f5694-9019-4110-b67b-8125dbb9bab8
-  tls: true
-  flow: xtls-rprx-vision
-  reality-opts:
-    public-key: r5WB5FnSCt4eeBC1FJMfkWHbzsMuabo0Rc6wuAhlZUs
-    short-id: a8
-  servername: api.videolaguna.cc
-  client-fingerprint: firefox
-  network: tcp
-  udp: true
-- name: 🇫🇷 法国 | FRA 4
   type: vless
   server: redcloudport-bidarbash.sbs
   port: 443
@@ -80,21 +50,28 @@ proxies:
     headers:
       Host: redcloudport-bidarbash.sbs
   udp: true
-- name: 🇫🇷 法国 | FRA 5
+- name: 🇫🇷 法国 | FRA 3
   type: vless
-  server: 189.74.117.26
-  port: 443
-  uuid: 082f5694-9019-4110-b67b-8125dbb9bab8
-  tls: true
-  flow: xtls-rprx-vision
-  reality-opts:
-    public-key: r5WB5FnSCt4eeBC1FJMfkWHbzsMuabo0Rc6wuAhlZUs
-    short-id: a8
-  servername: api.videolaguna.cc
-  client-fingerprint: firefox
+  server: 51.44.197.117
+  port: 22222
+  uuid: e4514801-0d5a-42ba-869f-39bd605aef9e
+  tls: false
   network: tcp
   udp: true
 - name: 🇬🇧 英国 | GBR
+  type: vless
+  server: 151.243.101.126
+  port: 51105
+  uuid: 3c5f522d-6695-474f-abcf-2b1a65d503fa
+  tls: true
+  reality-opts:
+    public-key: _DxG0K_Hvw7qfGTtfeYm95vCBS_3E2x1gzVzfJqQGjE
+    short-id: abcd1234
+  servername: apple.com
+  client-fingerprint: chrome
+  network: tcp
+  udp: true
+- name: 🇬🇧 英国 | GBR 2
   type: vless
   server: 13.135.33.165
   port: 22222
@@ -102,7 +79,7 @@ proxies:
   tls: false
   network: tcp
   udp: true
-- name: 🇬🇧 英国 | GBR 2
+- name: 🇬🇧 英国 | GBR 3
   type: vless
   server: 13.135.33.165
   port: 22224
@@ -110,9 +87,45 @@ proxies:
   tls: false
   network: tcp
   udp: true
+- name: 🇭🇰 香港 | HKG 3
+  type: anytls
+  server: 654968169.df6h451rh.xin
+  port: 443
+  password: 0324fbc29561
+  udp: true
+  sni: images.ctfassets.net
+  skip-cert-verify: true
 - name: 🇭🇰 香港 | HKG 4
   type: vless
-  server: 85.121.245.104
+  server: 103.148.73.173
+  port: 8443
+  uuid: c1c04450-bf71-4049-ad0c-9cf6d94d9f1f
+  tls: true
+  servername: ty986gfazs.cainiaohub.xyz
+  client-fingerprint: chrome
+  network: ws
+  ws-opts:
+    path: /81574b6b-c9d7-44a0-b83d-dad56e8cb530
+    headers:
+      Host: ty986gfazs.cainiaohub.xyz
+  udp: true
+- name: 🇭🇰 香港 | HKG 6
+  type: vless
+  server: 103.199.18.84
+  port: 443
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  tls: true
+  servername: snip.edgeoneai.cc.cd
+  client-fingerprint: chrome
+  network: ws
+  ws-opts:
+    path: /
+    headers:
+      Host: snip.edgeoneai.cc.cd
+  udp: true
+- name: 🇭🇰 香港 | HKG 7
+  type: vless
+  server: 124.156.173.124
   port: 443
   uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
   tls: true
@@ -154,6 +167,44 @@ proxies:
   tls: false
   network: http
   udp: true
+- name: 🇲🇾 马来西亚 | MYS
+  type: vless
+  server: 76.13.188.13
+  port: 8443
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  tls: true
+  servername: snip.edgeoneai.cc.cd
+  client-fingerprint: chrome
+  network: ws
+  ws-opts:
+    path: /fdip=sstp://vpn:vpn@public-vpn-200.opengw.net:443
+    headers:
+      Host: snip.edgeoneai.cc.cd
+  udp: true
+- name: 🇳🇱 荷兰 | NLD
+  type: vless
+  server: 130.78.190.134
+  port: 443
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  tls: true
+  servername: snip.edgeoneai.cc.cd
+  client-fingerprint: chrome
+  network: ws
+  ws-opts:
+    path: /
+    headers:
+      Host: snip.edgeoneai.cc.cd
+  udp: true
+- name: 🇳🇱 荷兰 | NLD 2
+  type: vless
+  server: 50d9ab69755390c8.wgse.info
+  port: 443
+  uuid: 9f56bdc2-3238-4190-9b83-1c8332a7f3f8
+  tls: true
+  servername: 50d9ab69755390c8.wgse.info
+  client-fingerprint: firefox
+  network: xhttp
+  udp: true
 - name: 🇳🇴 挪威 | NOR
   type: vless
   server: 185.14.97.217
@@ -168,58 +219,30 @@ proxies:
     headers:
       Host: snip.edgeoneai.cc.cd
   udp: true
-- name: 🇵🇱 波兰 | POL
-  type: vless
-  server: 189.74.116.18
+- name: 🇷🇴 罗马尼亚 | ROU
+  type: trojan
+  server: de7.dedushka.top
   port: 443
-  uuid: 082f5694-9019-4110-b67b-8125dbb9bab8
-  tls: true
-  flow: xtls-rprx-vision
-  reality-opts:
-    public-key: r5WB5FnSCt4eeBC1FJMfkWHbzsMuabo0Rc6wuAhlZUs
-    short-id: a8
-  servername: api.mediapolyana.cc
-  client-fingerprint: firefox
-  network: tcp
-  udp: true
-- name: 🇵🇱 波兰 | POL 3
-  type: vless
-  server: 189.74.116.17
-  port: 443
-  uuid: 082f5694-9019-4110-b67b-8125dbb9bab8
-  tls: true
-  flow: xtls-rprx-vision
-  reality-opts:
-    public-key: r5WB5FnSCt4eeBC1FJMfkWHbzsMuabo0Rc6wuAhlZUs
-    short-id: a8
-  servername: api.mediapolyana.cc
-  client-fingerprint: firefox
-  network: tcp
-  udp: true
-- name: 🇵🇱 波兰 | POL 4
-  type: vless
-  server: 189.74.116.21
-  port: 443
-  uuid: 082f5694-9019-4110-b67b-8125dbb9bab8
-  tls: true
-  flow: xtls-rprx-vision
-  reality-opts:
-    public-key: r5WB5FnSCt4eeBC1FJMfkWHbzsMuabo0Rc6wuAhlZUs
-    short-id: a8
-  servername: api.mediapolyana.cc
-  client-fingerprint: firefox
-  network: tcp
+  password: 4_VfP9fKaM-3LpSVvoZuc_WUzLoCdHaA
+  sni: de7.dedushka.top
+  skip-cert-verify: true
   udp: true
 - name: 🇷🇺 俄罗斯 | RUS
-  type: hysteria2
-  server: 189.74.114.37
-  port: 54183
-  password: 082f5694-9019-4110-b67b-8125dbb9bab8
-  sni: outh.yandex-cloud.org
-  skip-cert-verify: true
+  type: vless
+  server: rus.noooo.win
+  port: 8443
+  uuid: b3441cc7-1e5f-4eb6-8207-90788eeca21e
+  tls: true
+  alpn:
+  - h2
+  flow: xtls-rprx-vision
+  servername: id-6ad3c751.adhil.uk
+  client-fingerprint: edge
+  network: tcp
+  udp: true
 - name: 🇸🇬 新加坡 | SGP
   type: vless
-  server: 188.166.234.177
+  server: 129.212.232.171
   port: 443
   uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
   tls: true
@@ -227,27 +250,27 @@ proxies:
   client-fingerprint: chrome
   network: ws
   ws-opts:
-    path: /
+    path: /fdip=sstp://vpn:vpn@public-vpn-200.opengw.net:443
     headers:
       Host: snip.edgeoneai.cc.cd
   udp: true
-- name: 🇸🇬 新加坡 | SGP 2
+- name: 🇸🇬 新加坡 | SGP 3
   type: vless
-  server: cf08.nianyi.de5.net
+  server: sgip.harry.lv
   port: 443
-  uuid: ee475f7b-718b-4fd3-aa1f-49a381b9ad9d
+  uuid: 5d75a660-f04e-4301-a41b-d394bae03970
   tls: true
-  servername: edge2.nianyi.de5.net
+  servername: sgcf.harry.lv
   client-fingerprint: chrome
   network: ws
   ws-opts:
-    path: /?ed=2048
+    path: /sg
     headers:
-      Host: edge2.nianyi.de5.net
+      Host: sgcf.harry.lv
   udp: true
 - name: 🇸🇬 新加坡 | SGP 4
   type: vless
-  server: 209.97.165.213
+  server: 157.245.50.181
   port: 443
   uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
   tls: true
@@ -261,7 +284,7 @@ proxies:
   udp: true
 - name: 🇸🇬 新加坡 | SGP 5
   type: vless
-  server: 103.161.179.171
+  server: 103.161.178.215
   port: 443
   uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
   tls: true
@@ -273,10 +296,24 @@ proxies:
     headers:
       Host: snip.edgeoneai.cc.cd
   udp: true
-- name: 🇸🇰 斯洛伐克 | SVK
+- name: 🇸🇬 新加坡 | SGP 6
   type: vless
-  server: 185.112.249.201
-  port: 2053
+  server: 103.161.178.205
+  port: 443
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  tls: true
+  servername: snip.edgeoneai.cc.cd
+  client-fingerprint: chrome
+  network: ws
+  ws-opts:
+    path: /fdip=sstp://vpn:vpn@public-vpn-200.opengw.net:443
+    headers:
+      Host: snip.edgeoneai.cc.cd
+  udp: true
+- name: 🇸🇬 新加坡 | SGP 7
+  type: vless
+  server: 103.195.191.121
+  port: 443
   uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
   tls: true
   servername: snip.edgeoneai.cc.cd
@@ -287,7 +324,7 @@ proxies:
     headers:
       Host: snip.edgeoneai.cc.cd
   udp: true
-- name: 🇸🇰 斯洛伐克 | SVK 2
+- name: 🇸🇰 斯洛伐克 | SVK
   type: vless
   server: 185.112.249.201
   port: 8443
@@ -315,6 +352,20 @@ proxies:
     headers:
       Host: snip.edgeoneai.cc.cd
   udp: true
+- name: 🇹🇷 土耳其 | TUR
+  type: vless
+  server: 130.94.1.177
+  port: 443
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  tls: true
+  servername: snip.edgeoneai.cc.cd
+  client-fingerprint: chrome
+  network: ws
+  ws-opts:
+    path: /
+    headers:
+      Host: snip.edgeoneai.cc.cd
+  udp: true
 - name: 🇹🇼 🇨🇳 台湾 | TWN
   type: vless
   server: 59.125.69.23
@@ -329,86 +380,93 @@ proxies:
     headers:
       Host: ty986gfazs.cainiaohub.xyz
   udp: true
-- name: 🇺🇸 美国 | USA 2
+- name: 🇹🇼 🇨🇳 台湾 | TWN 4
   type: vless
-  server: s2317.kukuss.top
-  port: 443
-  uuid: 30e52776-55ac-3cb4-8d36-e2910f07e2c3
+  server: ofve43bx.zf-all.9999231.xyz
+  port: 1003
+  uuid: a7c5d30b-ce9b-4e34-b5cb-66f8308790ef
   tls: true
   flow: xtls-rprx-vision
-  servername: u695098uf24555c7s2316.gogocs.xyz
+  reality-opts:
+    public-key: VNxeZH2-AUjHiZ3NpQpG54DN-0WFk9Rej1s9Zu_IYQk
+    short-id: 661613a7
+  servername: thtrjhtyjjfd.weebly.com
   client-fingerprint: chrome
   network: tcp
-  udp: true
-- name: 🇺🇸 美国 | USA 3
+- name: 🇺🇸 美国 | USA
   type: vless
-  server: 104.21.43.200
-  port: 2086
-  uuid: 732ec777-bf4a-4fee-835a-25d6a8b58563
-  tls: false
-  encryption: mlkem768x25519plus.native.0rtt.bbZ_n5p4kMaHUMaX_eKVS7K_igesJC14PtiVSxm9qTI
-  network: ws
-  ws-opts:
-    path: /pers
-    headers:
-      Host: trnewpnlszhp.p40.site
-    v2ray-http-upgrade: true
-  udp: true
-- name: 🇺🇸 美国 | USA 4
-  type: vless
-  server: cf05.nianyi.de5.net
-  port: 443
-  uuid: ee475f7b-718b-4fd3-aa1f-49a381b9ad9d
-  tls: true
-  servername: edge.nianyi.de5.net
-  client-fingerprint: chrome
-  network: ws
-  ws-opts:
-    path: /?ed=2048
-    headers:
-      Host: edge.nianyi.de5.net
-  udp: true
-- name: 🇺🇸 美国 | USA 5
-  type: vless
-  server: 179.253.235.175
-  port: 443
+  server: 45.61.149.205
+  port: 8443
   uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
   tls: true
   servername: snip.edgeoneai.cc.cd
   client-fingerprint: chrome
   network: ws
   ws-opts:
-    path: /
+    path: /fdip=sstp://vpn:vpn@public-vpn-200.opengw.net:443
     headers:
       Host: snip.edgeoneai.cc.cd
   udp: true
+- name: 🇺🇸 美国 | USA 2
+  type: trojan
+  server: 38.150.35.208
+  port: 8443
+  password: 1f8dc24373d4add7767beac448e32397
+  sni: www.apple.com
+  skip-cert-verify: true
+  udp: true
+- name: 🇺🇸 美国 | USA 3
+  type: vless
+  server: bounded-crammed.video-streams.org
+  port: 443
+  uuid: 48f09fbe-7a6e-43d2-99a3-304c943f3bb4
+  tls: true
+  alpn:
+  - http/1.1
+  servername: bounded-crammed.video-streams.org
+  client-fingerprint: chrome
+  network: ws
+  ws-opts:
+    path: /ws
+    headers:
+      Host: bounded-crammed.video-streams.org
+  udp: true
+- name: 🇺🇸 美国 | USA 4
+  type: vless
+  server: 181.214.152.137
+  port: 51104
+  uuid: 3c5f522d-6695-474f-abcf-2b1a65d503fa
+  tls: true
+  reality-opts:
+    public-key: 5XPuEa7CkCbN4W1iJH6P0ogGhODHkKUDEhmTosBQASQ
+    short-id: abcd1234
+  servername: apple.com
+  client-fingerprint: chrome
+  network: tcp
+  udp: true
 - name: 🇺🇸 美国 | USA 6
   type: vless
-  server: 104.18.40.100
+  server: grimness-backlogs.cdn-content.com
   port: 443
-  uuid: d342d11e-d224-4463-b982-532309285094
+  uuid: 48f09fbe-7a6e-43d2-99a3-304c943f3bb4
   tls: true
-  servername: ccc.010304.xyz
+  alpn:
+  - http/1.1
+  servername: grimness-backlogs.cdn-content.com
   client-fingerprint: chrome
   network: ws
   ws-opts:
-    path: /
+    path: /ws
     headers:
-      Host: ccc.010304.xyz
+      Host: grimness-backlogs.cdn-content.com
   udp: true
 - name: 🇺🇸 美国 | USA 7
-  type: vless
-  server: cf01.nianyi.de5.net
+  type: trojan
+  server: resources.findlocaljobnetworkandbuildcommunityconnections.com
   port: 443
-  uuid: ee475f7b-718b-4fd3-aa1f-49a381b9ad9d
-  tls: true
-  servername: edge.nianyi.de5.net
-  client-fingerprint: chrome
-  network: ws
-  ws-opts:
-    path: /?ed=2048
-    headers:
-      Host: edge.nianyi.de5.net
+  password: f0eb8c92ce8946aaba856569cff1a16b
+  sni: resources.findlocaljobnetworkandbuildcommunityconnections.com
+  skip-cert-verify: true
   udp: true
 - name: 🇺🇸 美国 | USA 8
   type: vless
@@ -424,50 +482,29 @@ proxies:
     headers:
       Host: snip.edgeoneai.cc.cd
   udp: true
-- name: 🇺🇸 美国 | USA 9
+- name: 🇺🇸 美国 | USA 10
   type: vless
-  server: 69.42.222.160
-  port: 50443
-  uuid: 20cdcc5b-d7d7-429e-afe3-e6aaf3664993
+  server: s2317.kukuss.top
+  port: 443
+  uuid: 30e52776-55ac-3cb4-8d36-e2910f07e2c3
   tls: true
   flow: xtls-rprx-vision
-  reality-opts:
-    public-key: HI0EyjPOcXSfjScfy3y_Vlan9vsWqjejh2_NjqTyLQo
-    short-id: d27ffd0579fd79bb
-  servername: www.cloudflare.com
+  servername: u695098uf24555c7s2316.gogocs.xyz
   client-fingerprint: chrome
   network: tcp
   udp: true
-- name: 🇺🇸 美国 | USA 11
-  type: vmess
-  server: 172.67.187.145
-  port: 80
-  uuid: 0cf6d970-3f1d-4aae-a989-92a8f76ae3db
-  alterId: 0
-  cipher: auto
-  tls: false
-  alpn:
-  - ''
+- name: 🇺🇸 美国 | USA 12
+  type: trojan
+  server: 104.18.65.57
+  port: 443
+  password: 5504eaa8-1395-402f-8e0e-75ecd762e627
+  sni: nat3.xxai.dpdns.org
   skip-cert-verify: true
   network: ws
   ws-opts:
-    path: /ws
+    path: /anyway
     headers:
-      Host: vmess.lbw666.dpdns.org
-  udp: true
-- name: 🇺🇸 美国 | USA 12
-  type: vless
-  server: cf02.nianyi.de5.net
-  port: 443
-  uuid: ee475f7b-718b-4fd3-aa1f-49a381b9ad9d
-  tls: true
-  servername: edge.nianyi.de5.net
-  client-fingerprint: chrome
-  network: ws
-  ws-opts:
-    path: /?ed=2048
-    headers:
-      Host: edge.nianyi.de5.net
+      Host: nat3.xxai.dpdns.org
   udp: true
 - name: 🇺🇸 美国 | USA 13
   type: vless
