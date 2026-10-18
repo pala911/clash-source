@@ -149,18 +149,28 @@ proxy-groups:
   - SRC-zhuhaiuk
   - SRC-ruk1ng001
   - SRC-autojiedian
-  - SRC-automerge
+  - SRC-shaoyouvip
   url: https://www.youtube.com/generate_204
   expected-status: 204
   interval: 120
+  timeout: 5000
+- name: 不稳定
+  type: url-test
+  use:
+  - SRCFL-snakem982
+  - SRCFL-yypool
+  url: https://www.youtube.com/generate_204
+  expected-status: 204
+  interval: 300
   timeout: 5000
 - name: 备用
   type: select
   proxies:
   - SRC-yypool
-  - SRC-shaoyouvip
+  - SRC-automerge
   - SRC-passcro
   - SRC-nomorewalls
+  - 不稳定
 - name: 观察
   type: select
   proxies:
@@ -670,6 +680,30 @@ proxy-providers:
     type: http
     url: https://pala911.github.io/clash-source/nodes/shaoyouvip.yaml
     path: ./providers/shaoyouvip.yaml
+    interval: 3600
+    exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
+    health-check:
+      enable: true
+      url: https://www.youtube.com/generate_204
+      interval: 300
+      timeout: 5000
+      expected-status: 204
+  SRCFL-snakem982:
+    type: http
+    url: https://pala911.github.io/clash-source/nodes/snakem982--flaky.yaml
+    path: ./providers/SRCFL-snakem982.yaml
+    interval: 3600
+    exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
+    health-check:
+      enable: true
+      url: https://www.youtube.com/generate_204
+      interval: 300
+      timeout: 5000
+      expected-status: 204
+  SRCFL-yypool:
+    type: http
+    url: https://pala911.github.io/clash-source/nodes/yypool--flaky.yaml
+    path: ./providers/SRCFL-yypool.yaml
     interval: 3600
     exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
     health-check:
