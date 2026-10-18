@@ -157,6 +157,7 @@ proxy-groups:
 - name: 不稳定
   type: url-test
   use:
+  - SRCFL-nomorewalls
   - SRCFL-snakem982
   - SRCFL-yypool
   url: https://www.youtube.com/generate_204
@@ -680,6 +681,18 @@ proxy-providers:
     type: http
     url: https://pala911.github.io/clash-source/nodes/shaoyouvip.yaml
     path: ./providers/shaoyouvip.yaml
+    interval: 3600
+    exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
+    health-check:
+      enable: true
+      url: https://www.youtube.com/generate_204
+      interval: 300
+      timeout: 5000
+      expected-status: 204
+  SRCFL-nomorewalls:
+    type: http
+    url: https://pala911.github.io/clash-source/nodes/nomorewalls--flaky.yaml
+    path: ./providers/SRCFL-nomorewalls.yaml
     interval: 3600
     exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
     health-check:
