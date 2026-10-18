@@ -1,11 +1,15 @@
 # -*- coding: utf-8 -*-
 """验证 build_groups 按质量分桶，且不产出坏 profile。
 
-三个场景，缺一不可：
+五个场景，缺一不可：
   A 正常   -> AUTO 里应该是高质量源，ermaozi(本机2.9%) 必须被排除
   B 源太少 -> 达标源不足 3 个时**必须构建失败**（宁可不出也不给空自动组）
   C 有源被停用 -> 不能崩。原模板把 SRC-* 写死，停用任一源会让
      「模板引用了未提供的 provider」断言炸掉，整条流水线挂掉。
+  D 档案损坏 -> **降级发布**（用户 2026-10-18 拍板）：不 assert 炸、AUTO 用
+     上一轮 manifest 名单、warnings + ::warning:: 两处都要喊、损坏文件原样保留
+  E 档案不存在且没有上一轮名单 -> 再退一步用启用源顺序，仍不许炸
+     （D/E 的失败方向：手机拿到「次优但可用」的自动组，而不是 6 小时没有新订阅）
 
 ⚠ 三个场景都跑在**自己种的合成健康档案**上（build.HEALTH 指到临时文件）。
    原来直接读线上档案，于是 2026-10-16 线上数据一变（autojiedian 修掉 sni 后
@@ -141,6 +145,82 @@ try:
 except AssertionError as e:
     print("  ✗ 构建失败：%s" % e)
     ok = False
+
+# ---------- D 健康档案损坏 -> 降级发布（用户 2026-10-18 拍板）----------
+# 口径：订阅照发（手机不能因为一个辅助档案坏掉就 6 小时不更新），
+#       但降级必须喊出来（warnings + ::warning::），AUTO 用上一轮 manifest 的名单。
+import contextlib                 # noqa: E402
+
+print("")
+print("=" * 68)
+print("场景 D（健康档案损坏 -> 必须降级发布，不许 assert 炸）")
+print("=" * 68)
+_tmpd = tempfile.mkdtemp(prefix="bg_degrade_")
+os.makedirs(os.path.join(_tmpd, "dist"), exist_ok=True)
+with io.open(os.path.join(_tmpd, "dist", "manifest.json"), "w", encoding="utf-8") as f:
+    json.dump({"ranking": {"auto": ["anaer", "ssrsub", "snakem982"]}}, f, ensure_ascii=False)
+_bad = os.path.join(_tmpd, "broken_health.json")
+with io.open(_bad, "w", encoding="utf-8") as f:
+    f.write("{ 半截 JSON —— 磁盘满/写入中断的典型样貌")   # 不是合法 JSON
+_old_root, _old_health, _old_env = build.ROOT, build.HEALTH, os.environ.get("GITHUB_ACTIONS")
+build.HEALTH, build.ROOT = _bad, _tmpd
+os.environ["GITHUB_ACTIONS"] = "true"          # 断言 CI 注解路径也真的打了
+_buf = io.StringIO()
+try:
+    with contextlib.redirect_stdout(_buf):
+        p3, _, rank3 = call(NAMES)
+    out3 = _buf.getvalue()
+    auto3 = [x[4:] for x in next(g for g in p3["proxy-groups"]
+                                 if g["name"] == "AUTO")["proxies"]]
+    print("  降级后 AUTO = %s" % "、".join(auto3))
+    print("  ranking['degraded'] = %s" % (rank3.get("degraded") or "（空 —— 不该）"))
+    d_ok = (len(auto3) >= build.AUTO_MIN                       # 有可用的自动组
+            and auto3 == ["anaer", "ssrsub", "snakem982"]      # 用的是上一轮名单
+            and rank3.get("degraded")                          # 说明会进 warnings
+            and "⚠ 降级" in out3                               # 本地日志
+            and "::warning title=源健康档案降级::" in out3      # CI 注解
+            and not os.path.exists(_bad + ".bak")              # 绝不改名/重建损坏档案
+            and os.path.exists(_bad))                          # 原文件原样留着
+    print("  %s 没炸、AUTO 用上一轮名单、两处告警都在、损坏文件原样保留" % ("✓" if d_ok else "✗"))
+    if not d_ok:
+        print("       AUTO=%s degraded=%r 有⚠=%s 有注解=%s"
+              % (auto3, bool(rank3.get("degraded")), "⚠ 降级" in out3,
+                 "::warning" in out3))
+    ok = ok and d_ok
+except AssertionError as e:
+    print("  ✗ 降级路径仍然炸了：%s" % e)
+    ok = False
+finally:
+    build.ROOT, build.HEALTH = _old_root, _old_health
+    if _old_env is None:
+        os.environ.pop("GITHUB_ACTIONS", None)
+    else:
+        os.environ["GITHUB_ACTIONS"] = _old_env
+
+# ---------- E 连上一轮名单都没有 -> 再退一步，仍不许炸 ----------
+print("")
+print("=" * 68)
+print("场景 E（档案不存在 + 没有上一轮 manifest -> 退到启用源顺序）")
+print("=" * 68)
+_empty = tempfile.mkdtemp(prefix="bg_degrade2_")      # 没有 dist/manifest.json
+build.HEALTH, build.ROOT = os.path.join(_empty, "nope.json"), _empty
+_buf2 = io.StringIO()
+try:
+    with contextlib.redirect_stdout(_buf2):
+        p4, _, rank4 = call(NAMES)
+    out4 = _buf2.getvalue()
+    auto4 = [x[4:] for x in next(g for g in p4["proxy-groups"]
+                                 if g["name"] == "AUTO")["proxies"]]
+    e_ok = (auto4 == NAMES[:build.AUTO_MAX]
+            and rank4.get("degraded") and "⚠ 降级" in out4)
+    print("  降级后 AUTO = %s（前 %d 个启用源）" % ("、".join(auto4), build.AUTO_MAX))
+    print("  %s 仍构建成功、AUTO 非空、说明带出" % ("✓" if e_ok else "✗"))
+    ok = ok and e_ok
+except AssertionError as e:
+    print("  ✗ 连兜底都炸了：%s" % e)
+    ok = False
+finally:
+    build.ROOT, build.HEALTH = _old_root, _old_health
 
 print("")
 print("=" * 68)

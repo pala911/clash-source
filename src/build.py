@@ -106,16 +106,69 @@ AUTO_MAX = 6
 AUTO_MIN = 3          # 少于这么多个就直接构建失败，宁可不更新也不要空组
 
 
+def _shout(msg):
+    """降级必须能被看见：本地打日志，CI 上额外打 `::warning::` 注解。
+
+    静默降级 = 更坏的「看起来一切正常」——这套系统一直在修的就是这种病。
+    """
+    print("[build] ⚠ 降级：%s" % msg)
+    if os.environ.get("GITHUB_ACTIONS"):
+        print("::warning title=源健康档案降级::%s" % msg.replace("\n", " "))
+
+
 def load_health():
+    """读健康档案；**坏了也不抛**，返回 `(data, note)`，note 非空 = 本轮降级了。
+
+    ⚠ 这里原来是 `except Exception: return {}`（§75 #6），两个后果同时发生：
+      1. 档案一坏，rank_sources 把每个源都判成「无本机探针数据」→ 全进观察桶
+         → build_groups 的 AUTO_MIN 断言炸 → **CI 每 6 小时红一次**，
+         而报错信息指向「本机探针没跑」这个**错误方向**（真因是档案坏了）；
+      2. 一个字都不说，没人知道为什么。
+
+    现在口径（用户 2026-10-18 拍板）＝**降级发布 + 大声告警**：
+      · 订阅照发 —— 手机不能因为一个辅助档案坏掉就 6 小时不更新；
+      · 但降级必须喊出来：note 由 run.py 记进 warnings（进 reports/latest.md）
+        + 这里直接打 ::warning::；AUTO 名单退化成上一轮 manifest 的名单。
+      · 绝不重建/删除损坏文件 —— 那是 health.py 的职责（它会 exit 2 并留证），
+        这里只读不写（多轮历史不可恢复，宁可不写）。
+    """
     try:
-        import json
-        return json.load(open(HEALTH, encoding="utf-8")) or {}
-    except Exception:
-        return {}
+        with open(HEALTH, encoding="utf-8") as f:
+            d = json.load(f)
+        if not isinstance(d, dict) or "sources" not in d:
+            raise ValueError("结构不对（缺 sources 键）")
+        return d, ""
+    except FileNotFoundError:
+        return {}, ("健康档案不存在（首次运行？）：%s —— 排序退化为「无本机探针数据」，"
+                    "AUTO 用上一轮名单" % HEALTH)
+    except Exception as e:
+        return {}, ("健康档案损坏（%s: %s）—— 本轮按「无历史」排序、AUTO 用上一轮名单；"
+                    "损坏文件**没有**被重建或删除，修复见 health.py 的提示"
+                    % (type(e).__name__, str(e)[:100]))
 
 
-def rank_sources(names):
-    """按**国内口径**给源排序，决定它们进哪个组。
+def _last_manifest_auto(enabled_names):
+    """降级用：读上一轮 `dist/manifest.json` 的 `ranking.auto` 当 AUTO 名单。
+
+    为什么敢用它：manifest 就在仓库里、每轮都提交（dist/ 是事实来源），
+    它是**上一轮已知可用的名单**，比「按文件顺序取前 N 个」有依据。
+    为什么要过滤 enabled：源可能已经停用，停用的源不能进新 profile。
+    返回 (名单, 说明)；拿不到就返回 ([], "")，由调用方再退一步。
+    """
+    try:
+        with open(os.path.join(ROOT, "dist", "manifest.json"), encoding="utf-8") as f:
+            m = json.load(f)
+        auto = [n for n in ((m.get("ranking") or {}).get("auto") or [])
+                if n in enabled_names]
+        if auto:
+            return auto[:AUTO_MAX], "沿用上一轮 manifest 的 AUTO 名单：%s" % "、".join(auto[:AUTO_MAX])
+    except Exception as e:
+        return [], "读不到上一轮 manifest（%s）" % type(e).__name__
+    return [], "上一轮 manifest 里没有可用的 AUTO 名单"
+
+
+def rank_sources(names, health=None):
+    """按**国内口径**给源排序，决定它们进哪个组。返回 (ranking, degrade_note)。
 
     ## 为什么用国内口径而不是 CI（美国）的
 
@@ -129,9 +182,14 @@ def rank_sources(names):
       主排序 = 本机 rate（唯一有权判优的口径，已积累 23 轮）
       tier=T2（位置敏感）额外降级到备用 —— 这一条等云效数据到位才生效
 
-    返回 {name: (rate, bucket, reason)}，bucket ∈ AUTO/备用/观察
+    `health` 参数只为测试注入用；不传就走 load_health()（含降级）。
+    返回的 degrade_note 非空 = 档案坏/缺，调用方必须喊出来。
     """
-    hs = (load_health().get("sources") or {})
+    if health is None:
+        data, note = load_health()
+    else:
+        data, note = health, ""
+    hs = (data.get("sources") or {})
     out = {}
     for n in names:
         rec = hs.get(n) or {}
@@ -152,7 +210,7 @@ def rank_sources(names):
             out[n] = (rate, "观察", "本机 %.1f%% 低于 %.0f%%" % (rate, GOOD_RATE))
         else:
             out[n] = (0.0, "观察", "本机 0 活")
-    return out
+    return out, note
 
 
 def _src_group(name):
@@ -167,8 +225,13 @@ def _probe_group(name, gtype, members, interval):
             "interval": interval, "timeout": 5000}
 
 
-def build_groups(enabled_names, ranked, flaky_names=()):
+def build_groups(enabled_names, ranked, flaky_names=(), degraded_note=""):
     """按质量分桶生成代理组，取代模板里手写的硬编码列表。
+
+    `degraded_note` 非空 = 健康档案坏/缺（build.load_health 给的降级说明）：
+    此时**绝不 assert 失败**（用户 2026-10-18 拍板：降级发布 + 大声告警）——
+    AUTO 组必须存在（FAILOVER 组引用它，缺了手机连配置都加载不了），
+    名单退化成上一轮 manifest 的 AUTO；再退一步才用启用源顺序。
 
     ## 为什么要动态生成
 
@@ -185,11 +248,22 @@ def build_groups(enabled_names, ranked, flaky_names=()):
                    key=lambda n: -(ranked[n][0] or 0))
     picked, dropped = auto[:AUTO_MAX], auto[AUTO_MAX:]
 
-    assert len(picked) >= AUTO_MIN, (
-        "达标源只有 %d 个（%s），不足 %d —— AUTO 组会变得不可用。"
-        "宁可构建失败也不要给你一个空/残缺的自动组。"
-        "（本机探针若长期没跑，这里就会失败，是预期行为）"
-        % (len(picked), "、".join(auto) or "无", AUTO_MIN))
+    if degraded_note:
+        why = ""
+        if len(picked) < AUTO_MIN:
+            fb, why = _last_manifest_auto(enabled_names)
+            if not fb:
+                fb = list(enabled_names)[:AUTO_MAX]
+                why = "降级兜底：按启用源顺序（%s）" % why
+            picked = fb
+        _shout("%s；自动组改用「%s」（%s），本轮不因档案问题中断订阅"
+               % (degraded_note, "、".join(picked), why or "上一轮的可见名单"))
+    else:
+        assert len(picked) >= AUTO_MIN, (
+            "达标源只有 %d 个（%s），不足 %d —— AUTO 组会变得不可用。"
+            "宁可构建失败也不要给你一个空/残缺的自动组。"
+            "（本机探针若长期没跑，这里就会失败，是预期行为）"
+            % (len(picked), "、".join(auto) or "无", AUTO_MIN))
 
     groups = [_src_group(n) for n in enabled_names]
     if picked:
@@ -266,9 +340,10 @@ def build_profile(enabled_sources, exclude_map, owner, repo, flaky_sources=()):
             exclude_map.get(n, ""))
 
     names = [s["name"] for s in enabled_sources]
-    ranked = rank_sources(names)
+    ranked, degrade_note = rank_sources(names)
     flaky_names = ["SRCFL-" + n for n in (flaky_sources or ())]
-    groups, picked, spare, watch = build_groups(names, ranked, flaky_names)
+    groups, picked, spare, watch = build_groups(names, ranked, flaky_names,
+                                                degraded_note=degrade_note)
     # 模板里的 proxy-groups 整块丢弃：SRC-*/AUTO/FAILOVER/PROXY 全部改由
     # build_groups 按实测质量动态生成。规则/ dns / 其他键仍保留模板的。
     tpl["proxy-groups"] = groups
@@ -334,6 +409,7 @@ def build_profile(enabled_sources, exclude_map, owner, repo, flaky_sources=()):
     #   下划线开头的内部字段。单独作为第三个返回值交给 run.py 记进 manifest。
     ranking = {"auto": picked, "备用": spare, "观察": watch,
                "不稳定": ["SRCFL-" + n for n in (flaky_sources or ())],
+               "degraded": degrade_note,      # 非空 = 本轮是降级发布（run.py 必须喊出来）
                "detail": {k: {"rate": v[0], "why": v[2]} for k, v in ranked.items()}}
     return tpl, base, ranking
 

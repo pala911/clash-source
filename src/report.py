@@ -77,7 +77,7 @@ def write_report(path, manifest, metas, warnings, per_source):
     L.append("- AI 模式：`%s`" % manifest["ai_mode"])
     L.append("- 订阅入口：`%s/profile.yaml`" % manifest["pages_base"])
     L.append("- 备用入口（github.io 不达时）：`https://gh-proxy.com/raw.githubusercontent.com/"
-             "%s/gh-pages/profile.yaml`" % manifest["owner"])
+             "%s/%s/gh-pages/profile.yaml`" % (manifest["owner"], manifest["repo"]))
     L.append("- jsdelivr 备用：`https://cdn.jsdelivr.net/gh/%s/%s@gh-pages/profile.yaml`"
              % (manifest["owner"], manifest["repo"]))
     L.append("")

@@ -86,6 +86,24 @@ def _nothing_to_commit(out):
             or "working tree clean" in low)
 
 
+PUSH_TRIES = 3      # 与 CI 侧 tools/ci_git_push.sh 保持一致
+PUSH_GAP = 5        # 重试间隔（秒）；测试里设成 0
+
+
+def _rebase_abort():
+    """清掉可能残留的 rebase 中间态；真清掉了才返回 True（没有时是 no-op）。
+
+    ⚠ 为什么每轮尝试前都要清（§75 #9）：`git pull --rebase` 撞冲突会停在
+    rebase-merge/ 中间态，此时 `git add -A`（下一轮的第一步）会把冲突标记
+    （<<<<<<<）当内容暂存，或直接以 "cannot commit" 失败 ——
+    **本机数据从此再也推不上去**，而日志里只剩一句「rebase 失败」看不出真因。
+    失败方向必须是「这轮推不上去、下轮还能推」，绝不能是「仓库卡死」。
+    """
+    p = subprocess.run([GIT, "rebase", "--abort"], cwd=ROOT,
+                       capture_output=True, text=True, timeout=60)
+    return p.returncode == 0
+
+
 def push_to_github():
     """把健康数据推回 main。CI 也会推 dist，两边并发时 push 会失败 -> rebase 重试。"""
     if not os.path.exists(GIT):
@@ -93,9 +111,14 @@ def push_to_github():
         return 0
     stamp = time.strftime("%Y%m%d-%H%M")
     add = [GIT, "add", "-A", "state", "archive", "src/sources.yaml", "reports"]
-    commit = [GIT, "-c", "user.name=local-probe-bot",
-              "-c", "user.email=local-probe-bot@users.noreply.github.com",
-              "commit", "-m", "chore: 本机探针(国内口径) %s" % stamp]
+    # ⚠ 身份必须随身带（不只给 commit 用）：`pull --rebase` **重放**提交时同样
+    #   需要 committer 身份。只靠仓库/全局 user.* 的话，换机器、重克隆、或用别的
+    #   账号跑计划任务时，rebase 会 `fatal: unable to auto-detect email address`
+    #   —— 重试三次全废，而最后的提示指向「代理没开或 PAT 过期」，完全指错方向。
+    #   （2026-10-18 由 tools/test_local_probe_push.py 的真竞态用例抓到。）
+    IDENT = ["-c", "user.name=local-probe-bot",
+             "-c", "user.email=local-probe-bot@users.noreply.github.com"]
+    commit = [GIT] + IDENT + ["commit", "-m", "chore: 本机探针(国内口径) %s" % stamp]
     push = [GIT, "-c", "http.proxy=" + PROXY, "-c", "https.proxy=" + PROXY,
             "push", "origin", "main"]
     # ⚠ --autostash 是必需的（2026-10-15 实踩）：
@@ -103,8 +126,9 @@ def push_to_github():
     #   （cannot pull with rebase: You have unstaged changes），
     #   于是「push 被拒 -> rebase -> 重试」的重试链必然二次失败，
     #   结果本地健康数据永远传不上去，而且日志里看不出真正原因。
-    pull = [GIT, "-c", "http.proxy=" + PROXY, "-c", "https.proxy=" + PROXY,
-            "pull", "--rebase", "--autostash", "origin", "main"]
+    pull = ([GIT] + IDENT
+            + ["-c", "http.proxy=" + PROXY, "-c", "https.proxy=" + PROXY,
+               "pull", "--rebase", "--autostash", "origin", "main"])
     for c in (add, commit):
         p = subprocess.run(c, cwd=ROOT, capture_output=True, text=True, timeout=180)
         out = (p.stdout + p.stderr).strip()
@@ -117,21 +141,41 @@ def push_to_github():
         if p.returncode != 0 and not _nothing_to_commit(out):
             print("[local] 步骤失败: %s" % " ".join(c[:3]))
             return p.returncode
-    p = subprocess.run(push, cwd=ROOT, capture_output=True, text=True, timeout=180)
-    out = (p.stdout + p.stderr).strip()
-    if p.returncode != 0:
-        # 最常见原因：CI 刚推过，远端领先 -> rebase 后重试一次
-        pr = subprocess.run(pull, cwd=ROOT, capture_output=True, text=True, timeout=180)
-        pout = (pr.stdout + pr.stderr).strip()
-        if pr.returncode != 0:
-            print("  rebase 失败: %s" % (pout.splitlines()[-1][:150] if pout else "?"))
+    rc = 1
+    last = ""
+    for attempt in range(1, PUSH_TRIES + 1):
+        # 每轮尝试前先清中间态：上一轮可能在 pull --rebase 撞冲突时停住过。
+        # 这是「仓库卡死」的唯一入口，必须每次进门先打扫（§75 #9）。
+        if _rebase_abort():
+            print("  （清掉了上一轮遗留的 rebase 中间态）")
         p = subprocess.run(push, cwd=ROOT, capture_output=True, text=True, timeout=180)
         out = (p.stdout + p.stderr).strip()
-    print("  push: %s" % (out.splitlines()[-1][:150] if out else "OK"))
-    if p.returncode != 0:
-        print("[local] ⚠ 推送失败：本地数据仍在 state/，但远端不会更新。"
-              "多半是代理(%s)没开或 PAT 过期。" % PROXY)
-    return p.returncode
+        rc = p.returncode
+        if rc == 0:
+            print("  push: OK%s" % ("" if attempt == 1
+                                    else "（第 %d 次尝试，重试生效）" % attempt))
+            return 0
+        last = out or last
+        print("  push 第 %d/%d 次被拒: %s"
+              % (attempt, PUSH_TRIES, out.splitlines()[-1][:150] if out else "?"))
+        if attempt == PUSH_TRIES:
+            break
+        # 最常见原因：CI 刚推过，远端领先 -> rebase 后重试
+        pr = subprocess.run(pull, cwd=ROOT, capture_output=True, text=True, timeout=180)
+        if pr.returncode != 0:
+            pout = (pr.stdout + pr.stderr).strip()
+            last = pout or last
+            print("  rebase 失败: %s" % (pout.splitlines()[-1][:150] if pout else "?"))
+            _rebase_abort()
+            print("  已 rebase --abort：工作区回到干净状态，数据仍在本地，下一轮还能推")
+        if PUSH_GAP:
+            time.sleep(PUSH_GAP)
+    # ⚠ 提示里必须带上**最后一条真实错误**：以前这里只有「多半是代理没开或 PAT
+    #   过期」这一句，rebase 身份缺失/冲突这类原因会被这句话指到错误方向。
+    print("[local] ⚠ 推送失败（已试 %d 次）：本地数据仍在 state/，但远端不会更新。" % PUSH_TRIES)
+    print("       最后一条错误：%s" % (last.splitlines()[-1][:150] if last else "?"))
+    print("       常见原因：代理(%s)没开 / PAT 过期 / rebase 身份缺失或冲突" % PROXY)
+    return rc
 
 
 def main():

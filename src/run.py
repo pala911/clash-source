@@ -272,6 +272,13 @@ def main():
     profile, _, ranking = build.build_profile(enabled, excl_map, owner, repo,
                                               flaky_sources=sorted(flaky_nodes))
     log("质量分桶（国内口径）：AUTO=%s" % ("、".join(ranking["auto"]) or "无"))
+    if ranking.get("degraded"):
+        # 降级发布（用户 2026-10-18 拍板）：档案坏/缺时**不中断订阅**，
+        # 但降级必须能被看见 —— 进 warnings（会印在 reports/latest.md 的告警区），
+        # build 侧另外打了 ::warning:: 注解（CI 运行摘要上直接可见）。
+        warnings.append("⚠ 源健康档案降级（订阅照发，AUTO 用上一轮名单）：%s"
+                        % ranking["degraded"])
+        log("⚠ 源健康档案降级（订阅照发）—— 详见上方 [build] 行")
     log("  备用=%s" % ("、".join(ranking["备用"]) or "无"))
     log("  观察=%s" % ("、".join(ranking["观察"]) or "无"))
     log("  不稳定（不进自动竞速，仅备用组可选）=%s"

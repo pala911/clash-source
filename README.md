@@ -381,20 +381,22 @@ python tools\cnci_trigger.py --status   # 只看云效最近几次运行，不�
 ok=0; for i in $(seq 1 8); do git fetch origin && git reset --hard origin/master && { ok=1; break; }; sleep 20; done; [ "$ok" = "1" ] && bash tools/sync_and_probe.sh || { echo "同步失败"; exit 1; }
 ```
 
-### 交付前必跑（全部十五道）
+### 交付前必跑（全部十七道）
 
 ```powershell
 python tools\check_ci_scripts.py      # Python 3.6 静态门禁
 python tools\test_probe_wiring.py     # 探针 ↔ 稳定性档案 的接线
 python tools\test_health_tiering.py   # 双视角分级（四格全覆盖）+ 判死轮数/跨度双闸门 + 注释零丢失 + 判死后回收
-python tools\test_build_groups.py     # 质量分桶
+python tools\test_build_groups.py     # 质量分桶 + 档案坏/缺时**降级发布**
 python tools\test_stability.py        # 节点稳定性加权 + 档案损坏时不许静默重建
 python tools\test_flaky_reprobe.py    # 被移出的节点能否翻盘
 python tools\test_fault_injection.py  # 坏数据进来时是否明确报错
+python tools\test_io_safety.py        # 坏数据不炸（列表混类型/畸形 src）+ 原子写（写一半不毁旧数据）
 python tools\test_provider_load.py    # 一个畸形节点会不会让整源加载失败（真内核）
 python tools\test_src_cfg_write.py    # 写回源清单只改 enabled，不抹注释
 python tools\test_push_status.py      # 云效回传的留痕必落且本机不留垃圾
 python tools\test_local_probe_obs.py  # pythonw（计划任务）下 health.py 的输出与失败必须可观测
+python tools\test_local_probe_push.py # 本机推送：真造「被 CI 插队」竞态 + 冲突绝不留 rebase 中间态
 python tools\test_report_ai.py        # AI 留痕链：生产端键名 ↔ 报告/manifest
 python tools\test_ci_workflow.py      # CI 推送必须带重试、失败不许染红（连带 skip 下游）
 python tools\verify_profile.py        # 真 mihomo 内核校验
@@ -421,6 +423,27 @@ python tools\probe_field_types.py     # mihomo 接受哪些字段类型
 > 测试假通过）；② 「插队方」自己的基点也得先跟上远端，否则它自己先被 `fetch first` 拒；
 > ③ 本机 `sh.exe` 里**没有 `sleep`**，所以重试间隔用 `CI_PUSH_GAP=0` 关掉
 > （GitHub 上仍是 15 秒）。
+
+> ⚠️ **健康档案坏/缺时：降级发布 + 大声告警**（2026-10-18 拍板，§75 #6）。
+> 以前 `build.load_health()` 是 `except Exception: return {}` —— 档案一坏，
+> 所有源都变成「无本机探针数据」→ 全进观察桶 → `AUTO_MIN` 断言炸 →
+> **CI 每 6 小时红一次**，而报错说的是「本机探针没跑」，把方向指到了别处。
+> 现在：订阅照发（手机不能因为一个辅助档案坏掉就 6 小时不更新），
+> AUTO 名单退化成上一轮 `dist/manifest.json` 的名单（再退一步才用启用源顺序），
+> 降级同时在三处喊出来（`::warning::` 注解 / 流水线日志 / `reports/latest.md` 告警区）。
+> **损坏文件绝不重建、绝不改名** —— 那是 `health.py` 的职责（它 `exit 2` 并留证），
+> `build.py` 只读（多轮历史覆盖掉就不可恢复，宁可不写）。
+> 守这一条的是 `test_build_groups.py` 的场景 D/E。
+
+> ⚠️ **`test_local_probe_push.py`** 用临时裸仓 + 两个克隆**真造**两种竞态
+> （正常 / 被 CI 插队 / 同文件真冲突）。它上线当天就抓出一个真隐患：
+> `git pull --rebase` **重放**提交时同样需要 committer 身份，而身份
+> `-c user.name/email` 原来只传给了 `commit` 命令 —— 换机器、重克隆、或用别的
+> 账号跑计划任务时，rebase 会 `fatal: unable to auto-detect email address`，
+> 三次重试全废，最后还提示「多半是代理没开或 PAT 过期」（指错方向）。
+> 现在身份随身带，失败提示附**最后一条真实错误**；而且每轮尝试前先
+> `rebase --abort`，失败方向只能是「这轮推不上去」，绝不会是「仓库卡死」。
+> 用例 B 会**断言第 1 次 push 真的被拒** —— 竞态没发生就必须红，不许绿着骗人。
 
 > ⚠️ **`test_health_tiering.py` 的 D 段**守的是一条**从来没被执行过的代码路径**：
 > 回收分支自 2026-10-15 分级抽成 `compute_tier()` 之后就读不到 `cnci_ready`/`cn`

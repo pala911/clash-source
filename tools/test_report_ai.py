@@ -213,6 +213,16 @@ check("扣除 0" not in md and "审 0，剔除 0" not in md,
 check("超阈值已回滚" in md, "回滚状态有单独标注（不然读者以为它剔了 0 个是因为没意见）")
 check("| yypool | 900 | 900 | - |" in md,
       "没有 ai 记录的源显示 -（而不是伪装成 0）")
+# 备用入口链接必须带 repo 段：少了它 gh-proxy 会 404（原文只有 owner）。
+# build.py 顶部注释里写的是对的（owner/repo 两段都有），report.py 这里漏了 ——
+# 同一个事实在两处写法不一致，所以断言**完整 URL**，而不是只看「含 gh-proxy」。
+check("https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/profile.yaml" in md,
+      "gh-proxy 备用链接带 owner/repo 两段（少 repo 会 404）")
+check("https://cdn.jsdelivr.net/gh/pala911/clash-source@gh-pages/profile.yaml" in md,
+      "jsdelivr 备用链接同样是两段")
+# 降级（§75 #6）就是走 warnings 这条路进报告的：这里钉住渲染，免得以后
+# 只在日志里喊、报告上却看不出「本轮是降级发布」。
+check("测试告警" in md, "warnings 会渲染进报告（降级说明的落地通道）")
 
 # ---------------------------------------------------------------------------
 # 4) 留痕文件：reports/ai_dropped.md 的「簇 / 节点」两个口径

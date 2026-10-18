@@ -56,6 +56,34 @@ YOUTUBE = "https://www.youtube.com/generate_204"
 CN_PROBE = "https://www.gstatic.com/generate_204"
 
 
+def save_json_atomic(path, obj):
+    """原子写 JSON：先写 `<path>.tmp` + fsync，再 os.replace 换上去。
+
+    ⚠ 直写（`json.dump(..., open(path, "w"))`）在好几处踩过同一个坑：
+      写到一半被杀（预算到点、计划任务被结束、断电）会留下**半截 JSON**，
+      而它正好覆盖掉上一轮的**好数据** —— 探针结果没了，健康档案下一轮
+      也只能看到这个半截文件（§75 #11）。同目录内 os.replace 是原子的：
+      要么旧文件完好，要么新文件完整，不存在中间态。Python 3.3+ 可用。
+    """
+    d = os.path.dirname(path)
+    if d:
+        os.makedirs(d, exist_ok=True)
+    tmp = path + ".tmp"
+    try:
+        with open(tmp, "w", encoding="utf-8") as f:
+            json.dump(obj, f, ensure_ascii=False, indent=2)
+            f.flush()
+            os.fsync(f.fileno())      # 真落盘再 rename，断电也不怕
+        os.replace(tmp, path)
+    except Exception:
+        # 失败时清掉半截 tmp：别在目录里留垃圾（更别让它被误当成数据文件）
+        try:
+            os.remove(tmp)
+        except OSError:
+            pass
+        raise
+
+
 def api_get(port, path, timeout=25):
     req = urllib.request.Request(
         "http://127.0.0.1:%d%s" % (port, path),
@@ -417,7 +445,6 @@ def main():
     for n in sampled_names:
         if n in rows:
             rows[n]["is_sampled"] = True
-    os.makedirs(os.path.dirname(args.out), exist_ok=True)
     CAVEAT = {
         "ci": "CI runner 在美国：youtube 通过率会系统性偏高（1.8~13 倍），"
               "只能判是否彻底死，不能横向比质量（Spearman rho 仅 0.48）。",
@@ -425,14 +452,16 @@ def main():
         "cnci": "国内第三方 CI：口径介于美国 CI 与家用宽带之间（IDC 国际出口通常"
                 "更差）。**只用于交叉验证**，不足以单独触发回收或降级。",
     }
-    json.dump({"probed_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-               "scope": args.scope,
-               "sampled": bool(sampled_names),
-               "sample_per_source": args.sample if sampled_names else 0,
-               "hc_timeout_ms": args.hc_timeout,
-               "caveat": CAVEAT.get(args.scope, ""),
-               "sources": rows},
-              open(args.out, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
+    # ⚠ 原子写（§75 #11）：直写时若在写一半被杀，**上一轮的好数据也一起没了**，
+    #   而健康档案下一轮只能看到这个半截文件。详见 save_json_atomic 的说明。
+    save_json_atomic(args.out, {
+        "probed_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        "scope": args.scope,
+        "sampled": bool(sampled_names),
+        "sample_per_source": args.sample if sampled_names else 0,
+        "hc_timeout_ms": args.hc_timeout,
+        "caveat": CAVEAT.get(args.scope, ""),
+        "sources": rows})
     print("[probe] 结果 -> %s（scope=%s%s）" %
           (args.out, args.scope, "，已抽样" if sampled_names else ""))
     for n, v in sorted(rows.items()):

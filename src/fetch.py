@@ -84,8 +84,17 @@ def parse_proxies(data):
         if isinstance(px, list):
             return [p for p in px if isinstance(p, dict)], None
         return None, "是完整配置但无 proxies 列表"
-    if isinstance(cfg, list) and cfg and isinstance(cfg[0], dict):
-        return cfg, None
+    if isinstance(cfg, list):
+        # ⚠ 原来只查首项（`isinstance(cfg[0], dict)`）就返回**整个列表**：
+        #   混在中间/末尾的字符串、数字会一路流到 run.py 的 `p.get("name")`
+        #   -> AttributeError 把整轮炸掉（§75 #10）。现在逐项过滤，
+        #   一个 dict 都没有时明确报错（不静默当空）。
+        ok = [p for p in cfg if isinstance(p, dict)]
+        if ok:
+            return ok, None
+        if not cfg:
+            return None, "是空列表（不是 clash 配置）"
+        return None, "是列表但没有 proxy 字典（首项类型 %s）" % type(cfg[0]).__name__
     # base64 的 v2ray 链接列表 —— 本仓不做协议转换
     stripped = "".join(text.split())
     if len(stripped) > 40 and B64_RE.match(stripped):
@@ -99,20 +108,31 @@ def parse_proxies(data):
 
 
 def fetch_source(src, timeout=45):
-    """抓一个源，返回 (proxies, meta)。meta 含 attempts/错误，供报告审计。"""
-    meta = {"name": src["name"], "url": src["url"]}
-    data, used, dt, attempts = fetch(src["url"], timeout=timeout)
-    meta["attempts"] = attempts
-    meta["mirror_used"] = (used != src["url"]) if used else None
-    if data is None:
-        meta["error"] = "全部 URL 尝试均失败"
+    """抓一个源，返回 (proxies, meta)。meta 含 attempts/错误，供报告审计。
+
+    ⚠ 承诺「一个源坏掉只影响它自己」：上游给了畸形结构（非 dict 的 proxy、
+    诡异编码、列表里混字符串……）也必须在这里兜住，**不能把整轮炸掉** ——
+    这个承诺原来只写在 docstring 里，函数体根本没有 try/except（§75 #10）。
+    """
+    meta = {"name": None, "url": None}
+    try:
+        meta["name"], meta["url"] = src.get("name"), src.get("url")
+        data, used, dt, attempts = fetch(src["url"], timeout=timeout)
+        meta["attempts"] = attempts
+        meta["mirror_used"] = (used != src["url"]) if used else None
+        if data is None:
+            meta["error"] = "全部 URL 尝试均失败"
+            return [], meta
+        meta["bytes"] = len(data)
+        meta["used_url"] = used
+        meta["fetch_sec"] = round(dt, 2)
+        proxies, err = parse_proxies(data)
+        if proxies is None:
+            meta["error"] = err
+            return [], meta
+        meta["raw_nodes"] = len(proxies)
+        return proxies, meta
+    except Exception as e:
+        meta["error"] = "抓取/解析异常（已兜住，本源按空处理）：%s: %s" % (
+            type(e).__name__, str(e)[:80])
         return [], meta
-    meta["bytes"] = len(data)
-    meta["used_url"] = used
-    meta["fetch_sec"] = round(dt, 2)
-    proxies, err = parse_proxies(data)
-    if proxies is None:
-        meta["error"] = err
-        return [], meta
-    meta["raw_nodes"] = len(proxies)
-    return proxies, meta
