@@ -2,10 +2,10 @@
 proxies:
 - name: 其他-001
   type: vmess
-  server: guanwang.awsno.com
-  port: 443
   network: ws
   uuid: 6a89a215-22bf-4bd7-9642-b95b2e09583a
+  server: guanwang.awsno.com
+  port: 443
   skip-cert-verify: true
   tls: true
   alterId: 0
@@ -209,14 +209,15 @@ proxies:
   tls: true
 - name: 美国-004
   type: vless
-  server: 200.165.231.209
-  port: 443
   network: ws
   uuid: ff0b6ba8-bed0-4c4d-bbc9-23af47582615
+  server: 200.165.231.209
   servername: wstg.datasynctrue.online
+  port: 443
   skip-cert-verify: false
   tls: true
   udp: true
+  tfo: false
   ws-opts:
     headers:
       Host: wstg.datasynctrue.online
@@ -253,10 +254,10 @@ proxies:
   tls: true
 - name: 韩国-001
   type: vmess
-  server: 43.108.103.167
-  port: 123
   network: http
   uuid: 35aa0fda-175a-4aec-c468-0231dee1a121
+  server: 43.108.103.167
+  port: 123
   skip-cert-verify: true
   alterId: 0
   cipher: auto
