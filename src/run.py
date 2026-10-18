@@ -33,6 +33,33 @@ def log(msg):
     print(msg, flush=True)
 
 
+def _prune_dist_stale(dist_dir, keep_names):
+    """把 dist/nodes、dist/raw 里「本轮已不存在的源」的快照删掉（2026-10-19 微项）。
+
+    源被停用/改名后，上一轮的 per-source 文件会一直留在 main 的 dist/ 里：
+    profile 不引用它们（gh-pages 每轮全量重建），但仓库里越积越旧，没人清理
+    就更没人敢信。keep_names = 本轮源名集合；--sources 局部调试不调（只跑了
+    部分源，没跑的源本来就是完整有效的，不能删）。
+    """
+    for sub in ("nodes", "raw"):
+        d = os.path.join(dist_dir, sub)
+        if not os.path.isdir(d):
+            continue
+        for fn in os.listdir(d):
+            stem, ext = os.path.splitext(fn)
+            if ext not in (".yaml", ".yml"):
+                continue
+            if stem == "all" or (stem.endswith("--flaky") and stem[:-7] in keep_names):
+                continue
+            if stem in keep_names:
+                continue
+            try:
+                os.remove(os.path.join(d, fn))
+                log("   清理 dist/%s 残留：%s" % (sub, fn))
+            except OSError as e:
+                log("⚠ 清理 dist/%s/%s 失败：%s" % (sub, fn, e))
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--ai-mode", default="auto",
@@ -105,7 +132,10 @@ def main():
         if meta.get("error"):
             return name, [], meta, {}
         if args.keep_raw:
-            raw_keep[name] = list(raw_nodes)
+            # 逐节点浅拷贝留下「原貌」：下方 hard_filter 接受节点时会 node.clear()
+            # +update 就地清洗（2026-10-19 §75#5），若仍共享引用，dist/raw 里的活
+            # 节点全是清洗后的样子、只有被弃节点保留原貌，对比/取证就失真了。
+            raw_keep[name] = [dict(p) for p in raw_nodes]
 
         seen = set()
         dedup = []
@@ -141,7 +171,7 @@ def main():
     else:
         prepared = [prep_one(s) for s in enabled]
 
-    cluster_jobs = []      # (源名, 簇列表, 代表节点全集) —— 阶段二统一并发
+    cluster_jobs = []      # (源名, 簇列表或 None, 代表节点全集) None=源级（node 模式）
     prepared_by_name = {}
 
     for name, kept, meta, reasons in prepared:
@@ -161,17 +191,18 @@ def main():
                                         for k, v in sorted(reasons.items(), key=lambda x: -x[1])[:4]))
                if reasons else ""))
         if kept:
-            clusters = filters.group_clusters(kept)
             if args.ai_unit == "cluster":
+                clusters = filters.group_clusters(kept)
                 cap = args.ai_max_clusters
                 if cap and len(clusters) > cap:
                     clusters = clusters[:cap]      # 已按簇大小降序，保留信息量最大的
                 ai_reviewed[name] = len(clusters)
                 cluster_jobs.append((name, clusters, kept))
             else:
-                ai_reviewed[name] = len(kept)      # node 模式整源一批，见阶段二
+                ai_reviewed[name] = len(kept)
+                cluster_jobs.append((name, None, kept))   # node 模式：整源一批，阶段二走 review_source
 
-    log("阶段一完成：%d 个源 / 产出 %d 节点 / 待 AI 审核 %d 个簇任务"
+    log("阶段一完成：%d 个源 / 产出 %d 节点 / 待 AI 审核 %d 个任务"
         % (len(prepared_by_name), sum(len(v) for v in prepared_by_name.values()), len(cluster_jobs)))
 
     # ================= 阶段二：AI 审核（全源簇任务统一并发） =================
@@ -184,12 +215,22 @@ def main():
 
         def judge(job):
             name, clusters, kept = job
-            drops, st = ai_review.review_clusters(
-                clusters, kept, mode, aicfg, name, log)
+            if clusters is None:
+                # node 模式：整源一批走源级审核。软标记这时才真正派上用场——
+                # 簇级 prompt 里没有它，源级 _fmt_chunk 会渲染 [软标记:…]。
+                smap = {p.get("name", ""): filters.soft_hits(p.get("name", ""))
+                        for p in kept}
+                smap = {k: v for k, v in smap.items() if v}
+                drops, st = ai_review.review_source(kept, smap, mode, aicfg, name, log)
+            else:
+                drops, st = ai_review.review_clusters(
+                    clusters, kept, mode, aicfg, name, log)
             return name, drops, st
 
         t_ai = time.time()
-        log("阶段二：%d 个簇任务交给 %d 路并发 AI" % (len(cluster_jobs), ai_workers))
+        log("阶段二：%d 个任务交给 %d 路并发 AI（%s级审核）"
+            % (len(cluster_jobs), ai_workers,
+               "源" if any(c[1] is None for c in cluster_jobs) else "簇"))
         with cf.ThreadPoolExecutor(max_workers=ai_workers) as pool:
             ai_results = list(pool.map(judge, cluster_jobs))
         log("阶段二完成，用时 %.0fs" % (time.time() - t_ai))
@@ -210,15 +251,23 @@ def main():
                 warnings.append("%s AI 因墙钟预算耗尽被跳过（该源按纯规则产出）" % name)
             if drops:
                 kill = set()
-                for ci in drops:
-                    kill.update(clusters[ci][1])
+                if clusters is None:       # node 模式：drops 直接就是节点下标
+                    kill.update(drops)
+                else:
+                    for ci in drops:
+                        kill.update(clusters[ci][1])
                 kept = [p for i, p in enumerate(kept) if i not in kill]
-                log("   %s：AI 剔除 %d 簇 / %d 节点%s"
-                    % (name, len(drops), len(kill),
-                       ("（%s）" % "，".join(st.get("top_reasons") or []))
-                       if st.get("top_reasons") else ""))
+                why = ("（%s）" % "，".join(st.get("top_reasons") or [])) \
+                    if st.get("top_reasons") else ""
+                if clusters is None:
+                    log("   %s：AI 剔除 %d 节点%s" % (name, len(kill), why))
+                else:
+                    log("   %s：AI 剔除 %d 簇 / %d 节点%s"
+                        % (name, len(drops), len(kill), why))
             else:
-                log("   %s：AI 未剔除（簇数 %d）" % (name, len(clusters)))
+                kind = ("整源 %d 节点" % len(kept)) if clusters is None \
+                    else ("簇数 %d" % len(clusters))
+                log("   %s：AI 未剔除（%s）" % (name, kind))
             prepared_by_name[name] = kept
 
     # 汇总产物
@@ -345,6 +394,8 @@ def main():
             _b.dump_yaml({"proxies": nodes},
                          "# 未过滤原始快照（对比用，勿订阅）—— 源 %s" % name,
                          os.path.join(dist, "raw", "%s.yaml" % name))
+    if not args.sources:
+        _prune_dist_stale(dist, set(per_source.keys()))
     report.write_report(os.path.join(ROOT, "reports", "latest.md"),
                         manifest, metas, warnings, per_source)
 

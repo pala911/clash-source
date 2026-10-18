@@ -159,9 +159,11 @@ def verdict(fp_rec):
 
     返回 (ok, reason)：
       ok=True   -> 稳，可以用
-      ok=False  -> 不稳或样本不足，build 应把它移出竞速池
-    样本不足（n < MIN_ROUNDS）时返回 False 是**故意的**：
-    对未知节点保持谨慎，而不是假装它稳。
+      ok=False  -> 不稳或样本不足
+    样本不足（n < MIN_ROUNDS）返回 False 是保守口径，但**不能直接拿来淘汰节点** ——
+    build.split_by_stability 会先看 n（未知/样本不足一律保留，2026-10-19 拍板
+    「未知=保留」），verdict 的这个 False 在那边不会生效；它主要供 stats() 与
+    报告的展示口径使用（样本不足单独计入 unknown 桶）。
     """
     if not fp_rec:
         return False, "无历史"

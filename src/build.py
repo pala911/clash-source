@@ -81,8 +81,12 @@ def split_by_stability(per_source):
         keep, drop = [], []
         for p in plist:
             rec = nodes.get(ns.fingerprint(p))
-            if rec is None:
-                keep.append(p)          # 无历史 -> 一律保留，新节点不该被「未知」淘汰
+            # 无历史或样本不足（n < MIN_ROUNDS）一律保留 ——「未知不淘汰」。
+            # 新节点第一轮就有档案，旧的「样本不足 -> verdict False -> 移出」会让
+            # 1~4 轮的新节点白等 5 天才进竞速池，与本函数第 2 条保险的意图冲突
+            # （2026-10-19 拍板：未知=保留）。verdict 只裁「攒够轮数仍可用率低」的。
+            if rec is None or rec.get("n", 0) < ns.MIN_ROUNDS:
+                keep.append(p)
                 continue
             ok, _ = ns.verdict(rec)
             (keep if ok else drop).append(p)

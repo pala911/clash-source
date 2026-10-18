@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 """验证节点级稳定性加权，以及生成物能被真 mihomo 接受。
 
-四个场景，缺一不可 —— 前三个对应三种「把池子砍空」的失败方式：
+六个场景，缺一不可 —— 前三个对应三种「把池子砍空」的失败方式：
   A 无历史      -> 完全不加权（今天就是这种情况：档案是空的）
   B 历史充足    -> 不稳节点被移出 AUTO 竞速池，但仍能从「备用」组切到
   C 单源几乎全不稳 -> 触发地板保护，该源整体不砍（宁可漏加权，不可砍空）
   D 真内核校验  -> profile.yaml 能被 mihomo -t 接受
+  E 档案损坏    -> 拒绝写入 + 改名留证，不许从零重建
+  F 未知=保留   -> 样本不足（<5 轮）的新节点一律留在竞速池（2026-10-19 拍板）
 """
 import glob
 import os
@@ -174,6 +176,41 @@ try:
             print("     " + ln)
     ok = ok and r.returncode == 0
     os.remove(out)
+
+    # ---------- F 样本不足=保留（2026-10-19 拍板：未知不淘汰） ----------
+    # 旧逻辑：新节点第一轮就被写档案，1~4 轮时 verdict=False -> 移出竞速池，
+    # 与本函数「没有历史的节点不该因未知被淘汰」的保险互相矛盾 —— 实际效果是
+    # 一切新节点要白等 5 天才回来考。现在 build 先看 n 再谈 verdict。
+    print("")
+    print("=" * 66)
+    print("场景 F：攒够轮数才判不稳；样本不足（<5 轮）的新节点一律保留")
+    print("=" * 66)
+    per3 = {n: make_nodes(n, 40) for n in NAMES}
+    nodes = {}
+    for n, pl in per3.items():
+        for i, p in enumerate(pl):
+            if i < 5:
+                # 前 5 个节点样本不足（1~4 轮）且可用率 0 —— 按拍板口径必须保留
+                nodes[ns.fingerprint(p)] = {"s": n, "n": max(1, i), "up": 0,
+                                            "ms": [200], "t": "2026-10-16"}
+            else:
+                nodes[ns.fingerprint(p)] = {"s": n, "n": 20, "up": 20,
+                                            "ms": [200], "t": "2026-10-16"}
+    # 攒够轮数的真不稳仍要照常移出（verdict 的本职工作不受影响）
+    nodes[ns.fingerprint(per3["ssrsub"][6])] = {"s": "ssrsub", "n": 20, "up": 2,
+                                                "ms": [200], "t": "2026-10-16"}
+    ns.save({"version": 1, "nodes": nodes, "updated": "2026-10-16"})
+    stable3, flaky3, note3 = build.split_by_stability(per3)
+    print("  %s" % note3)
+    partial_kept = all(all(p in stable3.get(n, []) for p in per3[n][:5])
+                       for n in NAMES)
+    print("  %s 1~4 轮样本不足节点全部保留（即使记录可用率 0）"
+          % ("✓" if partial_kept else "✗"))
+    mature_dropped = flaky3.get("ssrsub") == [per3["ssrsub"][6]]
+    print("  %s 攒够轮数（20 轮）的可用率不足节点照常移出（ssrsub 第 7 个）"
+          % ("✓" if mature_dropped
+             else "✗ 实际 flaky=%r" % {k: len(v) for k, v in flaky3.items()}))
+    ok = ok and partial_kept and mature_dropped
 finally:
     if os.path.exists(os.path.join(BACKUP, "__absent__")):
         if os.path.exists(STAB):

@@ -381,14 +381,14 @@ python tools\cnci_trigger.py --status   # 只看云效最近几次运行，不�
 ok=0; for i in $(seq 1 8); do git fetch origin && git reset --hard origin/master && { ok=1; break; }; sleep 20; done; [ "$ok" = "1" ] && bash tools/sync_and_probe.sh || { echo "同步失败"; exit 1; }
 ```
 
-### 交付前必跑（全部十七道）
+### 交付前必跑（全部十八道）
 
 ```powershell
 python tools\check_ci_scripts.py      # Python 3.6 静态门禁
 python tools\test_probe_wiring.py     # 探针 ↔ 稳定性档案 的接线
 python tools\test_health_tiering.py   # 双视角分级（四格全覆盖）+ 判死轮数/跨度双闸门 + 注释零丢失 + 判死后回收
 python tools\test_build_groups.py     # 质量分桶 + 档案坏/缺时**降级发布**
-python tools\test_stability.py        # 节点稳定性加权 + 档案损坏时不许静默重建
+python tools\test_stability.py        # 节点稳定性加权 + 档案损坏时不许静默重建 + 未知=保留（样本不足不移出）
 python tools\test_flaky_reprobe.py    # 被移出的节点能否翻盘
 python tools\test_fault_injection.py  # 坏数据进来时是否明确报错
 python tools\test_io_safety.py        # 坏数据不炸（列表混类型/畸形 src）+ 原子写（写一半不毁旧数据）
@@ -399,6 +399,7 @@ python tools\test_local_probe_obs.py  # pythonw（计划任务）下 health.py �
 python tools\test_local_probe_push.py # 本机推送：真造「被 CI 插队」竞态 + 冲突绝不留 rebase 中间态
 python tools\test_report_ai.py        # AI 留痕链：生产端键名 ↔ 报告/manifest
 python tools\test_ci_workflow.py      # CI 推送必须带重试、失败不许染红（连带 skip 下游）
+python tools\test_hardening.py        # 硬化回归：dist 残留清理 / raw 快照原貌 / TPM 闸门不死循环 / review_source 源级合同
 python tools\verify_profile.py        # 真 mihomo 内核校验
 python tools\probe_field_types.py     # mihomo 接受哪些字段类型
 ```

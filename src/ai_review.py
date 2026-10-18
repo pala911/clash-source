@@ -133,13 +133,19 @@ def usage_report():
 # 加并发时如果不管速率，很容易撞 429 并触发退避，反而更慢。
 # 这里按滑动窗口统计实际消耗的 token，超过阈值就短暂让路。
 _TPM = {"window": [], "limit": int(os.environ.get("AI_TPM_LIMIT", "36000")),
-        "waited": 0.0}
+        "waited": 0.0, "oversized": 0}
 
 
 def _tpm_wait(need=2000):
     """在发起一次调用前等一会儿，直到滑动窗口内的 token 消耗 + need 不超阈值。"""
     limit = _TPM["limit"]
     if limit <= 0:
+        return
+    if need > limit:
+        # need 本身就超过每分钟限额：窗口只会越来越满，等是死等（原先是 while True
+        # 死循环，纯理论但真发生就是挂死）。直接放行，撞 429 由 _call_http_raw
+        # 的指数退避兜底。
+        _TPM["oversized"] += 1
         return
     w = _TPM["window"]
     while True:
@@ -156,7 +162,8 @@ def _tpm_wait(need=2000):
 def tpm_stats():
     return {"limit_per_min": _TPM["limit"],
             "recent_tokens": sum(t for _, t in _TPM["window"]),
-            "waited_sec": round(_TPM["waited"], 1)}
+            "waited_sec": round(_TPM["waited"], 1),
+            "oversized": int(_TPM.get("oversized", 0))}
 
 
 def _add_usage(backend, u):
@@ -258,7 +265,7 @@ def _drop_map(obj, offset, n_total):
             # 也容忍 ["3","17"] 这种纯数组
             try:
                 n = int(str(d).strip())
-                res[offset + n] = ("", "")
+                res[offset + n - 1] = ("", "")
                 continue
             except (TypeError, ValueError):
                 continue
@@ -272,7 +279,10 @@ def _drop_map(obj, offset, n_total):
         if "drop" in obj and d.get("verdict") is None:
             verdict = "drop"
         if verdict == "drop":
-            res[offset + n] = (str(d.get("why", ""))[:40], str(d.get("name", ""))[:60])
+            # n 是 prompt 里的**行号**（_fmt_chunk 从 1 编号），归零要 -1：
+            # 原先 res[offset + n] 会把「第 1 个节点」的剔除落到下标 1、末个出界，
+            # 整条源级路径系统性右移一格（2026-10-19 门禁 18 抓到）。
+            res[offset + n - 1] = (str(d.get("why", ""))[:40], str(d.get("name", ""))[:60])
     return res
 
 
@@ -297,6 +307,12 @@ def review_source(nodes, soft_map, mode, cfg, source_name, log):
         return [], stats
     drops, reasons = {}, []
     for off in range(0, len(nodes), CHUNK):
+        if budget_exhausted():
+            # 与簇级路径同款闸门：预算耗尽剩余批次跳过、已审批次保留（fail-soft）。
+            # node 模式此前是死代码、从没接过这把闸（2026-10-19 #7 接线时补上）。
+            stats["skipped_budget"] = True
+            log("  [ai] %s 墙钟预算耗尽，源级审核剩余批次跳过" % source_name)
+            break
         chunk = nodes[off:off + CHUNK]
         stats["chunks"] += 1
         obj, used_backend = None, None
@@ -324,7 +340,7 @@ def review_source(nodes, soft_map, mode, cfg, source_name, log):
             continue
         stats["served"][used_backend] = stats["served"].get(used_backend, 0) + 1
         dm = _drop_map(obj, off, len(chunk))
-        stats["reviewed"] += len(dm)
+        stats["reviewed"] += len(chunk)   # 统一口径：送审的是这一批全部节点（原来 += len(dm) 是被剔除数，重演「审 0 剔 1」式账目）
         for idx, (why, _nm) in dm.items():
             drops[idx] = why
             reasons.append(why)

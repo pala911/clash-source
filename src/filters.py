@@ -201,7 +201,9 @@ def hard_filter(node, exclude_filter, drop_types=()):
         out[k] = v
     if dropped_fields:
         _bump("malformed_field_dropped")
-        soft_hits("字段类型非法已丢弃: %s" % (", ".join(dropped_fields),))
+        # （2026-10-19 微项）原来这里还有一行软命中调用 soft_hits(...)：
+        # 软标记按设计只在源级 AI 审核里标注节点名（见 run.py node 分支），
+        # 塞错误字符串、丢弃返回值的调用是无效代码，删；计数 _bump 保留。
     node.clear()
     node.update(out)
     return True, ""

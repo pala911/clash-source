@@ -545,6 +545,12 @@ def main():
     cnci = load_cnci()
     cnci_rows = (cnci.get("sources") or {})
     cnci_ts = cnci.get("probed_at") or ""
+    if cnci_rows and not cnci_ts:
+        # 有数据但没时间戳：is_dup/时序判定没法做，这轮云效数据永远进不了历史。
+        # 推送侧 ci_push_main 的 no-stamp 应已在闸，这里再喊一声 —— 别让
+        # 「数据在、历史冻结」静默发生（2026-10-19 微项收尾）。
+        print("[health] ⚠ cnci 有 %d 个源的数据但缺 probed_at —— 本轮云效数据不进历史"
+              % len(cnci_rows))
     cnci_ok = 0
     if not cnci_rows:
         print("[health] ⚠ 无云效(cnci)数据 -> 分级标为未知"
