@@ -342,28 +342,20 @@ def main():
                         manifest, metas, warnings, per_source)
 
     # AI 逐条留痕：删了哪个节点、模型给的理由（调 prompt / 复核误杀都靠它）
-    ai_rows = []
-    for m in metas:
-        for d in ((m.get("ai") or {}).get("drop_detail") or []):
-            ai_rows.append((m["name"], d))
+    # ⚠ 两个口径都要给（簇数 / 节点数）—— 旧文案「共剔除 N 条」里的 N 是**簇数**，
+    #   线上实测 91 行 = 91 簇、涉及 233 个节点，读者会把 N 当成节点数。详见
+    #   report.write_ai_dropped 的说明。
     ai_path = os.path.join(ROOT, "reports", "ai_dropped.md")
-    with open(ai_path, "w", encoding="utf-8") as f:
-        f.write("# AI 审核逐条留痕（生成于 %s，模型 `%s`）\n\n"
-                % (manifest["generated_at"], manifest["ai_mode"]))
-        if not ai_rows:
-            f.write("本轮 AI 未剔除任何节点（或未启用 AI）。\n")
-        else:
-            f.write("共剔除 %d 条。若发现误杀，把节点名与理由贴回来即可针对性收窄 prompt。\n\n"
-                    % len(ai_rows))
-            cur = None
-            for src, d in ai_rows:
-                if src != cur:
-                    cur = src
-                    f.write("\n## %s\n\n| 节点名 | 类型 | server | 模型理由 |\n|---|---|---|---|\n" % src)
-                f.write("| %s | %s | %s | %s |\n"
-                        % (str(d.get("name"))[:60], d.get("type"), d.get("server"),
-                           str(d.get("why"))[:40]))
-    log("AI 逐条留痕 -> %s（%d 条）" % (ai_path, len(ai_rows)))
+    ai_clusters, ai_nodes, ai_rows_n, ai_covered = report.write_ai_dropped(
+        ai_path, manifest, metas)
+    if ai_clusters and ai_rows_n != ai_clusters:
+        log("⚠ AI 留痕行数 %d ≠ 簇数 %d（本该每簇一条，检查 drop_detail）"
+            % (ai_rows_n, ai_clusters))
+    if ai_clusters and ai_covered != ai_nodes:
+        log("⚠ AI 留痕覆盖 %d ≠ 剔除节点 %d（两组数来自同一批 drops，不该不等）"
+            % (ai_covered, ai_nodes))
+    log("AI 逐条留痕 -> %s（%d 簇 / %d 节点，表内 %d 行）"
+        % (ai_path, ai_clusters, ai_nodes, ai_rows_n))
     log("完成：%d 源 / 产出 %d 节点（合并 %d）/ AI=%s -> %s"
         % (len(per_source), manifest["totals"]["kept"], len(all_nodes), mode, dist))
     return 0

@@ -1,7 +1,57 @@
 # -*- coding: utf-8 -*-
-"""生成 reports/latest.md —— 每次运行的可审计留痕。"""
+"""生成 reports/latest.md（运行报告）与 reports/ai_dropped.md（AI 逐条留痕）。"""
 import datetime
 import os
+
+
+def write_ai_dropped(path, manifest, metas):
+    """写 reports/ai_dropped.md —— AI 逐条留痕（调 prompt / 复核误杀都靠它）。
+
+    ⚠ **两个口径都要给**（簇数 / 节点数），2026-10-18 补：
+      · 簇级模式（`ai_review.review_clusters`）下 `drop_detail` 是**每簇一条**
+        （代表节点），条目里的 `count` 是该簇实际覆盖的节点数
+        ⇒ **行数 = 簇数 ≠ 节点数**。线上实测：91 行 = 91 簇、涉及 233 个节点，
+        而旧文案只写「共剔除 91 条」，读者会把 91 当成节点数（差 2.5 倍）。
+      · 源级模式（`review_source`）没有簇概念（`dropped_clusters` 恒 0），
+        此时行数 = 节点数。
+
+    返回 `(clusters, nodes, rows, covered)`：前三个来自汇总键，
+    `covered` 是表内各行「节点数」列之和 —— 簇级模式下它必须等于 `nodes`
+    （两组数来自同一批 drops），调用方据此对账，别让不一致静默留在文件里。
+    """
+    clusters = sum(int(((m.get("ai") or {}).get("dropped_clusters") or 0)) for m in metas)
+    nodes = sum(int(((m.get("ai") or {}).get("dropped") or 0)) for m in metas)
+    rows = []
+    for m in metas:
+        for d in ((m.get("ai") or {}).get("drop_detail") or []):
+            rows.append((m.get("name"), d))
+    covered = sum(int(d.get("count") or 1) for _s, d in rows)
+
+    os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
+    with open(path, "w", encoding="utf-8") as f:
+        f.write("# AI 审核逐条留痕（生成于 %s，模型 `%s`）\n\n"
+                % (manifest.get("generated_at"), manifest.get("ai_mode")))
+        if not rows:
+            f.write("本轮 AI 未剔除任何节点（或未启用 AI）。\n")
+        else:
+            if clusters:
+                f.write("共剔除 %d 簇 / %d 节点（下表每簇列一条代表节点 + 理由，"
+                        "「节点数」列是该簇实际覆盖的节点数）。"
+                        "若发现误杀，把节点名与理由贴回来即可针对性收窄 prompt。\n\n"
+                        % (clusters, nodes))
+            else:
+                f.write("共剔除 %d 节点。若发现误杀，把节点名与理由贴回来即可"
+                        "针对性收窄 prompt。\n\n" % nodes)
+            cur = None
+            for src, d in rows:
+                if src != cur:
+                    cur = src
+                    f.write("\n## %s\n\n| 节点名 | 类型 | server | 节点数 | 模型理由 |\n"
+                            "|---|---|---|---|---|\n" % src)
+                f.write("| %s | %s | %s | %d | %s |\n"
+                        % (str(d.get("name"))[:60], d.get("type"), d.get("server"),
+                           int(d.get("count") or 1), str(d.get("why"))[:40]))
+    return clusters, nodes, len(rows), covered
 
 
 def write_report(path, manifest, metas, warnings, per_source):

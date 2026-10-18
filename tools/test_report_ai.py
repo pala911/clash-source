@@ -17,7 +17,7 @@
 于是 `.get()` 全部落到默认值 0 —— **不报错、不告警，报告上是一份看起来很确定的假结论**。
 这一条只靠肉眼看代码极难发现（两个函数各自都是自洽的），所以必须让测试守。
 
-## 测试分三层
+## 测试分四层
 
   1. 契约层：消费端源码里读到的每个 ai 键，两种口径都必须提供
      —— 这层如果早存在，上面那个 bug 上线当天就会红。
@@ -25,6 +25,10 @@
      断言 reviewed/dropped/dropped_clusters 三个数是**真的算出来的**，不是恒 0。
   3. 渲染层：用合成 manifest/meta 跑一遍 report.write_report，断言报告正文里
      真的出现了「N 簇 / M 节点」而不是 0。
+  4. 留痕层：跑 report.write_ai_dropped，断言 `reports/ai_dropped.md` 里
+     **簇数与节点数都给**（线上实测：旧文案写「共剔除 91 条」，91 是簇数、
+     实际涉及 233 个节点 —— 「条」这种写法读者只会当成节点数）、每行带簇内节点数、
+     源级模式（没有簇概念）不提簇、零剔除不写「共剔除」。
 """
 import os
 import re
@@ -210,9 +214,65 @@ check("超阈值已回滚" in md, "回滚状态有单独标注（不然读者以
 check("| yypool | 900 | 900 | - |" in md,
       "没有 ai 记录的源显示 -（而不是伪装成 0）")
 
+# ---------------------------------------------------------------------------
+# 4) 留痕文件：reports/ai_dropped.md 的「簇 / 节点」两个口径
+# ---------------------------------------------------------------------------
+# 线上实测（2026-10-18）：文件里写「共剔除 91 条」，91 其实是**簇数**，
+# 涉及 233 个节点 —— 旧文案只有「条」，读者会当成节点数（差 2.5 倍）。
+print()
+print("=" * 72)
+print("4) 留痕文件：ai_dropped.md 不能把「簇数」写成「条/节点数」")
+print("=" * 72)
+tmp2 = tempfile.mkdtemp(prefix="aidrop_")
+try:
+    # 4a) 簇级模式：2 簇，覆盖 12 个节点（每簇一条代表节点）
+    metas_cl = [
+        {"name": "yypool", "ai": {"dropped": 10, "dropped_clusters": 1,
+                                  "drop_detail": [{"name": "n1", "type": "vmess",
+                                                   "server": "1.2.3.4", "why": "推广",
+                                                   "count": 10}]}},
+        {"name": "anaer", "ai": {"dropped": 2, "dropped_clusters": 1,
+                                 "drop_detail": [{"name": "n2", "type": "http",
+                                                  "server": "5.6.7.8", "why": "回环",
+                                                  "count": 2}]}},
+    ]
+    p = os.path.join(tmp2, "ai_dropped.md")
+    got = report.write_ai_dropped(p, {"generated_at": "T", "ai_mode": "http"}, metas_cl)
+    md = open(p, encoding="utf-8").read()
+    check(got == (2, 12, 2, 12), "返回 (簇, 节点, 行, 覆盖) = (2,12,2,12)",
+          "实际 %s" % (got,))
+    check("共剔除 2 簇 / 12 节点" in md, "表头同时给出簇数与节点数",
+          md.splitlines()[2][:90] if len(md.splitlines()) > 2 else md[:90])
+    check("| 节点数 |" in md, "每条留痕带「节点数」列（否则 2 行看不出覆盖了 12 个）")
+    check("| n1 | vmess | 1.2.3.4 | 10 | 推广 |" in md, "行里带上簇内节点数")
+
+    # 4b) 源级模式：没有簇概念（dropped_clusters 恒 0），行数 = 节点数
+    metas_src = [{"name": "src", "ai": {
+        "dropped": 3, "dropped_clusters": 0,
+        "drop_detail": [{"name": "a", "type": "ss", "server": "x", "why": "占位"},
+                        {"name": "b", "type": "ss", "server": "y", "why": "占位"},
+                        {"name": "c", "type": "ss", "server": "z", "why": "占位"}]}}]
+    p2 = os.path.join(tmp2, "ai_dropped2.md")
+    got2 = report.write_ai_dropped(p2, {"generated_at": "T", "ai_mode": "off"}, metas_src)
+    md2 = open(p2, encoding="utf-8").read()
+    check(got2[:3] == (0, 3, 3), "源级模式 (簇, 节点, 行) = (0,3,3)", "实际 %s" % (got2,))
+    check("共剔除 3 节点" in md2 and "簇" not in md2.splitlines()[2],
+          "源级模式不提「簇」（它没有簇概念）")
+    check("| a | ss | x | 1 | 占位 |" in md2, "源级模式每行的节点数 = 1")
+
+    # 4c) 零剔除：不许出现「共剔除」
+    p3 = os.path.join(tmp2, "ai_dropped3.md")
+    report.write_ai_dropped(p3, {"generated_at": "T", "ai_mode": "http"},
+                            [{"name": "s", "ai": {"dropped": 0, "dropped_clusters": 0,
+                                                  "drop_detail": []}}])
+    md3 = open(p3, encoding="utf-8").read()
+    check("共剔除" not in md3 and "未剔除任何节点" in md3, "零剔除时写「未剔除任何节点」")
+finally:
+    shutil.rmtree(tmp2, ignore_errors=True)
+
 print()
 print("=" * 72)
 if FAILS:
     print("结果：失败 %d 项 —— %s" % (len(FAILS), "；".join(FAILS)))
     sys.exit(1)
-print("结果：全部通过（AI 留痕链：契约一致 / 数值真实 / 报告不为 0）")
+print("结果：全部通过（AI 留痕链：契约一致 / 数值真实 / 报告不为 0 / 留痕两个口径都在）")
