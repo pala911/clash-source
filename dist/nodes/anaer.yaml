@@ -1,6 +1,18 @@
-# clash-source 自动生成 —— 源 anaer，共 28 节点（稳定性加权后留在竞速池内的部分）
+# clash-source 自动生成 —— 源 anaer，共 29 节点（稳定性加权后留在竞速池内的部分）
 # 不要手改；改动会在下次定时任务被覆盖（上游 https://pala911.github.io/clash-source/nodes/anaer.yaml）
 proxies:
+- name: 德国-001
+  type: trojan
+  server: 185.220.100.168
+  port: 443
+  network: ws
+  password: humanity
+  skip-cert-verify: false
+  sni: www.calmlunch.com
+  ws-opts:
+    headers:
+      Host: www.calmlunch.com
+    path: /assignment
 - name: 澳大利亚-001 |3.0MB/s|TK-AU|YT-AU|GPT⁺-AU
   type: http
   server: 159.13.44.228
@@ -59,14 +71,14 @@ proxies:
   sni: www.bing.com
 - name: 罗马尼亚-008 |1.0MB/s
   type: http
-  server: 193.176.84.26
+  server: 193.176.84.23
   port: 9002
   skip-cert-verify: true
   tls: true
   sni: www.bing.com
 - name: 罗马尼亚-009 |1.0MB/s
   type: http
-  server: 193.176.84.23
+  server: 193.176.84.26
   port: 9002
   skip-cert-verify: true
   tls: true
@@ -178,7 +190,7 @@ proxies:
   port: 9002
   skip-cert-verify: true
   tls: true
-- name: 荷兰-003 |1.6MB/s|TK-NL|GPT⁺-NL|GM-NL
+- name: 荷兰-004 |1.6MB/s|TK-NL|GPT⁺-NL|GM-NL
   type: http
   server: 84.17.47.147
   port: 9002
@@ -188,7 +200,7 @@ proxies:
   type: vmess
   server: 43.108.103.167
   port: 123
-  network: http
+  network: tcp
   uuid: 35aa0fda-175a-4aec-c468-0231dee1a121
   skip-cert-verify: true
   alterId: 0

@@ -1,18 +1,6 @@
 # 未过滤原始快照（对比用，勿订阅）—— 源 anaer
 proxies:
 - name: 其他-001
-  type: trojan
-  network: ws
-  server: 104.19.229.21
-  port: 443
-  password: humanity
-  skip-cert-verify: false
-  sni: www.calmlunch.com
-  ws-opts:
-    headers:
-      Host: www.calmlunch.com
-    path: /assignment
-- name: 其他-002
   type: vmess
   network: ws
   uuid: 6a89a215-22bf-4bd7-9642-b95b2e09583a
@@ -26,7 +14,31 @@ proxies:
     headers:
       Host: guanwang.awsno.com
     path: /hls/cctv5phd.m3u8
-- name: 德国-001 |1.6MB/s
+- name: 其他-002
+  type: trojan
+  network: ws
+  server: 104.19.229.21
+  port: 443
+  password: humanity
+  skip-cert-verify: false
+  sni: www.calmlunch.com
+  ws-opts:
+    headers:
+      Host: www.calmlunch.com
+    path: /assignment
+- name: 德国-001
+  type: trojan
+  network: ws
+  server: 185.220.100.168
+  port: 443
+  password: humanity
+  skip-cert-verify: false
+  sni: www.calmlunch.com
+  ws-opts:
+    headers:
+      Host: www.calmlunch.com
+    path: /assignment
+- name: 德国-002 |1.6MB/s
   type: hysteria
   server: 5.83.129.90
   port: 54177
@@ -40,7 +52,7 @@ proxies:
   down: 1000
   protocol: udp
   up: 500
-- name: 德国-002 |594KB/s
+- name: 德国-003 |594KB/s
   type: hysteria
   server: 5.83.129.153
   port: 20088
@@ -112,14 +124,14 @@ proxies:
   sni: www.bing.com
 - name: 罗马尼亚-008 |1.0MB/s
   type: http
-  server: 193.176.84.26
+  server: 193.176.84.23
   port: 9002
   skip-cert-verify: true
   tls: true
   sni: www.bing.com
 - name: 罗马尼亚-009 |1.0MB/s
   type: http
-  server: 193.176.84.23
+  server: 193.176.84.26
   port: 9002
   skip-cert-verify: true
   tls: true
@@ -225,48 +237,33 @@ proxies:
   port: 9002
   skip-cert-verify: true
   tls: true
-- name: 美国-005
-  type: vless
-  network: ws
-  uuid: ff0b6ba8-bed0-4c4d-bbc9-23af47582615
-  server: 200.165.231.209
-  servername: wstg.datasynctrue.online
-  port: 443
-  skip-cert-verify: false
-  tls: true
-  udp: true
-  tfo: false
-  ws-opts:
-    headers:
-      Host: wstg.datasynctrue.online
-    path: /api/connect
 - name: 荷兰-001 |2.1MB/s|TK-NL|GPT⁺-NL|GM-NL
   type: http
   server: 84.17.47.150
   port: 9002
   skip-cert-verify: true
   tls: true
-- name: 荷兰-002 |1.8MB/s|TK-NL|GPT⁺-NL
-  type: http
-  server: 51.159.225.196
-  port: 23856
-  skip-cert-verify: true
-  tls: true
-- name: 荷兰-003 |1.6MB/s|TK-NL|GPT⁺-NL|GM-NL
-  type: http
-  server: 84.17.47.147
-  port: 9002
-  skip-cert-verify: true
-  tls: true
-- name: 荷兰-004 |1.8MB/s|TK-NL|GPT⁺-NL|GM-NL
+- name: 荷兰-002 |1.8MB/s|TK-NL|GPT⁺-NL|GM-NL
   type: http
   server: 5.255.118.82
   port: 443
   skip-cert-verify: true
   tls: true
+- name: 荷兰-003 |1.8MB/s|TK-NL|GPT⁺-NL
+  type: http
+  server: 51.159.225.196
+  port: 23856
+  skip-cert-verify: true
+  tls: true
+- name: 荷兰-004 |1.6MB/s|TK-NL|GPT⁺-NL|GM-NL
+  type: http
+  server: 84.17.47.147
+  port: 9002
+  skip-cert-verify: true
+  tls: true
 - name: 韩国-001
   type: vmess
-  network: http
+  network: tcp
   uuid: 35aa0fda-175a-4aec-c468-0231dee1a121
   server: 43.108.103.167
   port: 123
@@ -287,7 +284,7 @@ proxies:
   password: dummy
   udp: true
   skip-cert-verify: true
-- name: '说明-更新时间: 2026-10-20 17:01 (CST)'
+- name: '说明-更新时间: 2026-10-21 00:06 (CST)'
   type: trojan
   server: 127.0.0.1
   port: 443

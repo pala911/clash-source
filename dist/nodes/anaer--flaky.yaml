@@ -1,29 +1,15 @@
-# clash-source 自动生成 —— 源 anaer，被稳定性加权移出的 3 个节点
+# clash-source 自动生成 —— 源 anaer，被稳定性加权移出的 2 个节点
 # 历史可用率偏低，不参与 AUTO 自动竞速；需要时可从「备用」组手工切。
 proxies:
-- name: 美国-005
-  type: vless
-  server: 200.165.231.209
-  port: 443
-  network: ws
-  uuid: ff0b6ba8-bed0-4c4d-bbc9-23af47582615
-  servername: wstg.datasynctrue.online
-  skip-cert-verify: false
-  tls: true
-  udp: true
-  ws-opts:
-    headers:
-      Host: wstg.datasynctrue.online
-    path: /api/connect
-- name: 荷兰-002 |1.8MB/s|TK-NL|GPT⁺-NL
-  type: http
-  server: 51.159.225.196
-  port: 23856
-  skip-cert-verify: true
-  tls: true
-- name: 荷兰-004 |1.8MB/s|TK-NL|GPT⁺-NL|GM-NL
+- name: 荷兰-002 |1.8MB/s|TK-NL|GPT⁺-NL|GM-NL
   type: http
   server: 5.255.118.82
   port: 443
+  skip-cert-verify: true
+  tls: true
+- name: 荷兰-003 |1.8MB/s|TK-NL|GPT⁺-NL
+  type: http
+  server: 51.159.225.196
+  port: 23856
   skip-cert-verify: true
   tls: true
