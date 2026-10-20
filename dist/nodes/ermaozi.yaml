@@ -1,12 +1,43 @@
-# clash-source 自动生成 —— 源 ermaozi，共 356 节点（稳定性加权后留在竞速池内的部分）
+# clash-source 自动生成 —— 源 ermaozi，共 355 节点（稳定性加权后留在竞速池内的部分）
 # 不要手改；改动会在下次定时任务被覆盖（上游 https://pala911.github.io/clash-source/nodes/ermaozi.yaml）
 proxies:
+- name: 🇺🇸_US_美国
+  type: vmess
+  server: guanwang.awsno.com
+  port: 443
+  uuid: 6a89a215-22bf-4bd7-9642-b95b2e09583a
+  alterId: 0
+  cipher: auto
+  tls: true
+  skip-cert-verify: true
+  servername: guanwang.awsno.com
+  network: ws
+  ws-opts:
+    path: /hls/cctv5phd.m3u8
+    headers:
+      Host: guanwang.awsno.com
+  udp: true
 - name: 🇨🇳_CN_中国
   type: vless
   server: us22.sofast.live
   port: 58011
   uuid: 0afc6426-606c-48e7-bd70-3c424a416842
   tls: false
+  skip-cert-verify: true
+  udp: true
+- name: 🇺🇸_US_美国_1
+  type: vless
+  server: cfnode-11ivy8.pages.dev
+  port: 443
+  uuid: 2ea2719c-23e1-4cde-b192-c8652d55d9e5
+  network: ws
+  servername: cfnode-11ivy8.pages.dev
+  tls: true
+  client-fingerprint: chrome
+  ws-opts:
+    path: /ws
+    headers:
+      Host: cfnode-11ivy8.pages.dev
   skip-cert-verify: true
   udp: true
 - name: 🇨🇳_CN_中国_1
@@ -174,15 +205,15 @@ proxies:
   skip-cert-verify: true
   sni: me17.msjia8844.site
   tls: false
-- name: '@FarazV2ray'
+- name: 🇳🇱 - NL - @FreeOnlineVPN
   type: hysteria2
-  server: 162.249.125.133
-  port: 443
+  server: 206.71.158.37
+  port: 35000
   obfs: salamander
-  obfs-password: c1b4086fea89914496c7e10967a419216566
-  password: QCgqi_I4EkV8UR-OgQ_tG4EnVTEVvIyR2GgRBzrIn2s
-  skip-cert-verify: false
-  sni: hy2-new.aspidnet.xyz
+  obfs-password: Yet-Another-Public-Config-1
+  password: Yet-Another-Public-Config-1
+  skip-cert-verify: true
+  sni: YAPC-1.afshin.ir
   tls: false
 - name: 🌍12@oneclickvpnkeys
   type: hysteria2
@@ -1893,6 +1924,37 @@ proxies:
   port: 8886
   password: e26a229d-e8f2-4ff9-8c7d-58a9d83ee437
   skip-cert-verify: true
+- name: '🇺🇸[www.v2nodes.com] trojan-US-... #4'
+  type: trojan
+  server: resources.findlocaljobnetworkandbuildcommunityconnections.com
+  port: 443
+  password: f0eb8c92ce8946aaba856569cff1a16b
+  skip-cert-verify: true
+  sni: resources.findlocaljobnetworkandbuildcommunityconnections.com
+- name: '🇺🇸[www.v2nodes.com] trojan-US-... #3'
+  type: trojan
+  server: blog.findlocaljobnetworkandbuildcommunityconnections.com
+  port: 443
+  password: dba20dcb635e430fa4d3bfc303a149d2
+  skip-cert-verify: true
+  sni: blog.findlocaljobnetworkandbuildcommunityconnections.com
+- name: '🇺🇸[www.v2nodes.com] trojan-US-... #5'
+  type: trojan
+  server: 66.23.203.21
+  port: 59689
+  password: ae7eb4dwyaz25pxwgq59
+- name: '🇺🇸[www.v2nodes.com] trojan-US-... #6'
+  type: trojan
+  server: us3-2.998998.best
+  port: 443
+  network: ws
+  password: 5504eaa8-1395-402f-8e0e-75ecd762e627
+  skip-cert-verify: true
+  sni: nat3.xxai.dpdns.org
+  ws-opts:
+    headers:
+      Host: nat3.xxai.dpdns.org
+    path: '%2Fanyway'
 - name: 'tg频道:@ripaojiedian #1'
   type: ss
   server: 63.180.254.10
@@ -1938,37 +2000,6 @@ proxies:
     headers:
       Host: 6JiziO8PxQAXBAtZ.v.3dns.vip
     path: /ws-vmess
-- name: 🇰🇷 韩国|@ripaojiedian
-  type: vmess
-  server: 8nTzyR5KNivfabaT.v.3dns.vip
-  port: 443
-  alterId: 0
-  cipher: auto
-  network: ws
-  servername: 8nTzyR5KNivfabaT.v.3dns.vip
-  skip-cert-verify: false
-  tls: true
-  uuid: 88888888-8888-8888-8888-888888888888
-  ws-opts:
-    headers:
-      Host: 8nTzyR5KNivfabaT.v.3dns.vip
-    path: /ws-vmess
-- name: 台湾|@ripaojiedian
-  type: trojan
-  server: 7d0a2gz0-7a0c.aws-agent.net
-  port: 12142
-  network: tcp
-  password: AA885B42-133C-3828-FB69-E45105C06092
-  skip-cert-verify: true
-  sni: m.ctrip.com
-- name: 韩国|@ripaojiedian
-  type: trojan
-  server: 63182sh8-4d7b.aws-agent.net
-  port: 11171
-  network: tcp
-  password: AA885B42-133C-3828-FB69-E45105C06092
-  skip-cert-verify: true
-  sni: m.ctrip.com
 - name: 🇬🇧GB_1|2.0MB/s
   type: http
   server: 84.17.50.214
@@ -2050,16 +2081,16 @@ proxies:
   port: 443
   skip-cert-verify: true
   tls: true
-- name: 🇷🇸RS_1|1.9MB/s
+- name: 🇭🇺HU_1|1005KB/s
   type: http
-  server: 146.70.221.34
+  server: 146.70.203.18
   port: 443
   password: None
   skip-cert-verify: true
   tls: true
-- name: 🇭🇺HU_1|1005KB/s
+- name: 🇦🇱AL_1|1009KB/s
   type: http
-  server: 146.70.203.18
+  server: 87.120.103.242
   port: 443
   password: None
   skip-cert-verify: true
@@ -2236,14 +2267,6 @@ proxies:
     headers:
       Host: snip.edgeoneai.cc.cd
     path: /fdip=sstp://vpn:vpn@public-vpn-200.opengw.net:443
-- name: '🇬🇧 英国 | GBR #1'
-  type: trojan
-  server: fj3x.waimaosass.icu
-  port: 56007
-  password: 6e4ceae4-6d81-4d87-9802-759ea5c244e5
-  skip-cert-verify: true
-  sni: iosapps.itunes.apple.com
-  udp: true
 - name: 🇭🇰 香港 | HKG
   type: anytls
   server: 56481.df6h451rh.xin
@@ -2346,14 +2369,6 @@ proxies:
     headers:
       Host: ty986gfazs.cainiaohub.xyz
     path: /81574b6b-c9d7-44a0-b83d-dad56e8cb530
-- name: '🇮🇹 意大利 | ITA #1'
-  type: trojan
-  server: fj3x.waimaosass.icu
-  port: 59028
-  password: 6e4ceae4-6d81-4d87-9802-759ea5c244e5
-  skip-cert-verify: true
-  sni: iosapps.itunes.apple.com
-  udp: true
 - name: '🇯🇵 日本 | JPN #1'
   type: vless
   server: 45.95.212.186
@@ -2412,14 +2427,6 @@ proxies:
     headers:
       Host: snip.edgeoneai.cc.cd
     path: /fdip=sstp://vpn:vpn@public-vpn-200.opengw.net:443
-- name: '🇳🇬 尼日利亚 | NGA #1'
-  type: trojan
-  server: fj3x.waimaosass.icu
-  port: 59014
-  password: 6e4ceae4-6d81-4d87-9802-759ea5c244e5
-  skip-cert-verify: true
-  sni: iosapps.itunes.apple.com
-  udp: true
 - name: '🇳🇱 荷兰 | NLD #2'
   type: vless
   server: liang92.dpdns.org
@@ -2434,14 +2441,6 @@ proxies:
     headers:
       Host: liang92.dpdns.org
     path: /
-- name: '🇳🇴 挪威 | NOR #1'
-  type: trojan
-  server: fj3x.waimaosass.icu
-  port: 50124
-  password: 6e4ceae4-6d81-4d87-9802-759ea5c244e5
-  skip-cert-verify: true
-  sni: iosapps.itunes.apple.com
-  udp: true
 - name: '🇵🇪 PE_215 #1'
   type: trojan
   server: fj3x.waimaosass.icu
@@ -3141,20 +3140,6 @@ proxies:
     headers:
       Host: redrocketnode-bidarbash.sbs
   udp: true
-- name: 🇬🇧 英国 | GBR
-  type: vless
-  server: 185.139.7.254
-  port: 8080
-  uuid: 2e2409a6-ed8d-4d6c-9765-73d0245f11f0
-  tls: true
-  flow: xtls-rprx-vision
-  reality-opts:
-    public-key: JMK1eCWs3Lzw5O0OjisTlZo4WaSCpIvaG5AB2YYgjnE
-    short-id: a5252fb47a0e9c6f
-  servername: www.parliament.uk
-  client-fingerprint: chrome
-  network: tcp
-  udp: true
 - name: ProxyPool | 🇭🇰 香港 | HKG
   type: anytls
   server: 654968169.df6h451rh.xin
@@ -3566,6 +3551,17 @@ proxies:
     headers:
       Host: ty986gfazs.cainiaohub.xyz
   udp: true
+- name: ProxyPool | 🇺🇸 美国 | USA
+  type: anytls
+  server: jp.zcvip1.com
+  port: 22010
+  password: 74d67342-2e3d-4eba-ab0a-01c5bcec4392
+  udp: true
+  sni: www.lamer.com
+  skip-cert-verify: true
+  alpn:
+  - h2
+  - http/1.1
 - name: 🇺🇸 美国 | USA 2
   type: vless
   server: 9bc578g.us4.h1clayd.click
