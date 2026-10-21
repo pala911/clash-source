@@ -1,7 +1,37 @@
-# clash-source 自动生成 —— 源 anaer，共 29 节点（稳定性加权后留在竞速池内的部分）
+# clash-source 自动生成 —— 源 anaer，共 32 节点（稳定性加权后留在竞速池内的部分）
 # 不要手改；改动会在下次定时任务被覆盖（上游 https://pala911.github.io/clash-source/nodes/anaer.yaml）
 proxies:
-- name: 德国-001
+- name: 其他-001
+  type: vless
+  server: 172.64.150.43
+  port: 443
+  network: ws
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  servername: snip.edgeoneai.cc.cd
+  tls: true
+  udp: true
+  xudp: true
+  ws-opts:
+    headers:
+      Host: snip.edgeoneai.cc.cd
+      User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36
+    path: /
+  encryption: none
+- name: 其他-002
+  type: vmess
+  server: guanwang.awsno.com
+  port: 443
+  network: ws
+  uuid: 6a89a215-22bf-4bd7-9642-b95b2e09583a
+  skip-cert-verify: true
+  tls: true
+  alterId: 0
+  cipher: auto
+  ws-opts:
+    headers:
+      Host: guanwang.awsno.com
+    path: /hls/cctv5phd.m3u8
+- name: 德国-003
   type: trojan
   server: 185.220.100.168
   port: 443
@@ -13,6 +43,16 @@ proxies:
     headers:
       Host: www.calmlunch.com
     path: /assignment
+- name: 日本-001
+  type: trojan
+  server: 45.32.52.173
+  port: 8886
+  network: tcp
+  password: e26a229d-e8f2-4ff9-8c7d-58a9d83ee437
+  skip-cert-verify: true
+  udp: true
+  sni: 45.32.52.173
+  client-fingerprint: chrome
 - name: 澳大利亚-001 |3.0MB/s|TK-AU|YT-AU|GPT⁺-AU
   type: http
   server: 159.13.44.228

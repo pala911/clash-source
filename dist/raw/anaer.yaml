@@ -1,6 +1,23 @@
 # 未过滤原始快照（对比用，勿订阅）—— 源 anaer
 proxies:
 - name: 其他-001
+  type: vless
+  network: ws
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  server: 172.64.150.43
+  servername: snip.edgeoneai.cc.cd
+  port: 443
+  tls: true
+  udp: true
+  xudp: true
+  ws-opts:
+    headers:
+      Host: snip.edgeoneai.cc.cd
+      User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36
+    path: /
+  client-fingerprint: unsafe
+  encryption: none
+- name: 其他-002
   type: vmess
   network: ws
   uuid: 6a89a215-22bf-4bd7-9642-b95b2e09583a
@@ -14,31 +31,7 @@ proxies:
     headers:
       Host: guanwang.awsno.com
     path: /hls/cctv5phd.m3u8
-- name: 其他-002
-  type: trojan
-  network: ws
-  server: 104.19.229.21
-  port: 443
-  password: humanity
-  skip-cert-verify: false
-  sni: www.calmlunch.com
-  ws-opts:
-    headers:
-      Host: www.calmlunch.com
-    path: /assignment
-- name: 德国-001
-  type: trojan
-  network: ws
-  server: 185.220.100.168
-  port: 443
-  password: humanity
-  skip-cert-verify: false
-  sni: www.calmlunch.com
-  ws-opts:
-    headers:
-      Host: www.calmlunch.com
-    path: /assignment
-- name: 德国-002 |1.6MB/s
+- name: 德国-001 |1.6MB/s
   type: hysteria
   server: 5.83.129.90
   port: 54177
@@ -52,7 +45,7 @@ proxies:
   down: 1000
   protocol: udp
   up: 500
-- name: 德国-003 |594KB/s
+- name: 德国-002 |594KB/s
   type: hysteria
   server: 5.83.129.153
   port: 20088
@@ -66,6 +59,28 @@ proxies:
   up: 500
   down: 1000
   auth_str: dongtaiwang.com
+- name: 德国-003
+  type: trojan
+  network: ws
+  server: 185.220.100.168
+  port: 443
+  password: humanity
+  skip-cert-verify: false
+  sni: www.calmlunch.com
+  ws-opts:
+    headers:
+      Host: www.calmlunch.com
+    path: /assignment
+- name: 日本-001
+  type: trojan
+  network: tcp
+  server: 45.32.52.173
+  port: 8886
+  password: e26a229d-e8f2-4ff9-8c7d-58a9d83ee437
+  skip-cert-verify: true
+  udp: true
+  sni: 45.32.52.173
+  client-fingerprint: chrome
 - name: 澳大利亚-001 |3.0MB/s|TK-AU|YT-AU|GPT⁺-AU
   type: http
   server: 159.13.44.228
@@ -277,14 +292,14 @@ proxies:
   password: dummy
   udp: true
   skip-cert-verify: true
-- name: '说明-清洗结果: 清理 0 个节点、修复 0 处引用、转译 124 个字符'
+- name: '说明-清洗结果: 清理 0 个节点、修复 0 处引用、转译 126 个字符'
   type: trojan
   server: 127.0.0.1
   port: 443
   password: dummy
   udp: true
   skip-cert-verify: true
-- name: '说明-更新时间: 2026-10-21 17:00 (CST)'
+- name: '说明-更新时间: 2026-10-22 00:22 (CST)'
   type: trojan
   server: 127.0.0.1
   port: 443
