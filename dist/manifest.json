@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-20T21:57:23Z",
+  "generated_at": "2026-10-21T00:34:37Z",
   "owner": "pala911",
   "repo": "clash-source",
   "pages_base": "https://pala911.github.io/clash-source",
@@ -22,11 +22,10 @@
       "SRCFL-autojiedian",
       "SRCFL-automerge",
       "SRCFL-ermaozi",
+      "SRCFL-nomorewalls",
       "SRCFL-ruk1ng001",
-      "SRCFL-shaoyouvip",
       "SRCFL-ssrsub",
-      "SRCFL-yypool",
-      "SRCFL-zhuhaiuk"
+      "SRCFL-yypool"
     ],
     "degraded": "",
     "detail": {
@@ -83,12 +82,12 @@
   "sources": [
     {
       "name": "yypool",
-      "raw": 1331,
+      "raw": 1354,
       "kept": 900,
-      "bytes": 603405,
+      "bytes": 610424,
       "mirror": false,
-      "ai_dropped": 60,
-      "ai_dropped_clusters": 20,
+      "ai_dropped": 89,
+      "ai_dropped_clusters": 27,
       "error": null
     },
     {
@@ -113,29 +112,29 @@
     },
     {
       "name": "automerge",
-      "raw": 425,
-      "kept": 172,
-      "bytes": 512621,
+      "raw": 442,
+      "kept": 173,
+      "bytes": 518508,
       "mirror": false,
-      "ai_dropped": 10,
-      "ai_dropped_clusters": 1,
+      "ai_dropped": 11,
+      "ai_dropped_clusters": 2,
       "error": null
     },
     {
       "name": "ermaozi",
       "raw": 429,
-      "kept": 365,
+      "kept": 361,
       "bytes": 222930,
       "mirror": false,
-      "ai_dropped": 32,
-      "ai_dropped_clusters": 12,
+      "ai_dropped": 36,
+      "ai_dropped_clusters": 23,
       "error": null
     },
     {
       "name": "zhuhaiuk",
-      "raw": 27,
+      "raw": 30,
       "kept": 27,
-      "bytes": 5704,
+      "bytes": 6118,
       "mirror": false,
       "ai_dropped": 0,
       "ai_dropped_clusters": 0,
@@ -154,48 +153,48 @@
     {
       "name": "ruk1ng001",
       "raw": 500,
-      "kept": 467,
+      "kept": 400,
       "bytes": 265458,
       "mirror": false,
-      "ai_dropped": 15,
-      "ai_dropped_clusters": 15,
+      "ai_dropped": 82,
+      "ai_dropped_clusters": 20,
       "error": null
     },
     {
       "name": "snakem982",
       "raw": 64,
-      "kept": 64,
-      "bytes": 500040,
+      "kept": 52,
+      "bytes": 501294,
+      "mirror": false,
+      "ai_dropped": 12,
+      "ai_dropped_clusters": 2,
+      "error": null
+    },
+    {
+      "name": "nomorewalls",
+      "raw": 442,
+      "kept": 171,
+      "bytes": 518508,
+      "mirror": false,
+      "ai_dropped": 13,
+      "ai_dropped_clusters": 4,
+      "error": null
+    },
+    {
+      "name": "autojiedian",
+      "raw": 996,
+      "kept": 957,
+      "bytes": 360904,
       "mirror": false,
       "ai_dropped": 0,
       "ai_dropped_clusters": 0,
       "error": null
     },
     {
-      "name": "nomorewalls",
-      "raw": 352,
-      "kept": 99,
-      "bytes": 500229,
-      "mirror": false,
-      "ai_dropped": 10,
-      "ai_dropped_clusters": 1,
-      "error": null
-    },
-    {
-      "name": "autojiedian",
-      "raw": 973,
-      "kept": 930,
-      "bytes": 352036,
-      "mirror": false,
-      "ai_dropped": 6,
-      "ai_dropped_clusters": 3,
-      "error": null
-    },
-    {
       "name": "shaoyouvip",
       "raw": 100,
       "kept": 98,
-      "bytes": 21214,
+      "bytes": 19710,
       "mirror": false,
       "ai_dropped": 0,
       "ai_dropped_clusters": 0,
@@ -203,31 +202,31 @@
     }
   ],
   "totals": {
-    "kept": 3371,
-    "merged": 3371,
-    "ai_reviewed": 2820
+    "kept": 3388,
+    "merged": 3388,
+    "ai_reviewed": 2946
   },
   "ai_scope": "mixed",
   "ai_usage": {
-    "prompt": 101099,
-    "completion": 175766,
-    "calls": 74,
-    "timeouts": 17,
+    "prompt": 113392,
+    "completion": 231026,
+    "calls": 85,
+    "timeouts": 22,
     "by_backend": {
       "siliconflow_xing": {
-        "calls": 61,
-        "prompt": 91452,
-        "completion": 160418
+        "calls": 65,
+        "prompt": 99024,
+        "completion": 211938
       },
       "siliconflow_qwen3": {
-        "calls": 13,
-        "prompt": 9647,
-        "completion": 15348
+        "calls": 20,
+        "prompt": 14368,
+        "completion": 19088
       }
     }
   },
   "warnings": [
-    "zhuhaiuk AI 部分批次不可用（相关批次保留全部节点）：全部批次失败",
-    "yypool 产出 1016 超过 max_nodes=900，已截断"
+    "autojiedian AI 剔除超阈值，已整体回滚",
+    "yypool 产出 1007 超过 max_nodes=900，已截断"
   ]
 }
