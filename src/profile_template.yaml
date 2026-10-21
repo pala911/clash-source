@@ -39,6 +39,14 @@ dns:
   - +.xboxlive.com
   - xbox.*.*.microsoft.com
   - +.stun.playstation.net
+# 家庭 LAN 里的 ShellCrash HTTP 代理，仅在家庭网络可用。
+# 它只作为 PROXY 组里的手动切换项，不参与 AUTO/FAILOVER 的健康检查。
+proxies:
+- name: 家里路由
+  type: http
+  server: 192.168.31.1
+  port: 7890
+  udp: false
 proxy-groups:
 - name: SRC-anaer
   type: url-test

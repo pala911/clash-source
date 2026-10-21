@@ -108,8 +108,22 @@ if len(auto) > build.AUTO_MAX:
     print("  ✗ AUTO 有 %d 项，超过上限 %d" % (len(auto), build.AUTO_MAX))
     ok = False
 gp = {g["name"] for g in p["proxy-groups"]}
+static = {x.get("name") for x in (p.get("proxies") or [])
+          if isinstance(x, dict) and x.get("name")}
+all_members = gp | static
 print("  %s 每组引用的成员都存在" % ("✓" if all(
-    x in gp for g in p["proxy-groups"] for x in (g.get("proxies") or [])) else "✗"))
+    x in all_members for g in p["proxy-groups"]
+    for x in (g.get("proxies") or [])) else "✗"))
+proxy_grp = next((g for g in p["proxy-groups"] if g["name"] == "PROXY"), {})
+home_ok = ("家里路由" in static and
+           "家里路由" in (proxy_grp.get("proxies") or []))
+print("  %s PROXY 组含静态代理「家里路由」" % ("✓" if home_ok else "✗"))
+ai_ok = all(
+    "PROXY" in (next(g for g in p["proxy-groups"] if g["name"] == svc)
+                .get("proxies") or [])
+    for svc in ("Claude", "Gemini"))
+print("  %s Claude/Gemini 默认跟随 PROXY" % ("✓" if ai_ok else "✗"))
+ok = ok and home_ok and ai_ok
 
 # ---------- B 达标源不足 ----------
 print("")

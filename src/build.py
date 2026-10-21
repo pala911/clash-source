@@ -18,6 +18,7 @@ import os
 import yaml
 
 YOUTUBE = "https://www.youtube.com/generate_204"
+HOME_PROXY_NAME = "家里路由"
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 TEMPLATE = os.path.join(HERE, "profile_template.yaml")
@@ -353,6 +354,23 @@ def build_profile(enabled_sources, exclude_map, owner, repo, flaky_sources=()):
     tpl["proxy-groups"] = groups
     tpl["proxy-providers"] = providers
 
+    # 家里路由是模板里的静态 HTTP 代理：挂到 PROXY 组供手动切换；
+    # Claude/Gemini 默认跟随 PROXY，这样手机切一处就能全走家里路由。
+    static_proxies = {p.get("name") for p in (tpl.get("proxies") or [])
+                      if isinstance(p, dict) and p.get("name")}
+    assert HOME_PROXY_NAME in static_proxies, \
+        "模板缺少静态代理 %s" % HOME_PROXY_NAME
+    for g in tpl["proxy-groups"]:
+        if g["name"] == "PROXY":
+            members = g.setdefault("proxies", [])
+            if HOME_PROXY_NAME not in members:
+                pos = 1 if members[:1] == ["FAILOVER"] else 0
+                members.insert(pos, HOME_PROXY_NAME)
+        elif g["name"] in ("Claude", "Gemini"):
+            members = g.setdefault("proxies", [])
+            if "PROXY" not in members:
+                members.insert(0, "PROXY")
+
     # ---- 校验链（失败即中止，不产出坏 profile）----
     used = {n for g in tpl["proxy-groups"] for n in (g.get("use") or [])}
     missing = used - set(providers)
@@ -381,16 +399,17 @@ def build_profile(enabled_sources, exclude_map, owner, repo, flaky_sources=()):
         assert ".github.io/" in p["url"], "%s provider URL 未走 github.io" % n
     raw = yaml.safe_dump(tpl, allow_unicode=True, sort_keys=False, width=4096)
     assert "gstatic" not in raw, "残留 gstatic"
-    # PROXY 必须引用存在的组，否则手机上一进去就报错
+    # PROXY 必须引用存在的组或本 profile 的静态代理，否则手机上一进去就报错
     gp = {g["name"] for g in tpl["proxy-groups"]}
     for g in tpl["proxy-groups"]:
         for p in (g.get("proxies") or []):
-            # ⚠ 必须断言「p 是一个已定义的**组名**」。
+            # ⚠ 必须断言「p 是已定义的组名，或本 profile 的静态代理」。
             #   之前写成 `p in gp or p in providers` 是错的：provider 名也满足它，
             #   于是「备用: SRCFL-xxx」这种内核根本不接受的形式被放过去了。
-            assert p in gp, ("组 %s 引用了 %s，它不是一个已定义的组。"
-                             "注意 proxies: 里只能放组名，provider 要用 use:"
-                             % (g["name"], p))
+            #   家里路由是模板 proxies: 里的静态代理，必须单独放行。
+            assert p in gp or p in static_proxies, (
+                "组 %s 引用了 %s，它既不是已定义的组，也不是本 profile 的静态代理。"
+                "注意 provider 要用 use:" % (g["name"], p))
     # **规则的目标也必须存在** —— 这是漏掉 Claude/Gemini 那次真正该有的断言。
     # 组内部自洽（proxy 指向存在的组）并不够：rules 可以指向任何名字，
     # 指向一个不存在的组时内核直接拒绝加载配置，而订阅脚本一进去就报错。
@@ -400,7 +419,7 @@ def build_profile(enabled_sources, exclude_map, owner, repo, flaky_sources=()):
         if len(parts) < 2:
             continue
         tgt = parts[-2] if parts[-1] == "no-resolve" else parts[-1]
-        if tgt in BUILTIN or tgt in gp or tgt in providers:
+        if tgt in BUILTIN or tgt in gp or tgt in providers or tgt in static_proxies:
             continue
         # 内核自带的规则类型（MATCH/DOMAIN-SUFFIX/...）第一段不是代理名
         if parts[0] in ("MATCH", "FINAL"):
