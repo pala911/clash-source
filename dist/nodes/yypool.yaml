@@ -1,4 +1,4 @@
-# clash-source 自动生成 —— 源 yypool，共 847 节点（稳定性加权后留在竞速池内的部分）
+# clash-source 自动生成 —— 源 yypool，共 869 节点（稳定性加权后留在竞速池内的部分）
 # 不要手改；改动会在下次定时任务被覆盖（上游 https://pala911.github.io/clash-source/nodes/yypool.yaml）
 proxies:
 - name: '[freeSub#002] D🔴🇭🇰hos[🎬📺🎭🎞️]_dokng.com_8acecb07'
@@ -1077,6 +1077,13 @@ proxies:
   skip-cert-verify: false
   tls: true
   username: null
+- name: '[freeSub#135] A🟢🇪🇸res[🎬🤖📺🎭]_dokng.com_82037340'
+  type: ss
+  server: 202.50.253.45
+  port: 19999
+  cipher: aes-256-gcm
+  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
+  udp: true
 - name: '[freeSub#136] D🔴🇵🇱hos[🤖📺🎭🎪]_dokng.com_18493df9'
   type: http
   server: 151.115.54.133
@@ -1464,6 +1471,10 @@ proxies:
   port: 8443
   skip-cert-verify: true
   tls: true
+- name: '[freeSub#184] A🟢🇷🇺res_dokng.com_68bec4a3'
+  type: socks5
+  server: 77.37.203.137
+  port: 1080
 - name: '[freeSub#185] D🔴🇷🇴hos[🤖📺🎭🎪]_dokng.com_87a5078c'
   type: http
   server: 193.176.84.16
@@ -3682,6 +3693,10 @@ proxies:
   skip-cert-verify: true
   tls: true
   username: null
+- name: '[freeSub#447] A🟢🇩🇴res_dokng.com_999a6fc6'
+  type: http
+  server: 190.167.38.11
+  port: 999
 - name: '[freeSub#448] D🔴🇯🇵hos[🎬📺🎭🎪]_dokng.com_63c09194'
   type: vless
   server: 43.174.195.1
@@ -3815,7 +3830,7 @@ proxies:
   network: tcp
   tls: false
   uuid: 88888888-8888-8888-8888-888888888888
-- name: '[NoMoreWalls#049] 🇱🇻hysteria'
+- name: '[NoMoreWalls#048] 🇱🇻hysteria'
   type: hysteria2
   server: pro2.riziro.ir
   port: 44100
@@ -3827,38 +3842,367 @@ proxies:
   password: rjj39jg8iphgd06h
   sni: pro2.riziro.ir
   tls: false
-- name: '[NoMoreWalls#174] 🇮🇹 意大利 | ITA #1'
+- name: '[NoMoreWalls#103] 🇭🇰 香港 | HKG #1'
+  type: vless
+  server: 103.180.20.176
+  port: 8443
+  network: ws
+  servername: tse1.mm.bing.net
+  tls: true
+  uuid: c1c04450-bf71-4049-ad0c-9cf6d94d9f1f
+  ws-opts:
+    headers:
+      Host: tse1.mm.bing.net
+    path: /81574b6b-c9d7-44a0-b83d-dad56e8cb530
+- name: '[NoMoreWalls#142] 🇺🇸 美国 | USA #20'
+  type: vless
+  server: 146.75.59.186
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: firefox.com
+  tls: true
+  udp: true
+  uuid: 7dee06cc-4bc8-43ca-a6c2-59f81107f2e3
+  ws-opts:
+    headers:
+      Host: copy_az_channel_NUFiLTER_6i.global.ssl.fastly.net.
+    path: /
+- name: '[NoMoreWalls#164] 🇮🇹IT_1|1.4MB/s'
+  type: ss
+  server: 202.50.253.54
+  port: 19999
+  cipher: aes-256-gcm
+  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
+  udp: true
+- name: '[NoMoreWalls#169] 🇮🇹 意大利 | ITA #1'
   type: ss
   server: 202.50.253.90
   port: 19999
   cipher: aes-256-gcm
   password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
   udp: true
-- name: '[NoMoreWalls#263] 🇺🇸US_1|4.1MB/s'
+- name: '[NoMoreWalls#257] 🇭🇰HK_1|3.8MB/s'
+  type: vmess
+  server: 47.242.81.94
+  port: 52080
+  alpn:
+  - ''
+  alterId: '0'
+  cipher: auto
+  network: http
+  skip-cert-verify: false
+  tls: false
+  udp: true
+  uuid: e47b9f77-60e4-4738-8d53-772b6002e146
+  xudp: true
+- name: '[NoMoreWalls#258] 🇺🇸US_1|1.6MB/s'
   type: vless
-  server: ct.877774.xyz
+  server: www.speedtest.net
   port: 443
-  client-fingerprint: random
+  alpn:
+  - http/1.1
+  client-fingerprint: chrome
   encryption: none
   network: ws
-  servername: us-lax.862400.xyz
+  servername: snip.edgeoneai.cc.cd
   tls: true
   udp: true
-  uuid: e0ccda9e-08ba-4da3-8844-73d586c7fff7
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
   ws-opts:
     headers:
-      Host: us-lax.862400.xyz
-      User-Agent: Mozilla/5.0 (Linux; Android 7.1.2; Redmi 4X Build/N2G47H) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.111 Mobile Safari/537.36
-    path: /announcement?ed=2048
+      Host: snip.edgeoneai.cc.cd
+      User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36
+    path: /?TELEGRAM--MARAMBASHI--MARAMBASHI--MARAMBASHI--MARAMBASHI?ed=2560
   xudp: true
-- name: '[NoMoreWalls#264] 🇱🇺LU_1|1.8MB/s'
+- name: '[NoMoreWalls#259] 🇪🇸ES_3|1.6MB/s'
   type: http
-  server: 185.221.132.242
+  server: 130.195.250.34
   port: 443
   password: None
   skip-cert-verify: true
   tls: true
-- name: '[NoMoreWalls#265] 🇧🇬 保加利亚 | BGR #1'
+- name: '[NoMoreWalls#260] 🇫🇷FR_1|1.4MB/s'
+  type: http
+  server: 213.139.9.142
+  port: 9443
+  password: None
+  skip-cert-verify: true
+  tls: true
+- name: '[NoMoreWalls#261] 🇧🇪BE_1|2.3MB/s'
+  type: http
+  server: 146.70.123.98
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+- name: '[NoMoreWalls#262] 🇸🇪SE_1|2.4MB/s'
+  type: http
+  server: 146.70.242.130
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+- name: '[NoMoreWalls#263] 🇺🇸US_2|2.9MB/s'
+  type: http
+  server: 193.239.236.134
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+- name: '[NoMoreWalls#264] NL_speednode_0016'
+  type: http
+  server: 84.17.47.148
+  port: 9002
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: '[NoMoreWalls#265] US_speednode_0024'
+  type: http
+  server: 44.248.167.117
+  port: 8443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: '[NoMoreWalls#266] RO_speednode_0019'
+  type: http
+  server: 193.176.84.19
+  port: 9002
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: '[NoMoreWalls#267] 🇦🇹AT_1|1.5MB/s'
+  type: vless
+  server: 130.78.185.4
+  port: 443
+  client-fingerprint: chrome
+  encryption: none
+  network: ws
+  servername: snip.edgeoneai.cc.cd
+  tls: true
+  udp: true
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  ws-opts:
+    headers:
+      Host: snip.edgeoneai.cc.cd
+      User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1700.107 Safari/537.36
+    path: /fp=chrome
+  xudp: true
+- name: '[NoMoreWalls#268] 🇫🇷FR_2|3.5MB/s'
+  type: http
+  server: 87.98.174.157
+  port: 6103
+  password: None
+  skip-cert-verify: true
+  tls: true
+- name: '[NoMoreWalls#269] 🇯🇵JP_1|1.9MB/s'
+  type: http
+  server: 133.18.200.207
+  port: 343
+  password: None
+  skip-cert-verify: true
+  tls: true
+- name: '[NoMoreWalls#270] 🇺🇸US_9|3.7MB/s'
+  type: http
+  server: 44.229.69.166
+  port: 8443
+  password: None
+  skip-cert-verify: true
+  tls: true
+- name: '[NoMoreWalls#271] 🇺🇸US_12|2.8MB/s'
+  type: http
+  server: 138.199.35.197
+  port: 9002
+  password: None
+  skip-cert-verify: true
+  tls: true
+- name: '[NoMoreWalls#272] 🇮🇹IT_2|2.6MB/s'
+  type: http
+  server: 185.183.105.130
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+- name: '[NoMoreWalls#273] 🇩🇪DE_5|2.4MB/s'
+  type: http
+  server: 87.106.223.158
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+- name: '[NoMoreWalls#274] 🇬🇧GB_2|2.7MB/s'
+  type: http
+  server: 212.102.63.61
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+- name: '[NoMoreWalls#275] 🇫🇷FR_3|1.1MB/s'
+  type: http
+  server: 82.96.128.175
+  port: 8090
+  password: None
+  skip-cert-verify: true
+  tls: true
+- name: '[NoMoreWalls#277] 🇱🇺LU_1|2.0MB/s'
+  type: http
+  server: 185.221.132.226
+  port: 9443
+  password: None
+  skip-cert-verify: true
+  tls: true
+- name: '[NoMoreWalls#278] 🇦🇱AL_1|2.9MB/s'
+  type: http
+  server: 31.171.155.210
+  port: 9443
+  password: None
+  skip-cert-verify: true
+  tls: true
+- name: '[NoMoreWalls#279] 🇺🇸US_16|3.0MB/s'
+  type: http
+  server: 172.64.68.89
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+- name: '[NoMoreWalls#280] 🇺🇸US_17|1.8MB/s'
+  type: vless
+  server: 104.16.137.145
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: snip.edgeoneai.cc.cd
+  tls: true
+  udp: true
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  ws-opts:
+    headers:
+      Host: snip.edgeoneai.cc.cd
+      User-Agent: Mozilla/5.0 (Linux; Android 5.1; A37f Build/LMY47V) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.93 Mobile Safari/537.36
+    path: /
+  xudp: true
+- name: '[NoMoreWalls#281] 🇺🇸US_18|2.2MB/s'
+  type: vless
+  server: 104.16.65.1
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: snip.edgeoneai.cc.cd
+  tls: true
+  udp: true
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  ws-opts:
+    headers:
+      Host: snip.edgeoneai.cc.cd
+      User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.87 Safari/537.36
+    path: /
+  xudp: true
+- name: '[NoMoreWalls#283] 🇦🇷AR_1|1.2MB/s'
+  type: http
+  server: 23.175.41.231
+  port: 8080
+  skip-cert-verify: true
+- name: '[NoMoreWalls#285] 🇺🇸US_20|3.2MB/s'
+  type: vless
+  server: 104.17.149.181
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: snip.edgeoneai.cc.cd
+  tls: true
+  udp: true
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  ws-opts:
+    headers:
+      Host: snip.edgeoneai.cc.cd
+      User-Agent: Mozilla/5.0 (Linux; Android 6.0.1; SM-G532M Build/MMB29T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.91 Mobile Safari/537.36
+    path: /
+  xudp: true
+- name: '[NoMoreWalls#287] 🇺🇸US_21|2.2MB/s'
+  type: vless
+  server: 104.16.66.12
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: snip.edgeoneai.cc.cd
+  tls: true
+  udp: true
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  ws-opts:
+    headers:
+      Host: snip.edgeoneai.cc.cd
+      User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36
+    path: /
+  xudp: true
+- name: '[NoMoreWalls#288] 🇩🇪DE_7|3.2MB/s'
+  type: vless
+  server: 64.188.71.236
+  port: 2083
+  client-fingerprint: chrome
+  network: ws
+  servername: snip.edgeoneai.cc.cd
+  tls: true
+  udp: true
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  ws-opts:
+    headers:
+      Host: snip.edgeoneai.cc.cd
+      User-Agent: Mozilla/5.0 (Linux; Android 4.4.2; de-de; SAMSUNG GT-I9195 Build/KOT49H) AppleWebKit/537.36 (KHTML, like Gecko) Version/1.5 Chrome/28.0.1500.94 Mobile Safari/537.36
+    path: /
+  xudp: true
+- name: '[NoMoreWalls#289] 🇨🇦CA_3|2.1MB/s'
+  type: vless
+  server: 40.233.99.248
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: snip.edgeoneai.cc.cd
+  tls: true
+  udp: true
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  ws-opts:
+    headers:
+      Host: snip.edgeoneai.cc.cd
+      User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.186 Safari/537.36
+    path: /
+  xudp: true
+- name: '[NoMoreWalls#292] 🇮🇩ID_1|2.1MB/s'
+  type: http
+  server: 103.124.138.70
+  port: 8090
+  skip-cert-verify: true
+- name: '[NoMoreWalls#294] 🇺🇸US_23|3.4MB/s'
+  type: http
+  server: 138.199.35.202
+  port: 9002
+  password: None
+  skip-cert-verify: true
+  tls: true
+  username: 'null'
+- name: '[NoMoreWalls#295] 🇷🇺RU_2|2.8MB/s'
+  type: vmess
+  server: 158.160.180.165
+  port: 24212
+  alpn:
+  - h2
+  - http/1.1
+  alterId: '0'
+  cipher: auto
+  network: tcp
+  skip-cert-verify: false
+  tls: true
+  udp: true
+  uuid: c58c1205-b308-416f-8503-c04557abf93d
+  xudp: true
+- name: '[NoMoreWalls#296] 🇷🇴RO_6|2.8MB/s'
+  type: http
+  server: 193.176.84.36
+  port: 9002
+  skip-cert-verify: true
+  sni: www.bing.com
+  tls: true
+- name: '[NoMoreWalls#297] 🇧🇬 保加利亚 | BGR #1'
   type: vless
   server: 104.152.48.248
   port: 443
@@ -3872,7 +4216,7 @@ proxies:
     headers:
       Host: snip.edgeoneai.cc.cd
     path: /
-- name: '[NoMoreWalls#266] 🇩🇪 德国 | DEU #1'
+- name: '[NoMoreWalls#298] 🇩🇪 德国 | DEU #1'
   type: vless
   server: 179.255.190.21
   port: 443
@@ -3886,7 +4230,7 @@ proxies:
     headers:
       Host: snip.edgeoneai.cc.cd
     path: /
-- name: '[NoMoreWalls#267] 🇩🇪 德国 | DEU #2'
+- name: '[NoMoreWalls#299] 🇩🇪 德国 | DEU #2'
   type: vless
   server: 2.28.42.209
   port: 8443
@@ -3900,7 +4244,7 @@ proxies:
     headers:
       Host: snip.edgeoneai.cc.cd
     path: /fdip=sstp://vpn:vpn@public-vpn-200.opengw.net:443
-- name: '[NoMoreWalls#268] 🇪🇸 西班牙 | ESP #2'
+- name: '[NoMoreWalls#300] 🇪🇸 西班牙 | ESP #2'
   type: vless
   server: 89.60.119.154
   port: 443
@@ -3908,7 +4252,7 @@ proxies:
   tls: false
   udp: true
   uuid: 7060231d-b9ba-495f-a218-bf427940cf3e
-- name: '[NoMoreWalls#269] 🇫🇷 法国 | FRA #1'
+- name: '[NoMoreWalls#301] 🇫🇷 法国 | FRA #1'
   type: vless
   server: 15.224.60.172
   port: 22222
@@ -3918,7 +4262,7 @@ proxies:
   uuid: e4514801-0d5a-42ba-869f-39bd605aef9e
   ws-opts:
     path: /
-- name: '[NoMoreWalls#270] 🇬🇪 GE_51 #1'
+- name: '[NoMoreWalls#302] 🇬🇪 GE_51 #1'
   type: vless
   server: 194.135.119.82
   port: 2053
@@ -3932,19 +4276,7 @@ proxies:
     headers:
       Host: snip.edgeoneai.cc.cd
     path: /
-- name: '[NoMoreWalls#271] 🇭🇰 香港 | HKG #1'
-  type: vless
-  server: 103.180.20.176
-  port: 8443
-  network: ws
-  servername: tse1.mm.bing.net
-  tls: true
-  uuid: c1c04450-bf71-4049-ad0c-9cf6d94d9f1f
-  ws-opts:
-    headers:
-      Host: tse1.mm.bing.net
-    path: /81574b6b-c9d7-44a0-b83d-dad56e8cb530
-- name: '[NoMoreWalls#272] 🇭🇰 香港 | HKG #2'
+- name: '[NoMoreWalls#303] 🇭🇰 香港 | HKG #2'
   type: vless
   server: 163.53.18.35
   port: 443
@@ -3958,7 +4290,7 @@ proxies:
     headers:
       Host: snip.edgeoneai.cc.cd
     path: /
-- name: '[NoMoreWalls#273] 🇯🇵 日本 | JPN #1'
+- name: '[NoMoreWalls#304] 🇯🇵 日本 | JPN #1'
   type: vless
   server: 13.158.39.80
   port: 443
@@ -3972,7 +4304,7 @@ proxies:
     headers:
       Host: snip.edgeoneai.cc.cd
     path: /
-- name: '[NoMoreWalls#274] 🇯🇵 日本 | JPN #2'
+- name: '[NoMoreWalls#305] 🇯🇵 日本 | JPN #2'
   type: vless
   server: 103.85.25.226
   port: 8443
@@ -3986,7 +4318,7 @@ proxies:
     headers:
       Host: snip.edgeoneai.cc.cd
     path: /
-- name: '[NoMoreWalls#275] 🇯🇵 日本 | JPN #3'
+- name: '[NoMoreWalls#306] 🇯🇵 日本 | JPN #3'
   type: vless
   server: 18.183.192.46
   port: 443
@@ -3994,7 +4326,7 @@ proxies:
   tls: false
   udp: true
   uuid: 7060231d-b9ba-495f-a218-bf427940cf3e
-- name: '[NoMoreWalls#276] 🇰🇷 韩国 | KOR #1'
+- name: '[NoMoreWalls#307] 🇰🇷 韩国 | KOR #1'
   type: vless
   server: 13.209.84.147
   port: 443
@@ -4002,7 +4334,7 @@ proxies:
   tls: false
   udp: true
   uuid: 7060231d-b9ba-495f-a218-bf427940cf3e
-- name: '[NoMoreWalls#277] 🇰🇷 韩国 | KOR #2'
+- name: '[NoMoreWalls#308] 🇰🇷 韩国 | KOR #2'
   type: vless
   server: 3.38.190.222
   port: 443
@@ -4016,7 +4348,7 @@ proxies:
     headers:
       Host: snip.edgeoneai.cc.cd
     path: /
-- name: '[NoMoreWalls#278] 🇳🇱 荷兰 | NLD #1'
+- name: '[NoMoreWalls#309] 🇳🇱 荷兰 | NLD #1'
   type: vless
   server: 104.26.5.134
   port: 443
@@ -4030,7 +4362,7 @@ proxies:
     headers:
       Host: snip.edgeoneai.cc.cd
     path: /
-- name: '[NoMoreWalls#279] 🇳🇱 荷兰 | NLD #2'
+- name: '[NoMoreWalls#310] 🇳🇱 荷兰 | NLD #2'
   type: vless
   server: 172.67.74.177
   port: 443
@@ -4044,7 +4376,7 @@ proxies:
     headers:
       Host: snip.edgeoneai.cc.cd
     path: /
-- name: '[NoMoreWalls#280] 🇳🇱 荷兰 | NLD #3'
+- name: '[NoMoreWalls#311] 🇳🇱 荷兰 | NLD #3'
   type: vless
   server: 172.67.75.172
   port: 443
@@ -4061,7 +4393,7 @@ proxies:
     headers:
       Host: snip.edgeoneai.cc.cd
     path: /
-- name: '[NoMoreWalls#281] 🇳🇱 荷兰 | NLD #4'
+- name: '[NoMoreWalls#312] 🇳🇱 荷兰 | NLD #4'
   type: vless
   server: 104.27.55.4
   port: 443
@@ -4075,7 +4407,7 @@ proxies:
     headers:
       Host: snip.edgeoneai.cc.cd
     path: /
-- name: '[NoMoreWalls#282] 🇳🇱 荷兰 | NLD #6'
+- name: '[NoMoreWalls#313] 🇳🇱 荷兰 | NLD #6'
   type: vless
   server: 104.26.8.117
   port: 443
@@ -4089,7 +4421,7 @@ proxies:
     headers:
       Host: snip.edgeoneai.cc.cd
     path: /
-- name: '[NoMoreWalls#283] 🇳🇱 荷兰 | NLD #8'
+- name: '[NoMoreWalls#314] 🇳🇱 荷兰 | NLD #8'
   type: vless
   server: 193.56.3.123
   port: 8443
@@ -4103,7 +4435,7 @@ proxies:
     headers:
       Host: snip.edgeoneai.cc.cd
     path: /
-- name: '[NoMoreWalls#284] 🇳🇱 荷兰 | NLD #9'
+- name: '[NoMoreWalls#315] 🇳🇱 荷兰 | NLD #9'
   type: vless
   server: 104.20.6.134
   port: 443
@@ -4120,7 +4452,7 @@ proxies:
     headers:
       Host: snip.edgeoneai.cc.cd
     path: /
-- name: '[NoMoreWalls#285] 🇵🇱 波兰 | POL #1'
+- name: '[NoMoreWalls#316] 🇵🇱 波兰 | POL #1'
   type: vless
   server: 104.245.245.16
   port: 8443
@@ -4134,21 +4466,21 @@ proxies:
     headers:
       Host: snip.edgeoneai.cc.cd
     path: /
-- name: '[NoMoreWalls#286] 🇷🇺 俄罗斯 | RUS #1'
+- name: '[NoMoreWalls#317] 🇷🇺 俄罗斯 | RUS #1'
   type: ss
   server: 195.133.5.194
   port: 18443
   cipher: aes-256-gcm
   password: NTiHBg64fsY8u8DbGrtypD9gPGSL386p
   udp: true
-- name: '[NoMoreWalls#287] 🇸🇪 瑞典 | SWE'
+- name: '[NoMoreWalls#318] 🇸🇪 瑞典 | SWE'
   type: anytls
   server: svip.skycon808.com
   port: 60005
   password: 13f0acfa-38c1-4e82-a758-583aa31740df
   skip-cert-verify: true
   udp: true
-- name: '[NoMoreWalls#288] 🇸🇬 新加坡 | SGP #1'
+- name: '[NoMoreWalls#319] 🇸🇬 新加坡 | SGP #1'
   type: vless
   server: 104.18.41.191
   port: 443
@@ -4162,7 +4494,7 @@ proxies:
     headers:
       Host: snip.edgeoneai.cc.cd
     path: /
-- name: '[NoMoreWalls#289] 🇸🇬 新加坡 | SGP #2'
+- name: '[NoMoreWalls#320] 🇸🇬 新加坡 | SGP #2'
   type: vless
   server: 104.18.39.203
   port: 443
@@ -4176,7 +4508,7 @@ proxies:
     headers:
       Host: snip.edgeoneai.cc.cd
     path: /
-- name: '[NoMoreWalls#290] 🇸🇬 新加坡 | SGP #3'
+- name: '[NoMoreWalls#321] 🇸🇬 新加坡 | SGP #3'
   type: vless
   server: 104.18.44.146
   port: 443
@@ -4190,7 +4522,7 @@ proxies:
     headers:
       Host: snip.edgeoneai.cc.cd
     path: /
-- name: '[NoMoreWalls#291] 🇸🇬 新加坡 | SGP #4'
+- name: '[NoMoreWalls#322] 🇸🇬 新加坡 | SGP #4'
   type: vless
   server: 104.18.32.223
   port: 443
@@ -4204,7 +4536,7 @@ proxies:
     headers:
       Host: snip.edgeoneai.cc.cd
     path: /
-- name: '[NoMoreWalls#292] 🇸🇬 新加坡 | SGP #5'
+- name: '[NoMoreWalls#323] 🇸🇬 新加坡 | SGP #5'
   type: vless
   server: 104.18.33.121
   port: 443
@@ -4218,7 +4550,7 @@ proxies:
     headers:
       Host: snip.edgeoneai.cc.cd
     path: /
-- name: '[NoMoreWalls#293] 🇸🇬 新加坡 | SGP #6'
+- name: '[NoMoreWalls#324] 🇸🇬 新加坡 | SGP #6'
   type: vless
   server: 104.18.42.153
   port: 443
@@ -4232,7 +4564,7 @@ proxies:
     headers:
       Host: snip.edgeoneai.cc.cd
     path: /
-- name: '[NoMoreWalls#294] 🇸🇬 新加坡 | SGP #7'
+- name: '[NoMoreWalls#325] 🇸🇬 新加坡 | SGP #7'
   type: vless
   server: 172.64.155.209
   port: 443
@@ -4249,7 +4581,7 @@ proxies:
     headers:
       Host: snip.edgeoneai.cc.cd
     path: /
-- name: '[NoMoreWalls#295] 🇹🇷 土耳其 | TUR'
+- name: '[NoMoreWalls#326] 🇹🇷 土耳其 | TUR'
   type: hysteria2
   server: 153.56.210.134
   port: 34121
@@ -4258,7 +4590,7 @@ proxies:
   password: c8ed6cd1-6566-4f7a-819e-1c55b2b360c9
   skip-cert-verify: true
   sni: www.bing.com
-- name: '[NoMoreWalls#296] 🇺🇸 美国 | USA #1'
+- name: '[NoMoreWalls#327] 🇺🇸 美国 | USA #1'
   type: vless
   server: 192.241.206.189
   port: 443
@@ -4272,7 +4604,7 @@ proxies:
     headers:
       Host: snip.edgeoneai.cc.cd
     path: /
-- name: '[NoMoreWalls#297] 🇺🇸 美国 | USA #2'
+- name: '[NoMoreWalls#328] 🇺🇸 美国 | USA #2'
   type: vless
   server: 104.17.134.88
   port: 443
@@ -4286,7 +4618,7 @@ proxies:
     headers:
       Host: snip.edgeoneai.cc.cd
     path: /fdip=sstp://vpn:vpn@public-vpn-200.opengw.net:443
-- name: '[NoMoreWalls#298] 🇺🇸 美国 | USA #3'
+- name: '[NoMoreWalls#329] 🇺🇸 美国 | USA #3'
   type: vless
   server: 18.227.13.245
   port: 443
@@ -4294,7 +4626,7 @@ proxies:
   tls: false
   udp: true
   uuid: 7060231d-b9ba-495f-a218-bf427940cf3e
-- name: '[NoMoreWalls#299] 🇺🇸 美国 | USA #4'
+- name: '[NoMoreWalls#330] 🇺🇸 美国 | USA #4'
   type: vless
   server: 172.64.146.66
   port: 443
@@ -4308,7 +4640,7 @@ proxies:
     headers:
       Host: ccc.010304.xyz
     path: /
-- name: '[NoMoreWalls#300] 🇺🇸 美国 | USA #5'
+- name: '[NoMoreWalls#331] 🇺🇸 美国 | USA #5'
   type: vless
   server: 44.205.20.135
   port: 443
@@ -4316,7 +4648,7 @@ proxies:
   tls: false
   udp: true
   uuid: 7060231d-b9ba-495f-a218-bf427940cf3e
-- name: '[NoMoreWalls#301] 🇺🇸 美国 | USA #6'
+- name: '[NoMoreWalls#332] 🇺🇸 美国 | USA #6'
   type: vless
   server: 104.19.154.200
   port: 443
@@ -4330,7 +4662,7 @@ proxies:
     headers:
       Host: snip.edgeoneai.cc.cd
     path: /
-- name: '[NoMoreWalls#302] 🇺🇸 美国 | USA #8'
+- name: '[NoMoreWalls#333] 🇺🇸 美国 | USA #8'
   type: vless
   server: 104.19.49.138
   port: 443
@@ -4344,7 +4676,7 @@ proxies:
     headers:
       Host: snip.edgeoneai.cc.cd
     path: /
-- name: '[NoMoreWalls#303] 🇺🇸 美国 | USA #9'
+- name: '[NoMoreWalls#334] 🇺🇸 美国 | USA #9'
   type: vless
   server: 104.18.84.225
   port: 443
@@ -4358,7 +4690,7 @@ proxies:
     headers:
       Host: snip.edgeoneai.cc.cd
     path: /
-- name: '[NoMoreWalls#304] 🇺🇸 美国 | USA #10'
+- name: '[NoMoreWalls#335] 🇺🇸 美国 | USA #10'
   type: vless
   server: 104.17.187.57
   port: 443
@@ -4372,7 +4704,7 @@ proxies:
     headers:
       Host: snip.edgeoneai.cc.cd
     path: /
-- name: '[NoMoreWalls#305] 🇺🇸 美国 | USA #11'
+- name: '[NoMoreWalls#336] 🇺🇸 美国 | USA #11'
   type: vless
   server: 104.16.170.229
   port: 443
@@ -4386,7 +4718,7 @@ proxies:
     headers:
       Host: snip.edgeoneai.cc.cd
     path: /
-- name: '[NoMoreWalls#306] 🇺🇸 美国 | USA #12'
+- name: '[NoMoreWalls#337] 🇺🇸 美国 | USA #12'
   type: vless
   server: 162.159.128.253
   port: 443
@@ -4400,7 +4732,7 @@ proxies:
     headers:
       Host: snip.edgeoneai.cc.cd
     path: /
-- name: '[NoMoreWalls#307] 🇺🇸 美国 | USA #14'
+- name: '[NoMoreWalls#338] 🇺🇸 美国 | USA #14'
   type: vless
   server: 154.9.243.154
   port: 443
@@ -4414,7 +4746,7 @@ proxies:
     headers:
       Host: snip.edgeoneai.cc.cd
     path: /
-- name: '[NoMoreWalls#308] 🇺🇸 美国 | USA #15'
+- name: '[NoMoreWalls#339] 🇺🇸 美国 | USA #15'
   type: vless
   server: 104.17.167.134
   port: 443
@@ -4428,7 +4760,7 @@ proxies:
     headers:
       Host: snip.edgeoneai.cc.cd
     path: /fdip=sstp://vpn:vpn@public-vpn-200.opengw.net:443?ed=2560fp=chromefp=chrome
-- name: '[NoMoreWalls#309] 🇺🇸 美国 | USA #17'
+- name: '[NoMoreWalls#340] 🇺🇸 美国 | USA #17'
   type: vless
   server: 104.18.35.86
   port: 8080
@@ -4441,7 +4773,7 @@ proxies:
     headers:
       Host: hhlfy.twiladaphne.ndjp.net
     path: /sg-melbi
-- name: '[NoMoreWalls#310] 🇺🇸 美国 | USA #18'
+- name: '[NoMoreWalls#341] 🇺🇸 美国 | USA #18'
   type: vless
   server: 104.17.145.43
   port: 443
@@ -4455,7 +4787,7 @@ proxies:
     headers:
       Host: snip.edgeoneai.cc.cd
     path: /
-- name: '[NoMoreWalls#311] 🇺🇸 美国 | USA #19'
+- name: '[NoMoreWalls#342] 🇺🇸 美国 | USA #19'
   type: vless
   server: 104.17.22.231
   port: 443
@@ -4469,21 +4801,7 @@ proxies:
     headers:
       Host: snip.edgeoneai.cc.cd
     path: /
-- name: '[NoMoreWalls#312] 🇺🇸 美国 | USA #20'
-  type: vless
-  server: 146.75.59.186
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: firefox.com
-  tls: true
-  udp: true
-  uuid: 7dee06cc-4bc8-43ca-a6c2-59f81107f2e3
-  ws-opts:
-    headers:
-      Host: copy_az_channel_NUFiLTER_6i.global.ssl.fastly.net.
-    path: /
-- name: '[NoMoreWalls#313] 🇺🇸 美国 | USA #21'
+- name: '[NoMoreWalls#343] 🇺🇸 美国 | USA #21'
   type: vless
   server: 104.17.96.139
   port: 443
@@ -4497,7 +4815,7 @@ proxies:
     headers:
       Host: snip.edgeoneai.cc.cd
     path: /
-- name: '[NoMoreWalls#314] 🇺🇸 美国 | USA #23'
+- name: '[NoMoreWalls#344] 🇺🇸 美国 | USA #23'
   type: vless
   server: 104.17.162.3
   port: 443
@@ -4511,7 +4829,7 @@ proxies:
     headers:
       Host: snip.edgeoneai.cc.cd
     path: /fp=chrome
-- name: '[NoMoreWalls#315] DE_speednode_0002'
+- name: '[NoMoreWalls#345] DE_speednode_0002'
   type: http
   server: 213.109.163.119
   port: 443
@@ -4519,7 +4837,7 @@ proxies:
   skip-cert-verify: true
   tls: true
   udp: true
-- name: '[NoMoreWalls#316] FR_speednode_0005'
+- name: '[NoMoreWalls#346] FR_speednode_0005'
   type: http
   server: 51.159.225.196
   port: 23856
@@ -4528,22 +4846,14 @@ proxies:
   tls: true
   udp: true
   username: 'null'
-- name: '[NoMoreWalls#317] NL_speednode_0015'
+- name: '[NoMoreWalls#347] NL_speednode_0015'
   type: http
   server: 84.17.47.125
   port: 9002
   skip-cert-verify: true
   tls: true
   udp: true
-- name: '[NoMoreWalls#318] NL_speednode_0016'
-  type: http
-  server: 84.17.47.148
-  port: 9002
-  password: None
-  skip-cert-verify: true
-  tls: true
-  udp: true
-- name: '[NoMoreWalls#319] NL_speednode_0017'
+- name: '[NoMoreWalls#348] NL_speednode_0017'
   type: http
   server: 84.17.47.123
   port: 9002
@@ -4551,502 +4861,76 @@ proxies:
   skip-cert-verify: true
   tls: true
   udp: true
-- name: '[NoMoreWalls#320] RO_speednode_0019'
-  type: http
-  server: 193.176.84.19
-  port: 9002
-  skip-cert-verify: true
-  tls: true
-  udp: true
-- name: '[NoMoreWalls#321] RO_speednode_0022'
+- name: '[NoMoreWalls#349] RO_speednode_0022'
   type: http
   server: 193.176.84.34
   port: 9002
   skip-cert-verify: true
   tls: true
   udp: true
-- name: '[NoMoreWalls#322] US_speednode_0024'
-  type: http
-  server: 44.248.167.117
-  port: 8443
-  skip-cert-verify: true
-  tls: true
-  udp: true
-- name: '[AutoMerge#019] 🇩🇪DE_1|1017KB/s'
-  type: http
-  server: 149.36.50.157
-  port: 443
-  skip-cert-verify: true
-  tls: true
-- name: '[AutoMerge#020] 🇩🇪DE_2|1.3MB/s'
-  type: http
-  server: 87.249.132.97
-  port: 9443
-  skip-cert-verify: true
-  tls: true
-- name: '[AutoMerge#021] 🇪🇸ES_1|2.0MB/s'
-  type: http
-  server: 130.195.250.34
-  port: 443
-  password: None
-  skip-cert-verify: true
-  tls: true
-- name: '[AutoMerge#022] 🇫🇷FR_1|1.3MB/s'
-  type: http
-  server: 213.139.9.142
-  port: 9443
-  password: None
-  skip-cert-verify: true
-  tls: true
-- name: '[AutoMerge#023] 🇧🇪BE_1|2.3MB/s'
-  type: http
-  server: 146.70.123.98
-  port: 443
-  password: None
-  skip-cert-verify: true
-  tls: true
-- name: '[AutoMerge#024] 🇧🇬BG_1|1.1MB/s'
-  type: http
-  server: 185.94.192.210
-  port: 443
-  password: None
-  skip-cert-verify: true
-  tls: true
-- name: '[AutoMerge#025] 🇸🇪SE_1|2.3MB/s'
-  type: http
-  server: 146.70.242.130
-  port: 443
-  password: None
-  skip-cert-verify: true
-  tls: true
-- name: '[AutoMerge#026] 🇦🇹AT_2|1.4MB/s'
-  type: http
-  server: 146.70.244.18
-  port: 443
-  skip-cert-verify: true
-  tls: true
-- name: '[AutoMerge#027] 🇭🇺HU_1|1.2MB/s'
-  type: http
-  server: 146.70.203.18
-  port: 443
-  password: None
-  skip-cert-verify: true
-  tls: true
-- name: '[AutoMerge#028] 🇱🇺LU_1|2.6MB/s'
-  type: http
-  server: 185.221.132.226
-  port: 9443
-  password: None
-  skip-cert-verify: true
-  tls: true
-- name: '[AutoMerge#029] 🇵🇱PL_2|3.2MB/s'
-  type: http
-  server: 37.120.156.18
-  port: 443
-  skip-cert-verify: true
-  tls: true
-- name: '[AutoMerge#032] 🇯🇵JP_1|3.4MB/s'
+- name: '[AutoMerge#025] 🇺🇸US_1|4.1MB/s'
   type: vless
-  server: 168.93.214.124
+  server: ct.877774.xyz
   port: 443
-  client-fingerprint: chrome
+  client-fingerprint: random
+  encryption: none
   network: ws
-  servername: snip.edgeoneai.cc.cd
+  servername: us-lax.862400.xyz
   tls: true
   udp: true
-  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  uuid: e0ccda9e-08ba-4da3-8844-73d586c7fff7
   ws-opts:
     headers:
-      Host: snip.edgeoneai.cc.cd
-      User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36
-    path: /fdip=sstp://vpn:vpn@public-vpn-200.opengw.net:443?ed=2560fp=chromefp=chromefp=chrome
+      Host: us-lax.862400.xyz
+      User-Agent: Mozilla/5.0 (Linux; Android 7.1.2; Redmi 4X Build/N2G47H) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.111 Mobile Safari/537.36
+    path: /announcement?ed=2048
   xudp: true
-- name: '[AutoMerge#034] 🇨🇾 塞浦路斯 | CYP #1'
-  type: vless
-  server: 194.55.166.65
-  port: 2087
-  client-fingerprint: chrome
-  network: ws
-  servername: snip.edgeoneai.cc.cd
-  tls: true
-  udp: true
-  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
-  ws-opts:
-    headers:
-      Host: snip.edgeoneai.cc.cd
-    path: /
-- name: '[AutoMerge#035] 🇨🇾 塞浦路斯 | CYP #2'
-  type: vless
-  server: 194.55.164.118
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: snip.edgeoneai.cc.cd
-  tls: true
-  udp: true
-  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
-  ws-opts:
-    headers:
-      Host: snip.edgeoneai.cc.cd
-    path: /
-- name: '[AutoMerge#036] 🇩🇪 德国 | DEU #2'
-  type: vless
-  server: 64.226.96.188
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: snip.edgeoneai.cc.cd
-  tls: true
-  udp: true
-  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
-  ws-opts:
-    headers:
-      Host: snip.edgeoneai.cc.cd
-    path: /
-- name: '[AutoMerge#037] 🇩🇪 德国 | DEU #3'
-  type: vless
-  server: 64.188.68.254
-  port: 8443
-  client-fingerprint: chrome
-  network: ws
-  servername: snip.edgeoneai.cc.cd
-  tls: true
-  udp: true
-  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
-  ws-opts:
-    headers:
-      Host: snip.edgeoneai.cc.cd
-    path: /
-- name: '[AutoMerge#038] 🇩🇪 德国 | DEU #4'
-  type: vless
-  server: 2.27.29.155
-  port: 8443
-  client-fingerprint: chrome
-  network: ws
-  servername: snip.edgeoneai.cc.cd
-  tls: true
-  udp: true
-  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
-  ws-opts:
-    headers:
-      Host: snip.edgeoneai.cc.cd
-    path: /
-- name: '[AutoMerge#045] 🇳🇱 荷兰 | NLD #1'
-  type: vless
-  server: 104.24.79.205
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: snip.edgeoneai.cc.cd
-  tls: true
-  udp: true
-  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
-  ws-opts:
-    headers:
-      Host: snip.edgeoneai.cc.cd
-    path: /fp=chrome
-- name: '[AutoMerge#046] 🇳🇱 荷兰 | NLD #2'
-  type: vless
-  server: 172.67.67.89
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: snip.edgeoneai.cc.cd
-  tls: true
-  udp: true
-  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
-  ws-opts:
-    headers:
-      Host: snip.edgeoneai.cc.cd
-    path: /
-- name: '[AutoMerge#047] 🇳🇱 荷兰 | NLD 3'
-  type: trojan
-  server: 172.67.71.122
-  port: 443
-  alpn:
-  - h3
-  network: ws
-  password: bpb-trojan
-  skip-cert-verify: true
-  sni: 6982410.xyz
-  udp: true
-  ws-opts:
-    headers:
-      Host: 6982410.xyz
-    path: /tr
-- name: '[AutoMerge#048] 🇸🇬 新加坡 | SGP #2'
-  type: vless
-  server: 45.76.189.166
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: snip.edgeoneai.cc.cd
-  tls: true
-  udp: true
-  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
-  ws-opts:
-    headers:
-      Host: snip.edgeoneai.cc.cd
-    path: /
-- name: '[AutoMerge#049] 🇸🇬 新加坡 | SGP #3'
-  type: vless
-  server: 172.64.156.45
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: snip.edgeoneai.cc.cd
-  tls: true
-  udp: true
-  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
-  ws-opts:
-    headers:
-      Host: snip.edgeoneai.cc.cd
-    path: /
-- name: '[AutoMerge#050] 🇸🇬 新加坡 | SGP #4'
-  type: vless
-  server: 172.64.159.188
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: snip.edgeoneai.cc.cd
-  tls: true
-  udp: true
-  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
-  ws-opts:
-    headers:
-      Host: snip.edgeoneai.cc.cd
-    path: /
-- name: '[AutoMerge#051] 🇸🇬 新加坡 | SGP #5'
-  type: vless
-  server: 188.164.248.18
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: snip.edgeoneai.cc.cd
-  tls: true
-  udp: true
-  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
-  ws-opts:
-    headers:
-      Host: snip.edgeoneai.cc.cd
-    path: /
-- name: '[AutoMerge#052] 🇸🇬 新加坡 | SGP #6'
-  type: vless
-  server: 104.18.40.182
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: snip.edgeoneai.cc.cd
-  tls: true
-  udp: true
-  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
-  ws-opts:
-    headers:
-      Host: snip.edgeoneai.cc.cd
-    path: /
-- name: '[AutoMerge#053] 🇸🇬 新加坡 | SGP #8'
-  type: vless
-  server: 172.64.153.61
-  port: 443
-  alpn:
-  - http/1.1
-  client-fingerprint: chrome
-  network: ws
-  servername: snip.edgeoneai.cc.cd
-  tls: true
-  udp: true
-  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
-  ws-opts:
-    headers:
-      Host: snip.edgeoneai.cc.cd
-    path: /fdipfp=unsafe
-- name: '[AutoMerge#054] 🇸🇬 新加坡 | SGP #9'
-  type: vless
-  server: 45.76.158.173
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: snip.edgeoneai.cc.cd
-  tls: true
-  udp: true
-  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
-  ws-opts:
-    headers:
-      Host: snip.edgeoneai.cc.cd
-    path: /
-- name: '[AutoMerge#055] 🇺🇸 美国 | USA #5'
-  type: vless
-  server: 162.159.198.1
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: snip.edgeoneai.cc.cd
-  tls: true
-  udp: true
-  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
-  ws-opts:
-    headers:
-      Host: snip.edgeoneai.cc.cd
-    path: /
-- name: '[AutoMerge#056] 🇺🇸 美国 | USA #7'
-  type: vless
-  server: 104.17.3.81
-  port: 443
-  alpn:
-  - http/1.1
-  client-fingerprint: chrome
-  network: ws
-  servername: snip.edgeoneai.cc.cd
-  tls: true
-  udp: true
-  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
-  ws-opts:
-    headers:
-      Host: snip.edgeoneai.cc.cd
-    path: /fdip#TELEGRAM--MARAMBASHI--MARAMBASHI--MARAMBASHI--MARAMBASHI?ed=2560
-- name: '[AutoMerge#057] 🇺🇸 美国 | USA #8'
-  type: vless
-  server: 104.18.255.167
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: snip.edgeoneai.cc.cd
-  tls: true
-  udp: true
-  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
-  ws-opts:
-    headers:
-      Host: snip.edgeoneai.cc.cd
-    path: /
-- name: '[AutoMerge#058] 🇺🇸 美国 | USA #10'
-  type: vless
-  server: 162.159.197.1
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: snip.edgeoneai.cc.cd
-  tls: true
-  udp: true
-  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
-  ws-opts:
-    headers:
-      Host: snip.edgeoneai.cc.cd
-    path: /
-- name: '[AutoMerge#059] 🇺🇸 美国 | USA #12'
-  type: vless
-  server: 104.17.125.98
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: snip.edgeoneai.cc.cd
-  tls: true
-  udp: true
-  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
-  ws-opts:
-    headers:
-      Host: snip.edgeoneai.cc.cd
-    path: /
-- name: '[AutoMerge#060] 🇺🇸 美国 | USA #13'
-  type: vless
-  server: 162.159.130.234
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: snip.edgeoneai.cc.cd
-  tls: true
-  udp: true
-  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
-  ws-opts:
-    headers:
-      Host: snip.edgeoneai.cc.cd
-    path: /fdip=sstp://vpn:vpn@public-vpn-200.opengw.net:443?ed=2560#Telegram---PLANB_NET---PLANB_NET---PLANB_NET---PLANB_NET
-- name: '[AutoMerge#061] 🇺🇸 美国 | USA #14'
-  type: vless
-  server: 104.17.103.33
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: snip.edgeoneai.cc.cd
-  tls: true
-  udp: true
-  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
-  ws-opts:
-    headers:
-      Host: snip.edgeoneai.cc.cd
-    path: /
-- name: '[AutoMerge#062] 🇺🇸 美国 | USA #15'
-  type: vless
-  server: 104.17.139.37
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: snip.edgeoneai.cc.cd
-  tls: true
-  udp: true
-  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
-  ws-opts:
-    headers:
-      Host: snip.edgeoneai.cc.cd
-    path: /
-- name: '[AutoMerge#063] 🇺🇸 美国 | USA #19'
-  type: vless
-  server: 104.17.22.227
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: snip.edgeoneai.cc.cd
-  tls: true
-  udp: true
-  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
-  ws-opts:
-    headers:
-      Host: snip.edgeoneai.cc.cd
-    path: /
-- name: '[AutoMerge#064] 🇺🇸 美国 | USA #20'
-  type: vless
-  server: www.5h.com
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: youxuanku.kdns.fr
-  tls: true
-  udp: true
-  uuid: 4c0b7280-76bb-495c-9c8b-f05712ebf805
-  ws-opts:
-    headers:
-      Host: youxuanku.kdns.fr
-    path: /
-- name: '[AutoMerge#065] 🇺🇸 美国 | USA #21'
-  type: vless
-  server: www.speedtest.net
-  port: 443
-  alpn:
-  - http/1.1
-  client-fingerprint: chrome
-  network: ws
-  servername: snip.edgeoneai.cc.cd
-  tls: true
-  udp: true
-  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
-  ws-opts:
-    headers:
-      Host: snip.edgeoneai.cc.cd
-    path: /fdip=sstp://vpn:vpn@vpn748359672.opengw.net:1458?ed=2560#Telegram---bored_vpn
-- name: '[zhuhaiuk#001] US - zhuhai.uk'
+- name: '[AutoMerge#026] 🇱🇺LU_1|1.8MB/s'
   type: http
-  server: 138.199.35.217
-  port: 9002
-  username: 'null'
+  server: 185.221.132.242
+  port: 443
   password: None
-  tls: true
   skip-cert-verify: true
+  tls: true
+- name: '[zhuhaiuk#001] US - zhuhai.uk'
+  type: socks5
+  server: 67.207.92.87
+  port: 1088
 - name: '[zhuhaiuk#002] FR - zhuhai.uk'
   type: http
   server: 83.172.143.53
   port: 4443
   tls: true
   skip-cert-verify: true
-- name: '[zhuhaiuk#003] US - zhuhai.uk 03'
+- name: '[zhuhaiuk#003] US - zhuhai.uk 04'
+  type: http
+  server: fan.226278.xyz
+  port: 443
+  tls: true
+  skip-cert-verify: true
+- name: '[zhuhaiuk#004] RO - zhuhai.uk 02'
+  type: http
+  server: 193.176.84.40
+  port: 9002
+  tls: true
+  sni: www.bing.com
+  skip-cert-verify: true
+- name: '[zhuhaiuk#005] KR - zhuhai.uk'
+  type: socks5
+  server: 121.169.46.116
+  port: 1090
+  username: T2clM0QlM0Q6
+- name: '[zhuhaiuk#006] DE - zhuhai.uk'
+  type: socks5
+  server: 91.107.179.68
+  port: 10809
+- name: '[zhuhaiuk#007] DE - zhuhai.uk 02'
+  type: http
+  server: fan.973511.xyz
+  port: 443
+  username: bnVsbDpudWxs
+  tls: true
+- name: '[zhuhaiuk#009] US - zhuhai.uk 07'
   type: vless
   server: funagfrdfs.alixxplay.com
   port: 34379
@@ -5055,83 +4939,41 @@ proxies:
   tls: true
   servername: us1p1.xn--ghq880n3na965a.com
   skip-cert-verify: true
-  client-fingerprint: ios
+  client-fingerprint: chrome
   reality-opts:
     public-key: KfOrtENkHAXDFlsCluw6fv62Q-WuJXCKI98XZihtemA
     short-id: e51285e3
-- name: '[zhuhaiuk#004] RO - zhuhai.uk'
+- name: '[zhuhaiuk#010] RO - zhuhai.uk 03'
   type: http
-  server: 193.176.84.39
+  server: 193.176.84.37
   port: 9002
   tls: true
   sni: www.bing.com
   skip-cert-verify: true
-- name: '[zhuhaiuk#005] US - zhuhai.uk 05'
-  type: http
-  server: 138.199.35.210
-  port: 9002
-  username: 'null'
-  password: 'null'
+- name: '[zhuhaiuk#011] US - zhuhai.uk 08'
+  type: vless
+  server: funagfrdfs.alixxplay.com
+  port: 47691
+  uuid: 57beeeb0-03fc-4fc9-94da-7604488a7134
+  flow: xtls-rprx-vision
   tls: true
-  skip-cert-verify: true
-- name: '[zhuhaiuk#006] JP - zhuhai.uk'
+  servername: m.media-amazon.com
+  client-fingerprint: chrome
+  reality-opts:
+    public-key: 6PbC7GxOg_YdXya-53llPReUzoU_yknQbkDvI4uorBg
+    short-id: 2905326a
+- name: '[zhuhaiuk#012] JP - zhuhai.uk'
   type: socks5
   server: 101.36.104.239
   port: 10808
-- name: '[zhuhaiuk#007] RO - zhuhai.uk 03'
+- name: '[zhuhaiuk#013] RO - zhuhai.uk 05'
   type: http
-  server: 193.176.84.32
+  server: 193.176.84.39
   port: 9002
   username: 'null'
   password: 'null'
   tls: true
   skip-cert-verify: true
-- name: '[zhuhaiuk#008] PL - zhuhai.uk'
-  type: http
-  server: 151.115.54.133
-  port: 443
-  tls: true
-  skip-cert-verify: true
-- name: '[zhuhaiuk#009] RO - zhuhai.uk 05'
-  type: http
-  server: 193.176.84.40
-  port: 9002
-  tls: true
-  sni: www.bing.com
-  skip-cert-verify: true
-- name: '[zhuhaiuk#010] US - zhuhai.uk 08'
-  type: http
-  server: 138.199.35.205
-  port: 9002
-  username: 'null'
-  password: None
-  tls: true
-  skip-cert-verify: true
-- name: '[zhuhaiuk#011] RO - zhuhai.uk 06'
-  type: http
-  server: 193.176.84.29
-  port: 9002
-  username: 'null'
-  password: None
-  tls: true
-  skip-cert-verify: true
-- name: '[zhuhaiuk#012] KR - zhuhai.uk'
-  type: socks5
-  server: 121.169.46.116
-  port: 1090
-- name: '[zhuhaiuk#013] KR - zhuhai.uk 02'
-  type: vless
-  server: saas.sin.fan
-  port: 443
-  uuid: 5d7b401c-78fa-4254-872e-6d42bf7e75ec
-  tls: true
-  servername: vp6.1145678.xyz
-  client-fingerprint: chrome
-  network: ws
-  ws-opts:
-    path: /photos/url/video/TkZDG0RVE1kPREsSEQ8YEEBHSEpZUwhIFF4WRBIIFUkVRQQQRhNYEFASC0FbR1ZETQ9cXUZAQ1laV0cXFBJEXFVeAVUCDVxbAEpYElFeVhQDWV0SQwEWQlpGWRoNA1YdDhk=
-    headers:
-      Host: vp6.1145678.xyz
 - name: '[zhuhaiuk#014] SG - zhuhai.uk 02'
   type: vless
   server: funagfrdfs.alixxplay.com
@@ -5182,6 +5024,20 @@ proxies:
   client-fingerprint: qq
   reality-opts:
     public-key: SbVKOEMjK0sIlbwg4akyBg5mL5KZwwB-ed4eEE7YnRc
+- name: '[free18#002] 日期：10-23'
+  type: vless
+  server: 38.145.220.58
+  port: 2093
+  uuid: 0b418782-e023-447e-ba99-e66b84ff118d
+  servername: www.apple.com
+  tls: true
+  flow: xtls-rprx-vision
+  client-fingerprint: chrome
+  reality-opts:
+    public-key: C_GA8wVjeLmyqLK6em5OHn4WPlsbndA-RyvyNU1aGFM
+    short-id: 8a9725533854a7e8
+  skip-cert-verify: true
+  udp: true
 - name: '[free18#003] 🇷🇺_俄罗斯_5'
   type: vless
   server: 113.30.154.239
@@ -6678,7 +6534,22 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#105] 🇩🇪_德国_127'
+- name: '[free18#105] 🏳️_未知_126'
+  type: vless
+  server: 172.64.156.45
+  port: 443
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  network: ws
+  servername: snip.edgeoneai.cc.cd
+  tls: true
+  client-fingerprint: chrome
+  ws-opts:
+    path: /
+    headers:
+      Host: snip.edgeoneai.cc.cd
+  skip-cert-verify: true
+  udp: true
+- name: '[free18#106] 🇩🇪_德国_127'
   type: vless
   server: 167.172.186.156
   port: 443
@@ -6693,7 +6564,7 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#106] 🇸🇬_新加坡_128'
+- name: '[free18#107] 🇸🇬_新加坡_128'
   type: vless
   server: 165.232.165.200
   port: 443
@@ -6708,7 +6579,7 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#107] 🇸🇬_新加坡_130'
+- name: '[free18#108] 🇸🇬_新加坡_130'
   type: vless
   server: 159.223.78.76
   port: 443
@@ -6723,7 +6594,22 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#108] 🇸🇬_新加坡_133'
+- name: '[free18#109] 🏳️_未知_131'
+  type: vless
+  server: 104.17.22.227
+  port: 443
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  network: ws
+  servername: snip.edgeoneai.cc.cd
+  tls: true
+  client-fingerprint: chrome
+  ws-opts:
+    path: /
+    headers:
+      Host: snip.edgeoneai.cc.cd
+  skip-cert-verify: true
+  udp: true
+- name: '[free18#110] 🇸🇬_新加坡_133'
   type: vless
   server: 18.138.206.30
   port: 443
@@ -6738,7 +6624,7 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#109] 🇯🇵_日本_134'
+- name: '[free18#111] 🇯🇵_日本_134'
   type: vless
   server: 64.176.34.130
   port: 443
@@ -6753,7 +6639,7 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#110] 🏳️_未知_135'
+- name: '[free18#112] 🏳️_未知_135'
   type: vless
   server: 172.67.74.177
   port: 443
@@ -6768,7 +6654,7 @@ proxies:
       Host: wallweb-4r0.pages.dev
   skip-cert-verify: true
   udp: true
-- name: '[free18#111] 🇺🇸_美国_136'
+- name: '[free18#113] 🇺🇸_美国_136'
   type: vless
   server: 172.66.0.172
   port: 443
@@ -6783,7 +6669,7 @@ proxies:
       Host: wallweb-4r0.pages.dev
   skip-cert-verify: true
   udp: true
-- name: '[free18#112] 🇭🇺_匈牙利_137'
+- name: '[free18#114] 🇭🇺_匈牙利_137'
   type: vless
   server: 91.219.236.136
   port: 443
@@ -6798,7 +6684,7 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#113] 🇰🇷_韩国_138'
+- name: '[free18#115] 🇰🇷_韩国_138'
   type: vless
   server: 146.56.151.92
   port: 443
@@ -6813,7 +6699,7 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#114] 🇺🇸_美国_139'
+- name: '[free18#116] 🇺🇸_美国_139'
   type: vless
   server: 188.255.157.177
   port: 443
@@ -6828,7 +6714,7 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#115] 🏳️_未知_141'
+- name: '[free18#117] 🏳️_未知_141'
   type: vless
   server: 172.64.159.18
   port: 443
@@ -6843,7 +6729,7 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#116] 🇺🇸_美国_142'
+- name: '[free18#118] 🇺🇸_美国_142'
   type: vless
   server: 156.229.163.237
   port: 10238
@@ -6858,7 +6744,7 @@ proxies:
       Host: 2-gys60wmzb6bqzd.qpsjn114hh3vlph9z60sesz0agjawpwroneg.workers.dev
   skip-cert-verify: true
   udp: true
-- name: '[free18#117] 🇺🇸_美国_143'
+- name: '[free18#119] 🇺🇸_美国_143'
   type: vless
   server: 140.248.186.45
   port: 443
@@ -6873,7 +6759,7 @@ proxies:
       Host: Appxdn.global.ssl.fastly.net
   skip-cert-verify: true
   udp: true
-- name: '[free18#118] 🇺🇸_美国_145'
+- name: '[free18#120] 🇺🇸_美国_145'
   type: vless
   server: 128.241.25.127
   port: 30036
@@ -6888,7 +6774,7 @@ proxies:
       Host: 3t1yvbyla-rj740g.28m7r63dttya6gazmhoo.workers.dev
   skip-cert-verify: true
   udp: true
-- name: '[free18#119] 🇬🇧_英国_146'
+- name: '[free18#121] 🇬🇧_英国_146'
   type: vless
   server: 57.129.130.34
   port: 52014
@@ -6903,7 +6789,7 @@ proxies:
       Host: 3t1yvbyla-rj740g.28m7r63dttya6gazmhoo.workers.dev
   skip-cert-verify: true
   udp: true
-- name: '[free18#120] 🇬🇧_英国_147'
+- name: '[free18#122] 🇬🇧_英国_147'
   type: vless
   server: 57.129.130.34
   port: 52014
@@ -6918,7 +6804,7 @@ proxies:
       Host: 2-gys60wmzb6bqzd.qpsjn114hh3vlph9z60sesz0agjawpwroneg.workers.dev
   skip-cert-verify: true
   udp: true
-- name: '[free18#121] 🇺🇸_美国_148'
+- name: '[free18#123] 🇺🇸_美国_148'
   type: vless
   server: 45.138.100.248
   port: 14430
@@ -6932,7 +6818,7 @@ proxies:
       Host: 45.138.100.248
   skip-cert-verify: true
   udp: true
-- name: '[free18#122] 🏳️_未知_149'
+- name: '[free18#124] 🏳️_未知_149'
   type: vless
   server: nexusmods.com
   port: 443
@@ -6947,7 +6833,7 @@ proxies:
       Host: b24m.yua.hhll.vavava.kdns.fr
   skip-cert-verify: true
   udp: true
-- name: '[free18#123] 🇸🇬_新加坡_150'
+- name: '[free18#125] 🇸🇬_新加坡_150'
   type: vless
   server: 15.235.196.80
   port: 52014
@@ -6962,7 +6848,7 @@ proxies:
       Host: 3t1yvbyla-rj740g.28m7r63dttya6gazmhoo.workers.dev
   skip-cert-verify: true
   udp: true
-- name: '[free18#124] 🇺🇸_美国_151'
+- name: '[free18#126] 🇺🇸_美国_151'
   type: vless
   server: 156.229.163.237
   port: 10238
@@ -6977,7 +6863,7 @@ proxies:
       Host: 3t1yvbyla-rj740g.28m7r63dttya6gazmhoo.workers.dev
   skip-cert-verify: true
   udp: true
-- name: '[free18#125] 🇩🇪_德国_152'
+- name: '[free18#127] 🇩🇪_德国_152'
   type: vless
   server: 5.75.195.83
   port: 56879
@@ -6992,7 +6878,7 @@ proxies:
       Host: 2-gys60wmzb6bqzd.qpsjn114hh3vlph9z60sesz0agjawpwroneg.workers.dev
   skip-cert-verify: true
   udp: true
-- name: '[free18#126] 🇩🇪_德国_153'
+- name: '[free18#128] 🇩🇪_德国_153'
   type: vless
   server: 178.105.133.160
   port: 4443
@@ -7007,7 +6893,7 @@ proxies:
       Host: 2-gys60wmzb6bqzd.qpsjn114hh3vlph9z60sesz0agjawpwroneg.workers.dev
   skip-cert-verify: true
   udp: true
-- name: '[free18#127] 🇺🇸_美国_155'
+- name: '[free18#129] 🇺🇸_美国_155'
   type: vless
   server: 128.241.25.127
   port: 30036
@@ -7022,7 +6908,7 @@ proxies:
       Host: 2-gys60wmzb6bqzd.qpsjn114hh3vlph9z60sesz0agjawpwroneg.workers.dev
   skip-cert-verify: true
   udp: true
-- name: '[free18#128] 🇸🇬_新加坡_156'
+- name: '[free18#130] 🇸🇬_新加坡_156'
   type: vless
   server: 15.235.196.80
   port: 52014
@@ -7037,7 +6923,17 @@ proxies:
       Host: 2-gys60wmzb6bqzd.qpsjn114hh3vlph9z60sesz0agjawpwroneg.workers.dev
   skip-cert-verify: true
   udp: true
-- name: '[free18#129] 🇰🇷_韩国_162'
+- name: '[free18#131] 🇦🇪_阿拉伯联合酋长国_157'
+  type: trojan
+  server: 31.57.190.34
+  port: 443
+  password: humanity
+  sni: www.pleadcourt.org
+  skip-cert-verify: true
+  ws-opts:
+    path: /assignment
+  udp: true
+- name: '[free18#132] 🇰🇷_韩国_162'
   type: vless
   server: 43.164.139.71
   port: 443
@@ -7052,7 +6948,7 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#130] 🇳🇱_荷兰_163'
+- name: '[free18#133] 🇳🇱_荷兰_163'
   type: vless
   server: 95.142.41.14
   port: 8443
@@ -7067,7 +6963,7 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#131] 🇳🇱_荷兰_164'
+- name: '[free18#134] 🇳🇱_荷兰_164'
   type: vless
   server: 95.85.4.230
   port: 443
@@ -7082,7 +6978,7 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#132] 🇲🇾_马来西亚_165'
+- name: '[free18#135] 🇲🇾_马来西亚_165'
   type: vless
   server: 45.194.27.99
   port: 443
@@ -7097,7 +6993,7 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#133] 🇺🇸_美国_166'
+- name: '[free18#136] 🇺🇸_美国_166'
   type: vless
   server: 150.241.105.51
   port: 443
@@ -7112,7 +7008,7 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#134] 🇺🇸_美国_169'
+- name: '[free18#137] 🇺🇸_美国_169'
   type: vless
   server: 179.253.225.172
   port: 443
@@ -7127,7 +7023,7 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#135] 🇯🇵_日本_170'
+- name: '[free18#138] 🇯🇵_日本_170'
   type: vless
   server: 54.64.1.93
   port: 443
@@ -7142,7 +7038,7 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#136] 🇯🇵_日本_172'
+- name: '[free18#139] 🇯🇵_日本_172'
   type: vless
   server: 54.65.187.99
   port: 443
@@ -7157,7 +7053,7 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#137] 🇯🇵_日本_173'
+- name: '[free18#140] 🇯🇵_日本_173'
   type: vless
   server: 202.155.12.145
   port: 8443
@@ -7172,7 +7068,7 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#138] 🇺🇸_美国_174'
+- name: '[free18#141] 🇺🇸_美国_174'
   type: trojan
   server: x.com
   port: 2096
@@ -7184,7 +7080,7 @@ proxies:
     headers:
       Host: au4.yang-1989.xyz
   udp: true
-- name: '[free18#139] 🇺🇸_美国_176'
+- name: '[free18#142] 🇺🇸_美国_176'
   type: trojan
   server: x.com
   port: 2053
@@ -7196,7 +7092,7 @@ proxies:
     headers:
       Host: au1.yang-1989.xyz
   udp: true
-- name: '[free18#140] 🇳🇱_荷兰_181'
+- name: '[free18#143] 🇳🇱_荷兰_181'
   type: vless
   server: 177.3.208.65
   port: 443
@@ -7209,7 +7105,7 @@ proxies:
     path: /vless-tr
   skip-cert-verify: true
   udp: true
-- name: '[free18#141] 🇰🇬_吉尔吉斯斯坦_183'
+- name: '[free18#144] 🇰🇬_吉尔吉斯斯坦_183'
   type: vless
   server: 193.36.95.34
   port: 443
@@ -7223,7 +7119,7 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#142] 🇻🇳_越南_185'
+- name: '[free18#145] 🇻🇳_越南_185'
   type: vless
   server: 103.161.178.215
   port: 443
@@ -7237,7 +7133,7 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#143] 🇮🇸_冰岛_187'
+- name: '[free18#146] 🇮🇸_冰岛_187'
   type: vless
   server: 167.148.156.160
   port: 8443
@@ -7252,7 +7148,7 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#144] 🇲🇾_马来西亚_188'
+- name: '[free18#147] 🇲🇾_马来西亚_188'
   type: vless
   server: 166.88.194.74
   port: 2087
@@ -7267,7 +7163,21 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#145] 🇧🇪_比利时_192'
+- name: '[free18#148] 🇨🇾_塞浦路斯_190'
+  type: vless
+  server: 194.55.164.118
+  port: 443
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  network: ws
+  servername: snip.edgeoneai.cc.cd
+  tls: true
+  ws-opts:
+    path: /fp=chrome
+    headers:
+      Host: snip.edgeoneai.cc.cd
+  skip-cert-verify: true
+  udp: true
+- name: '[free18#149] 🇧🇪_比利时_192'
   type: vless
   server: 141.98.233.6
   port: 443
@@ -7282,7 +7192,7 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#146] 🇨🇾_塞浦路斯_193'
+- name: '[free18#150] 🇨🇾_塞浦路斯_193'
   type: vless
   server: 194.55.166.65
   port: 443
@@ -7297,7 +7207,7 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#147] 🇦🇿_阿塞拜疆_194'
+- name: '[free18#151] 🇦🇿_阿塞拜疆_194'
   type: vless
   server: 94.20.154.66
   port: 443
@@ -7311,7 +7221,7 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#148] 🇩🇪_德国_196'
+- name: '[free18#152] 🇩🇪_德国_196'
   type: vless
   server: 185.230.44.140
   port: 443
@@ -7325,7 +7235,7 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#149] 🇩🇴_多米尼加共和国_197'
+- name: '[free18#153] 🇩🇴_多米尼加共和国_197'
   type: vless
   server: 181.36.229.212
   port: 443
@@ -7340,7 +7250,7 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#150] 🇳🇱_荷兰_198'
+- name: '[free18#154] 🇳🇱_荷兰_198'
   type: vless
   server: 195.133.17.250
   port: 443
@@ -7354,7 +7264,7 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#151] 🇳🇿_新西兰_207'
+- name: '[free18#155] 🇳🇿_新西兰_207'
   type: vless
   server: 185.71.230.237
   port: 443
@@ -7368,7 +7278,7 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#152] 🇺🇸_美国_208'
+- name: '[free18#156] 🇺🇸_美国_208'
   type: vless
   server: 162.35.127.65
   port: 443
@@ -7382,7 +7292,7 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#153] 🇺🇸_美国_211'
+- name: '[free18#157] 🇺🇸_美国_211'
   type: vless
   server: 38.207.179.77
   port: 443
@@ -7397,7 +7307,7 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#154] 🇩🇪_德国_216'
+- name: '[free18#158] 🇩🇪_德国_216'
   type: vless
   server: 62.133.60.134
   port: 8443
@@ -7411,7 +7321,7 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#155] 🇺🇸_美国_217'
+- name: '[free18#159] 🇺🇸_美国_217'
   type: vless
   server: 13.143.182.82
   port: 443
@@ -7426,7 +7336,7 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#156] 🇳🇱_荷兰_218'
+- name: '[free18#160] 🇳🇱_荷兰_218'
   type: vless
   server: 31.192.239.107
   port: 8443
@@ -7441,7 +7351,7 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#157] 🇫🇮_芬兰_223'
+- name: '[free18#161] 🇫🇮_芬兰_223'
   type: vless
   server: 103.71.22.158
   port: 443
@@ -7455,7 +7365,7 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#158] 🇺🇸_美国_225'
+- name: '[free18#162] 🇺🇸_美国_225'
   type: vless
   server: 45.61.149.205
   port: 8443
@@ -7469,7 +7379,7 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#159] 🇺🇸_美国_227'
+- name: '[free18#163] 🇺🇸_美国_227'
   type: vless
   server: 162.35.169.69
   port: 443
@@ -7483,7 +7393,7 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#160] 🇺🇸_美国_230'
+- name: '[free18#164] 🇺🇸_美国_230'
   type: vless
   server: 162.159.135.234
   port: 443
@@ -7497,7 +7407,21 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#161] 🇩🇪_德国_234'
+- name: '[free18#165] 🇳🇱_荷兰_231'
+  type: vless
+  server: 130.78.190.134
+  port: 443
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  network: ws
+  servername: snip.edgeoneai.cc.cd
+  tls: true
+  ws-opts:
+    path: /fp=chrome
+    headers:
+      Host: snip.edgeoneai.cc.cd
+  skip-cert-verify: true
+  udp: true
+- name: '[free18#166] 🇩🇪_德国_234'
   type: vless
   server: 185.230.44.200
   port: 443
@@ -7512,7 +7436,7 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#162] 🇻🇳_越南_237'
+- name: '[free18#167] 🇻🇳_越南_237'
   type: vless
   server: 103.161.178.205
   port: 443
@@ -7526,7 +7450,7 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#163] 🇻🇳_越南_239'
+- name: '[free18#168] 🇻🇳_越南_239'
   type: vless
   server: 103.161.179.36
   port: 443
@@ -7540,7 +7464,22 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#164] 🇩🇪_德国_244'
+- name: '[free18#169] 🇺🇸_美国_242'
+  type: vless
+  server: 162.159.130.234
+  port: 443
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  network: ws
+  servername: snip.edgeoneai.cc.cd
+  tls: true
+  client-fingerprint: chrome
+  ws-opts:
+    path: /
+    headers:
+      Host: snip.edgeoneai.cc.cd
+  skip-cert-verify: true
+  udp: true
+- name: '[free18#170] 🇩🇪_德国_244'
   type: vless
   server: 103.160.59.198
   port: 443
@@ -7555,7 +7494,7 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#165] 🏳️_未知_248'
+- name: '[free18#171] 🏳️_未知_248'
   type: vless
   server: 172.64.79.1
   port: 443
@@ -7570,7 +7509,37 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#166] 🇨🇭_瑞士_261'
+- name: '[free18#172] 🇺🇸_美国_257'
+  type: vless
+  server: 203.88.117.227
+  port: 443
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  network: ws
+  servername: snip.edgeoneai.cc.cd
+  tls: true
+  client-fingerprint: chrome
+  ws-opts:
+    path: /
+    headers:
+      Host: snip.edgeoneai.cc.cd
+  skip-cert-verify: true
+  udp: true
+- name: '[free18#173] 🏳️_未知_258'
+  type: vless
+  server: 104.17.139.37
+  port: 443
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  network: ws
+  servername: snip.edgeoneai.cc.cd
+  tls: true
+  client-fingerprint: chrome
+  ws-opts:
+    path: /
+    headers:
+      Host: snip.edgeoneai.cc.cd
+  skip-cert-verify: true
+  udp: true
+- name: '[free18#174] 🇨🇭_瑞士_261'
   type: vless
   server: 91.245.225.69
   port: 443
@@ -7585,7 +7554,7 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#167] 🇩🇪_德国_263'
+- name: '[free18#175] 🇩🇪_德国_263'
   type: vless
   server: 72.56.106.210
   port: 443
@@ -7600,7 +7569,7 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#168] 🇺🇸_美国_265'
+- name: '[free18#176] 🇺🇸_美国_265'
   type: vless
   server: 162.159.140.116
   port: 443
@@ -7615,22 +7584,21 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#169] 🏳️_未知_266'
+- name: '[free18#177] 🏳️_未知_271'
   type: vless
-  server: 188.114.98.0
+  server: 172.64.153.61
   port: 443
   uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
   network: ws
   servername: snip.edgeoneai.cc.cd
   tls: true
-  client-fingerprint: chrome
   ws-opts:
-    path: /fdipfp=chrome
+    path: /fdipfp=unsafe
     headers:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#170] 🏳️_未知_276'
+- name: '[free18#178] 🏳️_未知_276'
   type: vless
   server: 172.67.118.45
   port: 443
@@ -7645,7 +7613,7 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#171] 🏳️_未知_278'
+- name: '[free18#179] 🏳️_未知_278'
   type: vless
   server: 188.114.97.6
   port: 443
@@ -7660,7 +7628,22 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#172] 🏳️_未知_286'
+- name: '[free18#180] 🏳️_未知_285'
+  type: vless
+  server: 104.17.3.81
+  port: 443
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  network: ws
+  servername: snip.edgeoneai.cc.cd
+  tls: true
+  client-fingerprint: chrome
+  ws-opts:
+    path: /fdip#TELEGRAM--MARAMBASHI--MARAMBASHI--MARAMBASHI--MARAMBASHI?ed=2560
+    headers:
+      Host: snip.edgeoneai.cc.cd
+  skip-cert-verify: true
+  udp: true
+- name: '[free18#181] 🏳️_未知_286'
   type: vless
   server: 104.19.53.46
   port: 443
@@ -7674,7 +7657,7 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#173] 🇺🇸_美国_288'
+- name: '[free18#182] 🇺🇸_美国_288'
   type: vless
   server: 193.134.210.14
   port: 2053
@@ -7688,7 +7671,7 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#174] 🏳️_未知_293'
+- name: '[free18#183] 🏳️_未知_293'
   type: vless
   server: 104.17.147.22
   port: 443
@@ -7703,7 +7686,7 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#175] 🏳️_未知_300'
+- name: '[free18#184] 🏳️_未知_300'
   type: vless
   server: 104.18.89.52
   port: 443
@@ -7717,7 +7700,7 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#176] 🇰🇷_韩国_305'
+- name: '[free18#185] 🇰🇷_韩国_305'
   type: vless
   server: 123.111.169.70
   port: 443
@@ -7732,7 +7715,7 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#177] 🇯🇵_日本_308'
+- name: '[free18#186] 🇯🇵_日本_308'
   type: vless
   server: 60.130.209.253
   port: 443
@@ -7746,7 +7729,7 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#178] 🇯🇵_日本_310'
+- name: '[free18#187] 🇯🇵_日本_310'
   type: vless
   server: 172.104.81.253
   port: 443
@@ -7761,7 +7744,7 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#179] 🇬🇧_英国_312'
+- name: '[free18#188] 🇬🇧_英国_312'
   type: vless
   server: 45.152.65.137
   port: 8443
@@ -7776,7 +7759,7 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#180] 🇺🇸_美国_313'
+- name: '[free18#189] 🇺🇸_美国_313'
   type: vless
   server: 207.57.122.65
   port: 443
@@ -7791,7 +7774,7 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#181] 🇭🇰_香港_315'
+- name: '[free18#190] 🇭🇰_香港_315'
   type: vless
   server: 103.143.81.178
   port: 443
@@ -7806,7 +7789,7 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#182] 🇬🇧_英国_324'
+- name: '[free18#191] 🇬🇧_英国_324'
   type: vless
   server: 45.152.65.100
   port: 443
@@ -7821,7 +7804,7 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#183] 🇸🇬_新加坡_336'
+- name: '[free18#192] 🇸🇬_新加坡_336'
   type: vless
   server: 178.93.160.236
   port: 443
@@ -7836,7 +7819,7 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#184] 🇧🇬_保加利亚_337'
+- name: '[free18#193] 🇧🇬_保加利亚_337'
   type: vless
   server: 13.140.29.45
   port: 443
@@ -7851,7 +7834,7 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#185] 🇻🇳_越南_347'
+- name: '[free18#194] 🇻🇳_越南_347'
   type: vless
   server: 103.161.179.171
   port: 443
@@ -7866,7 +7849,7 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#186] 🇮🇱_以色列_353'
+- name: '[free18#195] 🇮🇱_以色列_353'
   type: vless
   server: 185.239.48.154
   port: 8443
@@ -7881,7 +7864,7 @@ proxies:
       Host: snip.edgeoneai.cc.cd
   skip-cert-verify: true
   udp: true
-- name: '[free18#187] 🏳️_未知_357'
+- name: '[free18#196] 🏳️_未知_357'
   type: vless
   server: 104.18.46.214
   port: 443
@@ -7914,7 +7897,368 @@ proxies:
   tls: false
   skip-cert-verify: true
   udp: true
-- name: '[ermaozi#003] 🇱🇻 拉脱维亚 | LVA'
+- name: '[ermaozi#015] 🇩🇪DE_1|1017KB/s'
+  type: http
+  server: 149.36.50.157
+  port: 443
+  skip-cert-verify: true
+  tls: true
+- name: '[ermaozi#016] 🇩🇪DE_2|1.3MB/s'
+  type: http
+  server: 87.249.132.97
+  port: 9443
+  skip-cert-verify: true
+  tls: true
+- name: '[ermaozi#017] 🇧🇬BG_1|1.1MB/s'
+  type: http
+  server: 185.94.192.210
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+- name: '[ermaozi#018] 🇦🇹AT_2|1.4MB/s'
+  type: http
+  server: 146.70.244.18
+  port: 443
+  skip-cert-verify: true
+  tls: true
+- name: '[ermaozi#019] 🇭🇺HU_1|1.2MB/s'
+  type: http
+  server: 146.70.203.18
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+- name: '[ermaozi#020] 🇵🇱PL_2|3.2MB/s'
+  type: http
+  server: 37.120.156.18
+  port: 443
+  skip-cert-verify: true
+  tls: true
+- name: '[ermaozi#021] 🇯🇵JP_1|3.4MB/s'
+  type: vless
+  server: 168.93.214.124
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: snip.edgeoneai.cc.cd
+  tls: true
+  udp: true
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  ws-opts:
+    headers:
+      Host: snip.edgeoneai.cc.cd
+      User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36
+    path: /fdip=sstp://vpn:vpn@public-vpn-200.opengw.net:443?ed=2560fp=chromefp=chromefp=chrome
+  xudp: true
+- name: '[ermaozi#022] 🇨🇾 塞浦路斯 | CYP #1'
+  type: vless
+  server: 194.55.166.65
+  port: 2087
+  client-fingerprint: chrome
+  network: ws
+  servername: snip.edgeoneai.cc.cd
+  tls: true
+  udp: true
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  ws-opts:
+    headers:
+      Host: snip.edgeoneai.cc.cd
+    path: /
+- name: '[ermaozi#023] 🇩🇪 德国 | DEU #2'
+  type: vless
+  server: 64.226.96.188
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: snip.edgeoneai.cc.cd
+  tls: true
+  udp: true
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  ws-opts:
+    headers:
+      Host: snip.edgeoneai.cc.cd
+    path: /
+- name: '[ermaozi#024] 🇩🇪 德国 | DEU #3'
+  type: vless
+  server: 64.188.68.254
+  port: 8443
+  client-fingerprint: chrome
+  network: ws
+  servername: snip.edgeoneai.cc.cd
+  tls: true
+  udp: true
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  ws-opts:
+    headers:
+      Host: snip.edgeoneai.cc.cd
+    path: /
+- name: '[ermaozi#025] 🇩🇪 德国 | DEU #4'
+  type: vless
+  server: 2.27.29.155
+  port: 8443
+  client-fingerprint: chrome
+  network: ws
+  servername: snip.edgeoneai.cc.cd
+  tls: true
+  udp: true
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  ws-opts:
+    headers:
+      Host: snip.edgeoneai.cc.cd
+    path: /
+- name: '[ermaozi#026] 🇫🇷 法国 | FRA #1'
+  type: vless
+  server: 13.38.32.188
+  port: 443
+  network: http
+  tls: false
+  udp: true
+  uuid: 7060231d-b9ba-495f-a218-bf427940cf3e
+- name: '[ermaozi#027] 🇬🇧 英国 | GBR #1'
+  type: vless
+  server: 18.135.33.244
+  port: 22223
+  network: tcp
+  tls: false
+  udp: true
+  uuid: e4514801-0d5a-42ba-869f-39bd605aef9e
+  ws-opts:
+    path: /
+- name: '[ermaozi#028] 🇮🇪 爱尔兰 | IRL #1'
+  type: vless
+  server: 45.141.234.138
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: snip.edgeoneai.cc.cd
+  tls: true
+  udp: true
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  ws-opts:
+    headers:
+      Host: snip.edgeoneai.cc.cd
+    path: /
+- name: '[ermaozi#029] 🇯🇵 日本 | JPN #1'
+  type: vless
+  server: 52.199.33.104
+  port: 443
+  network: http
+  tls: false
+  udp: true
+  uuid: 7060231d-b9ba-495f-a218-bf427940cf3e
+- name: '[ermaozi#030] 🇰🇷 韩国 | KOR #1'
+  type: vless
+  server: 103.218.173.218
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: snip.edgeoneai.cc.cd
+  tls: true
+  udp: true
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  ws-opts:
+    headers:
+      Host: snip.edgeoneai.cc.cd
+    path: /
+- name: '[ermaozi#031] 🇳🇱 荷兰 | NLD #1'
+  type: vless
+  server: 104.24.79.205
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: snip.edgeoneai.cc.cd
+  tls: true
+  udp: true
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  ws-opts:
+    headers:
+      Host: snip.edgeoneai.cc.cd
+    path: /fp=chrome
+- name: '[ermaozi#032] 🇳🇱 荷兰 | NLD #2'
+  type: vless
+  server: 172.67.67.89
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: snip.edgeoneai.cc.cd
+  tls: true
+  udp: true
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  ws-opts:
+    headers:
+      Host: snip.edgeoneai.cc.cd
+    path: /
+- name: '[ermaozi#033] 🇳🇱 荷兰 | NLD 3'
+  type: trojan
+  server: 172.67.71.122
+  port: 443
+  alpn:
+  - h3
+  network: ws
+  password: bpb-trojan
+  skip-cert-verify: true
+  sni: 6982410.xyz
+  udp: true
+  ws-opts:
+    headers:
+      Host: 6982410.xyz
+    path: /tr
+- name: '[ermaozi#034] 🇸🇬 新加坡 | SGP #2'
+  type: vless
+  server: 45.76.189.166
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: snip.edgeoneai.cc.cd
+  tls: true
+  udp: true
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  ws-opts:
+    headers:
+      Host: snip.edgeoneai.cc.cd
+    path: /
+- name: '[ermaozi#035] 🇸🇬 新加坡 | SGP #4'
+  type: vless
+  server: 172.64.159.188
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: snip.edgeoneai.cc.cd
+  tls: true
+  udp: true
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  ws-opts:
+    headers:
+      Host: snip.edgeoneai.cc.cd
+    path: /
+- name: '[ermaozi#036] 🇸🇬 新加坡 | SGP #5'
+  type: vless
+  server: 188.164.248.18
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: snip.edgeoneai.cc.cd
+  tls: true
+  udp: true
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  ws-opts:
+    headers:
+      Host: snip.edgeoneai.cc.cd
+    path: /
+- name: '[ermaozi#037] 🇸🇬 新加坡 | SGP #6'
+  type: vless
+  server: 104.18.40.182
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: snip.edgeoneai.cc.cd
+  tls: true
+  udp: true
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  ws-opts:
+    headers:
+      Host: snip.edgeoneai.cc.cd
+    path: /
+- name: '[ermaozi#038] 🇸🇬 新加坡 | SGP #9'
+  type: vless
+  server: 45.76.158.173
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: snip.edgeoneai.cc.cd
+  tls: true
+  udp: true
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  ws-opts:
+    headers:
+      Host: snip.edgeoneai.cc.cd
+    path: /
+- name: '[ermaozi#039] 🇺🇸 美国 | USA #5'
+  type: vless
+  server: 162.159.198.1
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: snip.edgeoneai.cc.cd
+  tls: true
+  udp: true
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  ws-opts:
+    headers:
+      Host: snip.edgeoneai.cc.cd
+    path: /
+- name: '[ermaozi#040] 🇺🇸 美国 | USA #8'
+  type: vless
+  server: 104.18.255.167
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: snip.edgeoneai.cc.cd
+  tls: true
+  udp: true
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  ws-opts:
+    headers:
+      Host: snip.edgeoneai.cc.cd
+    path: /
+- name: '[ermaozi#041] 🇺🇸 美国 | USA #10'
+  type: vless
+  server: 162.159.197.1
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: snip.edgeoneai.cc.cd
+  tls: true
+  udp: true
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  ws-opts:
+    headers:
+      Host: snip.edgeoneai.cc.cd
+    path: /
+- name: '[ermaozi#042] 🇺🇸 美国 | USA #12'
+  type: vless
+  server: 104.17.125.98
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: snip.edgeoneai.cc.cd
+  tls: true
+  udp: true
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  ws-opts:
+    headers:
+      Host: snip.edgeoneai.cc.cd
+    path: /
+- name: '[ermaozi#043] 🇺🇸 美国 | USA #14'
+  type: vless
+  server: 104.17.103.33
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: snip.edgeoneai.cc.cd
+  tls: true
+  udp: true
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  ws-opts:
+    headers:
+      Host: snip.edgeoneai.cc.cd
+    path: /
+- name: '[ermaozi#044] 🇺🇸 美国 | USA #20'
+  type: vless
+  server: www.5h.com
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: youxuanku.kdns.fr
+  tls: true
+  udp: true
+  uuid: 4c0b7280-76bb-495c-9c8b-f05712ebf805
+  ws-opts:
+    headers:
+      Host: youxuanku.kdns.fr
+    path: /
+- name: '[ermaozi#045] 🇱🇻 拉脱维亚 | LVA'
   type: vless
   server: lv5.himoy.space
   port: 443
@@ -7928,7 +8272,7 @@ proxies:
   client-fingerprint: firefox
   network: tcp
   udp: true
-- name: '[ermaozi#004] 🇱🇻 拉脱维亚 | LVA 2'
+- name: '[ermaozi#046] 🇱🇻 拉脱维亚 | LVA 2'
   type: vless
   server: lv1.himoy.space
   port: 443
@@ -7942,7 +8286,7 @@ proxies:
   client-fingerprint: firefox
   network: tcp
   udp: true
-- name: '[ermaozi#005] 🇱🇻 拉脱维亚 | LVA 3'
+- name: '[ermaozi#047] 🇱🇻 拉脱维亚 | LVA 3'
   type: vless
   server: lv4.himoy.space
   port: 443
@@ -7956,7 +8300,7 @@ proxies:
   client-fingerprint: firefox
   network: tcp
   udp: true
-- name: '[ermaozi#006] 🇳🇱 荷兰 | NLD 4'
+- name: '[ermaozi#048] 🇳🇱 荷兰 | NLD 4'
   type: vless
   server: nl3.himoy.space
   port: 443
@@ -7970,7 +8314,7 @@ proxies:
   client-fingerprint: firefox
   network: tcp
   udp: true
-- name: '[ermaozi#007] 🇵🇱 波兰 | POL'
+- name: '[ermaozi#049] 🇵🇱 波兰 | POL'
   type: vless
   server: pl3.himoy.space
   port: 443
@@ -7984,7 +8328,7 @@ proxies:
   client-fingerprint: firefox
   network: tcp
   udp: true
-- name: '[ermaozi#008] 🇺🇸 美国 | USA 22'
+- name: '[ermaozi#050] 🇺🇸 美国 | USA 22'
   type: vless
   server: 67.159.49.36
   port: 2091
@@ -7998,6 +8342,48 @@ proxies:
   client-fingerprint: chrome
   network: tcp
   udp: true
+- name: '[clashfree#001] 未知 VLESS-05 | free-nodes'
+  type: vless
+  server: 192.0.2.1
+  port: 1
+  uuid: c073aa06-c111-4f1c-8faf-e111ce8e1ceb
+  tls: false
+  skip-cert-verify: false
+  network: tcp
+- name: '[clashfree#002] 🇸🇬 SG SS-06 | free-nodes'
+  type: ss
+  server: 192.0.2.1
+  port: 1
+  cipher: aes-128-gcm
+  password: 6601fb90e9b3
+- name: '[clashfree#003] 未知 VLESS-07 | free-nodes'
+  type: vless
+  server: s785.ccgfw.online
+  port: 443
+  uuid: 30e52776-55ac-3cb4-8d36-e2910f07e2c3
+  tls: true
+  alpn:
+  - h2
+  - http/1.1
+  flow: xtls-rprx-vision
+  skip-cert-verify: false
+  servername: u695098ue79dbcd4s783.gogocs.xyz
+  client-fingerprint: firefox
+  network: tcp
+- name: '[clashfree#004] 未知 VLESS-08 | free-nodes'
+  type: vless
+  server: 2400:e920:0:a::52
+  port: 443
+  uuid: 30e52776-55ac-3cb4-8d36-e2910f07e2c3
+  tls: true
+  alpn:
+  - h2
+  - http/1.1
+  flow: xtls-rprx-vision
+  skip-cert-verify: false
+  servername: u695098ue79dbcd4s783.gogocs.xyz
+  client-fingerprint: firefox
+  network: tcp
 - name: '[clashfree#005] 🇺🇸 US VLESS-10 | free-nodes'
   type: vless
   server: s554.csgfw.top
@@ -8010,6 +8396,20 @@ proxies:
   flow: xtls-rprx-vision
   skip-cert-verify: false
   servername: u695098u8fad5a44s552.gogocs.xyz
+  client-fingerprint: firefox
+  network: tcp
+- name: '[clashfree#006] 未知 VLESS-11 | free-nodes'
+  type: vless
+  server: 2a14:7584:4408::2
+  port: 10829
+  uuid: 30e52776-55ac-3cb4-8d36-e2910f07e2c3
+  tls: true
+  alpn:
+  - h2
+  - http/1.1
+  flow: xtls-rprx-vision
+  skip-cert-verify: false
+  servername: u695098u2c5f47d6s8746.gogocs.xyz
   client-fingerprint: firefox
   network: tcp
 - name: '[clashfree#007] 🇭🇰 HK VLESS-12 | free-nodes'
@@ -8132,6 +8532,20 @@ proxies:
   flow: xtls-rprx-vision
   skip-cert-verify: false
   servername: u695098u54d73951s298.kukuss.top
+  client-fingerprint: firefox
+  network: tcp
+- name: '[clashfree#016] 未知 VLESS-21 | free-nodes'
+  type: vless
+  server: 2a12:bec4:1821:7d0::a
+  port: 443
+  uuid: 30e52776-55ac-3cb4-8d36-e2910f07e2c3
+  tls: true
+  alpn:
+  - h2
+  - http/1.1
+  flow: xtls-rprx-vision
+  skip-cert-verify: false
+  servername: u695098u7dae9c0cs220.gogocs.xyz
   client-fingerprint: firefox
   network: tcp
 - name: '[clashfree#017] 🇺🇸 US VLESS-22 | free-nodes'
@@ -8260,6 +8674,20 @@ proxies:
   servername: u695098uf24555c7s2316.gogocs.xyz
   client-fingerprint: firefox
   network: tcp
+- name: '[clashfree#026] 未知 VLESS-35 | free-nodes'
+  type: vless
+  server: s784.uugfw.top
+  port: 443
+  uuid: 30e52776-55ac-3cb4-8d36-e2910f07e2c3
+  tls: true
+  alpn:
+  - h2
+  - http/1.1
+  flow: xtls-rprx-vision
+  skip-cert-verify: false
+  servername: u695098ue79dbcd4s783.gogocs.xyz
+  client-fingerprint: firefox
+  network: tcp
 - name: '[clashfree#027] 🇷🇺 RU VLESS-38 | free-nodes'
   type: vless
   server: 69d2cbcdc461.fuhuovps.xyz
@@ -8343,6 +8771,20 @@ proxies:
   servername: u695098u14c5ddd4s2358.gogocs.xyz
   client-fingerprint: firefox
   network: tcp
+- name: '[clashfree#033] 未知 VLESS-46 | free-nodes'
+  type: vless
+  server: s171.wagahaha.xyz
+  port: 443
+  uuid: 30e52776-55ac-3cb4-8d36-e2910f07e2c3
+  tls: true
+  alpn:
+  - h2
+  - http/1.1
+  flow: xtls-rprx-vision
+  skip-cert-verify: false
+  servername: u695098u7dae9c0cs220.gogocs.xyz
+  client-fingerprint: firefox
+  network: tcp
 - name: '[clashfree#034] 🇬🇧 GB VLESS-47 | free-nodes'
   type: vless
   server: 2a13:29c0:2641:a307:2044:17f:7e80:4b
@@ -8357,6 +8799,19 @@ proxies:
   servername: u695098u3b5ab61cs124.gogocs.xyz
   client-fingerprint: firefox
   network: tcp
+- name: '[clashfree#035] 未知 VLESS-48 | free-nodes'
+  type: vless
+  server: 104.27.0.121
+  port: 443
+  uuid: 30e52776-55ac-3cb4-8d36-e2910f07e2c3
+  tls: true
+  alpn:
+  - h2
+  - http/1.1
+  skip-cert-verify: false
+  servername: b33ec4a1s226.fuhuovps.xyz
+  client-fingerprint: ios
+  network: xhttp
 - name: '[clashfree#036] 🇺🇸 US VLESS-50 | free-nodes'
   type: vless
   server: 198.98.48.110
@@ -8385,6 +8840,34 @@ proxies:
   servername: u695098u54d73951s298.kukuss.top
   client-fingerprint: firefox
   network: tcp
+- name: '[clashfree#038] 未知 VLESS-52 | free-nodes'
+  type: vless
+  server: s8747.okgfwbackxyz.xyz
+  port: 10829
+  uuid: 30e52776-55ac-3cb4-8d36-e2910f07e2c3
+  tls: true
+  alpn:
+  - h2
+  - http/1.1
+  flow: xtls-rprx-vision
+  skip-cert-verify: false
+  servername: u695098u2c5f47d6s8746.gogocs.xyz
+  client-fingerprint: firefox
+  network: tcp
+- name: '[clashfree#039] 未知 VLESS-53 | free-nodes'
+  type: vless
+  server: s8748.okgg.top
+  port: 10829
+  uuid: 30e52776-55ac-3cb4-8d36-e2910f07e2c3
+  tls: true
+  alpn:
+  - h2
+  - http/1.1
+  flow: xtls-rprx-vision
+  skip-cert-verify: false
+  servername: u695098u2c5f47d6s8746.gogocs.xyz
+  client-fingerprint: firefox
+  network: tcp
 - name: '[clashfree#040] 🇬🇧 GB VLESS-56 | free-nodes'
   type: vless
   server: s1243.sspcccdn.xyz
@@ -8397,6 +8880,34 @@ proxies:
   flow: xtls-rprx-vision
   skip-cert-verify: false
   servername: u695098ueb8953b4s861.gogocs.xyz
+  client-fingerprint: firefox
+  network: tcp
+- name: '[clashfree#041] 未知 VLESS-57 | free-nodes'
+  type: vless
+  server: 62.105.220.106
+  port: 443
+  uuid: 30e52776-55ac-3cb4-8d36-e2910f07e2c3
+  tls: true
+  alpn:
+  - h2
+  - http/1.1
+  flow: xtls-rprx-vision
+  skip-cert-verify: false
+  servername: u695098u7dae9c0cs220.gogocs.xyz
+  client-fingerprint: firefox
+  network: tcp
+- name: '[clashfree#042] 未知 VLESS-58 | free-nodes'
+  type: vless
+  server: 195.170.172.139
+  port: 57667
+  uuid: 30e52776-55ac-3cb4-8d36-e2910f07e2c3
+  tls: true
+  alpn:
+  - h2
+  - http/1.1
+  flow: xtls-rprx-vision
+  skip-cert-verify: false
+  servername: u695098u6b6f0dd0s2057.gogocs.xyz
   client-fingerprint: firefox
   network: tcp
 - name: '[clashfree#043] 🇷🇺 RU VLESS-59 | free-nodes'
@@ -8413,6 +8924,20 @@ proxies:
   servername: u695098u14c5ddd4s2358.gogocs.xyz
   client-fingerprint: firefox
   network: tcp
+- name: '[clashfree#044] 未知 VLESS-60 | free-nodes'
+  type: vless
+  server: s170.gogocs.xyz
+  port: 443
+  uuid: 30e52776-55ac-3cb4-8d36-e2910f07e2c3
+  tls: true
+  alpn:
+  - h2
+  - http/1.1
+  flow: xtls-rprx-vision
+  skip-cert-verify: false
+  servername: u695098u7dae9c0cs220.gogocs.xyz
+  client-fingerprint: firefox
+  network: tcp
 - name: '[clashfree#045] 🇺🇸 US VLESS-62 | free-nodes'
   type: vless
   server: s482.wagahaha.xyz
@@ -8427,6 +8952,19 @@ proxies:
   servername: u695098u764943ccs478.gogocs.xyz
   client-fingerprint: firefox
   network: tcp
+- name: '[clashfree#046] 未知 VLESS-63 | free-nodes'
+  type: vless
+  server: 104.21.207.202
+  port: 443
+  uuid: 30e52776-55ac-3cb4-8d36-e2910f07e2c3
+  tls: true
+  alpn:
+  - h2
+  - http/1.1
+  skip-cert-verify: false
+  servername: b33ec4a1s226.fuhuovps.xyz
+  client-fingerprint: ios
+  network: xhttp
 - name: '[clashfree#047] 🇺🇸 US VLESS-64 | free-nodes'
   type: vless
   server: s490.kukuss.top
@@ -8455,6 +8993,19 @@ proxies:
   servername: u695098ueb8953b4s861.gogocs.xyz
   client-fingerprint: firefox
   network: tcp
+- name: '[clashfree#049] 未知 VLESS-66 | free-nodes'
+  type: vless
+  server: 104.19.12.0
+  port: 443
+  uuid: 30e52776-55ac-3cb4-8d36-e2910f07e2c3
+  tls: true
+  alpn:
+  - h2
+  - http/1.1
+  skip-cert-verify: false
+  servername: b33ec4a1s226.fuhuovps.xyz
+  client-fingerprint: ios
+  network: xhttp
 - name: '[clashfree#050] 🇺🇸 US VLESS-67 | free-nodes'
   type: vless
   server: 185.106.96.231
@@ -8481,6 +9032,48 @@ proxies:
   flow: xtls-rprx-vision
   skip-cert-verify: false
   servername: u695098u5e20ed1cs709.gogocs.xyz
+  client-fingerprint: firefox
+  network: tcp
+- name: '[clashfree#052] 未知 VLESS-69 | free-nodes'
+  type: vless
+  server: 160.25.74.91
+  port: 443
+  uuid: 30e52776-55ac-3cb4-8d36-e2910f07e2c3
+  tls: true
+  alpn:
+  - h2
+  - http/1.1
+  flow: xtls-rprx-vision
+  skip-cert-verify: false
+  servername: u695098ue79dbcd4s783.gogocs.xyz
+  client-fingerprint: firefox
+  network: tcp
+- name: '[clashfree#053] 未知 VLESS-70 | free-nodes'
+  type: vless
+  server: 103.173.155.212
+  port: 10829
+  uuid: 30e52776-55ac-3cb4-8d36-e2910f07e2c3
+  tls: true
+  alpn:
+  - h2
+  - http/1.1
+  flow: xtls-rprx-vision
+  skip-cert-verify: false
+  servername: u695098u4d99b056s591.csgfw.top
+  client-fingerprint: firefox
+  network: tcp
+- name: '[clashfree#054] 未知 VLESS-71 | free-nodes'
+  type: vless
+  server: 185.119.19.105
+  port: 10829
+  uuid: 30e52776-55ac-3cb4-8d36-e2910f07e2c3
+  tls: true
+  alpn:
+  - h2
+  - http/1.1
+  flow: xtls-rprx-vision
+  skip-cert-verify: false
+  servername: u695098u2c5f47d6s8746.gogocs.xyz
   client-fingerprint: firefox
   network: tcp
 - name: '[clashfree#055] 🇺🇸 US VLESS-72 | free-nodes'
@@ -8580,6 +9173,34 @@ proxies:
   servername: u695098u764943ccs478.gogocs.xyz
   client-fingerprint: firefox
   network: tcp
+- name: '[clashfree#062] 未知 VLESS-81 | free-nodes'
+  type: vless
+  server: s592.wagahaha.xyz
+  port: 10829
+  uuid: 30e52776-55ac-3cb4-8d36-e2910f07e2c3
+  tls: true
+  alpn:
+  - h2
+  - http/1.1
+  flow: xtls-rprx-vision
+  skip-cert-verify: false
+  servername: u695098u4d99b056s591.csgfw.top
+  client-fingerprint: firefox
+  network: tcp
+- name: '[clashfree#063] 未知 VLESS-82 | free-nodes'
+  type: vless
+  server: s593.sspcccdn.xyz
+  port: 10829
+  uuid: 30e52776-55ac-3cb4-8d36-e2910f07e2c3
+  tls: true
+  alpn:
+  - h2
+  - http/1.1
+  flow: xtls-rprx-vision
+  skip-cert-verify: false
+  servername: u695098u4d99b056s591.csgfw.top
+  client-fingerprint: firefox
+  network: tcp
 - name: '[clashfree#064] 🇺🇸 US VLESS-83 | free-nodes'
   type: vless
   server: s880.gogocs.xyz
@@ -8608,337 +9229,99 @@ proxies:
   servername: u695098u3b5ab61cs124.gogocs.xyz
   client-fingerprint: firefox
   network: tcp
-- name: '[Eternity#001] 🇺🇸US-37.19.198.243-0138 | 131.16MB'
-  type: ss
-  server: 37.19.198.243
-  port: 443
-  cipher: aes-128-gcm
-  password: shadowsocks
-- name: '[Eternity#003] 🇺🇸US-37.19.198.236-0137 | 96.337MB'
-  type: ss
-  server: 37.19.198.236
-  port: 443
-  cipher: aes-128-gcm
-  password: shadowsocks
-- name: '[Eternity#005] 🇬🇧GB-82.38.31.217-0128 | 90.712MB'
-  type: ss
-  server: 82.38.31.217
-  port: 8080
-  cipher: chacha20-ietf-poly1305
-  password: k1dBOmOB4oqi7Ump37a1bQ
-- name: '[Eternity#007] 🇬🇧GB-82.38.31.210-0118 | 89.243MB'
-  type: ss
-  server: 82.38.31.210
-  port: 8080
-  cipher: chacha20-ietf-poly1305
-  password: k1dBOmOB4oqi7Ump37a1bQ
-- name: '[Eternity#009] 🇳🇱NL-193.29.139.147-5390 | 89.003MB'
-  type: ss
-  server: 193.29.139.147
-  port: 8080
-  cipher: chacha20-ietf-poly1305
-  password: k1dBOmOB4oqi7Ump37a1bQ
-- name: '[Eternity#011] 🇬🇧GB-82.38.31.179-5341 | 88.696MB'
-  type: ss
-  server: 82.38.31.179
-  port: 8080
-  cipher: chacha20-ietf-poly1305
-  password: k1dBOmOB4oqi7Ump37a1bQ
-- name: '[Eternity#012] 🇬🇧GB-82.38.31.189-5335 | 88.493MB'
-  type: ss
-  server: 82.38.31.189
-  port: 8080
-  cipher: chacha20-ietf-poly1305
-  password: k1dBOmOB4oqi7Ump37a1bQ
-- name: '[Eternity#017] 🇬🇧GB-82.38.31.192-0120 | 86.735MB'
-  type: ss
-  server: 82.38.31.192
-  port: 8080
-  cipher: chacha20-ietf-poly1305
-  password: k1dBOmOB4oqi7Ump37a1bQ
-- name: '[Eternity#018] 🇬🇧GB-82.38.31.190-5346 | 86.508MB'
-  type: ss
-  server: 82.38.31.190
-  port: 8080
-  cipher: chacha20-ietf-poly1305
-  password: k1dBOmOB4oqi7Ump37a1bQ
-- name: '[Eternity#019] 🇬🇧GB-82.38.31.180-5343 | 85.962MB'
-  type: ss
-  server: 82.38.31.180
-  port: 8080
-  cipher: chacha20-ietf-poly1305
-  password: k1dBOmOB4oqi7Ump37a1bQ
-- name: '[Eternity#021] 🇳🇱NL-193.29.139.223-5388 | 85.644MB'
-  type: ss
-  server: 193.29.139.223
-  port: 8080
-  cipher: chacha20-ietf-poly1305
-  password: k1dBOmOB4oqi7Ump37a1bQ
-- name: '[Eternity#022] 🇬🇧GB-82.38.31.205-0114 | 85.078MB'
-  type: ss
-  server: 82.38.31.205
-  port: 8080
-  cipher: chacha20-ietf-poly1305
-  password: k1dBOmOB4oqi7Ump37a1bQ
-- name: '[Eternity#025] 🇬🇧GB-82.38.31.184-0134 | 84.426MB'
-  type: ss
-  server: 82.38.31.184
-  port: 8080
-  cipher: chacha20-ietf-poly1305
-  password: k1dBOmOB4oqi7Ump37a1bQ
-- name: '[Eternity#033] 🇺🇸US-156.146.38.168-0100 | 73.795MB'
+- name: '[Eternity#002] 🇺🇸US-156.146.38.168-0088 | 121.841MB'
   type: ss
   server: 156.146.38.168
   port: 443
   cipher: aes-128-gcm
   password: shadowsocks
-- name: '[Eternity#036] 🇺🇸US-173.244.56.6-0105 | 49.741MB'
+- name: '[Eternity#005] 🇺🇸US-138.199.42.68-4947 | 83.182MB'
   type: ss
-  server: 173.244.56.6
-  port: 443
-  cipher: aes-128-gcm
-  password: shadowsocks
-- name: '[Eternity#038] 🇺🇸US-173.244.56.9-0111 | 42.727MB'
+  server: 138.199.42.68
+  port: 8080
+  cipher: rc4-md5
+  password: 14fFPrbezE3HDZzsMOr6
+- name: '[Eternity#008] 🇬🇧GB-82.38.31.217-0048 | 72.958MB'
+  type: ss
+  server: 82.38.31.217
+  port: 8080
+  cipher: chacha20-ietf-poly1305
+  password: k1dBOmOB4oqi7Ump37a1bQ
+- name: '[Eternity#009] 🇬🇧GB-82.38.31.207-0194 | 72.433MB'
+  type: ss
+  server: 82.38.31.207
+  port: 8080
+  cipher: chacha20-ietf-poly1305
+  password: k1dBOmOB4oqi7Ump37a1bQ
+- name: '[Eternity#012] 🇳🇱NL-193.29.139.147-0052 | 71.472MB'
+  type: ss
+  server: 193.29.139.147
+  port: 8080
+  cipher: chacha20-ietf-poly1305
+  password: k1dBOmOB4oqi7Ump37a1bQ
+- name: '[Eternity#013] 🇬🇧GB-82.38.31.210-0050 | 71.23MB'
+  type: ss
+  server: 82.38.31.210
+  port: 8080
+  cipher: chacha20-ietf-poly1305
+  password: k1dBOmOB4oqi7Ump37a1bQ
+- name: '[Eternity#014] 🇬🇧GB-82.38.31.205-0068 | 71.055MB'
+  type: ss
+  server: 82.38.31.205
+  port: 8080
+  cipher: chacha20-ietf-poly1305
+  password: k1dBOmOB4oqi7Ump37a1bQ
+- name: '[Eternity#016] 🇬🇧GB-82.38.31.179-0054 | 70.385MB'
+  type: ss
+  server: 82.38.31.179
+  port: 8080
+  cipher: chacha20-ietf-poly1305
+  password: k1dBOmOB4oqi7Ump37a1bQ
+- name: '[Eternity#020] 🇬🇧GB-82.38.31.180-0063 | 67.003MB'
+  type: ss
+  server: 82.38.31.180
+  port: 8080
+  cipher: chacha20-ietf-poly1305
+  password: k1dBOmOB4oqi7Ump37a1bQ
+- name: '[Eternity#021] 🇬🇧GB-82.38.31.192-0060 | 66.503MB'
+  type: ss
+  server: 82.38.31.192
+  port: 8080
+  cipher: chacha20-ietf-poly1305
+  password: k1dBOmOB4oqi7Ump37a1bQ
+- name: '[Eternity#024] 🇺🇸US-173.244.56.9-0099 | 65.953MB'
   type: ss
   server: 173.244.56.9
   port: 443
   cipher: aes-128-gcm
   password: shadowsocks
-- name: '[Eternity#039] 🇩🇪DE-188.241.241.200-0157 | 31.376MB'
-  type: trojan
-  server: de7.dedushka.top
+- name: '[Eternity#026] 🇬🇧GB-82.38.31.184-0072 | 55.661MB'
+  type: ss
+  server: 82.38.31.184
+  port: 8080
+  cipher: chacha20-ietf-poly1305
+  password: k1dBOmOB4oqi7Ump37a1bQ
+- name: '[Eternity#028] 🇺🇸US-173.244.56.6-0097 | 43.206MB'
+  type: ss
+  server: 173.244.56.6
   port: 443
-  password: 4_VfP9fKaM-3LpSVvoZuc_WUzLoCdHaA
-  sni: de7.dedushka.top
-  skip-cert-verify: false
-- name: '[Eternity#040] 🇬🇧GB-82.38.31.174-0177 | 30.119MB'
-  type: ss
-  server: 82.38.31.174
-  port: 8080
-  cipher: chacha20-ietf-poly1305
-  password: oZIoA69Q8yhcQV8ka3Pa3A
-- name: '[Eternity#041] 🇬🇧GB-82.38.31.35-0165 | 29.622MB'
-  type: ss
-  server: 82.38.31.35
-  port: 8080
-  cipher: chacha20-ietf-poly1305
-  password: oZIoA69Q8yhcQV8ka3Pa3A
-- name: '[Eternity#042] 🇬🇧GB-82.38.31.42-0184 | 29.325MB'
-  type: ss
-  server: 82.38.31.42
-  port: 8080
-  cipher: chacha20-ietf-poly1305
-  password: oZIoA69Q8yhcQV8ka3Pa3A
-- name: '[Eternity#046] 🇬🇧GB-82.38.31.149-0169 | 28.108MB'
-  type: ss
-  server: 82.38.31.149
-  port: 8080
-  cipher: chacha20-ietf-poly1305
-  password: oZIoA69Q8yhcQV8ka3Pa3A
-- name: '[Eternity#047] 🇬🇧GB-82.38.31.159-0156 | 27.794MB'
-  type: ss
-  server: 82.38.31.159
-  port: 443
-  cipher: chacha20-ietf-poly1305
-  password: oZIoA69Q8yhcQV8ka3Pa3A
-- name: '[Eternity#049] 🇬🇧GB-82.38.31.82-0179 | 27.497MB'
-  type: ss
-  server: 82.38.31.82
-  port: 8080
-  cipher: chacha20-ietf-poly1305
-  password: oZIoA69Q8yhcQV8ka3Pa3A
-- name: '[Eternity#051] 🇬🇧GB-178.83.185.156-0158 | 26.211MB'
-  type: ss
-  server: 178.83.185.156
-  port: 8080
-  cipher: chacha20-ietf-poly1305
-  password: oZIoA69Q8yhcQV8ka3Pa3A
-- name: '[Eternity#053] 🇳🇱NL-109.201.152.181-0151 | 25.787MB'
+  cipher: aes-128-gcm
+  password: shadowsocks
+- name: '[Eternity#031] 🇳🇱NL-109.201.152.181-0117 | 24.263MB'
   type: ss
   server: 109.201.152.181
   port: 443
   cipher: aes-128-cfb
   password: shadowsocks
-- name: '[Eternity#054] 🇬🇧GB-82.38.31.174-0174 | 25.747MB'
-  type: ss
-  server: 82.38.31.174
-  port: 443
-  cipher: chacha20-ietf-poly1305
-  password: oZIoA69Q8yhcQV8ka3Pa3A
-- name: '[Eternity#055] 🇬🇧GB-82.38.31.171-0185 | 25.679MB'
-  type: ss
-  server: 82.38.31.171
-  port: 8080
-  cipher: chacha20-ietf-poly1305
-  password: oZIoA69Q8yhcQV8ka3Pa3A
-- name: '[Eternity#061] 🇬🇧GB-82.38.31.2-0186 | 25.075MB'
-  type: ss
-  server: 82.38.31.2
-  port: 8080
-  cipher: chacha20-ietf-poly1305
-  password: oZIoA69Q8yhcQV8ka3Pa3A
-- name: '[Eternity#062] 🇬🇧GB-82.38.31.46-0176 | 24.868MB'
-  type: ss
-  server: 82.38.31.46
-  port: 8080
-  cipher: chacha20-ietf-poly1305
-  password: oZIoA69Q8yhcQV8ka3Pa3A
-- name: '[Eternity#063] 🇬🇧GB-82.38.31.170-0175 | 24.679MB'
-  type: ss
-  server: 82.38.31.170
-  port: 443
-  cipher: chacha20-ietf-poly1305
-  password: oZIoA69Q8yhcQV8ka3Pa3A
-- name: '[Eternity#066] 🇬🇧GB-82.38.31.162-0161 | 22.022MB'
+- name: '[Eternity#034] 🇬🇧GB-82.38.31.162-0132 | 23.11MB'
   type: ss
   server: 82.38.31.162
   port: 443
   cipher: chacha20-ietf-poly1305
   password: oZIoA69Q8yhcQV8ka3Pa3A
-- name: '[Eternity#070] 🇳🇱NL-193.29.139.151-0168 | 17.37MB'
+- name: '[Eternity#035] 🇬🇧GB-82.38.31.171-0119 | 21.837MB'
   type: ss
-  server: 193.29.139.151
+  server: 82.38.31.171
   port: 8080
   cipher: chacha20-ietf-poly1305
   password: oZIoA69Q8yhcQV8ka3Pa3A
-- name: '[Eternity#072] 🇨🇳CN-8.219.97.17-5491 | 10.737MB'
-  type: vmess
-  server: wjofHsQtEuEywxEq.v.3dns.vip
-  port: 443
-  uuid: a9f4de8b-68f1-44b6-b6a2-1db60940503a
-  alterId: 0
-  cipher: auto
-  tls: true
-  skip-cert-verify: false
-  servername: 🇨🇳CN-8.219.97.17-5491 | 10.737MB
-  network: ws
-  ws-opts:
-    path: /
-    headers:
-      Host: wjofHsQtEuEywxEq.v.3dns.vip
-- name: '[Eternity#073] 🇬🇧GB-94.156.250.148-0209 | 5.937MB'
-  type: ss
-  server: 94.156.250.148
-  port: 7001
-  cipher: aes-256-gcm
-  password: RexnBgU7EV5ADxG
-- name: '[Eternity#074] 🇩🇪DE-57.129.113.16-0217 | 5.144MB'
-  type: ss
-  server: 57.129.113.16
-  port: 8388
-  cipher: chacha20-ietf-poly1305
-  password: NcAXc0UZI6yQJE1p8QmOv8
-- name: '[Eternity#075] 🇨🇦CA-155.138.138.2-5305 | 3.977MB'
-  type: trojan
-  server: 82164024@ca.tronsg.com
-  port: 443
-  password: Trojan
-  skip-cert-verify: false
-- name: '[Eternity#077] 🇮🇳IN-152.67.8.205-0198 | 2.71MB'
-  type: vmess
-  server: 152.67.8.205
-  port: 80
-  uuid: 9db4c708-aef8-4359-821b-38e47990be0d
-  alterId: 0
-  cipher: auto
-  tls: false
-  skip-cert-verify: false
-  servername: 🇮🇳IN-152.67.8.205-0198 | 2.71MB
-  network: ws
-  ws-opts:
-    path: /
-- name: '[Eternity#079] 🇫🇷FR-54.37.131.126-0203 | 2.622MB'
-  type: vmess
-  server: 54.37.131.126
-  port: 80
-  uuid: 6deef9ad-1357-443d-f95c-cb18952c20b3
-  alterId: 0
-  cipher: auto
-  tls: false
-  skip-cert-verify: false
-  network: ws
-  ws-opts:
-    path: /
-    headers:
-      Host: google.whatsapp.snapp.torob.basalam.hesanid8.ir.
-- name: '[Eternity#081] 🇪🇸ES-5.188.181.201-5307 | 2.314MB'
-  type: ss
-  server: 5.188.181.201
-  port: 9003
-  cipher: aes-256-cfb
-  password: JdmRK9gMEqFgs8nP
-- name: '[Eternity#082] 🇫🇷FR-145.239.55.210-0219 | 2.288MB'
-  type: vmess
-  server: 145.239.55.210
-  port: 80
-  uuid: 067fcd63-b215-4abd-8529-ae929a9971a9
-  alterId: 0
-  cipher: auto
-  tls: false
-  skip-cert-verify: false
-  network: ws
-  ws-opts:
-    path: /
-    headers:
-      Host: google.whatsapp.snapp.torob.basalam.fortresshost.ir.
-- name: '[Eternity#083] 🇪🇸ES-5.188.181.201-5308 | 2.261MB'
-  type: ss
-  server: 5.188.181.201
-  port: 9019
-  cipher: aes-256-cfb
-  password: GA9KzeEgvfxNrgmM
-- name: '[Eternity#084] 🇬🇧GB-149.102.132.184-0207 | 1.866MB'
-  type: ss
-  server: 149.102.132.184
-  port: 80
-  cipher: aes-256-gcm
-  password: g5h5jleTRSyO3Rk4
-- name: '[Eternity#085] 🇺🇸US-15.204.247.206-0245 | 1.543MB'
-  type: ss
-  server: 15.204.247.206
-  port: 4444
-  cipher: aes-256-gcm
-  password: pKEW8JPByTVTLtM
-- name: '[Eternity#086] UA-104.253.216.227-5440 | 1.269MB'
-  type: ss
-  server: staging.lastilhame.monster
-  port: 49917
-  cipher: chacha20-ietf-poly1305
-  password: G9ZuLN5DE9qqouTZwYUcvYsDJx8gyL1nCu3N7yRZFjPmYKhzSi8GkpVuexmTHAz2uvcErKkex1K2ceR2GH3L444HRNnN1YpP
-- name: '[Eternity#087] 🇬🇧GB-82.38.31.176-0223 | 1.052MB'
-  type: ss
-  server: 82.38.31.176
-  port: 8080
-  cipher: chacha20-ietf-poly1305
-  password: k1dBOmOB4oqi7Ump37a1bQ
-- name: '[Eternity#088] 🇺🇸US-216.105.168.18-0212 | 1.014MB'
-  type: ss
-  server: 216.105.168.18
-  port: 443
-  cipher: chacha20-ietf-poly1305
-  password: hCCWOcIsK5wrFz4OX70rWf
-- name: '[Eternity#089] 🇰🇷KR-218.237.185.234-5381 | 1.006MB'
-  type: ss
-  server: p141.panda001.net
-  port: 4652
-  cipher: aes-256-cfb
-  password: qwerREWQ@@
-- name: '[Eternity#090] 🇰🇷KR-141.164.45.187-0265 | 0.573MB'
-  type: ss
-  server: 141.164.45.187
-  port: 6679
-  cipher: aes-256-gcm
-  password: TEzjfAYq2IjtuoS
-- name: '[Eternity#091] 🇩🇪DE-188.241.241.236-0211 | 0.528MB'
-  type: trojan
-  server: 188.241.241.236
-  port: 443
-  password: 4_VfP9fKaM-3LpSVvoZuc_WUzLoCdHaA
-  sni: de10.dedushka.top
-  skip-cert-verify: false
-- name: '[Eternity#092] 🇬🇧GB-82.38.31.199-0196 | 0.473MB'
-  type: ss
-  server: 82.38.31.199
-  port: 8080
-  cipher: chacha20-ietf-poly1305
-  password: k1dBOmOB4oqi7Ump37a1bQ
