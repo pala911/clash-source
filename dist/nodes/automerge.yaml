@@ -1,4 +1,4 @@
-# clash-source 自动生成 —— 源 automerge，共 88 节点（稳定性加权后留在竞速池内的部分）
+# clash-source 自动生成 —— 源 automerge，共 94 节点（稳定性加权后留在竞速池内的部分）
 # 不要手改；改动会在下次定时任务被覆盖（上游 https://pala911.github.io/clash-source/nodes/automerge.yaml）
 proxies:
 - name: 🇱🇻hysteria
@@ -91,6 +91,13 @@ proxies:
   type: http
   server: 149.88.27.33
   port: 9443
+  password: None
+  skip-cert-verify: true
+  tls: true
+- name: 🇬🇧GB_1|1.4MB/s
+  type: http
+  server: 212.102.63.61
+  port: 443
   password: None
   skip-cert-verify: true
   tls: true
@@ -207,6 +214,12 @@ proxies:
   port: 9443
   skip-cert-verify: true
   tls: true
+- name: 🇺🇸US_1|2.6MB/s
+  type: http
+  server: 121.127.34.82
+  port: 443
+  skip-cert-verify: true
+  tls: true
 - name: 🇮🇹IT_1|1.6MB/s
   type: http
   server: 185.183.105.146
@@ -214,6 +227,19 @@ proxies:
   password: None
   skip-cert-verify: true
   tls: true
+- name: 🇪🇸ES_1|2.4MB/s
+  type: http
+  server: 130.195.250.18
+  port: 443
+  skip-cert-verify: true
+  tls: true
+- name: 🇪🇪EE_1|1.4MB/s|K001-260618
+  type: http
+  server: 95.153.32.2
+  port: 9443
+  skip-cert-verify: true
+  tls: true
+  udp: true
 - name: 🇳🇴NO_1|1.2MB/s
   type: http
   server: 146.70.170.210
@@ -223,6 +249,13 @@ proxies:
 - name: 🇵🇹PT_1|1.3MB/s
   type: http
   server: 149.22.86.14
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+- name: 🇭🇷HR_1|1.8MB/s
+  type: http
+  server: 154.47.29.161
   port: 443
   password: None
   skip-cert-verify: true
@@ -270,6 +303,11 @@ proxies:
       User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36
     path: /
   xudp: true
+- name: 🇺🇸US_3|1.7MB/s
+  type: socks5
+  server: 209.50.255.91
+  port: 1080
+  skip-cert-verify: true
 - name: '🇩🇪 德国 | DEU #1'
   type: vless
   server: 68.168.29.152
@@ -333,6 +371,22 @@ proxies:
 - name: '🇪🇸 西班牙 | ESP #1'
   type: vless
   server: 18.101.197.136
+  port: 443
+  network: http
+  tls: false
+  udp: true
+  uuid: 7060231d-b9ba-495f-a218-bf427940cf3e
+- name: '🇫🇷 法国 | FRA #1'
+  type: vless
+  server: 35.180.136.30
+  port: 443
+  network: http
+  tls: false
+  udp: true
+  uuid: 7060231d-b9ba-495f-a218-bf427940cf3e
+- name: '🇫🇷 法国 | FRA #2'
+  type: vless
+  server: 15.188.73.123
   port: 443
   network: http
   tls: false
@@ -637,6 +691,28 @@ proxies:
     headers:
       Host: snip.edgeoneai.cc.cd
     path: /
+- name: 🇹🇼 🇨🇳 台湾 | TWN
+  type: anytls
+  server: 98416548.df6h451rh.xin
+  port: 443
+  password: 0324fbc29561
+  skip-cert-verify: true
+  sni: images.ctfassets.net
+  udp: true
+- name: '🇹🇼 🇨🇳 台湾 | TWN #1'
+  type: vless
+  server: 140.115.53.51
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: snip.edgeoneai.cc.cd
+  tls: true
+  udp: true
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  ws-opts:
+    headers:
+      Host: snip.edgeoneai.cc.cd
+    path: /
 - name: '🇺🇸 美国 | USA #1'
   type: vless
   server: 104.17.243.232
@@ -837,20 +913,6 @@ proxies:
   skip-cert-verify: true
   tls: true
   udp: true
-- name: GB_speednode_0009
-  type: http
-  server: 198.105.124.180
-  port: 8443
-  skip-cert-verify: true
-  tls: true
-  udp: true
-- name: IE_speednode_0010
-  type: http
-  server: 18.200.158.139
-  port: 443
-  skip-cert-verify: true
-  tls: true
-  udp: true
 - name: IL_speednode_0011
   type: http
   server: 62.90.77.30
@@ -920,20 +982,6 @@ proxies:
   type: http
   server: 193.176.84.34
   port: 9002
-  skip-cert-verify: true
-  tls: true
-  udp: true
-- name: US_speednode_0023
-  type: http
-  server: 64.98.50.100
-  port: 443
-  skip-cert-verify: true
-  tls: true
-  udp: true
-- name: US_speednode_0024
-  type: http
-  server: 44.248.167.117
-  port: 8443
   skip-cert-verify: true
   tls: true
   udp: true

@@ -1,4 +1,4 @@
-# clash-source 自动生成 —— 源 autojiedian，共 260 节点（稳定性加权后留在竞速池内的部分）
+# clash-source 自动生成 —— 源 autojiedian，共 265 节点（稳定性加权后留在竞速池内的部分）
 # 不要手改；改动会在下次定时任务被覆盖（上游 https://pala911.github.io/clash-source/nodes/autojiedian.yaml）
 proxies:
 - name: 129.146.143.80_Claude
@@ -17,6 +17,24 @@ proxies:
   password: '1234'
   skip-cert-verify: true
   username: '1234'
+- name: 134.195.196.211_Gemini
+  type: vmess
+  server: 134.195.196.211
+  port: 18000
+  alterId: 0
+  cipher: auto
+  network: tcp
+  udp: true
+  uuid: f8c8dc3d-0d37-46b0-8b34-a7232882fcfe
+- name: 140.238.2.250_Gemini
+  type: vmess
+  server: 140.238.2.250
+  port: 443
+  alterId: 0
+  cipher: auto
+  network: none
+  skip-cert-verify: true
+  uuid: 41a7089a-040b-4538-8b8d-010902405bde
 - name: 154.36.158.197_Claude
   type: ss
   server: 154.36.158.197
@@ -66,13 +84,6 @@ proxies:
   port: 6123
   cipher: aes-256-cfb
   password: qwerREWQ@@
-- name: 2406:da18:ad0:a400:d199:7732:fdec:d9fb_Claude
-  type: http
-  server: 13.212.87.168
-  port: 2080
-  password: '1234'
-  skip-cert-verify: true
-  username: '1234'
 - name: 3.76.221.4_Claude
   type: hysteria2
   server: 3.76.221.4
@@ -384,6 +395,13 @@ proxies:
   port: 17001
   cipher: aes-256-gcm
   password: I6o9NnialYLMEjVt28RF4dpjmr9wMvNL
+- name: 其他地区_Stockholm_FDCservers.net_Claude
+  type: hysteria2
+  server: promo.betust.net
+  port: 443
+  password: d4ca9415f0eac7897472e1e5b86d2e96
+  skip-cert-verify: false
+  sni: promo.betust.net
 - name: 其他地区_Stockholm_M247 Europe_Claude
   type: http
   server: 146.70.242.130
@@ -397,6 +415,13 @@ proxies:
   port: 19999
   cipher: aes-256-gcm
   password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
+- name: 其他地区_Warsaw_KABAT-OU_Claude1
+  type: vless
+  server: site.teslamotor.site
+  port: 20001
+  network: tcp
+  udp: true
+  uuid: 8e8210b7-71a4-4799-8b9b-2e69698b1eaf
 - name: 其他地区_Yerevan_GNC-Alfa CJSC_Claude
   type: vless
   server: 194.36.37.59
@@ -418,6 +443,13 @@ proxies:
   port: 50160
   password: 84a506ca5aca505696a454d828420b3f
   skip-cert-verify: true
+- name: 加拿大_Beauharnois_OVH SAS_Claude
+  type: vless
+  server: milo.networkforexir.site
+  port: 8080
+  network: tcp
+  udp: true
+  uuid: 6bceb548-d9b6-461f-8e37-a5a7fbcdc2c8
 - name: 加拿大_Montreal_Cloudflare, Inc._Claude
   type: http
   server: 172.64.69.89
@@ -721,6 +753,18 @@ proxies:
   password: H7mP2xY9kJ4nQ8wR5tF6vB3z
   skip-cert-verify: true
   sni: ''
+- name: 法国_Paris_Baykov Ilya Sergeevich_Claude
+  type: vless
+  server: 138.124.70.41
+  port: 14430
+  network: ws
+  servername: 138.124.70.41
+  tls: false
+  uuid: 6cc745e3-4eb9-46c8-a4a1-85dee7b87edc
+  ws-opts:
+    headers:
+      Host: 138.124.70.41
+    path: /vless
 - name: 法国_Paris_Scaleway SAS_Claude1
   type: hysteria2
   server: 62.210.7.139
@@ -792,19 +836,6 @@ proxies:
   network: ws
   udp: true
   uuid: 8a9aaa70-ced9-11f1-b934-205c6d5f5d78
-- name: 美国_Boardman_Amazon.com, Inc._Claude1
-  type: http
-  server: 44.248.167.117
-  port: 8443
-  skip-cert-verify: true
-  tls: true
-- name: 美国_Boardman_Amazon.com, Inc._Claude2
-  type: http
-  server: 44.229.69.166
-  port: 8443
-  password: None
-  skip-cert-verify: true
-  tls: true
 - name: 美国_Centennial_Ting Fiber_Claude
   type: http
   server: 64.98.50.100
@@ -824,6 +855,13 @@ proxies:
   port: 8080
   cipher: rc4-md5
   password: 14fFPrbezE3HDZzsMOr6
+- name: 美国_Chicago_UAB Cherry Servers_Claude
+  type: hysteria2
+  server: promo3.betust.net
+  port: 443
+  password: 94c2b91777f8de3a5bc12d2a91b732c2
+  skip-cert-verify: false
+  sni: promo3.betust.net
 - name: 美国_Dallas_Datacamp Limited_Claude1
   type: ss
   server: 156.146.38.168
@@ -1352,6 +1390,13 @@ proxies:
   port: 19999
   cipher: aes-256-gcm
   password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
+- name: 英国_Bexley_OVH SAS_Claude1
+  type: vless
+  server: connect.hondamotor.site
+  port: 10002
+  network: tcp
+  udp: true
+  uuid: c6362720-0931-4b91-b187-d8ecf3149734
 - name: 英国_Canary Wharf_M247 Europe_Claude
   type: ss
   server: 146.70.61.37
@@ -1375,6 +1420,18 @@ proxies:
     headers:
       Host: 193.188.21.253
     path: /vless
+- name: 英国_London_Cloudflare Warp_Claude
+  type: vless
+  server: 23.81.36.148
+  port: 8080
+  network: ws
+  skip-cert-verify: true
+  tls: false
+  udp: true
+  uuid: 36c3dcc2-17b6-4478-b8a7-3978e6d5afe9
+  ws-opts:
+    headers: {}
+    path: /
 - name: 英国_London_DataCamp Limited_Claude
   type: http
   server: 212.102.63.31
@@ -1703,17 +1760,6 @@ proxies:
   port: 43385
   cipher: chacha20-ietf-poly1305
   password: AwW1fV6oDDQKh8r2znmptv59tPgt4eHVTgFaTqgKS2jiSdikJ7GyGCBYehDaK38S8yMgHFdbJqcTmRJSfYS5CFw345bNhFZa
-- name: 荷兰_Amsterdam_Matteo Martelloni trading as DELUXHOST_Claude2
-  type: vless
-  server: s171.wagahaha.xyz
-  port: 443
-  flow: xtls-rprx-vision
-  network: raw
-  servername: u695098u7dae9c0cs220.gogocs.xyz
-  skip-cert-verify: false
-  tls: true
-  udp: true
-  uuid: 30e52776-55ac-3cb4-8d36-e2910f07e2c3
 - name: 荷兰_Amsterdam_Netrouting_Claude1
   type: hysteria2
   server: 109.235.49.234
