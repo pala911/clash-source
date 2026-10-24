@@ -1,15 +1,22 @@
 # clash-source 自动生成 —— 源 anaer，被稳定性加权移出的 2 个节点
 # 历史可用率偏低，不参与 AUTO 自动竞速；需要时可从「备用」组手工切。
 proxies:
-- name: 荷兰-002 |1.8MB/s|TK-NL|GPT⁺-NL|GM-NL
-  type: http
-  server: 5.255.118.82
+- name: 德国-003
+  type: trojan
+  server: 185.220.100.168
   port: 443
-  skip-cert-verify: true
-  tls: true
-- name: 荷兰-003 |1.8MB/s|TK-NL|GPT⁺-NL
+  network: ws
+  password: humanity
+  skip-cert-verify: false
+  sni: www.calmlunch.com
+  ws-opts:
+    headers:
+      Host: www.calmlunch.com
+    path: /assignment
+- name: 罗马尼亚-001 |3.3MB/s|TK-RO|GPT⁺-RO|GM-RO
   type: http
-  server: 51.159.225.196
-  port: 23856
+  server: 193.176.84.35
+  port: 9002
   skip-cert-verify: true
   tls: true
+  sni: www.bing.com
