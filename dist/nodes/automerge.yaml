@@ -1,4 +1,4 @@
-# clash-source 自动生成 —— 源 automerge，共 94 节点（稳定性加权后留在竞速池内的部分）
+# clash-source 自动生成 —— 源 automerge，共 86 节点（稳定性加权后留在竞速池内的部分）
 # 不要手改；改动会在下次定时任务被覆盖（上游 https://pala911.github.io/clash-source/nodes/automerge.yaml）
 proxies:
 - name: 🇱🇻hysteria
@@ -13,304 +13,106 @@ proxies:
   password: rjj39jg8iphgd06h
   sni: pro2.riziro.ir
   tls: false
-- name: '🇸🇬 新加坡 | SGP #6'
-  type: vless
-  server: 172.64.150.43
-  port: 443
-  encryption: none
-  network: ws
-  servername: snip.edgeoneai.cc.cd
-  skip-cert-verify: false
-  tls: true
+- name: '🇮🇹 意大利 | ITA #1'
+  type: ss
+  server: 202.50.253.99
+  port: 19999
+  cipher: aes-256-gcm
+  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
   udp: true
-  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
-  ws-opts:
-    headers:
-      Host: snip.edgeoneai.cc.cd
-    path: /
-  xudp: true
-- name: '🇭🇰 香港 | HKG #6'
-  type: vless
-  server: 103.180.20.108
-  port: 8443
-  client-fingerprint: chrome
-  network: ws
-  servername: ty986gfazs.cainiaohub.xyz
-  tls: true
-  udp: true
-  uuid: c1c04450-bf71-4049-ad0c-9cf6d94d9f1f
-  ws-opts:
-    headers:
-      Host: ty986gfazs.cainiaohub.xyz
-    path: /81574b6b-c9d7-44a0-b83d-dad56e8cb530
-- name: 🇸🇬SG_2|3.1MB/s
-  type: vless
-  server: 172.64.154.211
-  port: 443
-  alpn:
-  - h3
-  - h2
-  client-fingerprint: chrome
-  encryption: none
-  network: ws
-  servername: snip.edgeoneai.cc.cd
-  tls: true
-  udp: true
-  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
-  ws-opts:
-    headers:
-      Host: snip.edgeoneai.cc.cd
-      User-Agent: Mozilla/5.0 (Linux; Android 7.0; BLL-L22 Build/HUAWEIBLL-L22) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.91 Mobile Safari/537.36
-    path: /
-  xudp: true
-- name: 🇳🇱NL_1|3.5MB/s
-  type: vmess
-  server: v29.hdacd.com
-  port: 30829
-  alterId: 2
-  cipher: auto
-  skip-cert-verify: true
-  tls: false
-  udp: true
-  uuid: cbb3f877-d1fb-344c-87a9-d153bffd5484
-- name: 🇫🇷FR_1|1.5MB/s
-  type: http
-  server: 213.139.9.142
-  port: 9443
-  password: None
-  skip-cert-verify: true
-  tls: true
-- name: 🇨🇿CZ_1|2.0MB/s
-  type: http
-  server: 185.216.35.66
-  port: 443
-  skip-cert-verify: true
-  tls: true
-  udp: true
-- name: 🇨🇭CH_1|1.9MB/s
-  type: http
-  server: 149.88.27.33
-  port: 9443
-  password: None
-  skip-cert-verify: true
-  tls: true
-- name: 🇬🇧GB_1|1.4MB/s
-  type: http
-  server: 212.102.63.61
-  port: 443
-  password: None
-  skip-cert-verify: true
-  tls: true
-- name: 🇸🇬SG_3|4.2MB/s
-  type: vless
-  server: 104.18.36.29
-  port: 443
-  alpn:
-  - http/1.1
-  network: ws
-  servername: snip.edgeoneai.cc.cd
-  tls: true
-  udp: true
-  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
-  ws-opts:
-    headers:
-      Host: snip.edgeoneai.cc.cd
-      User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.67 Safari/537.36
-    path: /?Telegram---PLANB_NET---PLANB_NET---PLANB_NET---PLANB_NETfp=chrome
-  xudp: true
-- name: 🇫🇷FR_2|3.0MB/s
-  type: http
-  server: 149.102.245.65
-  port: 443
-  password: None
-  skip-cert-verify: true
-  tls: true
-- name: 🇩🇪DE_1|1.3MB/s
-  type: vless
-  server: 64.188.71.236
-  port: 2083
-  client-fingerprint: chrome
-  network: ws
-  servername: snip.edgeoneai.cc.cd
-  tls: true
-  udp: true
-  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
-  ws-opts:
-    headers:
-      Host: snip.edgeoneai.cc.cd
-      User-Agent: Mozilla/5.0 (Linux; Android 4.4.2; de-de; SAMSUNG GT-I9195 Build/KOT49H) AppleWebKit/537.36 (KHTML, like Gecko) Version/1.5 Chrome/28.0.1500.94 Mobile Safari/537.36
-    path: /
-  xudp: true
-- name: 🇸🇬SG_4|4.0MB/s
+- name: 🇸🇬SG_1|3.6MB/s
   type: http
   server: 13.212.87.168
   port: 2080
   password: '1234'
   skip-cert-verify: true
   username: '1234'
-- name: 🇸🇬SG_5|3.1MB/s
+- name: 🇸🇬SG_4|4.2MB/s
   type: http
-  server: 13.212.55.110
+  server: 18.143.167.6
   port: 2080
   password: '1234'
   skip-cert-verify: true
   username: '1234'
-- name: 🇩🇪DE_2|1.7MB/s
-  type: http
-  server: 79.127.156.177
-  port: 9443
-  password: None
-  skip-cert-verify: true
-  tls: true
-- name: 🇭🇰HK_1|1.1MB/s
+- name: 🇮🇳IN_1|1.2MB/s
   type: http
   server: 120.232.204.58
-  port: 31343
-  skip-cert-verify: true
-  tls: true
-- name: 🇧🇪BE_1|1.5MB/s
-  type: http
-  server: 146.70.123.98
-  port: 443
-  skip-cert-verify: true
-  tls: true
-- name: 🇨🇿CZ_2|1.1MB/s
-  type: http
-  server: 185.216.35.130
-  port: 443
+  port: 52200
   password: None
   skip-cert-verify: true
   tls: true
-- name: 🇨🇿CZ_3|1.3MB/s
+- name: 🇺🇸US_2|3.7MB/s
   type: http
-  server: 185.216.35.130
-  port: 443
+  server: 154.81.36.92
+  port: 8443
   skip-cert-verify: true
   tls: true
-- name: 🇮🇪IE_1|1.1MB/s
+- name: 🇸🇬SG_6|3.9MB/s
   type: http
-  server: 149.88.96.1
-  port: 443
-  skip-cert-verify: true
-  tls: true
-- name: 🇱🇺LU_1|1.4MB/s
-  type: http
-  server: 185.221.132.242
-  port: 443
-  password: None
-  skip-cert-verify: true
-  tls: true
-- name: 🇩🇪DE_3|1.5MB/s|R002-260618
-  type: http
-  server: 87.249.132.97
-  port: 443
-  password: None
-  skip-cert-verify: true
-  tls: true
-  udp: true
-- name: 🇫🇷FR_3|1.8MB/s
-  type: http
-  server: 138.199.47.247
-  port: 9443
-  skip-cert-verify: true
-  tls: true
-- name: 🇺🇸US_1|2.6MB/s
-  type: http
-  server: 121.127.34.82
-  port: 443
-  skip-cert-verify: true
-  tls: true
-- name: 🇮🇹IT_1|1.6MB/s
-  type: http
-  server: 185.183.105.146
-  port: 443
-  password: None
-  skip-cert-verify: true
-  tls: true
-- name: 🇪🇸ES_1|2.4MB/s
-  type: http
-  server: 130.195.250.18
-  port: 443
-  skip-cert-verify: true
-  tls: true
-- name: 🇪🇪EE_1|1.4MB/s|K001-260618
-  type: http
-  server: 95.153.32.2
-  port: 9443
-  skip-cert-verify: true
-  tls: true
-  udp: true
-- name: 🇳🇴NO_1|1.2MB/s
-  type: http
-  server: 146.70.170.210
-  port: 9443
-  skip-cert-verify: true
-  tls: true
-- name: 🇵🇹PT_1|1.3MB/s
-  type: http
-  server: 149.22.86.14
-  port: 443
-  password: None
-  skip-cert-verify: true
-  tls: true
-- name: 🇭🇷HR_1|1.8MB/s
-  type: http
-  server: 154.47.29.161
-  port: 443
-  password: None
-  skip-cert-verify: true
-  tls: true
-- name: 🇸🇬SG_6|4.3MB/s
-  type: vless
-  server: 172.64.150.28
-  port: 443
-  alpn:
-  - h3
-  - h2
-  client-fingerprint: chrome
-  encryption: none
-  network: ws
-  servername: snip.edgeoneai.cc.cd
-  tls: true
-  udp: true
-  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
-  ws-opts:
-    headers:
-      Host: snip.edgeoneai.cc.cd
-      User-Agent: Mozilla/5.0 (Linux; Android 6.0.1; vivo 1603 Build/MMB29M) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.83 Mobile Safari/537.36
-    path: /
-  xudp: true
-- name: 🇸🇬SG_7|4.2MB/s
-  type: http
-  server: 13.212.186.198
+  server: 54.151.160.36
   port: 2080
   password: '1234'
   skip-cert-verify: true
   username: '1234'
-- name: 🇸🇬SG_8|4.3MB/s
-  type: vless
-  server: 104.18.43.114
+- name: 🇫🇷FR_1|2.0MB/s
+  type: trojan
+  server: 162.159.36.20
   port: 443
   client-fingerprint: chrome
   network: ws
-  servername: snip.edgeoneai.cc.cd
-  tls: true
+  password: humanity
+  skip-cert-verify: false
+  sni: www.calmlunch.com
   udp: true
-  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
   ws-opts:
     headers:
-      Host: snip.edgeoneai.cc.cd
-      User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36
-    path: /
-  xudp: true
-- name: 🇺🇸US_3|1.7MB/s
-  type: socks5
-  server: 209.50.255.91
-  port: 1080
+      User-Agent: Mozilla/5.0 (Linux; Android 6.0; MYA-L22 Build/HUAWEIMYA-L22) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.84 Mobile Safari/537.36
+    path: /assignment
+- name: 🇸🇬SG_7|4.0MB/s
+  type: http
+  server: 54.251.149.207
+  port: 2080
+  password: '1234'
   skip-cert-verify: true
-- name: '🇩🇪 德国 | DEU #1'
+  username: '1234'
+- name: 🇸🇬SG_8|4.5MB/s
+  type: http
+  server: 13.212.14.88
+  port: 2080
+  password: '1234'
+  skip-cert-verify: true
+  username: '1234'
+- name: 🇸🇬SG_9|4.3MB/s
+  type: http
+  server: 13.229.91.101
+  port: 2080
+  password: '1234'
+  skip-cert-verify: true
+  username: '1234'
+- name: 🇸🇬SG_10|4.1MB/s
+  type: http
+  server: 13.250.6.249
+  port: 2080
+  password: '1234'
+  skip-cert-verify: true
+  username: '1234'
+- name: 🇸🇬SG_11|4.1MB/s
+  type: http
+  server: 13.250.8.222
+  port: 2080
+  password: '1234'
+  skip-cert-verify: true
+  username: '1234'
+- name: 🇸🇬SG_12|4.5MB/s
+  type: http
+  server: 13.212.235.123
+  port: 2080
+  password: '1234'
+  skip-cert-verify: true
+  username: '1234'
+- name: '🇧🇬 保加利亚 | BGR #1'
   type: vless
-  server: 68.168.29.152
+  server: 13.140.29.253
   port: 443
   client-fingerprint: chrome
   network: ws
@@ -321,8 +123,20 @@ proxies:
   ws-opts:
     headers:
       Host: snip.edgeoneai.cc.cd
-    path: /fdip=sstp://vpn:vpn@public-vpn-200.opengw.net:443?ed=2560fp=chromefp=chrome
-- name: '🇩🇪 德国 | DEU #4'
+    path: /
+- name: 🇩🇪 德国 | DEU
+  type: vmess
+  server: 195.26.26.7
+  port: 19552
+  alpn:
+  - ''
+  alterId: 0
+  cipher: auto
+  skip-cert-verify: true
+  tls: false
+  udp: true
+  uuid: 483a9bd7-a1d3-4cc9-ad90-761e063943c7
+- name: '🇩🇪 德国 | DEU #2'
   type: vless
   server: 64.226.96.188
   port: 443
@@ -336,7 +150,21 @@ proxies:
     headers:
       Host: snip.edgeoneai.cc.cd
     path: /
-- name: '🇩🇪 德国 | DEU #5'
+- name: '🇩🇪 德国 | DEU #3'
+  type: vless
+  server: 64.188.96.27
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: snip.edgeoneai.cc.cd
+  tls: true
+  udp: true
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  ws-opts:
+    headers:
+      Host: snip.edgeoneai.cc.cd
+    path: /
+- name: '🇩🇪 德国 | DEU #6'
   type: vless
   server: hw3.divarkhaghazi.com
   port: 465
@@ -352,156 +180,33 @@ proxies:
     headers:
       Host: hw3.divarkhaghazi.com.
     path: /
-- name: '🇩🇪 德国 | DEU #6'
-  type: vless
-  server: finp2g.yandex-api.store
-  port: 8443
-  alpn:
-  - http/1.1
-  client-fingerprint: firefox
-  network: ws
-  servername: finp2g.yandex-api.store
-  tls: true
-  udp: true
-  uuid: 78559873-84ef-4cab-a0b2-46d4cd20de4a
-  ws-opts:
-    headers:
-      Host: finp2g.yandex-api.store
-    path: /assets
-- name: '🇪🇸 西班牙 | ESP #1'
-  type: vless
-  server: 18.101.197.136
-  port: 443
-  network: http
-  tls: false
-  udp: true
-  uuid: 7060231d-b9ba-495f-a218-bf427940cf3e
-- name: '🇫🇷 法国 | FRA #1'
-  type: vless
-  server: 35.180.136.30
-  port: 443
-  network: http
-  tls: false
-  udp: true
-  uuid: 7060231d-b9ba-495f-a218-bf427940cf3e
-- name: '🇫🇷 法国 | FRA #2'
-  type: vless
-  server: 15.188.73.123
-  port: 443
-  network: http
-  tls: false
-  udp: true
-  uuid: 7060231d-b9ba-495f-a218-bf427940cf3e
-- name: '🇭🇰 香港 | HKG #1'
-  type: vless
-  server: 103.143.81.178
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: snip.edgeoneai.cc.cd
-  tls: true
-  udp: true
-  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
-  ws-opts:
-    headers:
-      Host: snip.edgeoneai.cc.cd
-    path: /
-- name: '🇭🇰 香港 | HKG #2'
-  type: vless
-  server: 207.57.123.77
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: snip.edgeoneai.cc.cd
-  tls: true
-  udp: true
-  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
-  ws-opts:
-    headers:
-      Host: snip.edgeoneai.cc.cd
-    path: /fdip=sstp://vpn:vpn@public-vpn-200.opengw.net:443
-- name: '🇭🇰 香港 | HKG #3'
-  type: vless
-  server: 103.97.200.42
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: snip.edgeoneai.cc.cd
-  tls: true
-  udp: true
-  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
-  ws-opts:
-    headers:
-      Host: snip.edgeoneai.cc.cd
-    path: /fp=unsafe
-- name: 🇭🇰 香港 | HKG 5
-  type: anytls
-  server: svip.skycon808.com
-  port: 24318
-  password: 87c6ad7b-e450-44a8-8088-bc2234d43de1
+- name: '🇮🇩 印尼 | IDN #1'
+  type: hysteria2
+  server: 202.155.14.134
+  port: 55555
+  password: 78585441-c8b3-40fb-9b94-15edd312fdcf
   skip-cert-verify: true
-  sni: hk08.jdddyy01.cc
-  udp: true
-- name: '🇭🇰 香港 | HKG #5'
-  type: vmess
-  server: 47.243.153.153
-  port: 443
-  alterId: 0
-  cipher: auto
-  network: ws
-  skip-cert-verify: true
-  tls: true
-  udp: true
-  uuid: f23bb427-c1f9-4373-876c-2f43e9f790f3
-  ws-opts:
-    headers:
-      Host: i2psm3knof5qjjix.v.3dns.vip
-    path: /ws-vmess
-- name: '🇭🇰 香港 | HKG #8'
+  sni: www.bing.com
+  tls: false
+- name: '🇮🇪 爱尔兰 | IRL #1'
   type: vless
-  server: 103.97.201.61
+  server: 54.154.201.249
   port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: snip.edgeoneai.cc.cd
-  tls: true
+  network: http
+  tls: false
   udp: true
-  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
-  ws-opts:
-    headers:
-      Host: snip.edgeoneai.cc.cd
-    path: /
-- name: '🇮🇱 以色列 | ISR #1'
+  uuid: 7060231d-b9ba-495f-a218-bf427940cf3e
+- name: '🇮🇪 爱尔兰 | IRL #2'
   type: vless
-  server: 185.239.48.154
-  port: 8443
-  client-fingerprint: chrome
-  network: ws
-  servername: snip.edgeoneai.cc.cd
-  tls: true
-  udp: true
-  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
-  ws-opts:
-    headers:
-      Host: snip.edgeoneai.cc.cd
-    path: /
-- name: '🇮🇳 印度 | IND #1'
-  type: vless
-  server: 216.10.243.159
+  server: 52.31.133.142
   port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: snip.edgeoneai.cc.cd
-  tls: true
+  network: http
+  tls: false
   udp: true
-  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
-  ws-opts:
-    headers:
-      Host: snip.edgeoneai.cc.cd
-    path: /
+  uuid: 7060231d-b9ba-495f-a218-bf427940cf3e
 - name: '🇯🇵 日本 | JPN #1'
   type: vless
-  server: 3.112.67.101
+  server: 45.8.173.253
   port: 443
   client-fingerprint: chrome
   network: ws
@@ -512,10 +217,72 @@ proxies:
   ws-opts:
     headers:
       Host: snip.edgeoneai.cc.cd
-    path: /fdip=sstp://vpn:vpn@vpn748359672.opengw.net:1458?ed=2560fp=chrome
+    path: /
+- name: '🇯🇵 日本 | JPN #2'
+  type: vless
+  server: 13.231.172.130
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: snip.edgeoneai.cc.cd
+  tls: true
+  udp: true
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  ws-opts:
+    headers:
+      Host: snip.edgeoneai.cc.cd
+    path: /
+- name: '🇯🇵 日本 | JPN #3'
+  type: vless
+  server: 43.165.180.254
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: snip.edgeoneai.cc.cd
+  tls: true
+  udp: true
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  ws-opts:
+    headers:
+      Host: snip.edgeoneai.cc.cd
+    path: /
+- name: '🇯🇵 日本 | JPN #4'
+  type: vless
+  server: 60.130.209.253
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: snip.edgeoneai.cc.cd
+  tls: true
+  udp: true
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  ws-opts:
+    headers:
+      Host: snip.edgeoneai.cc.cd
+    path: /fp=chrome
+- name: '🇰🇷 韩国 | KOR #1'
+  type: hysteria2
+  server: 54.180.151.244
+  port: 443
+  password: 7e68e32f-8015-4f37-9082-70e8b0b58043
+  skip-cert-verify: true
+  sni: www.bing.com
+  tls: false
+- name: '🇲🇾 马来西亚 | MYS #1'
+  type: vless
+  server: platform128.golnamakcert.top
+  port: 80
+  network: ws
+  tls: false
+  udp: true
+  uuid: e13cf851-b4fd-413b-8d49-146e6eb8e5d4
+  ws-opts:
+    headers:
+      Host: platform128.halalkhor.info
+    path: /platform128
 - name: '🇳🇱 荷兰 | NLD #1'
   type: vless
-  server: 172.67.94.180
+  server: 104.26.8.117
   port: 443
   client-fingerprint: chrome
   network: ws
@@ -529,7 +296,7 @@ proxies:
     path: /
 - name: '🇳🇱 荷兰 | NLD #2'
   type: vless
-  server: 104.27.55.4
+  server: 104.26.5.134
   port: 443
   client-fingerprint: chrome
   network: ws
@@ -541,9 +308,37 @@ proxies:
     headers:
       Host: snip.edgeoneai.cc.cd
     path: /
-- name: '🇳🇱 荷兰 | NLD #4'
+- name: '🇳🇱 荷兰 | NLD #3'
   type: vless
-  server: 193.56.3.123
+  server: 104.25.60.205
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: snip.edgeoneai.cc.cd
+  tls: true
+  udp: true
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  ws-opts:
+    headers:
+      Host: snip.edgeoneai.cc.cd
+    path: /
+- name: '🇳🇿 新西兰 | NZL #1'
+  type: vless
+  server: 185.71.230.237
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: snip.edgeoneai.cc.cd
+  tls: true
+  udp: true
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  ws-opts:
+    headers:
+      Host: snip.edgeoneai.cc.cd
+    path: /
+- name: '🇸🇪 瑞典 | SWE #1'
+  type: vless
+  server: 195.72.60.249
   port: 8443
   client-fingerprint: chrome
   network: ws
@@ -555,13 +350,10 @@ proxies:
     headers:
       Host: snip.edgeoneai.cc.cd
     path: /
-- name: '🇳🇱 荷兰 | NLD #5'
+- name: '🇸🇪 瑞典 | SWE #2'
   type: vless
-  server: 172.67.75.172
+  server: 13.143.182.82
   port: 443
-  alpn:
-  - h3
-  - h2
   client-fingerprint: chrome
   network: ws
   servername: snip.edgeoneai.cc.cd
@@ -572,70 +364,7 @@ proxies:
     headers:
       Host: snip.edgeoneai.cc.cd
     path: /
-- name: '🇳🇱 荷兰 | NLD #6'
-  type: vless
-  server: 92.119.90.67
-  port: 8443
-  client-fingerprint: chrome
-  network: ws
-  servername: snip.edgeoneai.cc.cd
-  tls: true
-  udp: true
-  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
-  ws-opts:
-    headers:
-      Host: snip.edgeoneai.cc.cd
-    path: /fp=chrome
-- name: '🇵🇱 波兰 | POL #1'
-  type: vless
-  server: 146.75.57.238
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: firefox.com
-  tls: true
-  udp: true
-  uuid: 9f5f0438-0d05-44a0-b9bd-a2b91780b2a0
-  ws-opts:
-    headers:
-      Host: polandboijji.global.ssl.fastly.net
-    path: /
-- name: 🇸🇪 瑞典 | SWE
-  type: anytls
-  server: svip.skycon808.com
-  port: 60005
-  password: 13f0acfa-38c1-4e82-a758-583aa31740df
-  skip-cert-verify: true
-  udp: true
 - name: '🇸🇬 新加坡 | SGP #1'
-  type: vless
-  server: 172.64.145.65
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: snip.edgeoneai.cc.cd
-  tls: true
-  udp: true
-  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
-  ws-opts:
-    headers:
-      Host: snip.edgeoneai.cc.cd
-    path: /
-- name: '🇸🇬 新加坡 | SGP #3'
-  type: vless
-  server: 104.18.37.65
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: snip.edgeoneai.cc.cd
-  tls: true
-  udp: true
-  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
-  ws-opts:
-    headers:
-      Host: snip.edgeoneai.cc.cd
-    path: /fdip=sstp://vpn:vpn@public-vpn-200.opengw.net:443
-- name: '🇸🇬 新加坡 | SGP #4'
   type: vless
   server: 104.18.46.214
   port: 443
@@ -649,9 +378,9 @@ proxies:
     headers:
       Host: snip.edgeoneai.cc.cd
     path: /
-- name: '🇸🇬 新加坡 | SGP #5'
+- name: '🇸🇬 新加坡 | SGP #2'
   type: vless
-  server: 172.64.154.191
+  server: 172.64.156.236
   port: 443
   client-fingerprint: chrome
   network: ws
@@ -663,9 +392,36 @@ proxies:
     headers:
       Host: snip.edgeoneai.cc.cd
     path: /
-- name: '🇸🇬 新加坡 | SGP #7'
+- name: '🇸🇬 新加坡 | SGP #3'
   type: vless
-  server: 172.64.152.10
+  server: 104.18.44.58
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: snip.edgeoneai.cc.cd
+  tls: true
+  udp: true
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  ws-opts:
+    headers:
+      Host: snip.edgeoneai.cc.cd
+    path: /
+- name: '🇸🇬 新加坡 | SGP #4'
+  type: vless
+  server: 104.18.35.86
+  port: 8080
+  network: ws
+  servername: hhlfy.twiladaphne.ndjp.net
+  tls: false
+  udp: true
+  uuid: e5cc16a6-ea42-46b2-82ae-ad2157e1641b
+  ws-opts:
+    headers:
+      Host: hhlfy.twiladaphne.ndjp.net
+    path: /sg-melbi
+- name: '🇸🇬 新加坡 | SGP #5'
+  type: vless
+  server: 104.18.44.61
   port: 443
   client-fingerprint: chrome
   network: ws
@@ -677,7 +433,7 @@ proxies:
     headers:
       Host: snip.edgeoneai.cc.cd
     path: /fdip=sstp://vpn:vpn@public-vpn-200.opengw.net:443
-- name: '🇹🇷 土耳其 | TUR #2'
+- name: '🇹🇷 土耳其 | TUR #1'
   type: vless
   server: 38.180.112.151
   port: 443
@@ -693,15 +449,43 @@ proxies:
     path: /
 - name: 🇹🇼 🇨🇳 台湾 | TWN
   type: anytls
-  server: 98416548.df6h451rh.xin
-  port: 443
-  password: 0324fbc29561
+  server: svip.skycon808.com
+  port: 47531
+  password: 87c6ad7b-e450-44a8-8088-bc2234d43de1
   skip-cert-verify: true
-  sni: images.ctfassets.net
+  sni: tw15.swiftrelay.cc
   udp: true
-- name: '🇹🇼 🇨🇳 台湾 | TWN #1'
+- name: '🇺🇸 美国 | USA #1'
   type: vless
-  server: 140.115.53.51
+  server: 104.18.0.181
+  port: 443
+  network: ws
+  servername: a.cwvps.eu.org
+  tls: true
+  udp: true
+  uuid: c4edb87e-8544-4fa4-bd1c-b0cda9a34b46
+  ws-opts:
+    headers:
+      Host: a.cwvps.eu.org
+    path: /ws
+- name: 🇺🇸 美国 | USA 2
+  type: trojan
+  server: 104.17.121.9
+  port: 443
+  alpn:
+  - http/1.1
+  network: ws
+  password: humanity
+  skip-cert-verify: true
+  sni: www.calmlunch.com
+  udp: true
+  ws-opts:
+    headers:
+      Host: www.calmlunch.com
+    path: /assignment
+- name: '🇺🇸 美国 | USA #3'
+  type: vless
+  server: 173.245.49.194
   port: 443
   client-fingerprint: chrome
   network: ws
@@ -713,7 +497,271 @@ proxies:
     headers:
       Host: snip.edgeoneai.cc.cd
     path: /
-- name: '🇺🇸 美国 | USA #1'
+- name: '🇺🇸 美国 | USA #4'
+  type: vless
+  server: 104.19.154.200
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: snip.edgeoneai.cc.cd
+  tls: true
+  udp: true
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  ws-opts:
+    headers:
+      Host: snip.edgeoneai.cc.cd
+    path: /
+- name: '🇺🇸 美国 | USA #5'
+  type: vless
+  server: 104.19.53.46
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: snip.edgeoneai.cc.cd
+  tls: true
+  udp: true
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  ws-opts:
+    headers:
+      Host: snip.edgeoneai.cc.cd
+    path: /
+- name: '🇺🇸 美国 | USA #6'
+  type: vless
+  server: 203.88.114.252
+  port: 8443
+  client-fingerprint: chrome
+  network: ws
+  servername: snip.edgeoneai.cc.cd
+  tls: true
+  udp: true
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  ws-opts:
+    headers:
+      Host: snip.edgeoneai.cc.cd
+    path: /fdip=sstp://vpn:vpn@public-vpn-200.opengw.net:443
+- name: '🇺🇸 美国 | USA #7'
+  type: vless
+  server: 104.17.22.231
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: snip.edgeoneai.cc.cd
+  tls: true
+  udp: true
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  ws-opts:
+    headers:
+      Host: snip.edgeoneai.cc.cd
+    path: /
+- name: '🇺🇸 美国 | USA #8'
+  type: vmess
+  server: 23.254.194.215
+  port: 8080
+  alterId: 0
+  cipher: auto
+  network: ws
+  servername: www.bing.com
+  skip-cert-verify: true
+  tls: false
+  udp: true
+  uuid: 3c75a551-81d6-46d0-876d-79519719bb22
+  ws-opts:
+    headers:
+      Host: www.bing.com
+    path: 3c75a551-81d6-46d0-876d-79519719bb22-vm
+- name: '🇺🇸 美国 | USA #9'
+  type: vless
+  server: 170.80.111.48
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: snip.edgeoneai.cc.cd
+  tls: true
+  udp: true
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  ws-opts:
+    headers:
+      Host: snip.edgeoneai.cc.cd
+    path: /
+- name: '🇺🇸 美国 | USA #10'
+  type: vless
+  server: 104.19.212.207
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: snip.edgeoneai.cc.cd
+  tls: true
+  udp: true
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  ws-opts:
+    headers:
+      Host: snip.edgeoneai.cc.cd
+    path: /
+- name: '🇺🇸 美国 | USA #11'
+  type: vless
+  server: 199.232.78.160
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: firefox.com
+  tls: true
+  udp: true
+  uuid: 7dee06cc-4bc8-43ca-a6c2-59f81107f2e3
+  ws-opts:
+    headers:
+      Host: copy_az_channel_NUFiLTER_10i.global.ssl.fastly.net.
+    path: /
+- name: '🇺🇸 美国 | USA #12'
+  type: vmess
+  server: US032018.ssgreen.org
+  port: 443
+  alpn:
+  - ''
+  alterId: 0
+  cipher: auto
+  network: ws
+  servername: US032018.ssgreen.org
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  uuid: c0767dfc-c313-4faa-9053-5554c2a25260
+  ws-opts:
+    headers:
+      Host: US032018.ssgreen.org
+    path: /wes
+- name: '🇺🇸 美国 | USA #13'
+  type: vless
+  server: 172.66.205.185
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: snip.edgeoneai.cc.cd
+  tls: true
+  udp: true
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  ws-opts:
+    headers:
+      Host: snip.edgeoneai.cc.cd
+    path: /
+- name: '🇺🇸 美国 | USA #14'
+  type: vmess
+  server: US032019.ssgreen.org
+  port: 443
+  alpn:
+  - ''
+  alterId: 0
+  cipher: auto
+  network: ws
+  servername: US032019.ssgreen.org
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  uuid: 93d321f8-922f-44c2-acc2-50f25503aa77
+  ws-opts:
+    headers:
+      Host: US032019.ssgreen.org
+    path: /wes
+- name: '🇺🇸 美国 | USA #15'
+  type: vless
+  server: 104.19.45.195
+  port: 443
+  alpn:
+  - http/1.1
+  client-fingerprint: chrome
+  network: ws
+  servername: snip.edgeoneai.cc.cd
+  tls: true
+  udp: true
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  ws-opts:
+    headers:
+      Host: snip.edgeoneai.cc.cd
+    path: /?TELEGRAM-TOOTFFARANGI
+- name: '🇺🇸 美国 | USA #16'
+  type: vless
+  server: 104.17.218.124
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: snip.edgeoneai.cc.cd
+  tls: true
+  udp: true
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  ws-opts:
+    headers:
+      Host: snip.edgeoneai.cc.cd
+    path: /
+- name: '🇺🇸 美国 | USA #17'
+  type: vless
+  server: 15.235.104.68
+  port: 8443
+  client-fingerprint: chrome
+  network: ws
+  servername: snip.edgeoneai.cc.cd
+  tls: true
+  udp: true
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  ws-opts:
+    headers:
+      Host: snip.edgeoneai.cc.cd
+    path: /
+- name: '🇺🇸 美国 | USA #18'
+  type: vless
+  server: 104.17.187.57
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: snip.edgeoneai.cc.cd
+  tls: true
+  udp: true
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  ws-opts:
+    headers:
+      Host: snip.edgeoneai.cc.cd
+    path: /
+- name: '🇺🇸 美国 | USA #19'
+  type: vless
+  server: 104.17.153.64
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: snip.edgeoneai.cc.cd
+  tls: true
+  udp: true
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  ws-opts:
+    headers:
+      Host: snip.edgeoneai.cc.cd
+    path: /
+- name: '🇺🇸 美国 | USA #20'
+  type: vless
+  server: 104.17.145.43
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: snip.edgeoneai.cc.cd
+  tls: true
+  udp: true
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  ws-opts:
+    headers:
+      Host: snip.edgeoneai.cc.cd
+    path: /
+- name: '🇺🇸 美国 | USA #21'
+  type: vless
+  server: 104.18.91.192
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: snip.edgeoneai.cc.cd
+  tls: true
+  udp: true
+  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
+  ws-opts:
+    headers:
+      Host: snip.edgeoneai.cc.cd
+    path: /
+- name: '🇺🇸 美国 | USA #22'
   type: vless
   server: 104.17.243.232
   port: 443
@@ -727,9 +775,9 @@ proxies:
     headers:
       Host: snip.edgeoneai.cc.cd
     path: /
-- name: '🇺🇸 美国 | USA #2'
+- name: '🇺🇸 美国 | USA #23'
   type: vless
-  server: 162.159.140.116
+  server: 104.19.34.37
   port: 443
   client-fingerprint: chrome
   network: ws
@@ -741,119 +789,6 @@ proxies:
     headers:
       Host: snip.edgeoneai.cc.cd
     path: /
-- name: '🇺🇸 美国 | USA #3'
-  type: vless
-  server: 104.18.151.172
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: snip.edgeoneai.cc.cd
-  tls: true
-  udp: true
-  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
-  ws-opts:
-    headers:
-      Host: snip.edgeoneai.cc.cd
-    path: /fdip=sstp://vpn:vpn@public-vpn-200.opengw.net:443
-- name: '🇺🇸 美国 | USA #4'
-  type: vless
-  server: 3.147.42.150
-  port: 443
-  network: http
-  tls: false
-  udp: true
-  uuid: 7060231d-b9ba-495f-a218-bf427940cf3e
-- name: '🇺🇸 美国 | USA #5'
-  type: vless
-  server: 104.17.130.193
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: snip.edgeoneai.cc.cd
-  tls: true
-  udp: true
-  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
-  ws-opts:
-    headers:
-      Host: snip.edgeoneai.cc.cd
-    path: /fdip=sstp://vpn:vpn@public-vpn-200.opengw.net:443
-- name: '🇺🇸 美国 | USA #6'
-  type: vless
-  server: 162.159.137.204
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: snip.edgeoneai.cc.cd
-  tls: true
-  udp: true
-  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
-  ws-opts:
-    headers:
-      Host: snip.edgeoneai.cc.cd
-    path: /fdip=sstp://vpn:vpn@public-vpn-200.opengw.net:443
-- name: '🇺🇸 美国 | USA #7'
-  type: trojan
-  server: vpn.liumr.top
-  port: 443
-  password: va3E77I9fZCnCVcGKkxBCfz5
-  skip-cert-verify: true
-  sni: vpn.liumr.top
-  udp: true
-- name: '🇺🇸 美国 | USA #8'
-  type: vless
-  server: 104.17.167.134
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: snip.edgeoneai.cc.cd
-  tls: true
-  udp: true
-  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
-  ws-opts:
-    headers:
-      Host: snip.edgeoneai.cc.cd
-    path: /fdip=sstp://vpn:vpn@public-vpn-200.opengw.net:443?ed=2560fp=chromefp=chrome
-- name: '🇺🇸 美国 | USA #11'
-  type: vless
-  server: 104.16.66.12
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: snip.edgeoneai.cc.cd
-  tls: true
-  udp: true
-  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
-  ws-opts:
-    headers:
-      Host: snip.edgeoneai.cc.cd
-    path: /
-- name: '🇺🇸 美国 | USA #12'
-  type: vless
-  server: 104.17.151.3
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: snip.edgeoneai.cc.cd
-  tls: true
-  udp: true
-  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
-  ws-opts:
-    headers:
-      Host: snip.edgeoneai.cc.cd
-    path: /
-- name: '🇺🇸 美国 | USA #13'
-  type: vless
-  server: 104.18.35.86
-  port: 8080
-  network: ws
-  servername: hhlfy.twiladaphne.ndjp.net
-  tls: false
-  udp: true
-  uuid: e5cc16a6-ea42-46b2-82ae-ad2157e1641b
-  ws-opts:
-    headers:
-      Host: hhlfy.twiladaphne.ndjp.net
-    path: /sg-melbi
 - name: DE_speednode_0001
   type: http
   server: 213.109.163.119
@@ -909,6 +844,20 @@ proxies:
 - name: FR_speednode_0008
   type: http
   server: 82.65.162.76
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: GB_speednode_0009
+  type: http
+  server: 198.105.124.180
+  port: 8443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: IE_speednode_0010
+  type: http
+  server: 18.200.158.139
   port: 443
   skip-cert-verify: true
   tls: true
@@ -982,6 +931,20 @@ proxies:
   type: http
   server: 193.176.84.34
   port: 9002
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: US_speednode_0023
+  type: http
+  server: 64.98.50.100
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: US_speednode_0024
+  type: http
+  server: 44.248.167.117
+  port: 8443
   skip-cert-verify: true
   tls: true
   udp: true
