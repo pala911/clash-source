@@ -41,6 +41,10 @@ import urllib.request
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 
+# ⚠ 静默化：pythonw（计划任务）没有控制台，mihomo 这类控制台子进程会各自弹窗
+#   （2026-10-24 用户反馈）。非 Windows 上没有该常量，取 0 等于默认值。
+NOWIN = getattr(subprocess, "CREATE_NO_WINDOW", 0)
+
 API_PORT = int(os.environ.get("PROBE_API_PORT", "19099"))
 MIXED_PORT = int(os.environ.get("PROBE_MIXED_PORT", "17899"))
 SECRET = "probe-secret"
@@ -259,14 +263,16 @@ def probe(node_files, mihomo, workdir, budget=1500, log=print, hc_timeout=8000,
     cpath, _ = build_config(node_files, workdir, health_check_timeout=hc_timeout)
     r = subprocess.run([mihomo, "-t", "-f", cpath, "-d", workdir],
                        stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                       universal_newlines=True, timeout=180)
+                       universal_newlines=True, timeout=180,
+                       creationflags=NOWIN)
     if r.returncode != 0:
         log("  [probe] 配置校验失败: %s" % ((r.stdout or r.stderr)[-300:]))
         return {}
     log("  [probe] 启动实例 %s（%d 源）" % (os.path.basename(mihomo), len(node_files)))
     logf = open(os.path.join(workdir, "probe.log"), "w", encoding="utf-8")
     proc = subprocess.Popen([mihomo, "-d", workdir, "-f", cpath],
-                            stdout=logf, stderr=subprocess.STDOUT)
+                            stdout=logf, stderr=subprocess.STDOUT,
+                            creationflags=NOWIN)
     expect = {n: load_types(n, p) for n, p in node_files}
     t0 = time.time()
     rows, unloaded = {}, set()

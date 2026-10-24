@@ -11,13 +11,21 @@ memory/feedback_race_test_must_prove_it_happened.md —— 所以下面每一处
 都**先断言「竞态真的发生了」**（CI 方推成功、本机第 1 次真被拒），
 否则用例必须红，而不是绿着骗人。
 
-## 三个用例（全部用真 git + 真裸仓，不碰网络；每例独立建仓）
+## 五个用例（全部用真 git + 真裸仓，不碰网络；每例独立建仓）
 
   A 正常        -> 第 1 次就成功
   B 被 CI 插队  -> 第 1 次真被拒 -> rebase 自愈 -> 第 2 次成功；两个提交都在远端
-  C 真冲突      -> 推不上去，但**仓库必须是干净的**：返回非 0、
-                   .git/rebase-merge 不存在、工作区无冲突标记、本地提交还在
-                   （§75 #9：失败方向只能是「这轮推不上去」，绝不能是「仓库卡死」）
+  C 真冲突      -> 推不上去 + 自动救援也没成：返回非 0、无中间态、
+                   工作区无冲突标记、**本地提交原封不动**（克隆式救援，
+                   成功前不动真实工作区）
+  D 救援成功    -> 三连败后自动「克隆-合并-补推」真成功：本机数据 + 桩写入的
+                   健康档案都落到远端，真实工作区随后对齐远端（积压清零）
+  E 救援失败    -> 桩 health 报错：真实工作区/积压提交纹丝不动，大声退出
+                   （失败方向只能是「这轮没救成」，绝不是「仓库被拆」）
+
+静默化静态扫描：local_probe.py / probe.py 的**每一个**子进程呼叫都必须带
+creationflags=NOWIN —— pythonw 计划任务下少一处，推送/探针时段就多一路弹窗
+（2026-10-24 用户反馈的根因）。
 """
 import contextlib                 # noqa: E402
 import io                         # noqa: E402
@@ -131,6 +139,39 @@ def remote_subjects(remote, cwd):
     return p.stdout.splitlines()
 
 
+def remote_file(remote, cwd, rel):
+    p = g(["--git-dir", remote, "show", "main:%s" % rel], cwd)
+    return p.stdout if p.returncode == 0 else None
+
+
+def spawn_blocks(path):
+    """从源码文本里抠出每个 subprocess.run( / subprocess.Popen( 调用块（括号配平）。"""
+    src = io.open(path, encoding="utf-8").read()
+    out, i = [], 0
+    while True:
+        hit = None
+        for kw in ("subprocess.run(", "subprocess.Popen("):
+            k = src.find(kw, i)
+            if k != -1 and (hit is None or k < hit[0]):
+                hit = (k, len(kw))
+        if hit is None:
+            return out
+        k, off = hit
+        i = k + off
+        depth = 1
+        while i < len(src) and depth:
+            ch = src[i]
+            if ch == "(":
+                depth += 1
+            elif ch == ")":
+                depth -= 1
+            i += 1
+        out.append(src[k:i])
+
+
+orig_health = local_probe._run_health   # 各用例换桩，finally 里还原
+
+
 # ---------------------------------------------------------------- A 正常
 print("=" * 72)
 print("用例 A：正常推送 -> 第 1 次就成功")
@@ -165,7 +206,7 @@ check(not mid_state(workB), "没有残留 rebase 中间态")
 # ---------------------------------------------------------------- C 真冲突
 print("")
 print("=" * 72)
-print("用例 C：真冲突 -> 允许失败，但必须把仓库留在干净状态")
+print("用例 C：真冲突 -> 允许失败，必须把仓库留在干净状态（救援也救不成时）")
 print("=" * 72)
 dC, remoteC, workC, otherC = setup("c")
 ci_rc, ci_out = ci_push(otherC, "state/probe_latest.json", '{"a": "CI 的版本"}\n',
@@ -173,26 +214,124 @@ ci_rc, ci_out = ci_push(otherC, "state/probe_latest.json", '{"a": "CI 的版本"
 check(ci_rc == 0, "「CI」抢改同一个文件的提交真的推上去了（前提条件）",
       ci_out.splitlines()[-1][:80])
 write(workC, "state/probe_latest.json", '{"a": "本机的版本"}')
-rc, out = run_push(workC)
-check(rc != 0, "冲突时明确返回非 0（不假装成功）", "rc=%s" % rc)
-check("已 rebase --abort" in out, "冲突后立刻 abort 并说出来了")
-check("第 3/3 次被拒" in out, "重试用满了（不是一次就放弃）",
-      [l.strip() for l in out.splitlines() if "被拒" in l][-1:])
-check(not mid_state(workC), "**没有** rebase-merge/rebase-apply 残留（§75 #9 的核心）")
-st = g(["status", "--porcelain"], workC).stdout
-check("UU" not in st and "<<<<<<<" not in st, "工作区没有冲突标记/未合并条目",
-      st.strip()[:60])
-last = g(["log", "-1", "--format=%s"], workC).stdout.strip()
-check(last.startswith("chore: 本机探针"), "本地提交还在（数据没丢，下一轮还能推）", last)
-subsC = remote_subjects(remoteC, dC)
-check(not any("本机的版本" in s for s in subsC), "冲突内容没有被硬推上去（绝不 --force）")
-st2 = g(["status", "--porcelain"], workC)
-check(st2.returncode == 0 and not mid_state(workC),
-      "abort 之后 git 仍能正常操作该仓库（人不用去手抠 .git）")
+local_probe._run_health = lambda cwd: (2, "stub: 克隆里的 health 失败")   # 救援必败
+try:
+    rc, out = run_push(workC)
+    check(rc != 0, "冲突时明确返回非 0（不假装成功）", "rc=%s" % rc)
+    check("已 rebase --abort" in out, "冲突后立刻 abort 并说出来了")
+    check("第 3/3 次被拒" in out, "重试用满了（不是一次就放弃）",
+          [l.strip() for l in out.splitlines() if "被拒" in l][-1:])
+    check("自动救援" in out and "未成" in out, "救援被触发且大声说了没成",
+          [l.strip() for l in out.splitlines() if "rescue" in l][:1])
+    check(not mid_state(workC), "**没有** rebase-merge/rebase-apply 残留（§75 #9 的核心）")
+    st = g(["status", "--porcelain"], workC).stdout
+    check("UU" not in st and "<<<<<<<" not in st, "工作区没有冲突标记/未合并条目",
+          st.strip()[:60])
+    last = g(["log", "-1", "--format=%s"], workC).stdout.strip()
+    check(last.startswith("chore: 本机探针"), "本地提交还在（克隆式救援不拆真实工作区）", last)
+    subsC = remote_subjects(remoteC, dC)
+    check(not any("补推" in s for s in subsC), "失败的救援没有把任何东西推上远端")
+    probeC = remote_file(remoteC, dC, "state/probe_latest.json") or ""
+    check("本机的版本" not in probeC,
+          "冲突内容没有被硬推上去（绝不 --force）", probeC[:40])
+    st2 = g(["status", "--porcelain"], workC)
+    check(st2.returncode == 0 and not mid_state(workC),
+          "abort 之后 git 仍能正常操作该仓库（人不用去手抠 .git）")
+finally:
+    local_probe._run_health = orig_health
+
+# ---------------------------------------------------------------- D 救援成功
+print("")
+print("=" * 72)
+print("用例 D：三连败 -> 自动救援真成功（克隆里合并并补推，工作区随后对齐）")
+print("=" * 72)
+dD, remoteD, workD, otherD = setup("d")
+ci_rc, ci_out = ci_push(otherD, "state/probe_latest.json", '{"a": "CI 的版本"}\n',
+                        "chore: 源健康档案（模拟 CI 抢改同一个文件）")
+check(ci_rc == 0, "「CI」的插队提交真的推上去了（前提条件）", ci_out.splitlines()[-1][:80])
+
+
+def fake_health_ok(cwd):
+    """桩：在克隆里写一个真文件再返回成功 —— 若这文件最终出现在远端，
+    说明「克隆合并 -> commit -> push -> 远端落地」整条镜头都是真的走过。"""
+    with io.open(os.path.join(cwd, "state", "source_health.json"), "w",
+                 encoding="utf-8") as f:
+        f.write('{"marker": "rescued"}')
+    return 0, "stub: ok"
+
+
+local_probe._run_health = fake_health_ok
+try:
+    write(workD, "state/probe_latest.json", '{"a": "本机的版本"}')
+    rc, out = run_push(workD)
+    check(rc == 0, "三连败后救援链把推送救成了（exit=0）", "rc=%s" % rc)
+    check(out.count("被拒") >= 2, "前 3 次推送真的被拒过（不走救援的假成功）")
+    check("自动救援成功" in out, "救援成功被大声说出来了")
+    subsD = remote_subjects(remoteD, dD)
+    check(any("补推" in s for s in subsD) and any("模拟 CI" in s for s in subsD),
+          "远端同时有 CI 的提交与本机的补推提交", subsD[:3])
+    got = remote_file(remoteD, dD, "state/source_health.json")
+    check(got is not None and "rescued" in got,
+          "桩在克隆里写的健康档案真的落到了远端（整条链是真的）", (got or "")[:40])
+    gotp = remote_file(remoteD, dD, "state/probe_latest.json") or ""
+    check("本机的版本" in gotp, "本机积压数据真的并进了远端", gotp[:40])
+    stD = g(["status", "--porcelain"], workD).stdout
+    nD = g(["rev-list", "--count", "origin/main..HEAD"], workD).stdout.strip()
+    check(nD == "0" and stD.strip() == "" and not mid_state(workD),
+          "真实工作区随后对齐远端（积压清零、无残留中间态）", "stuck=%s st=%s" % (nD, stD.strip()[:40]))
+finally:
+    local_probe._run_health = orig_health
+
+# ---------------------------------------------------------------- E 救援失败
+print("")
+print("=" * 72)
+print("用例 E：救援失败（桩 health 报错）-> 真实工作区与积压提交纹丝不动")
+print("=" * 72)
+dE, remoteE, workE, otherE = setup("e")
+ci_rc, ci_out = ci_push(otherE, "state/probe_latest.json", '{"a": "CI 的版本"}\n',
+                        "chore: 源健康档案（模拟 CI 抢改同一个文件）")
+check(ci_rc == 0, "「CI」的插队提交真的推上去了（前提条件）", ci_out.splitlines()[-1][:80])
+write(workE, "state/probe_latest.json", '{"a": "本机的版本"}')
+local_probe._run_health = lambda cwd: (2, "stub: 克隆里的 health 失败")
+try:
+    rc, out = run_push(workE)
+    check(rc != 0, "没救成就是没救成（明确非 0）", "rc=%s" % rc)
+    check("自动救援" in out and ("未成" in out or "失败" in out), "救援失败被大声说了出来")
+    stE = g(["status", "--porcelain"], workE).stdout
+    lastE = g(["log", "-1", "--format=%s"], workE).stdout.strip()
+    nE = g(["rev-list", "--count", "origin/main..HEAD"], workE).stdout.strip()
+    check(lastE.startswith("chore: 本机探针") and nE == "1" and stE.strip() == "",
+          "本地积压提交原封不动（下轮还能推/还能救）",
+          "head=%s stuck=%s st=%s" % (lastE[:28], nE, stE.strip()[:30]))
+    check(not mid_state(workE), "没有残留 rebase 中间态")
+    check((remote_file(remoteE, dE, "state/probe_latest.json") or "").find("本机的版本") < 0,
+          "失败路径没有把本机内容偷偷推上去（绝不 --force）")
+finally:
+    local_probe._run_health = orig_health
+
+# ---------------------------------------------------------------- 静默化扫描
+print("")
+print("=" * 72)
+print("静态扫描：L2 链（local_probe.py / probe.py）子进程必须全部静默（NOWIN）")
+print("=" * 72)
+pLP = os.path.join(ROOT, "src", "local_probe.py")
+pPR = os.path.join(ROOT, "src", "probe.py")
+bad = []
+for path in (pLP, pPR):
+    blocks = spawn_blocks(path)
+    if not blocks:
+        bad.append("%s: 一个子进程呼叫都没找到（文件被改坏？）" % os.path.basename(path))
+    for b in blocks:
+        if "creationflags" not in b:
+            bad.append("%s: %s" % (os.path.basename(path), b.replace("\n", " ")[:90]))
+nsites = len(spawn_blocks(pLP)) + len(spawn_blocks(pPR))
+print("  呼叫点共 %d 个（local_probe %d + probe %d）"
+      % (nsites, len(spawn_blocks(pLP)), len(spawn_blocks(pPR))))
+check(not bad, "每个子进程呼叫都带 creationflags=NOWIN（pythonw 不弹窗）", "；".join(bad[:3]))
 
 print("")
 print("=" * 72)
 if FAILS:
     print("结果：失败 %d 项 —— %s" % (len(FAILS), "；".join(FAILS)))
     sys.exit(1)
-print("结果：全部通过（正常 / 真竞态自愈 / 冲突不留中间态）")
+print("结果：全部通过（正常 / 真竞态自愈 / 冲突干净 / 救援成功 / 救援失败不伤仓库 / 静默扫描）")

@@ -396,7 +396,7 @@ python tools\test_provider_load.py    # 一个畸形节点会不会让整源加�
 python tools\test_src_cfg_write.py    # 写回源清单只改 enabled，不抹注释
 python tools\test_push_status.py      # 云效回传的留痕必落且本机不留垃圾
 python tools\test_local_probe_obs.py  # pythonw（计划任务）下 health.py 的输出与失败必须可观测
-python tools\test_local_probe_push.py # 本机推送：真造「被 CI 插队」竞态 + 冲突绝不留 rebase 中间态
+python tools\test_local_probe_push.py # 本机推送：真竞态自愈 + 冲突干净 + 推送三连败后的「克隆-合并-补推」自动救援（成功/失败两向）+ pythonw 子进程全静默扫描
 python tools\test_report_ai.py        # AI 留痕链：生产端键名 ↔ 报告/manifest
 python tools\test_ci_workflow.py      # CI 推送必须带重试、失败不许染红（连带 skip 下游）
 python tools\test_hardening.py        # 硬化回归：dist 残留清理 / raw 快照原貌 / TPM 闸门不死循环 / review_source 源级合同
