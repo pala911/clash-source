@@ -1,0 +1,30 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+.DS_Store
+
+# 凭据：绝不入库（仓库是 public）
+*aikey*
+*.token
+*.key
+*.pem
+.env
+.env.*
+!src/ai_backends.yaml
+# 本地探针产物（.probe/ 与 .tools/ 都是临时内核/日志，不入库）
+.probe/
+.tools/
+
+
+# 探针日志与本地诊断产物
+logs/
+ci_capability_result.json
+
+# 稳定性档案损坏时 load() 的改名留证（*.corrupt-<时间戳>）。
+# 它是本地诊断产物，绝不能被 local_probe 的 `git add -A state` 顺手提交上去。
+state/*.corrupt-*
+
+
+# 云效 Codeup 的 HTTPS 克隆密码（明文，绝不入库）
+*.https
