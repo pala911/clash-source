@@ -1,6 +1,17 @@
 # 未过滤原始快照（对比用，勿订阅）—— 源 anaer
 proxies:
 - name: 其他-001
+  type: trojan
+  network: ws
+  server: www.calmlunch.com
+  port: 443
+  password: humanity
+  sni: www.calmlunch.com
+  ws-opts:
+    headers:
+      Host: www.calmlunch.com
+    path: /assignment
+- name: 其他-002
   type: vless
   network: ws
   uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
@@ -17,7 +28,7 @@ proxies:
     path: /
   client-fingerprint: unsafe
   encryption: none
-- name: 其他-002
+- name: 其他-003
   type: vmess
   network: ws
   uuid: 6a89a215-22bf-4bd7-9642-b95b2e09583a
@@ -59,18 +70,6 @@ proxies:
   up: 500
   down: 1000
   auth_str: dongtaiwang.com
-- name: 德国-003
-  type: trojan
-  network: ws
-  server: 185.220.100.168
-  port: 443
-  password: humanity
-  skip-cert-verify: false
-  sni: www.calmlunch.com
-  ws-opts:
-    headers:
-      Host: www.calmlunch.com
-    path: /assignment
 - name: 日本-001
   type: trojan
   network: tcp
@@ -139,14 +138,14 @@ proxies:
   sni: www.bing.com
 - name: 罗马尼亚-008 |1.0MB/s
   type: http
-  server: 193.176.84.23
+  server: 193.176.84.26
   port: 9002
   skip-cert-verify: true
   tls: true
   sni: www.bing.com
 - name: 罗马尼亚-009 |1.0MB/s
   type: http
-  server: 193.176.84.26
+  server: 193.176.84.23
   port: 9002
   skip-cert-verify: true
   tls: true
@@ -228,25 +227,37 @@ proxies:
   skip-cert-verify: true
   tls: true
   sni: www.bing.com
-- name: 美国-001 |3.3MB/s|TK-US|YT-US|GPT⁺-US|GM-US
+- name: 美国-001
+  type: vless
+  network: ws
+  uuid: 6202b230-417c-4d8e-b624-0f71afa9c75d
+  server: 63.141.128.30
+  port: 8880
+  tls: false
+  ws-opts:
+    headers:
+      Host: vms.lifetime42.workers.dev
+    path: /
+  encryption: none
+- name: 美国-002 |3.3MB/s|TK-US|YT-US|GPT⁺-US|GM-US
   type: http
   server: 138.199.35.215
   port: 9002
   skip-cert-verify: true
   tls: true
-- name: 美国-002 |3.2MB/s|TK-US|YT-US|GPT⁺-US|GM-US
+- name: 美国-003 |3.2MB/s|TK-US|YT-US|GPT⁺-US|GM-US
   type: http
   server: 38.28.193.188
   port: 443
   skip-cert-verify: true
   tls: true
-- name: 美国-003 |1.5MB/s|TK-US|YT-US|GPT⁺-US|GM-US
+- name: 美国-004 |1.5MB/s|TK-US|YT-US|GPT⁺-US|GM-US
   type: http
   server: 209.148.53.153
   port: 8090
   skip-cert-verify: true
   tls: true
-- name: 美国-004 |1.0MB/s|TK-US|GPT⁺-US
+- name: 美国-005 |1.0MB/s|TK-US|GPT⁺-US
   type: http
   server: 138.199.35.198
   port: 9002
@@ -276,15 +287,6 @@ proxies:
   port: 9002
   skip-cert-verify: true
   tls: true
-- name: 韩国-001
-  type: vmess
-  network: tcp
-  uuid: 35aa0fda-175a-4aec-c468-0231dee1a121
-  server: 43.108.103.167
-  port: 123
-  skip-cert-verify: true
-  alterId: 0
-  cipher: auto
 - name: '说明-来源: anaer.github.io/Sub'
   type: trojan
   server: 127.0.0.1
@@ -299,7 +301,7 @@ proxies:
   password: dummy
   udp: true
   skip-cert-verify: true
-- name: '说明-更新时间: 2026-10-26 17:32 (CST)'
+- name: '说明-更新时间: 2026-10-27 02:00 (CST)'
   type: trojan
   server: 127.0.0.1
   port: 443
