@@ -1,31 +1,6 @@
-# clash-source 自动生成 —— 源 anaer，共 32 节点（稳定性加权后留在竞速池内的部分）
+# clash-source 自动生成 —— 源 anaer，共 29 节点（稳定性加权后留在竞速池内的部分）
 # 不要手改；改动会在下次定时任务被覆盖（上游 https://pala911.github.io/clash-source/nodes/anaer.yaml）
 proxies:
-- name: 其他-001
-  type: vmess
-  server: guanwang.awsno.com
-  port: 443
-  network: ws
-  uuid: 6a89a215-22bf-4bd7-9642-b95b2e09583a
-  skip-cert-verify: true
-  tls: true
-  alterId: 0
-  cipher: auto
-  ws-opts:
-    headers:
-      Host: guanwang.awsno.com
-    path: /hls/cctv5phd.m3u8
-- name: 其他-002
-  type: trojan
-  server: www.calmlunch.com
-  port: 443
-  network: ws
-  password: humanity
-  sni: www.calmlunch.com
-  ws-opts:
-    headers:
-      Host: www.calmlunch.com
-    path: /assignment
 - name: 澳大利亚-001 |3.0MB/s|TK-AU|YT-AU|GPT⁺-AU
   type: http
   server: 159.13.44.228
@@ -226,10 +201,3 @@ proxies:
   port: 9002
   skip-cert-verify: true
   tls: true
-- name: '说明-来源: anaer.github.io/Sub'
-  type: trojan
-  server: 127.0.0.1
-  port: 443
-  password: dummy
-  udp: true
-  skip-cert-verify: true
