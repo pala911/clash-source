@@ -1,34 +1,6 @@
 # 未过滤原始快照（对比用，勿订阅）—— 源 anaer
 proxies:
 - name: 其他-001
-  type: trojan
-  network: ws
-  server: www.calmlunch.com
-  port: 443
-  password: humanity
-  sni: www.calmlunch.com
-  ws-opts:
-    headers:
-      Host: www.calmlunch.com
-    path: /assignment
-- name: 其他-002
-  type: vless
-  network: ws
-  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
-  server: 172.64.150.43
-  servername: snip.edgeoneai.cc.cd
-  port: 443
-  tls: true
-  udp: true
-  xudp: true
-  ws-opts:
-    headers:
-      Host: snip.edgeoneai.cc.cd
-      User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36
-    path: /
-  client-fingerprint: unsafe
-  encryption: none
-- name: 其他-003
   type: vmess
   network: ws
   uuid: 6a89a215-22bf-4bd7-9642-b95b2e09583a
@@ -42,6 +14,17 @@ proxies:
     headers:
       Host: guanwang.awsno.com
     path: /hls/cctv5phd.m3u8
+- name: 其他-002
+  type: trojan
+  network: ws
+  server: www.calmlunch.com
+  port: 443
+  password: humanity
+  sni: www.calmlunch.com
+  ws-opts:
+    headers:
+      Host: www.calmlunch.com
+    path: /assignment
 - name: 德国-001 |1.6MB/s
   type: hysteria
   server: 5.83.129.90
@@ -70,44 +53,41 @@ proxies:
   up: 500
   down: 1000
   auth_str: dongtaiwang.com
-- name: 日本-001
-  type: trojan
-  network: tcp
-  server: 45.32.52.173
-  port: 8886
-  password: e26a229d-e8f2-4ff9-8c7d-58a9d83ee437
-  skip-cert-verify: true
-  udp: true
-  sni: 45.32.52.173
-  client-fingerprint: chrome
 - name: 澳大利亚-001 |3.0MB/s|TK-AU|YT-AU|GPT⁺-AU
   type: http
   server: 159.13.44.228
   port: 443
   skip-cert-verify: true
   tls: true
-- name: 罗马尼亚-001 |3.3MB/s|TK-RO|GPT⁺-RO|GM-RO
+- name: 罗马尼亚-001 |1020KB/s
+  type: http
+  server: 193.176.84.22
+  port: 9002
+  skip-cert-verify: true
+  tls: true
+  sni: www.bing.com
+- name: 罗马尼亚-002 |3.3MB/s|TK-RO|GPT⁺-RO|GM-RO
   type: http
   server: 193.176.84.35
   port: 9002
   skip-cert-verify: true
   tls: true
   sni: www.bing.com
-- name: 罗马尼亚-002 |2.3MB/s|TK-RO|GPT⁺-RO|GM-RO
+- name: 罗马尼亚-003 |2.3MB/s|TK-RO|GPT⁺-RO|GM-RO
   type: http
   server: 193.176.84.17
   port: 9002
   skip-cert-verify: true
   tls: true
   sni: www.bing.com
-- name: 罗马尼亚-003 |1.4MB/s
+- name: 罗马尼亚-004 |1.4MB/s
   type: http
   server: 193.176.84.27
   port: 9002
   skip-cert-verify: true
   tls: true
   sni: www.bing.com
-- name: 罗马尼亚-004 |1.3MB/s
+- name: 罗马尼亚-005 |1.3MB/s
   type: http
   server: 193.176.84.36
   port: 9002
@@ -115,44 +95,37 @@ proxies:
   tls: true
   udp: true
   sni: www.bing.com
-- name: 罗马尼亚-005 |1.2MB/s
+- name: 罗马尼亚-006 |1.2MB/s
   type: http
   server: 193.176.84.32
   port: 9002
   skip-cert-verify: true
   tls: true
   sni: www.bing.com
-- name: 罗马尼亚-006 |1.1MB/s|TK-RO|GPT⁺-RO|GM-RO
+- name: 罗马尼亚-007 |1.1MB/s|TK-RO|GPT⁺-RO|GM-RO
   type: http
   server: 193.176.84.30
   port: 9002
   skip-cert-verify: true
   tls: true
   sni: www.bing.com
-- name: 罗马尼亚-007 |1.1MB/s
+- name: 罗马尼亚-008 |1.1MB/s
   type: http
   server: 193.176.84.40
   port: 9002
   skip-cert-verify: true
   tls: true
   sni: www.bing.com
-- name: 罗马尼亚-008 |1.0MB/s
+- name: 罗马尼亚-009 |1.0MB/s
   type: http
   server: 193.176.84.26
   port: 9002
   skip-cert-verify: true
   tls: true
   sni: www.bing.com
-- name: 罗马尼亚-009 |1.0MB/s
+- name: 罗马尼亚-010 |1.0MB/s
   type: http
   server: 193.176.84.23
-  port: 9002
-  skip-cert-verify: true
-  tls: true
-  sni: www.bing.com
-- name: 罗马尼亚-010 |1020KB/s
-  type: http
-  server: 193.176.84.22
   port: 9002
   skip-cert-verify: true
   tls: true
@@ -227,7 +200,13 @@ proxies:
   skip-cert-verify: true
   tls: true
   sni: www.bing.com
-- name: 美国-001
+- name: 美国-001 |3.2MB/s|TK-US|YT-US|GPT⁺-US|GM-US
+  type: http
+  server: 38.28.193.188
+  port: 443
+  skip-cert-verify: true
+  tls: true
+- name: 美国-002
   type: vless
   network: ws
   uuid: 6202b230-417c-4d8e-b624-0f71afa9c75d
@@ -239,16 +218,10 @@ proxies:
       Host: vms.lifetime42.workers.dev
     path: /
   encryption: none
-- name: 美国-002 |3.3MB/s|TK-US|YT-US|GPT⁺-US|GM-US
+- name: 美国-003 |3.3MB/s|TK-US|YT-US|GPT⁺-US|GM-US
   type: http
   server: 138.199.35.215
   port: 9002
-  skip-cert-verify: true
-  tls: true
-- name: 美国-003 |3.2MB/s|TK-US|YT-US|GPT⁺-US|GM-US
-  type: http
-  server: 38.28.193.188
-  port: 443
   skip-cert-verify: true
   tls: true
 - name: 美国-004 |1.5MB/s|TK-US|YT-US|GPT⁺-US|GM-US
@@ -294,14 +267,14 @@ proxies:
   password: dummy
   udp: true
   skip-cert-verify: true
-- name: '说明-清洗结果: 清理 0 个节点、修复 0 处引用、转译 126 个字符'
+- name: '说明-清洗结果: 清理 0 个节点、修复 0 处引用、转译 122 个字符'
   type: trojan
   server: 127.0.0.1
   port: 443
   password: dummy
   udp: true
   skip-cert-verify: true
-- name: '说明-更新时间: 2026-10-27 17:28 (CST)'
+- name: '说明-更新时间: 2026-10-28 01:07 (CST)'
   type: trojan
   server: 127.0.0.1
   port: 443

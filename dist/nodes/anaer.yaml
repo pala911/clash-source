@@ -1,34 +1,7 @@
-# clash-source 自动生成 —— 源 anaer，共 34 节点（稳定性加权后留在竞速池内的部分）
+# clash-source 自动生成 —— 源 anaer，共 32 节点（稳定性加权后留在竞速池内的部分）
 # 不要手改；改动会在下次定时任务被覆盖（上游 https://pala911.github.io/clash-source/nodes/anaer.yaml）
 proxies:
 - name: 其他-001
-  type: trojan
-  server: www.calmlunch.com
-  port: 443
-  network: ws
-  password: humanity
-  sni: www.calmlunch.com
-  ws-opts:
-    headers:
-      Host: www.calmlunch.com
-    path: /assignment
-- name: 其他-002
-  type: vless
-  server: 172.64.150.43
-  port: 443
-  network: ws
-  uuid: 495c7195-85b8-498a-bf20-2ea9ce9175b5
-  servername: snip.edgeoneai.cc.cd
-  tls: true
-  udp: true
-  xudp: true
-  ws-opts:
-    headers:
-      Host: snip.edgeoneai.cc.cd
-      User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36
-    path: /
-  encryption: none
-- name: 其他-003
   type: vmess
   server: guanwang.awsno.com
   port: 443
@@ -42,37 +15,45 @@ proxies:
     headers:
       Host: guanwang.awsno.com
     path: /hls/cctv5phd.m3u8
-- name: 日本-001
+- name: 其他-002
   type: trojan
-  server: 45.32.52.173
-  port: 8886
-  network: tcp
-  password: e26a229d-e8f2-4ff9-8c7d-58a9d83ee437
-  skip-cert-verify: true
-  udp: true
-  sni: 45.32.52.173
-  client-fingerprint: chrome
+  server: www.calmlunch.com
+  port: 443
+  network: ws
+  password: humanity
+  sni: www.calmlunch.com
+  ws-opts:
+    headers:
+      Host: www.calmlunch.com
+    path: /assignment
 - name: 澳大利亚-001 |3.0MB/s|TK-AU|YT-AU|GPT⁺-AU
   type: http
   server: 159.13.44.228
   port: 443
   skip-cert-verify: true
   tls: true
-- name: 罗马尼亚-002 |2.3MB/s|TK-RO|GPT⁺-RO|GM-RO
+- name: 罗马尼亚-001 |1020KB/s
+  type: http
+  server: 193.176.84.22
+  port: 9002
+  skip-cert-verify: true
+  tls: true
+  sni: www.bing.com
+- name: 罗马尼亚-003 |2.3MB/s|TK-RO|GPT⁺-RO|GM-RO
   type: http
   server: 193.176.84.17
   port: 9002
   skip-cert-verify: true
   tls: true
   sni: www.bing.com
-- name: 罗马尼亚-003 |1.4MB/s
+- name: 罗马尼亚-004 |1.4MB/s
   type: http
   server: 193.176.84.27
   port: 9002
   skip-cert-verify: true
   tls: true
   sni: www.bing.com
-- name: 罗马尼亚-004 |1.3MB/s
+- name: 罗马尼亚-005 |1.3MB/s
   type: http
   server: 193.176.84.36
   port: 9002
@@ -80,44 +61,37 @@ proxies:
   tls: true
   udp: true
   sni: www.bing.com
-- name: 罗马尼亚-005 |1.2MB/s
+- name: 罗马尼亚-006 |1.2MB/s
   type: http
   server: 193.176.84.32
   port: 9002
   skip-cert-verify: true
   tls: true
   sni: www.bing.com
-- name: 罗马尼亚-006 |1.1MB/s|TK-RO|GPT⁺-RO|GM-RO
+- name: 罗马尼亚-007 |1.1MB/s|TK-RO|GPT⁺-RO|GM-RO
   type: http
   server: 193.176.84.30
   port: 9002
   skip-cert-verify: true
   tls: true
   sni: www.bing.com
-- name: 罗马尼亚-007 |1.1MB/s
+- name: 罗马尼亚-008 |1.1MB/s
   type: http
   server: 193.176.84.40
   port: 9002
   skip-cert-verify: true
   tls: true
   sni: www.bing.com
-- name: 罗马尼亚-008 |1.0MB/s
+- name: 罗马尼亚-009 |1.0MB/s
   type: http
   server: 193.176.84.26
   port: 9002
   skip-cert-verify: true
   tls: true
   sni: www.bing.com
-- name: 罗马尼亚-009 |1.0MB/s
+- name: 罗马尼亚-010 |1.0MB/s
   type: http
   server: 193.176.84.23
-  port: 9002
-  skip-cert-verify: true
-  tls: true
-  sni: www.bing.com
-- name: 罗马尼亚-010 |1020KB/s
-  type: http
-  server: 193.176.84.22
   port: 9002
   skip-cert-verify: true
   tls: true
@@ -192,7 +166,13 @@ proxies:
   skip-cert-verify: true
   tls: true
   sni: www.bing.com
-- name: 美国-001
+- name: 美国-001 |3.2MB/s|TK-US|YT-US|GPT⁺-US|GM-US
+  type: http
+  server: 38.28.193.188
+  port: 443
+  skip-cert-verify: true
+  tls: true
+- name: 美国-002
   type: vless
   server: 63.141.128.30
   port: 8880
@@ -204,16 +184,10 @@ proxies:
       Host: vms.lifetime42.workers.dev
     path: /
   encryption: none
-- name: 美国-002 |3.3MB/s|TK-US|YT-US|GPT⁺-US|GM-US
+- name: 美国-003 |3.3MB/s|TK-US|YT-US|GPT⁺-US|GM-US
   type: http
   server: 138.199.35.215
   port: 9002
-  skip-cert-verify: true
-  tls: true
-- name: 美国-003 |3.2MB/s|TK-US|YT-US|GPT⁺-US|GM-US
-  type: http
-  server: 38.28.193.188
-  port: 443
   skip-cert-verify: true
   tls: true
 - name: 美国-004 |1.5MB/s|TK-US|YT-US|GPT⁺-US|GM-US

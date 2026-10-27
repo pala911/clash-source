@@ -1,4 +1,4 @@
-# clash-source 自动生成 —— 源 automerge，共 74 节点（稳定性加权后留在竞速池内的部分）
+# clash-source 自动生成 —— 源 automerge，共 62 节点（稳定性加权后留在竞速池内的部分）
 # 不要手改；改动会在下次定时任务被覆盖（上游 https://pala911.github.io/clash-source/nodes/automerge.yaml）
 proxies:
 - name: 🇱🇻hysteria
@@ -28,62 +28,18 @@ proxies:
     headers:
       Host: au2.pad-service.com
     path: /A11U
-- name: ES_speednode_0007
+- name: 🇷🇺 俄罗斯 | RUS
   type: vless
-  server: au5.pad-sservice.lat
-  port: 8443
-  client-fingerprint: chrome
-  network: ws
-  servername: au5.pad-sservice.lat
-  skip-cert-verify: false
-  tls: true
-  udp: true
-  uuid: 2b0e5676-fb62-4bf0-9607-6e7818421e8e
-  ws-opts:
-    headers:
-      Host: au5.pad-sservice.lat
-    path: /AU5W
-- name: '🇩🇪 德国 | DEU #1'
-  type: vless
-  server: 64.188.83.188
-  port: 2083
-  alpn:
-  - http/1.1
-  client-fingerprint: random
-  encryption: none
-  network: ws
-  servername: speedtestmark.com
-  tls: true
-  udp: true
-  uuid: 75b517db-1f97-4bda-a479-863d988c31a0
-  ws-opts:
-    path: /vless-ws
-- name: '🇭🇰 香港 | HKG #3'
-  type: vless
-  server: 103.180.20.108
-  port: 8443
-  client-fingerprint: chrome
-  network: ws
-  servername: ty986gfazs.cainiaohub.xyz
-  tls: true
-  udp: true
-  uuid: c1c04450-bf71-4049-ad0c-9cf6d94d9f1f
-  ws-opts:
-    headers:
-      Host: ty986gfazs.cainiaohub.xyz
-    path: /81574b6b-c9d7-44a0-b83d-dad56e8cb530
-- name: 🇳🇱 荷兰 | NLD 6
-  type: vless
-  server: renderer-bridge-1-881.mirra.now
+  server: 201.24.121.243
   port: 443
   alpn:
   - h2
   client-fingerprint: chrome
   network: grpc
-  servername: renderer-bridge-1-881.mirra.now
+  servername: kk-ru24a1.testkknegr.online
   tls: true
   udp: true
-  uuid: 27653b37-603c-4c90-b1f5-25c4d23f8932
+  uuid: 32b5ca9b-3f81-4031-965d-e8b074216e8d
 - name: AT_speednode_0002
   type: vless
   server: 152.53.31.46
@@ -99,9 +55,44 @@ proxies:
     headers:
       Host: usa3.pad-service.com
     path: /U1SA
+- name: '🇺🇸 美国 | USA #6'
+  type: vless
+  server: wwww.qarvian.ir
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: cdn.akamai.steamstatic.com
+  tls: true
+  udp: true
+  uuid: f9a9aa1f-75fb-4490-9155-85567af7a0ff
+  ws-opts:
+    headers:
+      Host: copy_az_channel_NUFiLTER_17i.global.ssl.fastly.net.
+    path: /
+- name: '🇺🇸 美国 | USA #9'
+  type: ss
+  server: 202.50.253.54
+  port: 19999
+  cipher: aes-256-gcm
+  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
+  udp: true
+- name: '🇺🇸 美国 | USA #13'
+  type: ss
+  server: 202.50.253.72
+  port: 19999
+  cipher: aes-256-gcm
+  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
+  udp: true
+- name: '🇺🇸 美国 | USA #19'
+  type: ss
+  server: 202.50.253.45
+  port: 19999
+  cipher: aes-256-gcm
+  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
+  udp: true
 - name: '🇮🇹 意大利 | ITA #1'
   type: ss
-  server: 202.50.253.81
+  server: 202.50.253.36
   port: 19999
   cipher: aes-256-gcm
   password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
@@ -113,212 +104,35 @@ proxies:
   cipher: aes-256-gcm
   password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
   udp: true
-- name: 🇬🇧GB_2|1.3MB/s
+- name: 🇭🇰HK_1|4.9MB/s
   type: http
-  server: 185.164.138.156
-  port: 443
-  password: None
+  server: 118.25.131.160
+  port: 10000
   skip-cert-verify: true
   tls: true
-- name: 🇨🇭CH_1|1.2MB/s
-  type: http
-  server: 37.120.213.210
-  port: 9443
-  password: None
-  skip-cert-verify: true
-  tls: true
-- name: 🇰🇷KR_1|1.1MB/s
-  type: vmess
-  server: 43.155.199.22
-  port: 80
-  alterId: 0
-  cipher: auto
-  network: http
-  tls: false
-  uuid: 3722ad16-f3e1-4406-b04a-929b529d8e0d
-- name: 🇺🇸US_1|1.7MB/s
-  type: http
-  server: 154.81.36.92
-  port: 8443
-  skip-cert-verify: true
-  tls: true
-- name: 🇱🇺LU_1|1.6MB/s
-  type: http
-  server: 185.221.132.226
-  port: 443
-  skip-cert-verify: true
-  tls: true
-- name: 🇬🇷GR_1|1.1MB/s
-  type: http
-  server: 149.22.85.78
-  port: 443
-  skip-cert-verify: true
-  tls: true
-- name: 🇦🇱AL_1|1.3MB/s
-  type: http
-  server: 31.171.155.210
-  port: 9443
-  password: None
-  skip-cert-verify: true
-  tls: true
-- name: 🇩🇰DK_1|1.9MB/s|P002-260618
-  type: http
-  server: 185.245.84.50
-  port: 9443
-  password: None
-  skip-cert-verify: true
-  tls: true
-  udp: true
-- name: 🇦🇱AL_2|1.2MB/s
-  type: http
-  server: 87.120.103.226
-  port: 443
-  skip-cert-verify: true
-  tls: true
-- name: 🇺🇸US_2|1.6MB/s
+- name: '🇫🇷 法国 | FRA #1'
   type: hysteria2
-  server: 201.58.183.5
-  port: 4443
-  down: ''
-  obfs: ''
-  obfs-password: ''
-  password: c0242d1b-db7a-4dcf-95ff-e10a3ef1c1a3
-  skip-cert-verify: false
-  sni: de4.shvpn.ru
-  up: ''
-- name: '🇩🇪 德国 | DEU #3'
-  type: hysteria2
-  server: 94.103.169.109
-  port: 4443
-  password: c0242d1b-db7a-4dcf-95ff-e10a3ef1c1a3
-  skip-cert-verify: true
-  sni: de3.shvpn.ru
-  tls: false
-- name: '🇩🇪 德国 | DEU #5'
-  type: vless
-  server: 199.232.239.239
-  port: 443
-  alpn:
-  - h2
-  client-fingerprint: chrome
-  network: ws
-  servername: firefox.com
-  tls: true
-  udp: true
-  uuid: 36805edb-1e85-4199-a59f-117010b70017
-  ws-opts:
-    headers:
-      Host: mpkoe7ypcibr80p102020123.global.ssl.fastly.net
-    path: /@CloudVPNchannel/@CloudVPNchannel/@CloudVPNchannel/@CloudVPNchannel/@CloudVPNchannel/@CloudVPNchannel?ed=2056
-- name: '🇩🇪 德国 | DEU #6'
-  type: vless
-  server: 2.27.13.152
-  port: 2096
-  client-fingerprint: chrome
-  network: ws
-  servername: st4834a.rumedia-cdn.com
-  tls: true
-  udp: true
-  uuid: d1641bc6-3757-43db-815a-9b3f4d9b0d7e
-  ws-opts:
-    headers:
-      Host: st4834a.rumedia-cdn.com
-    path: /cdn/v3/live
-- name: 🇪🇸 西班牙 | ESP
-  type: vless
-  server: 185.18.250.50
-  port: 8880
-  network: ws
-  tls: false
-  udp: true
-  uuid: 6202b230-417c-4d8e-b624-0f71afa9c75d
-  ws-opts:
-    headers:
-      Host: vms.lifetime47.workers.dev
-    path: /?ed=2560&https://t.me/youtube@ZYFXS🇨🇳
-- name: '🇫🇷 法国 | FRA #2'
-  type: hysteria2
-  server: 195.177.94.166
+  server: fr2-cl3.happy-glonaris.top
   port: 443
   password: 4b1be712-774c-4b65-8491-a3339e124a70
   skip-cert-verify: true
   sni: fr2-cl3.happy-glonaris.top
   tls: false
-- name: '🇫🇷 法国 | FRA #4'
+- name: '🇬🇧 英国 | GBR #1'
   type: vless
-  server: 199.232.78.170
-  port: 443
-  alpn:
-  - http/1.1
-  client-fingerprint: chrome
-  network: ws
-  servername: ssl.fastly.com
-  tls: true
+  server: rabin.142.251.153.7.savfasf.ir
+  port: 41432
+  network: tcp
+  tls: false
   udp: true
-  uuid: 88888888-8888-8888-8888-888888888888
+  uuid: 09931b77-0f40-4734-9b36-5df6e2308e4e
   ws-opts:
     headers:
-      Host: Appxdn.global.ssl.fastly.net
+      Host: rabin.142.251.153.7.savfasf.ir
     path: /
-- name: '🇫🇷 法国 | FRA #5'
-  type: hysteria2
-  server: 87.76.211.161
-  port: 443
-  password: 1953e43b-605c-4262-83eb-41a80646b801
-  skip-cert-verify: true
-  sni: fastlinkdownload.song69.fun
-  tls: false
-- name: '🇬🇧 英国 | GBR #2'
-  type: hysteria2
-  server: 201.58.181.179
-  port: 4443
-  password: c0242d1b-db7a-4dcf-95ff-e10a3ef1c1a3
-  skip-cert-verify: true
-  sni: pl1.shvpn.ru
-  tls: false
-- name: '🇬🇧 英国 | GBR #3'
-  type: ss
-  server: 177.202.111.19
-  port: 56137
-  cipher: chacha20-ietf-poly1305
-  password: uvKNudV-N8AUCrykPiyznA
-  udp: true
-- name: '🇬🇧 英国 | GBR #4'
-  type: hysteria2
-  server: pl1.shvpn.ru
-  port: 4443
-  password: c0242d1b-db7a-4dcf-95ff-e10a3ef1c1a3
-  skip-cert-verify: true
-  sni: pl1.shvpn.ru
-  tls: false
-- name: '🇬🇧 英国 | GBR #5'
-  type: vless
-  server: 146.75.35.31
-  port: 443
-  client-fingerprint: chrome
-  network: xhttp
-  servername: accounts.fastly.com
-  tls: true
-  udp: true
-  uuid: f29bb776-4e2d-4884-b628-98d8907132be
-- name: '🇬🇧 英国 | GBR #6'
-  type: ss
-  server: 177.202.111.21
-  port: 56137
-  cipher: chacha20-ietf-poly1305
-  password: uvKNudV-N8AUCrykPiyznA
-  udp: true
-- name: 🇭🇰 香港 | HKG
-  type: anytls
-  server: 654968169.df6h451rh.xin
-  port: 443
-  password: 0324fbc29561
-  skip-cert-verify: true
-  sni: images.ctfassets.net
-  udp: true
-- name: '🇭🇰 香港 | HKG #1'
+- name: '🇭🇰 香港 | HKG #3'
   type: vmess
-  server: 47.243.153.153
+  server: 47.243.194.125
   port: 443
   alterId: 0
   cipher: auto
@@ -329,84 +143,62 @@ proxies:
   uuid: f23bb427-c1f9-4373-876c-2f43e9f790f3
   ws-opts:
     headers:
-      Host: i2psm3knof5qjjix.v.3dns.vip
+      Host: nycqg19zkwacpm1b.v.3dns.vip
     path: /ws-vmess
-- name: 🇭🇰 香港 | HKG 3
-  type: anytls
-  server: 56481.df6h451rh.xin
+- name: '🇭🇰 香港 | HKG #4'
+  type: vmess
+  server: 47.243.65.243
   port: 443
-  password: 0324fbc29561
-  skip-cert-verify: true
-  sni: images.ctfassets.net
-  udp: true
-- name: '🇭🇰 香港 | HKG #2'
-  type: vless
-  server: 8.210.29.68
-  port: 443
-  client-fingerprint: chrome
+  alterId: 0
+  cipher: auto
   network: ws
-  servername: vp10.pages.dev
+  skip-cert-verify: true
   tls: true
   udp: true
-  uuid: 7b102311-43fd-4e8f-877e-8090623c101d
+  uuid: f23bb427-c1f9-4373-876c-2f43e9f790f3
   ws-opts:
     headers:
-      Host: vp10.pages.dev
-    path: /
-- name: '🇳🇱 荷兰 | NLD #4'
-  type: vless
-  server: swz.proxyplankton.ru
+      Host: lcv8v9l7oyamxxfz.v.3dns.vip
+    path: /ws-vmess
+- name: '🇮🇱 以色列 | ISR #1'
+  type: trojan
+  server: 64.176.163.182
   port: 443
-  alpn:
-  - h2
-  - http/1.1
-  client-fingerprint: chrome
-  network: tcp
-  servername: swz.proxyplankton.ru
-  tls: true
+  password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
+  skip-cert-verify: true
+  sni: exploreeducationsectoropportunitiestodayandadvancecareers.com
   udp: true
-  uuid: 054362fb-e485-4a3f-9568-4c5b0f60e074
-  ws-opts:
-    headers:
-      Host: swz.proxyplankton.ru
-    path: /
-- name: '🇷🇺 俄罗斯 | RUS #4'
+- name: '🇰🇷 韩国 | KOR #1'
+  type: hysteria2
+  server: 52.78.45.69
+  port: 443
+  password: 7e68e32f-8015-4f37-9082-70e8b0b58043
+  skip-cert-verify: true
+  sni: www.bing.com
+  tls: false
+- name: '🇰🇷 韩国 | KOR #2'
   type: ss
-  server: 91.206.92.238
-  port: 18443
-  cipher: aes-256-gcm
-  password: cCMJgJTA3BA489YUYrFq7XHXSiSpWlLa
+  server: 52.78.45.69
+  port: 8443
+  cipher: chacha20-ietf-poly1305
+  password: 7e68e32f-8015-4f37-9082-70e8b0b58043
   udp: true
-- name: 🇷🇺 俄罗斯 | RUS 6
-  type: vless
-  server: ru3.radiolumens.uk
-  port: 8444
-  alpn:
-  - h2
-  - http/1.1
-  client-fingerprint: chrome
-  network: grpc
-  servername: ru3.radiolumens.uk
-  tls: true
-  udp: true
-  uuid: 36cf792c-f07d-4500-97ea-a395e5178deb
-- name: 🇹🇼 🇨🇳 台湾 | TWN
-  type: anytls
-  server: 684616s4.df6h451rh.xin
+- name: '🇸🇬 新加坡 | SGP #1'
+  type: hysteria2
+  server: 46.137.227.142
   port: 443
-  password: 0324fbc29561
+  password: 7e68e32f-8015-4f37-9082-70e8b0b58043
   skip-cert-verify: true
-  sni: px.ads.linkedin.com
+  sni: www.bing.com
+  tls: false
+- name: '🇹🇷 土耳其 | TUR #1'
+  type: ss
+  server: 177.202.111.24
+  port: 56134
+  cipher: chacha20-ietf-poly1305
+  password: uvKNudV-N8AUCrykPiyznA
   udp: true
-- name: 🇹🇼 🇨🇳 台湾 | TWN 2
-  type: anytls
-  server: er8u54dh.df6h451rh.xin
-  port: 443
-  password: 0324fbc29561
-  skip-cert-verify: true
-  sni: px.ads.linkedin.com
-  udp: true
-- name: '🇹🇼 🇨🇳 台湾 | TWN #2'
+- name: '🇹🇼 🇨🇳 台湾 | TWN #1'
   type: vless
   server: 59.125.69.22
   port: 443
@@ -422,62 +214,57 @@ proxies:
     path: /81574b6b-c9d7-44a0-b83d-dad56e8cb530
 - name: '🇺🇸 美国 | USA #1'
   type: trojan
-  server: 216.152.156.65
+  server: 216.152.156.81
   port: 443
   password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
   skip-cert-verify: true
-  sni: learn.healthcarejobshubenhancemedicalprofessionalskillstoday.com
+  sni: www.healthcarejobshubenhancemedicalprofessionalskillstoday.com
   udp: true
 - name: '🇺🇸 美国 | USA #2'
   type: trojan
-  server: 216.152.155.176
+  server: 216.152.156.42
   port: 443
   password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
   skip-cert-verify: true
-  sni: blog.nextjobopportunityandclaimyouridealrole.com
+  sni: blog.healthcarejobshubenhancemedicalprofessionalskillstoday.com
   udp: true
-- name: 🇺🇸 美国 | USA 3
-  type: trojan
-  server: 172.66.1.36
-  port: 443
-  alpn:
-  - http/1.1
-  network: ws
-  password: humanity
-  skip-cert-verify: true
-  sni: www.pleadcourt.org
-  udp: true
-  ws-opts:
-    headers:
-      Host: www.pleadcourt.org
-    path: /assignment
-- name: '🇺🇸 美国 | USA #4'
+- name: '🇺🇸 美国 | USA #3'
   type: vless
-  server: msma-hfgetway.hf.space
+  server: 172.66.3.157
   port: 443
   client-fingerprint: chrome
   network: ws
-  servername: msma-hfgetway.hf.space
+  servername: tamoai.ccwu.cc
   tls: true
   udp: true
-  uuid: 0ad9eed9-ea49-4c97-9ac4-fe0ec7e6f97b
+  uuid: 45ceaca9-30f4-4035-85b7-8f83493911d8
   ws-opts:
     headers:
-      Host: msma-hfgetway.hf.space
-    path: /ws/vless
+      Host: tamoai.ccwu.cc
+    path: /proxyip=163.192.47.40,47.57.181.17,34.83.245.149,4.155.83.212,64.227.62.172,24.144.68.139,161.35.232.123,107.170.248.68
+- name: '🇺🇸 美国 | USA #4'
+  type: trojan
+  server: 66.163.114.114
+  port: 443
+  password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
+  skip-cert-verify: true
+  sni: learn.findconnectwithemployersandbuildprofessionalnetwork.com
+  udp: true
 - name: '🇺🇸 美国 | USA #5'
   type: vless
-  server: 172.66.158.115
-  port: 8080
-  network: ws
-  tls: false
+  server: us6.zestapp778.com
+  port: 33069
+  client-fingerprint: chrome
+  network: tcp
+  servername: us6.zestapp778.com
+  tls: true
   udp: true
-  uuid: f8f5d3a5-54bd-4f52-9759-137bdbf950db
+  uuid: e9a8144e-5237-488a-afb1-9ca3d8d54c80
   ws-opts:
     headers:
-      Host: 23g-lively-resonance-96b9hsf.msc633k2.workers.dev
+      Host: us6.zestapp778.com
     path: /
-- name: '🇺🇸 美国 | USA #6'
+- name: '🇺🇸 美国 | USA #7'
   type: vless
   server: 146.75.59.186
   port: 443
@@ -491,29 +278,97 @@ proxies:
     headers:
       Host: copy_az_channel_NUFiLTER_6i.global.ssl.fastly.net.
     path: /
-- name: '🇺🇸 美国 | USA #7'
-  type: hysteria2
-  server: promo3.betust.net
-  port: 443
-  password: 94c2b91777f8de3a5bc12d2a91b732c2
-  skip-cert-verify: true
-  sni: promo3.betust.net
-  tls: false
 - name: '🇺🇸 美国 | USA #8'
-  type: hysteria2
-  server: xby.mangshe.xyz
-  port: 2060
-  password: 5d0a6445-a30d-4522-bb1f-94f1d3ad63be
-  skip-cert-verify: true
-  sni: xby.mangshe.xyz
-  tls: false
-- name: '🇺🇸 美国 | USA #9'
   type: trojan
-  server: 216.152.155.23
+  server: 45.32.135.70
+  port: 9213
+  password: WCwRcLxlKIeyXKHkppTmQIGXeRfIYYmE
+  skip-cert-verify: true
+  sni: hotspot-unlimited.com
+  udp: true
+- name: '🇺🇸 美国 | USA #10'
+  type: trojan
+  server: 66.163.114.132
   port: 443
   password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
   skip-cert-verify: true
-  sni: courses.nextjobopportunityandclaimyouridealrole.com
+  sni: courses.findconnectwithemployersandbuildprofessionalnetwork.com
+  udp: true
+- name: '🇺🇸 美国 | USA #11'
+  type: vless
+  server: 104.18.33.209
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: tamoai.ccwu.cc
+  tls: true
+  udp: true
+  uuid: 45ceaca9-30f4-4035-85b7-8f83493911d8
+  ws-opts:
+    headers:
+      Host: tamoai.ccwu.cc
+    path: /proxyip=163.192.47.40,47.57.181.17,34.83.245.149,4.155.83.212,64.227.62.172,24.144.68.139,161.35.232.123,107.170.248.68
+- name: '🇺🇸 美国 | USA #12'
+  type: trojan
+  server: 216.152.156.212
+  port: 443
+  password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
+  skip-cert-verify: true
+  sni: courses.healthcarejobshubenhancemedicalprofessionalskillstoday.com
+  udp: true
+- name: '🇺🇸 美国 | USA #14'
+  type: trojan
+  server: 24.199.106.240
+  port: 9998
+  password: hRtaKtsQkpklmssQDbbWRCNawDGdJePw
+  skip-cert-verify: true
+  sni: hotspot-unlimited.com
+  udp: true
+- name: '🇺🇸 美国 | USA #15'
+  type: trojan
+  server: 64.23.151.246
+  port: 7801
+  password: pftneFPgqpHQSUcCDhJqXuqrcHjptQhT
+  skip-cert-verify: true
+  sni: hotspot-unlimited.com
+  udp: true
+- name: '🇺🇸 美国 | USA #16'
+  type: vless
+  server: 199.232.237.79
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: cdn.akamai.steamstatic.com
+  tls: true
+  udp: true
+  uuid: f9a9aa1f-75fb-4490-9155-85567af7a0ff
+  ws-opts:
+    headers:
+      Host: copy_az_channel_NUFiLTER_17i.global.ssl.fastly.net.
+    path: /?TELEGRAM--B2Hub-B2Hub-B2Hub-B2Hub-B2Hub-B2Hub-B2Hub-B2Hub-B2Hub-B2Hub--TELEGRAM
+- name: '🇺🇸 美国 | USA #17'
+  type: trojan
+  server: 66.163.114.166
+  port: 443
+  password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
+  skip-cert-verify: true
+  sni: blog.findconnectwithemployersandbuildprofessionalnetwork.com
+  udp: true
+- name: '🇺🇸 美国 | USA #18'
+  type: trojan
+  server: 209.38.66.47
+  port: 6105
+  password: mMIywuxBtHHOAwAkkpwiCmBXIlKOysGv
+  skip-cert-verify: true
+  sni: hotspot-unlimited.com
+  udp: true
+- name: '🇺🇸 美国 | USA #20'
+  type: trojan
+  server: 144.126.223.93
+  port: 8911
+  password: pCgkPBgBBpKdPLeRyFSgXXjeiQeNiCLm
+  skip-cert-verify: true
+  sni: hotspot-unlimited.com
   udp: true
 - name: BR_speednode_0003
   type: vless
@@ -550,6 +405,21 @@ proxies:
   skip-cert-verify: true
   tls: true
   udp: true
+- name: ES_speednode_0007
+  type: vless
+  server: au5.pad-sservice.lat
+  port: 8443
+  client-fingerprint: chrome
+  network: ws
+  servername: au5.pad-sservice.lat
+  skip-cert-verify: false
+  tls: true
+  udp: true
+  uuid: 2b0e5676-fb62-4bf0-9607-6e7818421e8e
+  ws-opts:
+    headers:
+      Host: au5.pad-sservice.lat
+    path: /AU5W
 - name: FR_speednode_0008
   type: http
   server: 51.159.225.197
