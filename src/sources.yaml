@@ -86,6 +86,24 @@ sources:
     enabled: true
     note: 10% 通过率，主体为 http 明文代理；观察中，AI 复核仍无用则下轮摘掉
 
+  # ===== 2026-10-28 候选池评估接入（tools/eval_candidates.py 本机真探针）=====
+  # 97 条 pending 首轮全清：77 rejected / 20 approved；此为 approved 前三名。
+  # 注意：均为单轮结果，照常走 AI 审核 + 降级机制兜底。
+  - name: clashdaily
+    url: https://cnb.cool/StriveGlory/clash-daily/-/git/raw/main/dist/clash.yaml
+    enabled: true
+    max_nodes: 900
+    note: 🏆 2026-10-28 实测 40% 通过(60 抽样 24 活)最快 334ms，全场最强；cnb.cool 直连（无镜像回退链）
+  - name: leilaomi
+    url: https://raw.githubusercontent.com/LeilaoMi/AutoMergePublicNodes-Optimized/main/output/verified.yaml
+    enabled: true
+    max_nodes: 900
+    note: 2026-10-28 实测 32% 通过(17 活)930ms；automerge 的 verified 二次清洗分支
+  - name: wzmfree
+    url: https://raw.githubusercontent.com/wzmwayne/proxy-node/main/output/freesub/clash.yaml
+    enabled: true
+    note: 2026-10-28 实测 23% 通过(14 活)1159ms；与 anaer/passcro 同仓的新产物（镜像链按 raw 走）
+
 # 已评估但未纳入（改 enabled: true 即恢复）
 excluded:
   - name: clashfree
