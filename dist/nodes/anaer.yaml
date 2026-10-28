@@ -1,4 +1,4 @@
-# clash-source 自动生成 —— 源 anaer，共 29 节点（稳定性加权后留在竞速池内的部分）
+# clash-source 自动生成 —— 源 anaer，共 28 节点（稳定性加权后留在竞速池内的部分）
 # 不要手改；改动会在下次定时任务被覆盖（上游 https://pala911.github.io/clash-source/nodes/anaer.yaml）
 proxies:
 - name: 澳大利亚-001 |3.0MB/s|TK-AU|YT-AU|GPT⁺-AU
@@ -10,6 +10,13 @@ proxies:
 - name: 罗马尼亚-001 |1020KB/s
   type: http
   server: 193.176.84.22
+  port: 9002
+  skip-cert-verify: true
+  tls: true
+  sni: www.bing.com
+- name: 罗马尼亚-002 |3.3MB/s|TK-RO|GPT⁺-RO|GM-RO
+  type: http
+  server: 193.176.84.35
   port: 9002
   skip-cert-verify: true
   tls: true
@@ -85,13 +92,6 @@ proxies:
   skip-cert-verify: true
   tls: true
   sni: www.bing.com
-- name: 罗马尼亚-013 |891KB/s
-  type: http
-  server: 193.176.84.31
-  port: 9002
-  skip-cert-verify: true
-  tls: true
-  sni: www.bing.com
 - name: 罗马尼亚-014 |768KB/s
   type: http
   server: 193.176.84.24
@@ -102,13 +102,6 @@ proxies:
 - name: 罗马尼亚-015 |731KB/s
   type: http
   server: 193.176.84.19
-  port: 9002
-  skip-cert-verify: true
-  tls: true
-  sni: www.bing.com
-- name: 罗马尼亚-016 |639KB/s
-  type: http
-  server: 193.176.84.20
   port: 9002
   skip-cert-verify: true
   tls: true
