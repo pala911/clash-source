@@ -69,4 +69,11 @@ echo ""
 echo "[sync] 推送结果到主仓（供 health.py 双视角分级使用）"
 python3 ci_push_main.py || echo "[sync] ci_push_main 异常返回，已忽略（不影响探针结果）"
 
+# 候选池粗筛（2026-10-28 补上 discover 下游缺失的自动半段）：
+# 只毙明显没用的候选 / 标 cloud_approved 交本机终审，绝不碰 verdict（终审权在本机）。
+# 失败一律忽略 —— 粗筛是加餐，探针才是正戏，别让它把流水线染红。
+echo ""
+echo "[sync] 候选池粗筛（云效口径：判准入，不判源生死）"
+python3 ci_eval_candidates.py || echo "[sync] 候选粗筛失败，已忽略（不影响探针结果）"
+
 exit $rc

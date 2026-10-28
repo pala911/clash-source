@@ -234,6 +234,51 @@ def main():
     if not pending:
         return 0
 
+    # 云效粗筛结果（data/eval_cloud.json，ci_eval_candidates.py 在云效流水线产出）：
+    #   cloud_rejected  -> 直接落 rejected（云效口径还系统性虚高 +11.9pp 都过不了
+    #                      5%，本机更没戏），不占本机探针时间
+    #   cloud_approved / 无云数据 -> 本机真探针终审（终审权在本机）
+    # ⚠ 云效 0% 可能是"节点封机房 IP"假死 —— 但这是准入筛选（宁可错杀），
+    #   不是在册源判死，这个偏差方向是安全的。
+    cloud, pre_reject_urls = {}, set()
+    cf = os.path.join(ROOT, "data", "eval_cloud.json")
+    if os.path.exists(cf):
+        try:
+            cd = json.load(open(cf, encoding="utf-8"))
+            cloud = {c["url"]: c for c in (cd.get("candidates") or [])}
+            print("[eval] 云效粗筛数据 %s（%d 条）" % (
+                cd.get("generated_at"), len(cloud)))
+        except Exception as e:
+            print("[eval] ⚠ eval_cloud.json 读取失败，忽略：%r" % e)
+    if cloud:
+        to_eval, n_pre = [], 0
+        for c in pending:
+            cv = (cloud.get(c.get("url")) or {}).get("cloud_verdict")
+            if cv == "cloud_rejected":
+                pre_reject_urls.add(c["url"])
+                n_pre += 1
+            else:
+                to_eval.append(c)
+        if n_pre:
+            print("[eval] 云效粗筛已毙 %d 条（不占本机探针）" % n_pre)
+        pending = to_eval
+        if not pending:
+            print("[eval] 云效粗筛把 pending 全毙了，只写回结论")
+            now0 = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+            for c in cands:
+                if c.get("verdict") == "pending" and c.get("url") in pre_reject_urls:
+                    cv = cloud.get(c["url"]) or {}
+                    c["verdict"] = "rejected"
+                    c["note"] = "云效粗筛拒: %s" % (cv.get("note") or "")
+                    c["evaluated_at"] = now0
+                    for k in ("cloud_rate", "cloud_alive"):
+                        if cv.get(k) is not None:
+                            c[k] = cv[k]
+            if not args.dry_run:
+                probe_mod.save_json_atomic(POOL, pool)
+                print("[eval] 已原子写回 %s" % POOL)
+            return 0
+
     # 同 URL 多条只探一次，verdict 广播回去
     seen, uniq = {}, []
     for c in pending:
@@ -262,6 +307,17 @@ def main():
     # 写回：verdict 广播到所有同 URL 条目
     now = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
     n = {"approved": 0, "rejected": 0, "uncertain": 0}
+    # 云效粗筛毙掉的直接落锤
+    for c in cands:
+        if c.get("verdict") == "pending" and c.get("url") in pre_reject_urls:
+            cv = cloud.get(c["url"]) or {}
+            c["verdict"] = "rejected"
+            c["note"] = "云效粗筛拒: %s" % (cv.get("note") or "")
+            c["evaluated_at"] = now
+            for k in ("cloud_rate", "cloud_alive"):
+                if cv.get(k) is not None:
+                    c[k] = cv[k]
+            n["rejected"] += 1
     for c in cands:
         r = results.get(c.get("url"))
         if not r or not r.get("verdict"):

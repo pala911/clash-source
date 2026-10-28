@@ -35,7 +35,8 @@ PY36_TARGET = (3, 6)
 
 def targets():
     out = sorted(glob.glob(os.path.join(HERE, "ci_*.py")))
-    for n in ("probe.py", "health.py", "node_stability.py"):
+    for n in ("probe.py", "health.py", "node_stability.py",
+              "fetch.py", "filters.py"):
         p = os.path.join(ROOT, "src", n)
         if os.path.exists(p):
             out.append(p)

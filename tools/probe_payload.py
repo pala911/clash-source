@@ -26,8 +26,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 
 SCRIPTS = ["ci_check_paste.py", "ci_preflight.py", "ci_probe_run.py",
-           "ci_push_main.py", "sync_and_probe.sh"]
-SRC_MODULES = ["probe.py", "health.py"]
+           "ci_push_main.py", "ci_eval_candidates.py", "sync_and_probe.sh"]
+SRC_MODULES = ["probe.py", "health.py", "fetch.py", "filters.py"]
 
 
 def _dest_name(name):
