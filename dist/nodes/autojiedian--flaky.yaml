@@ -1,6 +1,20 @@
-# clash-source 自动生成 —— 源 autojiedian，被稳定性加权移出的 115 个节点
+# clash-source 自动生成 —— 源 autojiedian，被稳定性加权移出的 99 个节点
 # 历史可用率偏低，不参与 AUTO 自动竞速；需要时可从「备用」组手工切。
 proxies:
+- name: 145.239.55.210_Claude
+  type: vmess
+  server: 145.239.55.210
+  port: 80
+  alterId: 0
+  cipher: auto
+  network: ws
+  skip-cert-verify: false
+  tls: false
+  uuid: 067fcd63-b215-4abd-8529-ae929a9971a9
+  ws-opts:
+    headers:
+      Host: google.whatsapp.snapp.torob.basalam.fortresshost.ir.
+    path: /
 - name: 149.88.23.202_Claude
   type: vmess
   server: 149.88.23.202
@@ -19,6 +33,12 @@ proxies:
   network: tcp
   udp: true
   uuid: f8c8dc3d-0d37-46b0-8b34-a7232882fcfe
+- name: 193.176.84.25_Claude
+  type: http
+  server: 193.176.84.25
+  port: 9002
+  skip-cert-verify: true
+  tls: true
 - name: 193.29.139.139_Claude
   type: ss
   server: 82.38.31.216
@@ -37,52 +57,58 @@ proxies:
   port: 8882
   cipher: aes-256-gcm
   password: kDWvXYZoTBcGkC4
-- name: 其他地区_Bucharest_M247 Europe SRL_Claude6
-  type: http
-  server: 193.176.84.34
-  port: 9002
+- name: 8.211.175.236_Claude
+  type: hysteria2
+  server: 8.211.175.236
+  port: 8443
+  password: u63SxILNwtrQZ7Y1ZrFaZfsA
   skip-cert-verify: true
-  tls: true
-- name: 其他地区_Bucharest_M247 Europe SRL_Claude8
+  sni: ''
+- name: 其他地区_Bucharest_Eclipse Networking Ltd_Claude1
+  type: vless
+  server: edge10.cyrionflare.com
+  port: 2052
+  network: raw
+  udp: true
+  uuid: 1a8ecc41-6e62-431b-8eca-87c2fa4dc286
+- name: 其他地区_Bucharest_M247 Europe SRL_Claude1
   type: http
-  server: 193.176.84.20
-  port: 9002
-  skip-cert-verify: true
-  tls: true
-- name: 其他地区_Bucharest_M247 Europe SRL_Claude9
-  type: http
-  server: 193.176.84.36
-  port: 9002
-  skip-cert-verify: true
-  tls: true
-- name: 其他地区_Bucharest_M247 Europe_Claude8
-  type: http
-  server: 193.176.84.31
+  server: 193.176.84.38
   port: 9002
   skip-cert-verify: true
   sni: www.bing.com
   tls: true
-- name: 其他地区_Bucharest_M247 Europe_Claude9
+- name: 其他地区_Bucharest_M247 Europe_Claude10
   type: http
-  server: 193.176.84.24
+  server: 193.176.84.19
   port: 9002
   skip-cert-verify: true
+  sni: www.bing.com
   tls: true
-- name: 其他地区_Johannesburg_Microsoft Azure_Gemini_Claude1
+- name: 其他地区_Bucharest_M247 Europe_Claude3
+  type: http
+  server: 193.176.84.17
+  port: 9002
+  skip-cert-verify: true
+  sni: www.bing.com
+  tls: true
+- name: 其他地区_Bucharest_M247 Europe_Claude4
+  type: http
+  server: 193.176.84.30
+  port: 9002
+  skip-cert-verify: true
+  sni: www.bing.com
+  tls: true
+- name: 其他地区_Bucharest_M247 Europe_Claude7
+  type: http
+  server: 193.176.84.32
+  port: 9002
+  skip-cert-verify: true
+  sni: www.bing.com
+  tls: true
+- name: 其他地区_Milan_GTHost_Claude
   type: ss
-  server: 102.133.165.160
-  port: 16233
-  cipher: chacha20-ietf-poly1305
-  password: Xsy8Ox4yOV3xLlpxtjzs3X
-- name: 其他地区_Johannesburg_Microsoft Azure_Gemini_Claude2
-  type: ss
-  server: 102.37.156.224
-  port: 443
-  cipher: chacha20-ietf-poly1305
-  password: aduB9HGxQHjA2SBMRjkHX6
-- name: 其他地区_Milan_Datacamp Limited_Claude
-  type: ss
-  server: 185.164.175.81
+  server: 202.50.253.99
   port: 19999
   cipher: aes-256-gcm
   password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
@@ -92,18 +118,6 @@ proxies:
   port: 8388
   cipher: aes-256-gcm
   password: itzvpn@321
-- name: 加拿大_Beauharnois_OVH SAS_Claude6
-  type: ss
-  server: 51.222.12.127
-  port: 445
-  cipher: aes-256-gcm
-  password: zDNVedRFPQexG9v
-- name: 加拿大_Montreal_OVH SAS_Claude2
-  type: ss
-  server: 51.222.136.236
-  port: 8882
-  cipher: aes-256-gcm
-  password: kDWvXYZoTBcGkC4
 - name: 加拿大_Toronto_DigitalOcean, LLC_Claude1
   type: ss
   server: 138.197.141.58
@@ -122,40 +136,30 @@ proxies:
   port: 443
   cipher: aes-128-gcm
   password: shadowsocks
-- name: 台湾_Taipei_Global Communication Network Limited_Claude2
-  type: hysteria2
-  server: 103.115.109.49
-  port: 443
-  password: H7mP2xY9kJ4nQ8wR5tF6vB3z
-  skip-cert-verify: true
-  sni: https://t.me/WangCai2🇨🇳
+- name: 印度_Mumbai_Contabo Asia Private Limited_Claude
+  type: vless
+  server: 13.140.56.100
+  port: 14430
+  network: ws
+  servername: 13.140.56.100
+  tls: false
+  uuid: 68512eac-cd53-4de3-8d1e-08f6e04af1a9
+  ws-opts:
+    headers:
+      Host: 13.140.56.100
+    path: /vless
 - name: 德国_Frankfurt am Main_BrainStorm Network, Inc_Claude
   type: ss
   server: 185.226.172.8
   port: 8008
   cipher: aes-256-gcm
   password: XKFKl2rULjIp74
-- name: 德国_Frankfurt am Main_OVH SAS_Claude
-  type: vless
-  server: 57.129.41.216
-  port: 80
-  network: ws
-  skip-cert-verify: false
-  uuid: 7d74eae4-8a06-4306-a923-ad686f30bf26
-  ws-opts:
-    path: /vless/
-- name: 德国_Limburg an der Lahn_OVH SAS_Claude1
-  type: vmess
-  server: 141.95.65.9
-  port: 1234
-  alterId: 0
-  cipher: aes-128-gcm
-  network: tcp
-  servername: supervpn.super.com
-  skip-cert-verify: true
-  tls: true
-  udp: true
-  uuid: 5c040f1d-45db-43bd-8d46-e4950e433735
+- name: 德国_Frankfurt am Main_M247 LTD Frankfurt Infrastructure_Claud
+  type: ss
+  server: 146.70.20.147
+  port: 8080
+  cipher: rc4-md5
+  password: 14fFPrbezE3HDZzsMOr6
 - name: 德国_Limburg an der Lahn_OVH SAS_Claude2
   type: vmess
   server: 162.19.204.71
@@ -181,6 +185,13 @@ proxies:
     headers:
       Host: free-server.techsonic.dev
     path: /free-server.techsonic.dev
+- name: 新加坡_Singapore_Amazon Technologies Inc._Claude
+  type: http
+  server: 13.212.55.110
+  port: 2080
+  password: '1234'
+  skip-cert-verify: true
+  username: '1234'
 - name: 新加坡_Singapore_Datacamp Limited_Claude2
   type: vmess
   server: 149.88.23.207
@@ -190,46 +201,38 @@ proxies:
   network: raw
   udp: true
   uuid: f8c8dc3d-0d37-46b0-8b34-a7232882fcfe
-- name: 新加坡_Singapore_DigitalOcean, LLC_Claude2
-  type: ss
-  server: 128.199.172.224
-  port: 8080
-  cipher: rc4-md5
-  password: 14fFPrbezE3HDZzsMOr6
 - name: 新加坡_Singapore_DigitalOcean, LLC_Claude3
   type: ss
   server: 68.183.235.122
   port: 8080
   cipher: rc4-md5
   password: 14fFPrbezE3HDZzsMOr6
-- name: 新加坡_Singapore_DigitalOcean, LLC_Claude5
+- name: 新加坡_Singapore_Zenlayer Inc_Claude1
   type: ss
-  server: 68.183.227.45
+  server: 128.1.186.132
   port: 8080
   cipher: rc4-md5
   password: 14fFPrbezE3HDZzsMOr6
-- name: 新加坡_Singapore_DigitalOcean, LLC_Claude6
-  type: ss
-  server: 68.183.235.240
-  port: 8080
-  cipher: rc4-md5
-  password: 14fFPrbezE3HDZzsMOr6
-- name: 新加坡_Singapore_LINODE_Claude
-  type: vless
-  server: 139.162.27.96
-  port: 443
-  network: tcp
-  servername: aka.ms
-  skip-cert-verify: true
-  tls: true
-  udp: true
-  uuid: f1178fbe-1420-4eef-b087-4f33b32b4a19
 - name: 新加坡_Singapore_Zenlayer Inc_Claude2
   type: ss
   server: 128.1.186.73
   port: 8080
   cipher: rc4-md5
   password: 14fFPrbezE3HDZzsMOr6
+- name: 日本_Minamishinagawa_Vultr_Claude1
+  type: hysteria2
+  server: 45.32.10.7
+  port: 443
+  password: 96ab5cd282733fd4c312a61f972f330a
+  skip-cert-verify: true
+  sni: vp3.yysyy.online
+- name: 日本_Tokyo_Alibaba (US) Technology Co., Ltd._Claude
+  type: hysteria2
+  server: 8.209.247.109
+  port: 443
+  password: usqmqUKJFIlCmvkCNSY64L3k
+  skip-cert-verify: true
+  sni: bing.com
 - name: 日本_Tokyo_Datacamp_Gemini_Claude
   type: ss
   server: 149.22.87.241
@@ -246,19 +249,6 @@ proxies:
   uuid: 904f8ffa-4652-4076-8f2f-e586807840ec
   ws-opts:
     path: /vless/
-- name: 法国_Paris_Scaleway SAS_Claude1
-  type: hysteria2
-  server: 62.210.147.2
-  port: 43115
-  password: github.com/Alvin9999-newpac/fanqiang
-  skip-cert-verify: true
-  sni: www.microsoft.com
-- name: 美国_Chicago_Datacamp Limited_Claude
-  type: ss
-  server: 138.199.42.68
-  port: 8080
-  cipher: rc4-md5
-  password: 14fFPrbezE3HDZzsMOr6
 - name: 美国_Dallas_Datacamp Limited_Claude
   type: ss
   server: 156.146.38.167
@@ -277,40 +267,21 @@ proxies:
   port: 443
   cipher: aes-128-gcm
   password: shadowsocks
-- name: 美国_Las Vegas_M247 Europe SRL_Claude
-  type: ss
-  server: 79.110.54.250
-  port: 8080
-  cipher: rc4-md5
-  password: 14fFPrbezE3HDZzsMOr6
-- name: 美国_Los Angeles_5G Network Operations Pty Ltd_Claude
-  type: ss
-  server: 103.11.76.248
-  port: 28679
-  cipher: 2022-blake3-aes-128-gcm
-  password: NzJlOTQ5NWYtM2ZkYi00Cg==
-- name: 美国_Los Angeles_FSC NETWORK LTD_Claude
+- name: 美国_Los Angeles_Datacamp Limited_Claude1
   type: http
-  server: 154.26.192.123
-  port: 10988
-  password: gs4BXwT6SW
-  tls: false
-  username: fQ67Dpe5dU
-- name: 美国_Los Angeles_M247 Europe SRL_Claude
-  type: ss
-  server: 79.110.53.169
-  port: 8080
-  cipher: rc4-md5
-  password: 14fFPrbezE3HDZzsMOr6
+  server: 138.199.35.215
+  port: 9002
+  skip-cert-verify: true
+  tls: true
+- name: 美国_Los Angeles_Datacamp Limited_Claude2
+  type: http
+  server: 138.199.35.198
+  port: 9002
+  skip-cert-verify: true
+  tls: true
 - name: 美国_Los Angeles_Zenlayer Inc_Claude1
   type: ss
   server: 107.151.182.197
-  port: 8080
-  cipher: rc4-md5
-  password: 14fFPrbezE3HDZzsMOr6
-- name: 美国_Los Angeles_Zenlayer Inc_Claude2
-  type: ss
-  server: 107.151.182.253
   port: 8080
   cipher: rc4-md5
   password: 14fFPrbezE3HDZzsMOr6
@@ -323,12 +294,6 @@ proxies:
   network: raw
   udp: true
   uuid: f8c8dc3d-0d37-46b0-8b34-a7232882fcfe
-- name: 美国_New York_Datacamp Limited_Claude
-  type: ss
-  server: 37.19.198.243
-  port: 443
-  cipher: aes-128-gcm
-  password: shadowsocks
 - name: 美国_New York_Datacamp Limited_Gemini_Claude1
   type: ss
   server: 37.19.198.244
@@ -341,27 +306,12 @@ proxies:
   port: 443
   cipher: aes-128-gcm
   password: shadowsocks
-- name: 美国_New York_Zenlayer Inc_Claude
-  type: ss
-  server: 98.98.79.198
-  port: 8080
-  cipher: rc4-md5
-  password: 14fFPrbezE3HDZzsMOr6
-- name: 美国_New York_objx.net_Gemini_Claude
-  type: vmess
-  server: 67.220.85.46
-  port: 18000
-  alterId: 0
-  cipher: aes-128-gcm
-  network: tcp
-  udp: true
-  uuid: f8c8dc3d-0d37-46b0-8b34-a7232882fcfe
-- name: 美国_Phoenix_GSL Networks Pty LTD_Claude
-  type: ss
-  server: 173.244.56.9
-  port: 443
-  cipher: aes-128-gcm
-  password: shadowsocks
+- name: 美国_New York_Zayo Bandwidth_Claude
+  type: http
+  server: 209.148.53.153
+  port: 8090
+  skip-cert-verify: true
+  tls: true
 - name: 美国_Reston_OVH SAS_Claude
   type: ss
   server: 15.204.246.132
@@ -389,12 +339,6 @@ proxies:
   password: bce6c821-200d-421f-bf3d-7159e5246ea0
   skip-cert-verify: true
   sni: hy2.123266.xyz
-- name: 美国_San Jose_Zenlayer Inc_Claude1
-  type: ss
-  server: 107.155.57.51
-  port: 8080
-  cipher: rc4-md5
-  password: 14fFPrbezE3HDZzsMOr6
 - name: 美国_San Jose_Zenlayer Inc_Claude3
   type: ss
   server: 23.251.121.242
@@ -410,19 +354,6 @@ proxies:
   network: tcp
   udp: true
   uuid: f8c8dc3d-0d37-46b0-8b34-a7232882fcfe
-- name: 美国_Seattle_Datacamp Limited_Claude
-  type: ss
-  server: 138.199.43.159
-  port: 8080
-  cipher: rc4-md5
-  password: 14fFPrbezE3HDZzsMOr6
-- name: 美国_Secaucus_Baykov Ilya Sergeevich_Claude
-  type: vless
-  server: 45.138.100.248
-  port: 10443
-  network: tcp
-  udp: true
-  uuid: ae908ff5-f749-402c-af25-e6e9aef4d6bb
 - name: 美国_Secaucus_Interserver, Inc_Claude
   type: trojan
   server: 69.164.240.85
@@ -430,12 +361,13 @@ proxies:
   password: nwilryafgkyvuxauc8pz
   skip-cert-verify: true
   sni: ''
-- name: 英国_City of London_M247 Europe SRL_Claude
-  type: ss
-  server: 146.70.61.18
-  port: 8080
-  cipher: rc4-md5
-  password: 14fFPrbezE3HDZzsMOr6
+- name: 英国_Bexley_OVH SAS_Claude2
+  type: vless
+  server: connect.hondamotor.site
+  port: 10002
+  network: raw
+  udp: true
+  uuid: c6362720-0931-4b91-b187-d8ecf3149734
 - name: 英国_London_Datacamp Limited_Claude
   type: ss
   server: 158.173.24.73
@@ -454,15 +386,15 @@ proxies:
   port: 443
   cipher: chacha20-ietf-poly1305
   password: oZIoA69Q8yhcQV8ka3Pa3A
-- name: 荷兰_Amsterdam_Greenhost BV_Claude11
-  type: ss
-  server: 178.83.185.156
-  port: 8080
-  cipher: chacha20-ietf-poly1305
-  password: oZIoA69Q8yhcQV8ka3Pa3A
 - name: 荷兰_Amsterdam_Greenhost BV_Claude13
   type: ss
   server: 82.38.31.26
+  port: 8080
+  cipher: chacha20-ietf-poly1305
+  password: oZIoA69Q8yhcQV8ka3Pa3A
+- name: 荷兰_Amsterdam_Greenhost BV_Claude14
+  type: ss
+  server: 82.38.31.171
   port: 8080
   cipher: chacha20-ietf-poly1305
   password: oZIoA69Q8yhcQV8ka3Pa3A
@@ -472,22 +404,34 @@ proxies:
   port: 8080
   cipher: chacha20-ietf-poly1305
   password: oZIoA69Q8yhcQV8ka3Pa3A
-- name: 荷兰_Amsterdam_Greenhost BV_Claude2
+- name: 荷兰_Amsterdam_Greenhost BV_Claude19
   type: ss
-  server: 193.29.139.132
-  port: 8080
+  server: 82.38.31.170
+  port: 443
   cipher: chacha20-ietf-poly1305
-  password: k1dBOmOB4oqi7Ump37a1bQ
-- name: 荷兰_Amsterdam_Greenhost BV_Claude21
+  password: oZIoA69Q8yhcQV8ka3Pa3A
+- name: 荷兰_Amsterdam_Greenhost BV_Claude22
   type: ss
-  server: 82.38.31.18
-  port: 8080
+  server: 82.38.31.162
+  port: 443
+  cipher: chacha20-ietf-poly1305
+  password: oZIoA69Q8yhcQV8ka3Pa3A
+- name: 荷兰_Amsterdam_Greenhost BV_Claude24
+  type: ss
+  server: 82.38.31.174
+  port: 443
   cipher: chacha20-ietf-poly1305
   password: oZIoA69Q8yhcQV8ka3Pa3A
 - name: 荷兰_Amsterdam_Greenhost BV_Claude26
   type: ss
   server: 82.38.31.156
   port: 8080
+  cipher: chacha20-ietf-poly1305
+  password: oZIoA69Q8yhcQV8ka3Pa3A
+- name: 荷兰_Amsterdam_Greenhost BV_Claude27
+  type: ss
+  server: 82.38.31.159
+  port: 443
   cipher: chacha20-ietf-poly1305
   password: oZIoA69Q8yhcQV8ka3Pa3A
 - name: 荷兰_Amsterdam_Greenhost BV_Claude28
@@ -499,18 +443,6 @@ proxies:
 - name: 荷兰_Amsterdam_Greenhost BV_Claude29
   type: ss
   server: 82.38.31.39
-  port: 8080
-  cipher: chacha20-ietf-poly1305
-  password: oZIoA69Q8yhcQV8ka3Pa3A
-- name: 荷兰_Amsterdam_Greenhost BV_Claude3
-  type: ss
-  server: 82.38.31.199
-  port: 8080
-  cipher: chacha20-ietf-poly1305
-  password: k1dBOmOB4oqi7Ump37a1bQ
-- name: 荷兰_Amsterdam_Greenhost BV_Claude30
-  type: ss
-  server: 82.38.31.175
   port: 8080
   cipher: chacha20-ietf-poly1305
   password: oZIoA69Q8yhcQV8ka3Pa3A
@@ -532,12 +464,6 @@ proxies:
   port: 8080
   cipher: chacha20-ietf-poly1305
   password: oZIoA69Q8yhcQV8ka3Pa3A
-- name: 荷兰_Amsterdam_Greenhost BV_Claude35
-  type: ss
-  server: 82.38.31.210
-  port: 8080
-  cipher: chacha20-ietf-poly1305
-  password: k1dBOmOB4oqi7Ump37a1bQ
 - name: 荷兰_Amsterdam_Greenhost BV_Claude36
   type: ss
   server: 82.38.31.211
@@ -556,6 +482,12 @@ proxies:
   port: 8080
   cipher: chacha20-ietf-poly1305
   password: k1dBOmOB4oqi7Ump37a1bQ
+- name: 荷兰_Amsterdam_Greenhost BV_Claude4
+  type: ss
+  server: 82.38.31.42
+  port: 8080
+  cipher: chacha20-ietf-poly1305
+  password: oZIoA69Q8yhcQV8ka3Pa3A
 - name: 荷兰_Amsterdam_Greenhost BV_Claude40
   type: ss
   server: 82.38.31.195
@@ -592,12 +524,6 @@ proxies:
   port: 8080
   cipher: chacha20-ietf-poly1305
   password: oZIoA69Q8yhcQV8ka3Pa3A
-- name: 荷兰_Amsterdam_Greenhost BV_Claude48
-  type: ss
-  server: 82.38.31.205
-  port: 8080
-  cipher: chacha20-ietf-poly1305
-  password: k1dBOmOB4oqi7Ump37a1bQ
 - name: 荷兰_Amsterdam_Greenhost BV_Claude50
   type: ss
   server: 82.38.31.54
@@ -640,18 +566,12 @@ proxies:
   port: 8080
   cipher: chacha20-ietf-poly1305
   password: k1dBOmOB4oqi7Ump37a1bQ
-- name: 荷兰_Amsterdam_Greenhost BV_Claude59
+- name: 荷兰_Amsterdam_Greenhost BV_Claude6
   type: ss
-  server: 82.38.31.217
+  server: 82.38.31.82
   port: 8080
   cipher: chacha20-ietf-poly1305
-  password: k1dBOmOB4oqi7Ump37a1bQ
-- name: 荷兰_Amsterdam_Greenhost BV_Claude60
-  type: ss
-  server: 82.38.31.207
-  port: 8080
-  cipher: chacha20-ietf-poly1305
-  password: k1dBOmOB4oqi7Ump37a1bQ
+  password: oZIoA69Q8yhcQV8ka3Pa3A
 - name: 荷兰_Amsterdam_Greenhost BV_Claude61
   type: ss
   server: 82.38.31.208
@@ -670,41 +590,18 @@ proxies:
   port: 8080
   cipher: chacha20-ietf-poly1305
   password: k1dBOmOB4oqi7Ump37a1bQ
-- name: 荷兰_Amsterdam_Greenhost BV_Claude64
-  type: ss
-  server: 82.38.31.180
-  port: 8080
-  cipher: chacha20-ietf-poly1305
-  password: k1dBOmOB4oqi7Ump37a1bQ
-- name: 荷兰_Amsterdam_Greenhost BV_Claude7
-  type: ss
-  server: 82.38.31.174
-  port: 8080
-  cipher: chacha20-ietf-poly1305
-  password: oZIoA69Q8yhcQV8ka3Pa3A
-- name: 荷兰_Amsterdam_Greenhost BV_Claude8
-  type: ss
-  server: 82.38.31.149
-  port: 443
-  cipher: chacha20-ietf-poly1305
-  password: oZIoA69Q8yhcQV8ka3Pa3A
 - name: 荷兰_Amsterdam_Greenhost BV_Claude9
   type: ss
   server: 193.29.139.168
   port: 8080
   cipher: chacha20-ietf-poly1305
   password: QCXDxuDlTTMD7jtgHUjIoj
-- name: 荷兰_Amsterdam_Matteo Martelloni trading as DELUXHOST_Claude
-  type: vless
-  server: s171.wagahaha.xyz
-  port: 443
-  flow: xtls-rprx-vision
-  network: tcp
-  servername: u695098u7dae9c0cs220.gogocs.xyz
-  skip-cert-verify: false
-  tls: true
-  udp: true
-  uuid: 30e52776-55ac-3cb4-8d36-e2910f07e2c3
+- name: 荷兰_Amsterdam_Hostkey B.V._Claude2
+  type: ss
+  server: sql.popmintxo.cc
+  port: 43385
+  cipher: chacha20-ietf-poly1305
+  password: AwW1fV6oDDQKh8r2znmptv59tPgt4eHVTgFaTqgKS2jiSdikJ7GyGCBYehDaK38S8yMgHFdbJqcTmRJSfYS5CFw345bNhFZa
 - name: 荷兰_Dronten_Zenex 5ive Limited_Claude
   type: vmess
   server: 45.90.106.24
@@ -741,18 +638,13 @@ proxies:
   uuid: e73df646-1f62-41bf-8c50-653497d603d0
   ws-opts:
     path: /vless/
-- name: 荷兰_Haarlem_SCALEWAY_Claude4
+- name: 越南_Hanoi_GMO-Z.com Runsystem Joint Stock Company_Claude
   type: vless
-  server: 163.172.214.188
-  port: 8443
-  network: ws
-  servername: SC-TheNetherlands1.09vpn.com
-  skip-cert-verify: true
-  tls: true
-  udp: true
-  uuid: 40cc9b52-25b8-4cd5-8b45-715ae26e6baf
-  ws-opts:
-    path: /vless/
+  server: 150.95.109.109
+  port: 2086
+  network: tcp
+  tls: false
+  uuid: b83faafc-cbb7-4655-99d4-2c4c39a49d1b
 - name: 阿联酋_Dubai_Oracle Cloud_Claude
   type: vless
   server: uae.unixzone.us
@@ -787,16 +679,16 @@ proxies:
   password: 9cfc9458e48c028ec03ff86ebc71c744
   skip-cert-verify: true
   sni: 150-230-252-217.liao.kdns.fr
-- name: 韩国_Seoul_Oracle Cloud_Claude2
-  type: vmess
-  server: 132.145.80.230
-  port: 80
-  alterId: 0
-  cipher: auto
-  network: ws
-  udp: true
-  uuid: 5155860e-d07d-46c3-9128-3afbd84626c7
-  ws-opts:
-    headers:
-      Host: kr02.a0a.xyz
-    path: /cctv13.m3u8
+- name: 韩国_Seoul_LightNode_Limited_Claude
+  type: trojan
+  server: 154.90.62.70
+  port: 56127
+  password: p5jTPcffLgi4gaNOJd2KUTb9YEPBBD5B
+  skip-cert-verify: true
+  sni: ''
+- name: 韩国_Seoul_SK Broadband Co Ltd_Claude2
+  type: ss
+  server: p141.panda001.net
+  port: 4652
+  cipher: aes-256-cfb
+  password: qwerREWQ@@
