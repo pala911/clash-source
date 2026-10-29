@@ -263,6 +263,7 @@ def fake_health_ok(cwd):
 local_probe._run_health = fake_health_ok
 try:
     write(workD, "state/probe_latest.json", '{"a": "本机的版本"}')
+    write(workD, "data/eval_verdicts.json", '{"verdicts": "本机评估结论 103 条"}')
     rc, out = run_push(workD)
     check(rc == 0, "三连败后救援链把推送救成了（exit=0）", "rc=%s" % rc)
     check(out.count("被拒") >= 2, "前 3 次推送真的被拒过（不走救援的假成功）")
@@ -275,6 +276,10 @@ try:
           "桩在克隆里写的健康档案真的落到了远端（整条链是真的）", (got or "")[:40])
     gotp = remote_file(remoteD, dD, "state/probe_latest.json") or ""
     check("本机的版本" in gotp, "本机积压数据真的并进了远端", gotp[:40])
+    gotv = remote_file(remoteD, dD, "data/eval_verdicts.json") or ""
+    check("本机评估结论" in gotv,
+          "评估通道也被救援一并重放（2026-10-30 bb6d226 真 bug 后加的回归断言）",
+          (gotv or "")[:40])
     stD = g(["status", "--porcelain"], workD).stdout
     nD = g(["rev-list", "--count", "origin/main..HEAD"], workD).stdout.strip()
     check(nD == "0" and stD.strip() == "" and not mid_state(workD),

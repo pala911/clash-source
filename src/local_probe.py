@@ -157,16 +157,21 @@ def _run_health(cwd):
 def _stash_stuck(stuck):
     """把积压提交里真正有用的材料留证到 STASH_DIR（系统临时目录，reset 不砸）。
 
-    返回 (days, ns_path)：
+    返回 (days, ns_path, ev_path)：
       days    = [(sha7, 留证文件路径, 短标), ...]（从老到新；短标优先用
                 probe 文件里的 probed_at 日期，取不到就用 sha 前 7 位）
       ns_path = 最新一版 node_stability.json 的留证（本机口径专属，远端
                 从不写它 -> 本地版必是全量真相；不存在时为 None）
+      ev_path = 最新一版 data/eval_verdicts.json 的留证（补员自动化后的
+                新通道；2026-10-30 真事故：bb6d226 评估结论提交进救援
+                后只重放了探针材料、add 范围没含 data/，103 条结论被
+                静默丢掉 —— 靠孤儿提交 git show 才救回）
     单轮损坏（JSON 解析不了）只跳过那轮并大声说明 —— 绝不因一轮坏了
     放弃全部：剩下的轮次在 health 合并里同样有价值。
     """
     os.makedirs(STASH_DIR, exist_ok=True)
     days = []
+    ev_path = None
     for sha in stuck:
         bp = subprocess.run([GIT, "cat-file", "blob",
                              "%s:state/probe_latest.json" % sha],
@@ -186,7 +191,21 @@ def _stash_stuck(stuck):
                 f.write(bp.stdout)
         except Exception as e:
             print("[rescue] ✗ 留证写盘失败（%s）：%s" % (fp, str(e)[:80]))
-            return [], None
+            return [], None, None
+        # 评估通道一并留证：循环从老到新、逐轮覆盖 -> 最终留的是最新版
+        # （eval_verdicts 是终局文件，没有「每轮累积」概念）。
+        ep = subprocess.run([GIT, "cat-file", "blob",
+                             "%s:data/eval_verdicts.json" % sha],
+                            cwd=ROOT, capture_output=True, timeout=60,
+                            creationflags=NOWIN)
+        if ep.returncode == 0:
+            ev_path = os.path.join(STASH_DIR, "eval_verdicts_newest.json")
+            try:
+                with open(ev_path, "wb") as f:
+                    f.write(ep.stdout)
+            except Exception as e:
+                print("[rescue] ✗ 评估通道留证写盘失败：%s" % str(e)[:80])
+                return [], None, None
         ts = str(j.get("probed_at") or "")
         stamp = ts[:10].replace("-", "") if ts else sha[:7]
         days.append((sha[:7], fp, stamp))
@@ -195,11 +214,11 @@ def _stash_stuck(stuck):
                         cwd=ROOT, capture_output=True, timeout=60, creationflags=NOWIN)
     if np.returncode != 0:
         print("[rescue]   ⚠ 本地没有 node_stability.json（老版本仓库？跳过稳定性档案恢复）")
-        return days, None
+        return days, None, ev_path
     ns_path = os.path.join(STASH_DIR, "node_stability_newest.json")
     with open(ns_path, "wb") as f:
         f.write(np.stdout)
-    return days, ns_path
+    return days, ns_path, ev_path
 
 
 def rescue_push():
@@ -230,7 +249,7 @@ def rescue_push():
             print("[rescue] 无积压提交（这轮推送失败另有原因，不涉及历史冲突）")
             return None
         print("[rescue] 积压 %d 个提交，开始自动救援（留证 -> 克隆 -> 逐轮合并 -> 补推）" % len(stuck))
-        days, ns_path = _stash_stuck(stuck)
+        days, ns_path, ev_path = _stash_stuck(stuck)
         if not days:
             print("[rescue] ✗ 找不出任何一轮可解析的探针数据，放弃（需人工从 git 对象抠）")
             return None
@@ -271,11 +290,16 @@ def rescue_push():
                 continue
             if ns_path:
                 shutil.copyfile(ns_path, os.path.join(clone_dir, "state", "node_stability.json"))
-            add = [GIT, "add", "-A", "state", "archive", "src/sources.yaml", "reports"]
+            adds = [[GIT, "add", "-A", "state", "archive", "src/sources.yaml", "reports"]]
+            if ev_path:
+                os.makedirs(os.path.join(clone_dir, "data"), exist_ok=True)
+                shutil.copyfile(ev_path, os.path.join(clone_dir, "data", "eval_verdicts.json"))
+                adds.append([GIT, "add", "data/eval_verdicts.json"])
+                print("[rescue]   评估通道（data/eval_verdicts.json）一并重放")
             commit = ([GIT] + IDENT
                       + ["commit", "-m", "chore: 本机探针(国内口径)补推 %s（%d 轮合并，"
                                          "推送竞态自动救援）" % (rng, len(days))])
-            for c in (add, commit):
+            for c in adds + [commit]:
                 p = subprocess.run(c, cwd=clone_dir, capture_output=True, text=True,
                                    timeout=180, creationflags=NOWIN)
                 out = (p.stdout + p.stderr).strip()
