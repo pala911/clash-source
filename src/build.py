@@ -219,15 +219,26 @@ def rank_sources(names, health=None):
 
 
 def _src_group(name):
+    # ⚠ tolerance=200 是防抖关键（2026-10-29 用户反馈「AUTO 组内换点太频繁」）：
+    #   url-test 没有 tolerance 时，几十毫秒的延迟抖动也会判定换点 —— 组在
+    #   每次测速后都可能换现役，手机侧观感就是「节点跳来跳去而没人变好」。
+    #   200ms 的意思是：只有新节点比现役快 200ms 以上（真实优势）才切换；
+    #   120s/300s 的测速频率不变，「快速找到最优」不受影响，只是不再被抖动刷屏。
+    #   与 profile 模板静态组的既有取值保持一致。
     return {"name": "SRC-%s" % name, "type": "url-test", "use": [name],
             "url": YOUTUBE, "expected-status": 204,
-            "interval": 300, "timeout": 5000}
+            "interval": 300, "timeout": 5000, "tolerance": 200}
 
 
 def _probe_group(name, gtype, members, interval):
-    return {"name": name, "type": gtype, "proxies": list(members),
-            "url": YOUTUBE, "expected-status": 204,
-            "interval": interval, "timeout": 5000}
+    g = {"name": name, "type": gtype, "proxies": list(members),
+         "url": YOUTUBE, "expected-status": 204,
+         "interval": interval, "timeout": 5000}
+    # ⚠ 只有 url-test 有「切换容差」语义；fallback（如 FAILOVER）没有这个字段，
+    #   别往它身上塞不认识的键（内核行为未知就不赌）。
+    if gtype == "url-test":
+        g["tolerance"] = 200
+    return g
 
 
 def build_groups(enabled_names, ranked, flaky_names=(), degraded_note=""):
@@ -288,7 +299,8 @@ def build_groups(enabled_names, ranked, flaky_names=(), degraded_note=""):
     if flaky_names:
         groups.append({"name": "不稳定", "type": "url-test",
                        "use": list(flaky_names), "url": YOUTUBE,
-                       "expected-status": 204, "interval": 300, "timeout": 5000})
+                       "expected-status": 204, "interval": 300, "timeout": 5000,
+                       "tolerance": 200})
         spare_members = spare_members + ["不稳定"]
     groups.append({"name": "备用", "type": "select", "proxies": spare_members})
     groups.append({"name": "观察", "type": "select",

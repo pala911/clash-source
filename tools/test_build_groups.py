@@ -31,6 +31,8 @@ import tempfile                  # noqa: E402
 import yaml                      # noqa: E402
 import build                     # noqa: E402
 
+TOLERANCE_OK = True   # build_groups 输出的 url-test/fallback 参数形态是否合规
+
 NAMES = ["anaer", "autojiedian", "automerge", "ermaozi", "nomorewalls",
          "passcro", "ruk1ng001", "shaoyouvip", "snakem982", "ssrsub",
          "yypool", "zhuhaiuk"]
@@ -70,7 +72,15 @@ def show(t, groups, names):
     print("=" * 68)
     print("场景 %s" % t)
     print("=" * 68)
+    fail_key = []
     for g in groups:
+        # ⚠ 防抖断言（2026-10-29）：每个 url-test 组都必须带 tolerance，否则
+        #   几十毫秒的延迟抖动就会换现役点（用户反馈「AUTO 组内使用频繁变化」）。
+        #   fallback 没有该字段，不该有（塞了也是不详语义）。
+        if g.get("type") == "url-test" and g.get("tolerance") != 200:
+            fail_key.append(g["name"])
+        elif g.get("type") == "fallback" and "tolerance" in g:
+            fail_key.append("%s(不该有 tolerance)" % g["name"])
         if g["name"] in ("AUTO", "备用", "观察", "FAILOVER", "PROXY"):
             print("  %-9s %-6s %d 项" % (g["name"], g["type"],
                                         len(g.get("proxies") or g.get("use") or [])))
@@ -80,6 +90,12 @@ def show(t, groups, names):
                 print("       %-16s 本机 %s" % (p, ("%.1f%%" % r) if r is not None else "-"))
             if len(g.get("proxies") or []) > 8:
                 print("       ... 共 %d 项" % len(g["proxies"]))
+    if fail_key:
+        print("  ✗ url-test 组缺 tolerance / fallback 多了 tolerance: %s" % "、".join(fail_key))
+        global TOLERANCE_OK
+        TOLERANCE_OK = False
+    else:
+        print("  ✓ 所有 url-test 组都带 tolerance=200（防抖换点）,fallback 无该字段")
     return groups
 
 
@@ -238,5 +254,5 @@ finally:
 
 print("")
 print("=" * 68)
-print("结果：%s" % ("全部通过" if ok else "有失败项"))
-sys.exit(0 if ok else 1)
+print("结果：%s" % ("全部通过" if (ok and TOLERANCE_OK) else "有失败项"))
+sys.exit(0 if (ok and TOLERANCE_OK) else 1)
