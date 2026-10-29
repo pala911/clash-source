@@ -107,8 +107,21 @@ def main():
     for rel, kind, size in probe_payload.build(stage, README):
         print("    + %-30s %-12s %8.2f MB" % (rel, kind, size / 1048576.0))
 
-    PROXY = ["-c", "http.proxy=http://127.0.0.1:7897",
-             "-c", "http.https://%s.proxy=http://127.0.0.1:7897" % HOST]
+    # 代理优先、断时直连：codeup/gitee 是国内站，直连本来就没有墙的问题；
+    # 2026-10-30 实踩 Clash 进程消失（7897 无监听），写死 proxy 会把整条
+    # 刷远端链锁死 —— 所以探测一把端口，活着走代理、死了直连。
+    alive = False
+    try:
+        import socket
+        with socket.create_connection(("127.0.0.1", 7897), timeout=2):
+            alive = True
+    except Exception:
+        pass
+    PROXY = (["-c", "http.proxy=http://127.0.0.1:7897",
+              "-c", "http.https://%s.proxy=http://127.0.0.1:7897" % HOST]
+             if alive else [])
+    if not alive:
+        print("[proxy] 7897 无监听 -> codeup 直连（国内站不需要代理）")
     AUTH = ["-c", "credential.helper=", "-c", "core.askPass="]
 
     def run(args, cwd=None, timeout=300):
