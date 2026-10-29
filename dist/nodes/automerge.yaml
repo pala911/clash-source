@@ -1,4 +1,4 @@
-# clash-source 自动生成 —— 源 automerge，共 77 节点（稳定性加权后留在竞速池内的部分）
+# clash-source 自动生成 —— 源 automerge，共 80 节点（稳定性加权后留在竞速池内的部分）
 # 不要手改；改动会在下次定时任务被覆盖（上游 https://pala911.github.io/clash-source/nodes/automerge.yaml）
 proxies:
 - name: 🇱🇻hysteria
@@ -73,6 +73,14 @@ proxies:
   port: 19999
   cipher: aes-256-gcm
   password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
+  udp: true
+- name: '🇷🇺 俄罗斯 | RUS #4'
+  type: trojan
+  server: de-bots4.h1cloud.net
+  port: 25267
+  password: happybirthdaydaniel
+  skip-cert-verify: true
+  sni: t.me/FuckTheWall
   udp: true
 - name: '🇮🇳 印度 | IND #1'
   type: trojan
@@ -426,6 +434,30 @@ proxies:
   tls: true
   udp: true
   uuid: 751d501f-6164-4820-8873-0558de4f7f1b
+- name: '🇷🇺 俄罗斯 | RUS #1'
+  type: vless
+  server: 185.229.9.135
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: app.lesotorg-kirov.ru
+  tls: true
+  udp: true
+  uuid: d9833bab-0a4d-4ebf-9d80-1f6ab04f3964
+  ws-opts:
+    headers:
+      Host: app.lesotorg-kirov.ru
+    path: /chws
+- name: 🇷🇺 俄罗斯 | RUS 3
+  type: vless
+  server: 176.108.246.197
+  port: 443
+  client-fingerprint: chrome
+  network: grpc
+  servername: 410de54b680dfba26b85.cdn.cachefleet.com
+  tls: true
+  udp: true
+  uuid: d86e6fda-e519-46ab-98eb-9ff9a9da5984
 - name: '🇸🇬 新加坡 | SGP #1'
   type: vless
   server: 172.64.147.85
