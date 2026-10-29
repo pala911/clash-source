@@ -496,9 +496,133 @@ finally:
     if os.path.exists(SRC_BASE):
         os.remove(SRC_BASE)
 
+print()
+print("=" * 72)
+print("场景 E：auto_added 源的「自动补员退出」（2026-10-29 拍板）")
+print("=" * 72)
+print("""
+  拍板：compute_tier T4 + 双口径均值 <2% + 云效 ≥7 轮 + 本机 ≥3 轮
+        -> 自动降级（入历史库，翻盘走既有回收路线）。
+
+  E1 云效 6 轮（<7）、本机 3 轮        -> 不退出（云效观察期未满）
+  E2 云效 7 轮、本机 1+本轮=2（<3）    -> 不退出（本机观察期未满；本轮新轮次计入窗口）
+  E3 双侧都够且均值 <2%（T4）         -> 退出（enabled=false + 入历史库 + 大声说明）
+  E4 同等差但**没有** auto_added 标志 -> 绝不触发（此路只管自动补的，
+      人工接入/老源只能走原判死路径 —— 别把 15 个现存源误伤）
+""")
+
+AUTO_SRC = "demo_auto"
+
+
+def add_auto_source():
+    """插入带 auto_added: true 的合成源（同 add_fake_source 的手法）。"""
+    txt = open(SRC_YAML, encoding="utf-8").read()
+    if AUTO_SRC not in txt:
+        anchor = "\n# 已评估但未纳入（改 enabled: true 即恢复）\nexcluded:"
+        if anchor not in txt:
+            raise SystemExit("[tier-test] sources.yaml 结构变了：找不到 excluded 锚点")
+        entry = ("\n  - name: %s\n"
+                 "    url: https://example/%s\n"
+                 "    enabled: true\n"
+                 "    auto_added: true\n"
+                 "    note: 合成源（场景 E）：模拟 src/refill.py 补进来的自动源\n"
+                 % (AUTO_SRC, AUTO_SRC))
+        txt = txt.replace(anchor, entry + anchor, 1)
+        with open(SRC_YAML, "w", encoding="utf-8", newline="\n") as f:
+            f.write(txt)
+    shutil.copy2(SRC_YAML, SRC_BASE)
+
+
+def seed_auto_runs(n_cnci, n_local, rate=1.0):
+    """把 auto_added 源的历史轮次直接写进档案（cnci/local 各 n 轮，均 rate）。"""
+    h = json.load(open(HEALTH_PATH, encoding="utf-8"))
+    runs = seeded_runs("cnci", n_cnci, rate, 0, 1) + \
+        seeded_runs("local", n_local, rate, 3, 1)
+    rec = (h.get("sources") or {}).setdefault(AUTO_SRC, {
+        "name": AUTO_SRC, "state": "active", "bad_streak": 0,
+        "good_streak": 0, "bad_since": None, "runs": []})
+    rec["runs"] = runs + list(rec.get("runs") or [])
+    rec["state"] = "active"
+    with open(HEALTH_PATH, "w", encoding="utf-8") as f:
+        json.dump(h, f, ensure_ascii=False, indent=2)
+
+
+def run_local_round():
+    """以本机（scope=local）口径跑一轮 health.py。"""
+    seed_local_probe({AUTO_SRC: 1.0})
+    return run_health()
+
+
+backup()
+try:
+    # ---- E1：云效 6 轮（< 7）、本机 3 轮 ----
+    print("E1  云效 6 轮 < 7，本机 3 轮")
+    add_auto_source()
+    shutil.copy2(SRC_BASE, SRC_YAML)
+    seed_health_empty()
+    seed_auto_runs(n_cnci=6, n_local=3)
+    rc, out = run_local_round()
+    check(AUTO_SRC not in archive_names(), "云效观察期未满，没有退出",
+          "；".join(archive_names()) or "（历史库为空）")
+    check(enabled_of(AUTO_SRC) is True, "src 里 enabled 仍为 true")
+    check("自动补员退出" not in out, "退出横幅没出现")
+    print()
+
+    # ---- E2：云效 7 轮、本机 1 + 本轮 = 2（< 3；本轮新轮次也计入窗口）----
+    print("E2  云效 7 轮、本机 1+本轮=2（< 3）")
+    shutil.copy2(SRC_BASE, SRC_YAML)
+    seed_health_empty()
+    seed_auto_runs(n_cnci=7, n_local=1)
+    rc, out = run_local_round()
+    check(enabled_of(AUTO_SRC) is True, "本机轮数不够，没有退出")
+    check("自动补员退出" not in out, "退出横幅没出现")
+    print()
+
+    # ---- E3：双侧都够（云效 7 + 本机 3），均值 1%（< 2），T4 -> 退出 ----
+    print("E3  云效 7 轮 + 本机 3 轮 + 双均值 1%（T4）")
+    if os.path.exists(ARCHIVE_YAML):
+        os.remove(ARCHIVE_YAML)          # 从空历史库起，入档断言才不含混
+    shutil.copy2(SRC_BASE, SRC_YAML)
+    seed_health_empty()
+    seed_auto_runs(n_cnci=7, n_local=3)
+    rc, out = run_health()
+    for ln in out.splitlines():
+        if "自动补员" in ln and AUTO_SRC in ln:
+            print("  " + ln.strip())
+    check(enabled_of(AUTO_SRC) is False, "退出：enabled 翻成 false")
+    check(AUTO_SRC in archive_names(), "退出：已入历史库 archive/sources.yaml")
+    rec3 = json.load(open(HEALTH_PATH, encoding="utf-8"))["sources"].get(AUTO_SRC) or {}
+    check(rec3.get("state") == "quarantined", "退出：状态 = quarantined（复用降级机制，"
+          "翻盘走既有回收路线）", "实际 %s" % rec3.get("state"))
+    check("自动补员退出" in out, "大声说明（不是静默消失）")
+    arch3 = yaml.safe_load(open(ARCHIVE_YAML, encoding="utf-8")) or {}
+    why3 = [s.get("quarantine_reason") for s in (arch3.get("sources") or [])
+            if s.get("name") == AUTO_SRC]
+    check(why3 and "双口径均值" in (why3[0] or ""),
+          "历史库里的退出原因写明双口径均值", (why3 or ["?"])[0][:80])
+    print()
+
+    # ---- E4：同样差的数据，但没有 auto_added 标志 -> 绝不触发 ----
+    print("E4  同等差但无 auto_added 标志（人工接入的老源不受此路管辖）")
+    shutil.copy2(SRC_BASE, SRC_YAML)
+    txt_no = open(SRC_YAML, encoding="utf-8").read().replace(
+        "    auto_added: true\n", "")
+    with open(SRC_YAML, "w", encoding="utf-8", newline="\n") as f:
+        f.write(txt_no)
+    seed_health_empty()
+    seed_auto_runs(n_cnci=7, n_local=3)
+    rc, out = run_health()
+    check(enabled_of(AUTO_SRC) is True, "无 auto_added 标志 -> 退出规则不碰它")
+    check("自动补员退出" not in out, "退出横幅没出现")
+    print()
+finally:
+    restore()
+    if os.path.exists(SRC_BASE):
+        os.remove(SRC_BASE)
+
 print("=" * 72)
 if FAILS:
     print("结果：失败 %d 项 —— %s" % (len(FAILS), "；".join(FAILS)))
     sys.exit(1)
 print("结果：全部通过（A 数据不足不判定 / B 四格全覆盖 / C 判死双闸门 + 注释零丢失 "
-      "/ D 判死后可回收）")
+      "/ D 判死后可回收 / E 自动补员退出双观察期闸门 + auto_added 旗标限定）")

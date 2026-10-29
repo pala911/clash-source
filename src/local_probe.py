@@ -337,13 +337,30 @@ def rescue_push():
         return None
 
 
-def push_to_github():
-    """把健康数据推回 main。CI 也会推 dist，两边并发时 push 会失败 -> rebase 重试。"""
+def push_to_github(paths=None, msg=None):
+    """把数据推回 main。CI 也会推 dist，两边并发时 push 会失败 -> rebase 重试。
+
+    paths/msg 可覆盖（2026-10-29 补员自动化后复用它推候选评估结论）。
+    ⚠ add 逐路径跑且容忍缺失（对齐 ci_git_push.sh 的做法）：data/eval_verdicts.json
+      在老检出/新克隆里可能还不存在 —— 原来那种一条 pathspec 的批量 add
+      遇上缺失路径就 fatal，会带崩 commit 与后面整条推送链。
+    """
     if not os.path.exists(GIT):
         print("[local] 未找到 portable-git，跳过推送: %s" % GIT)
         return 0
     stamp = time.strftime("%Y%m%d-%H%M")
-    add = [GIT, "add", "-A", "state", "archive", "src/sources.yaml", "reports"]
+    if paths is None:
+        paths = ["state", "archive", "src/sources.yaml", "reports",
+                 "data/eval_verdicts.json"]     # eval 通道：CI refill 的口粮
+    if not msg:
+        msg = "chore: 本机探针(国内口径) %s" % stamp
+    for p in paths:
+        pa = subprocess.run([GIT, "add", "-A", "--", p], cwd=ROOT,
+                            capture_output=True, text=True, timeout=180,
+                            creationflags=NOWIN)
+        if pa.returncode != 0:
+            out = (pa.stdout + pa.stderr).strip()
+            print("  add %-24s ⚠ %s" % (p, (out.splitlines()[-1][:100] if out else "?")))
     # ⚠ 身份必须随身带（不只给 commit 用）：`pull --rebase` **重放**提交时同样
     #   需要 committer 身份。只靠仓库/全局 user.* 的话，换机器、重克隆、或用别的
     #   账号跑计划任务时，rebase 会 `fatal: unable to auto-detect email address`
@@ -351,7 +368,7 @@ def push_to_github():
     #   （2026-10-18 由 tools/test_local_probe_push.py 的真竞态用例抓到。）
     IDENT = ["-c", "user.name=local-probe-bot",
              "-c", "user.email=local-probe-bot@users.noreply.github.com"]
-    commit = [GIT] + IDENT + ["commit", "-m", "chore: 本机探针(国内口径) %s" % stamp]
+    commit = [GIT] + IDENT + ["commit", "-m", msg]
     push = [GIT, "-c", "http.proxy=" + PROXY, "-c", "https.proxy=" + PROXY,
             "push", "origin", "main"]
     # ⚠ --autostash 是必需的（2026-10-15 实踩）：
@@ -362,7 +379,7 @@ def push_to_github():
     pull = ([GIT] + IDENT
             + ["-c", "http.proxy=" + PROXY, "-c", "https.proxy=" + PROXY,
                "pull", "--rebase", "--autostash", "origin", "main"])
-    for c in (add, commit):
+    for c in (commit,):
         p = subprocess.run(c, cwd=ROOT, capture_output=True, text=True,
                            timeout=180, creationflags=NOWIN)
         out = (p.stdout + p.stderr).strip()
@@ -416,6 +433,55 @@ def push_to_github():
     print("       最后一条错误：%s" % (last.splitlines()[-1][:150] if last else "?"))
     print("       常见原因：代理(%s)没开 / PAT 过期 / rebase 身份缺失或冲突" % PROXY)
     return rc
+
+
+# ── 候选评估链（补员自动化第一环，2026-10-29）：主链推送完成后跑，独立时间盒 ──
+# 排在推送之后：探针数据+健康档案是主链的关键路径，先落远端；评估是补员的输入，
+# 慢（评估一批最多 ~20 分钟）且可丢弃（明天自动重评）。
+# 时间盒兜底：批次内部的抓取重试（直连+镜像多轮）没有预算 —— 超盒掐断。
+# eval 的结论是「末尾一次性原子写」，掐断不留半成品，下轮自动重评（uncertain 纪律同源）。
+EVAL_SCRIPT = os.path.join("tools", "eval_candidates.py")
+EVAL_TOP = 6              # 每轮只评 signals 前 6 条（探针预算有限，别当全量评估用）
+EVAL_PROBE_BUDGET = 300   # 传给 eval 的每批探针预算（秒）；6 条一批绰绰有余
+EVAL_TIMEOUT = 1200       # 全局时间盒（秒）：抓取+探针+落盘的全部墙钟
+
+
+def run_eval_chain(push_it=True):
+    """跑候选评估并（按时）单推结论。任何失败只大声说明，绝不带崩 L2 主链。"""
+    script = os.path.join(ROOT, EVAL_SCRIPT)
+    ev = os.path.join(ROOT, "data", "eval_verdicts.json")
+    if not os.path.isfile(script):
+        print("[eval] ⚠ 找不到 %s，跳过候选评估（主链不受影响）" % script)
+        return None
+    m0 = os.path.getmtime(ev) if os.path.exists(ev) else None
+    print("[eval] 候选评估开跑（--top %d，探针预算 %ds，时间盒 %ds）…"
+          % (EVAL_TOP, EVAL_PROBE_BUDGET, EVAL_TIMEOUT))
+    try:
+        p = subprocess.run(
+            [sys.executable, script, "--top", str(EVAL_TOP),
+             "--budget", str(EVAL_PROBE_BUDGET)],
+            cwd=ROOT, stdout=sys.stdout, stderr=subprocess.STDOUT,
+            timeout=EVAL_TIMEOUT, creationflags=NOWIN)
+        rc = p.returncode
+    except subprocess.TimeoutExpired:
+        print("[eval] ⚠ 时间盒 %ds 到点被掐断（结论是末尾原子写，无半成品，明天自动重评）"
+              % EVAL_TIMEOUT)
+        rc = 124
+    m1 = os.path.getmtime(ev) if os.path.exists(ev) else None
+    if m1 is None or m1 == m0:
+        print("[eval] 本轮通道无更新（eval exit=%s），不产生评估提交" % rc)
+        return rc
+    if not push_it:
+        print("[eval] --no-push 生效：新结论留在本地（%.0fs 后可手推）" % EVAL_TIMEOUT)
+        return rc
+    print("[eval] 通道有新结论，推送 …")
+    prc = push_to_github(paths=["data/eval_verdicts.json"],
+                         msg="chore: 候选评估结论 " + time.strftime("%Y%m%d-%H%M"))
+    if prc != 0:
+        # 推送失败不可怕：主链的 push 默认集里也有这个文件，明天会顺带带走
+        print("[eval] ⚠ 评估通道推送失败（exit=%d）：结论留在本地，下次主链推送带上去"
+              % prc)
+    return prc
 
 
 def main():
@@ -476,6 +542,15 @@ def main():
         rc = push_to_github()
     if health_rc != 0 and rc == 0:
         rc = health_rc                 # 健康档案失败必须反映到退出码，不能静默
+
+    if args.scope_only:
+        print("[local] --scope-only：跳过候选评估（补档轮不做评估）")
+    else:
+        # 补员链第一环：候选评估（独立时间盒；失败/超盒只留痕，不回传错误码 ——
+        # rc 只反映主链；评估自己的推送结果印在日志里）
+        erc = run_eval_chain(push_it=not args.no_push)
+        if erc is not None:
+            _oplog("eval exit=%d" % erc)
     _oplog("done, exit=%d" % rc)
     return rc
 

@@ -381,13 +381,13 @@ python tools\cnci_trigger.py --status   # 只看云效最近几次运行，不�
 ok=0; for i in $(seq 1 8); do git fetch origin && git reset --hard origin/master && { ok=1; break; }; sleep 20; done; [ "$ok" = "1" ] && bash tools/sync_and_probe.sh || { echo "同步失败"; exit 1; }
 ```
 
-### 交付前必跑（全部十八道）
+### 交付前必跑（全部十九道）
 
 ```powershell
 python tools\check_ci_scripts.py      # Python 3.6 静态门禁
 python tools\test_probe_wiring.py     # 探针 ↔ 稳定性档案 的接线
-python tools\test_health_tiering.py   # 双视角分级（四格全覆盖）+ 判死轮数/跨度双闸门 + 注释零丢失 + 判死后回收
-python tools\test_build_groups.py     # 质量分桶 + 档案坏/缺时**降级发布**
+python tools\test_health_tiering.py   # 双视角分级（四格全覆盖）+ 判死轮数/跨度双闸门 + 注释零丢失 + 判死后回收 + 自动补员退出（auto_added 旗标限定）
+python tools\test_build_groups.py     # 质量分桶 + 档案坏/缺时**降级发布** + 动态组容差形态
 python tools\test_stability.py        # 节点稳定性加权 + 档案损坏时不许静默重建 + 未知=保留（样本不足不移出）
 python tools\test_flaky_reprobe.py    # 被移出的节点能否翻盘
 python tools\test_fault_injection.py  # 坏数据进来时是否明确报错
@@ -400,6 +400,7 @@ python tools\test_local_probe_push.py # 本机推送：真竞态自愈 + 冲突�
 python tools\test_report_ai.py        # AI 留痕链：生产端键名 ↔ 报告/manifest
 python tools\test_ci_workflow.py      # CI 推送必须带重试、失败不许染红（连带 skip 下游）
 python tools\test_hardening.py        # 硬化回归：dist 残留清理 / raw 快照原貌 / TPM 闸门不死循环 / review_source 源级合同
+python tools\test_refill.py           # 自动补员：cap/节流/排重/选优/命名/损坏/停用/dry-run + append-only 子序列断言
 python tools\verify_profile.py        # 真 mihomo 内核校验
 python tools\probe_field_types.py     # mihomo 接受哪些字段类型
 ```
@@ -410,8 +411,8 @@ python tools\probe_field_types.py     # mihomo 接受哪些字段类型
 > → step 6 失败 → **后面 9 个步骤全部 skip**：gh-pages 不发布（手机订阅最多
 > 6 小时不更新）、美国口径探针不跑（**唯一有判死权的那层没执行**）、健康档案
 > 不算不提交（判死要攒的轮数被悄悄推迟）。
-> workflow 里这样的裸 `git push` 有**三处**（产物 / 健康档案 / 候选池）。
-> 现在三处都走 `tools/ci_git_push.sh`：被拒就 `pull --rebase --autostash` 再推，
+> workflow 里这样的裸 `git push` 有**四处**（产物 / 健康档案 / 候选池 / 自动补员）。
+> 现在四处都走 `tools/ci_git_push.sh`：被拒就 `pull --rebase --autostash` 再推，
 > 最多 3 次；**绝不是 force**（远端可能有本机探针的提交，force 会抹掉它）；3 次都失败降级成
 > `::warning::` 且 `exit 0` —— 红只会连带 skip 下游，而提交还留在 workspace 里
 > 会被后续步骤带上去，失败方向是「晚一轮」而不是「丢一轮」。

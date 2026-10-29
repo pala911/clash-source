@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# 提交并推送产物到 main —— 带重试。workflow 里三处（产物 / 健康档案 / 候选池）共用。
+# 提交并推送产物到 main —— 带重试。workflow 里四处（产物 / 健康档案 / 候选池 / 自动补员）共用。
 #
 # 用法: bash tools/ci_git_push.sh "<提交信息>" <路径> [<路径> ...]
 #

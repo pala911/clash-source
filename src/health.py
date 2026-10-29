@@ -90,6 +90,19 @@ TIER_MIN_CNCI_RUNS = 7    # cnci 轮次不足就不参与回收判定（只展�
 TIER_WINDOW = 7            # 取最近 N 轮算均值
 TIER_REQUIRE_CNCI = True   # True=回收需双视角同意；False=退回本机单视角
 
+# ---------------------------------------------------------------------------
+# 自动补员退出阈值（2026-10-29 拍板「补员也自动化处理」的退出半边）
+# ---------------------------------------------------------------------------
+# auto_added 源的第二把退出尺子（第一把是所有源共用的「CI 连续 0 活判死」）。
+# 拍板原文：compute_tier T4 且 本机/云效均值均 <2% + 云效 ≥7 轮 + 本机 ≥3 轮
+# → 自动降级。「观察期」就是轮数门槛，复用 TIER_WINDOW 口径的 recent_mean。
+# 均值 2% 比分级 T4 的 8% 严得多：刚补进来的源单轮波动大（cnci 抽样噪声
+# avg 5.5pp），只让「稳定垫底」的出去，2%~8% 的半吊子留给人工阈值，
+# 避免补员刚落地就被单轮噪声送出 —— 那样补员就永远攒不起观察期。
+# 退出 = 降级（quarantined 同机制），翻盘走既有回收路径（门槛 T1，比准入严）。
+AUTO_EXIT_RATE = 2.0
+AUTO_EXIT_LOCAL_RUNS = 3
+
 
 def load_probe():
     try:
@@ -789,6 +802,35 @@ def main():
                 changed_enabled.append("%s -> 达标回收（T1 双视角）" % name)
                 arch_by_name.pop(name, None)
                 rec["state"] = "active"
+
+        # --- 自动补员退出（2026-10-29 拍板，哨尺在 AUTO_EXIT_* 常量处）---
+        # 放在 is_new 之后：重复推送不重复判定（与判死/回收同纪律）。
+        # ⚠ 只对「auto_added 且仍 enabled 且 active」的源生效；人工接入与
+        #   老源（包括现存 15 个）永远只走原有判死/回收路径，绝不在此误伤。
+        if (name in src_by_name and src_by_name[name].get("auto_added")
+                and src_by_name[name].get("enabled", True)
+                and rec["state"] == "active" and tier == "T4"):
+            lmean, ln_runs = recent_mean(runs, "local", TIER_WINDOW)
+            cmean, cn_runs = recent_mean(runs, "cnci", TIER_WINDOW)
+            if (lmean is not None and cmean is not None
+                    and lmean < AUTO_EXIT_RATE and cmean < AUTO_EXIT_RATE
+                    and cn_runs >= TIER_MIN_CNCI_RUNS
+                    and ln_runs >= AUTO_EXIT_LOCAL_RUNS):
+                why = ("自动补员退出：双口径均值 <%.0f%%（本机 %.1f%%/云效 %.1f%%，"
+                       "云效 %d 轮/本机 %d 轮）" % (AUTO_EXIT_RATE, lmean, cmean,
+                                                  cn_runs, ln_runs))
+                src_by_name[name]["enabled"] = False
+                src_by_name[name]["quarantine_reason"] = why
+                changed_enabled.append("%s -> 自动补员退出（质量垫底）" % name)
+                arch_by_name.setdefault(name, {})
+                arch_by_name[name].update({
+                    "name": name, "url": src_by_name[name]["url"],
+                    "note": src_by_name[name].get("note", ""),
+                    "quarantined_at": now,
+                    "quarantine_reason": why,
+                })
+                rec["state"] = "quarantined"
+                print("[health] %-24s ✗ %s" % (name, why))
 
         print("[health] %-24s scope=%-5s%s alive=%-4d rate=%-5s 坏%s/好%s 分级=%-2s 状态=%s"
               % (name, scope, "[抽样]" if sampled else "     ", alive, rate,

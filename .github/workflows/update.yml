@@ -149,3 +149,16 @@ jobs:
         if: ${{ github.event_name == 'schedule' }}
         run: |
           bash tools/ci_git_push.sh "chore: 新源候选池 $(date -u +%FT%TZ)" data
+
+      # ========== 自动补员（2026-10-29 拍板「补员也自动化处理」） ==========
+      # 消费本机评估通道 data/eval_verdicts.json（eval/候选池/补员三通道各一个写者，
+      # 零冲突）。cap 内（enabled < 12）且节流过（距上次补员 >= 24h）才补，
+      # 每轮至多 1 个；cap 满 = approved 候选挂待用，等降级腾位。
+      # 放在最后一步：任何失败只红自己，不连带 skip 上游的判死/发布/发现步骤。
+      # 手动触发跳过（同 discover：cron 那次才跑）。
+      - name: 自动补员（approved 候选补位）
+        if: ${{ github.event_name == 'schedule' }}
+        run: |
+          python src/refill.py
+          bash tools/ci_git_push.sh "chore: 自动补员 $(date -u +%FT%TZ)" \
+            src/sources.yaml state/refill_last.json

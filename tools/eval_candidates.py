@@ -1,25 +1,33 @@
 # -*- coding: utf-8 -*-
-"""候选源评估：把 discovered_pool.json 里的 pending 候选送真探针，写回 verdict。
+"""候选源评估：把 discovered_pool.json 里的候选送真探针，结论写进评估通道。
 
 背景（为什么有这个脚本）：
   discover.py（CI 每 6h）只负责把新源扫进候选池，verdict 恒为 pending ——
   评估这半段从上线起就没人接（坑 §49 的实例：低频方被高频方冲成死环节）。
-  本脚本补上：候选池 -> 抓取/清洗 -> 真探针（本机国内口径，判优）-> verdict。
+  本脚本补上：候选池 -> 抓取/清洗 -> 真探针（本机国内口径，判优）-> verdict 写进评估通道（单写者，见下）。
 
 口径纪律（坑 §48，不能忘）：
   判优只能在国内跑。CI runner（美国）口径虚高 1.8~13 倍，只能判死；
   云效（国内 IDC）介于两者之间且系统性 +11.9pp，只做交叉验证。
   所以本脚本默认在本机跑（scope=local 的网络环境）。
 
+ ⚠ verdict 通道（2026-10-29 起）：所有结论写 data/eval_verdicts.json，本脚本
+   **独享写权**；discovered_pool.json 是 CI discover 的专属写域。两个文件各一个
+   写者，零冲突 —— 旧版直接写回候选池是双写者结构（本机低频写者会被 CI 每 6h
+   的池重写冲掉），和 source_health 当年的死锁是同一类病。首次运行会把旧池
+   终局结论（approved/rejected）一次性幂等迁移进通道（uncertain 不迁）。
+   消费者：src/refill.py（CI 自动补员读它；cap 满 = approved 挂待用）。
+
  verdict 含义：
-  approved  通过率达标（默认 rate>=5% 且 alive>=3）—— 可入 sources.yaml
+  approved  通过率达标（默认 rate>=5% 且 alive>=3）—— 等 CI 自动补员（cap 内）或人工接入
   rejected  抓不到 / 清洗后节点太少 / 探针通过率不达标 —— 附原因
   uncertain 探针没测完（incomplete）—— 不做判断，下轮再来
             （探针纪律：没 settle 的数据不能当 0% 用，等于批量制造假死亡）
 
 用法：
-  python tools/eval_candidates.py                 # 清空全部 pending
-  python tools/eval_candidates.py --top 20        # 只评 signals 前 20 条
+  python tools/eval_candidates.py                 # 评「通道里没结论/uncertain」的候选
+  python tools/eval_candidates.py --top 6         # 只评 signals 前 N 条（12:30 链用）
+  python tools/eval_candidates.py --re-eval KEY   # 强制重评 URL 含 KEY 的条目
   python tools/eval_candidates.py --dry-run       # 只打印，不写回
 
  用 anaconda 的 python（要有 pyyaml）。mihomo 默认用 Clash Verge 自带内核。
@@ -41,6 +49,7 @@ import fetch as fetch_mod                       # noqa: E402
 import probe as probe_mod                       # noqa: E402
 
 POOL = os.path.join(ROOT, "data", "discovered_pool.json")
+VERDICTS = os.path.join(ROOT, "data", "eval_verdicts.json")   # 单写者通道（本脚本独享）
 SOURCES_YAML = os.path.join(ROOT, "src", "sources.yaml")
 WORKDIR = os.path.join(ROOT, ".probe_eval")       # mihomo -d 目录（探针每批清空）
 STAGEDIR = os.path.join(ROOT, ".probe_eval_stage")  # 候选 provider 暂存（不能放 WORKDIR，
@@ -178,8 +187,80 @@ def probe_batches(ready, mihomo, batch, budget, hc_timeout, log):
     return rows
 
 
+# ── verdict 通道（2026-10-29 起）：单写者 = 本脚本；消费者 = src/refill.py ─────
+MIGRATABLE = ("approved", "rejected")   # 池里的终局结论才迁；uncertain 是临时态
+MIG_KEYS = ("url", "repo", "verdict", "note", "rate", "alive", "best_ms",
+            "nodes", "raw", "evaluated_at", "cloud_rate", "cloud_alive")
+
+
+def load_verdicts(pool_cands):
+    """载入通道；首次运行把旧池的终局结论一次性迁进来（幂等，已有的不覆盖）。
+
+    ⚠ 留证 migrated_from=discovered_pool：这批结论出自双写者时代的首轮真探针
+      （2026-10-28，97 条 pending 全清），翻旧账时能对上出处。
+    """
+    ch = {}
+    if os.path.exists(VERDICTS):
+        try:
+            with open(VERDICTS, encoding="utf-8") as f:
+                d = json.load(f)
+            for c in (d.get("candidates") or []):
+                if isinstance(c, dict) and c.get("url"):
+                    ch[c["url"]] = c
+        except Exception as e:
+            print("[eval] ⚠ 评估通道读取失败，按空通道处理（%s: %s）"
+                  % (type(e).__name__, str(e)[:80]))
+    n = 0
+    for pc in pool_cands:
+        u = pc.get("url")
+        if pc.get("verdict") in MIGRATABLE and u and u not in ch:
+            rec = {k: pc[k] for k in MIG_KEYS if pc.get(k) is not None}
+            rec["migrated_from"] = "discovered_pool"
+            ch[u] = rec
+            n += 1
+    if n:
+        print("[eval] 迁移旧池终局结论 %d 条 -> 评估通道（首跑一次性）" % n)
+    return ch
+
+
+def pending_of(cands, ch, re_eval):
+    """该评哪些：通道里没结论的 / uncertain 的（重试）/ --re-eval 强制命中的。
+
+    pool.verdict 字段不再当数据用（旧版写回已废弃），以待评状态自不存在侧推断。
+    """
+    out = []
+    for c in cands:
+        u = c.get("url")
+        if not u:
+            continue
+        if re_eval and re_eval.lower() in u.lower():
+            out.append(c)
+        else:
+            rec = ch.get(u)
+            if rec is None or rec.get("verdict") == "uncertain":
+                out.append(c)
+    return out
+
+
+def write_channel(ch, dry, n_changed):
+    """落盘（原子写）。无变更就不碰文件 —— mtime 不动，12:30 链靠它判断
+    「这轮有没有新结论」，避免每天白推一次提交。"""
+    if dry:
+        print("[eval] dry-run，未写回（本次变更 %d 条）" % n_changed)
+        return
+    if n_changed <= 0:
+        print("[eval] 通道无变更，不写（mtime 不动）")
+        return
+    doc = {"channel": "eval_verdicts",
+           "generated_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+           "candidates": list(ch.values())}
+    probe_mod.save_json_atomic(VERDICTS, doc)
+    print("[eval] 已原子写评估通道 %s（%d 条，变更 %d）"
+          % (os.path.relpath(VERDICTS, ROOT), len(doc["candidates"]), n_changed))
+
+
 def judge(key, row, results, rate_min, alive_min, log):
-    """把探针行变成 verdict，写回所有同 URL 候选。"""
+    """把探针行变成 verdict，写进 results（末尾统一落通道）。"""
     url = None
     for u, r in results.items():
         if r.get("key") == key:
@@ -211,7 +292,8 @@ def judge(key, row, results, rate_min, alive_min, log):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--mihomo", default=DEFAULT_MIHOMO)
-    ap.add_argument("--top", type=int, default=0, help="只评 signals 前 N 条（0=全部 pending）")
+    ap.add_argument("--top", type=int, default=0, help="只评 signals 前 N 条（0=全部待评）")
+    ap.add_argument("--re-eval", default="", help="强制重评 URL 含此关键字的条目")
     ap.add_argument("--batch", type=int, default=10, help="每批探针的候选数")
     ap.add_argument("--cap", type=int, default=60, help="每候选最多探多少节点（分层抽样）")
     ap.add_argument("--budget", type=int, default=900, help="每批探针秒数预算")
@@ -226,12 +308,15 @@ def main():
         return 1
     pool = json.load(open(POOL, encoding="utf-8"))
     cands = pool.get("candidates") or []
-    pending = [c for c in cands if c.get("verdict") == "pending"]
+    ch = load_verdicts(cands)                  # 单写者通道（+ 旧池终局结论一次性迁移）
+    pending = pending_of(cands, ch, args.re_eval)
     if args.top > 0:
         pending.sort(key=lambda c: -(c.get("signals") or 0))
         pending = pending[:args.top]
-    print("[eval] 候选池 %d 条，本次评 %d 条 pending" % (len(cands), len(pending)))
+    print("[eval] 候选池 %d 条，本次待评 %d 条（通道已有结论 %d）"
+          % (len(cands), len(pending), len(ch)))
     if not pending:
+        write_channel(ch, args.dry_run, 0)
         return 0
 
     # 云效粗筛结果（data/eval_cloud.json，ci_eval_candidates.py 在云效流水线产出）：
@@ -261,22 +346,22 @@ def main():
                 to_eval.append(c)
         if n_pre:
             print("[eval] 云效粗筛已毙 %d 条（不占本机探针）" % n_pre)
-        pending = to_eval
-        if not pending:
-            print("[eval] 云效粗筛把 pending 全毙了，只写回结论")
             now0 = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
             for c in cands:
-                if c.get("verdict") == "pending" and c.get("url") in pre_reject_urls:
+                if c.get("url") in pre_reject_urls:
                     cv = cloud.get(c["url"]) or {}
-                    c["verdict"] = "rejected"
-                    c["note"] = "云效粗筛拒: %s" % (cv.get("note") or "")
-                    c["evaluated_at"] = now0
+                    rec = ch.setdefault(c["url"], {"url": c["url"]})
+                    rec["verdict"] = "rejected"
+                    rec["note"] = "云效粗筛拒: %s" % (cv.get("note") or "")
+                    rec["evaluated_at"] = now0
+                    rec.setdefault("repo", c.get("repo") or "")
                     for k in ("cloud_rate", "cloud_alive"):
                         if cv.get(k) is not None:
-                            c[k] = cv[k]
-            if not args.dry_run:
-                probe_mod.save_json_atomic(POOL, pool)
-                print("[eval] 已原子写回 %s" % POOL)
+                            rec[k] = cv[k]
+        pending = to_eval
+        if not pending:
+            print("[eval] 云效粗筛把待评全毙了，结论写通道收工")
+            write_channel(ch, args.dry_run, n_pre)
             return 0
 
     # 同 URL 多条只探一次，verdict 广播回去
@@ -304,40 +389,29 @@ def main():
         for k, _p in ready:
             judge(k, rows.get(k), results, args.rate_min, args.alive_min, print)
 
-    # 写回：verdict 广播到所有同 URL 条目
+    # 写通道：verdict 广播到所有同 URL 条目（results 里的 key 是探针内部键，不落盘）
     now = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
     n = {"approved": 0, "rejected": 0, "uncertain": 0}
-    # 云效粗筛毙掉的直接落锤
-    for c in cands:
-        if c.get("verdict") == "pending" and c.get("url") in pre_reject_urls:
-            cv = cloud.get(c["url"]) or {}
-            c["verdict"] = "rejected"
-            c["note"] = "云效粗筛拒: %s" % (cv.get("note") or "")
-            c["evaluated_at"] = now
-            for k in ("cloud_rate", "cloud_alive"):
-                if cv.get(k) is not None:
-                    c[k] = cv[k]
-            n["rejected"] += 1
     for c in cands:
         r = results.get(c.get("url"))
         if not r or not r.get("verdict"):
             continue
-        if c.get("verdict") != "pending":
-            continue
-        c["verdict"] = r["verdict"]
-        c["note"] = r.get("note", "")
-        c["evaluated_at"] = now
+        rec = ch.setdefault(c["url"], {"url": c["url"]})
+        rec["verdict"] = r["verdict"]
+        if r.get("note"):
+            rec["note"] = r["note"]
+        rec["evaluated_at"] = now
+        rec.setdefault("repo", c.get("repo") or "")
         for k in ("nodes", "rate", "alive", "best_ms"):
             if r.get(k) is not None:
-                c[k] = r[k]
+                rec[k] = r[k]
         n[r["verdict"]] = n.get(r["verdict"], 0) + 1
     print("[eval] 结果：approved=%d rejected=%d uncertain=%d" %
           (n["approved"], n["rejected"], n["uncertain"]))
-    if not args.dry_run:
-        probe_mod.save_json_atomic(POOL, pool)
-        print("[eval] 已原子写回 %s" % POOL)
-    else:
-        print("[eval] dry-run，未写回")
+    if n["uncertain"]:
+        print("[eval] uncertain 不下结论，下轮自动重试（探针纪律）")
+    write_channel(ch, args.dry_run,
+                  n["approved"] + n["rejected"] + n["uncertain"])
     return 0
 
 
