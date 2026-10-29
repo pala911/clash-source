@@ -213,6 +213,7 @@ proxy-groups:
   - SRCFL-snakem982
   - SRCFL-ssrsub
   - SRCFL-yypool
+  - SRCFL-zhuhaiuk
   url: https://www.youtube.com/generate_204
   expected-status: 204
   interval: 300
@@ -911,6 +912,18 @@ proxy-providers:
     type: http
     url: https://pala911.github.io/clash-source/nodes/yypool--flaky.yaml
     path: ./providers/SRCFL-yypool.yaml
+    interval: 3600
+    exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
+    health-check:
+      enable: true
+      url: https://www.youtube.com/generate_204
+      interval: 300
+      timeout: 5000
+      expected-status: 204
+  SRCFL-zhuhaiuk:
+    type: http
+    url: https://pala911.github.io/clash-source/nodes/zhuhaiuk--flaky.yaml
+    path: ./providers/SRCFL-zhuhaiuk.yaml
     interval: 3600
     exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
     health-check:
