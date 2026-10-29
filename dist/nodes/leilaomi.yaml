@@ -51,13 +51,6 @@ proxies:
   sni: resources.discoverfreshgraduatejobsstartyourprofessionaljourney.com
   skip-cert-verify: true
   udp: true
-- name: 🇺🇸 [307.0ms +/-17ms] 🇺🇸 美国 | USA
-  type: hysteria2
-  server: 130.94.16.109
-  port: 443
-  password: dQPT5I2ojYNjBeT2KPvk3Lr
-  sni: www.microsoft.com
-  skip-cert-verify: true
 - name: 🇯🇵 [556.2ms +/-6ms] vless-1938596558
   type: vless
   server: 45.202.255.92
@@ -461,6 +454,20 @@ proxies:
     public-key: dPa581kev2x9-st7VQ-DTh3NjXlHJ2830YDySuI8n2U
     short-id: e723d26df67888b9
   client-fingerprint: firefox
+- name: 🇺🇸 [830.1ms +/-3ms] Channel
+  type: vless
+  server: 8.35.211.242
+  port: 443
+  uuid: fc7d2cfe-f5ef-40c8-a848-a0bdc11f6349
+  udp: true
+  tls: true
+  servername: vpn.cintaku.qzz.io
+  skip-cert-verify: true
+  network: ws
+  ws-opts:
+    path: /vlessws
+    headers:
+      Host: vpn.cintaku.qzz.io
 - name: 🇩🇪 [802.6ms +/-28ms] 4Kian-0461815041
   type: trojan
   server: 64.227.115.28

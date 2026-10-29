@@ -1,17 +1,6 @@
-# clash-source 自动生成 —— 源 ermaozi，被稳定性加权移出的 33 个节点
+# clash-source 自动生成 —— 源 ermaozi，被稳定性加权移出的 27 个节点
 # 历史可用率偏低，不参与 AUTO 自动竞速；需要时可从「备用」组手工切。
 proxies:
-- name: '🏳[www.v2nodes.com] vless- #3'
-  type: vless
-  server: 178.172.227.124
-  port: 14430
-  network: ws
-  tls: false
-  uuid: 1af36694-b548-4b18-89a0-bc076eab4ed7
-  ws-opts:
-    headers:
-      Host: 178.172.227.124
-    path: /vless
 - name: '🇧🇾[www.v2nodes.com] vless-BY-1... #1'
   type: vless
   server: 95.128.71.79
@@ -49,6 +38,32 @@ proxies:
   port: 10002
   tls: false
   uuid: c6362720-0931-4b91-b187-d8ecf3149734
+- name: '🇭🇰[www.v2nodes.com] vless-HK-1... #5'
+  type: vless
+  server: 195.58.144.56
+  port: 11907
+  alpn:
+  - h2
+  - http/1.1
+  client-fingerprint: chrome
+  encryption: none
+  network: tcp
+  skip-cert-verify: false
+  tls: true
+  uuid: 07cb07b9-0c4d-46c1-a15a-b147511b6b07
+- name: '🇭🇰[www.v2nodes.com] vless-HK-1... #6'
+  type: vless
+  server: 103.148.73.173
+  port: 8443
+  client-fingerprint: chrome
+  network: ws
+  servername: ty986gfazs.cainiaohub.xyz
+  tls: true
+  uuid: c1c04450-bf71-4049-ad0c-9cf6d94d9f1f
+  ws-opts:
+    headers:
+      Host: ty986gfazs.cainiaohub.xyz
+    path: /81574b6b-c9d7-44a0-b83d-dad56e8cb530
 - name: 🇲🇾[www.v2nodes.com] vless-MY-5...
   type: vless
   server: 216.173.67.59
@@ -70,12 +85,6 @@ proxies:
   port: 51279
   tls: false
   uuid: 57beeeb0-03fc-4fc9-94da-7604488a7134
-- name: '🏳[www.v2nodes.com] ss- #1'
-  type: ss
-  server: 51.79.49.116
-  port: 8882
-  cipher: aes-256-gcm
-  password: kDWvXYZoTBcGkC4
 - name: 🇮🇹[www.v2nodes.com] ss-IT-1549...
   type: ss
   server: 57.131.48.45
@@ -100,36 +109,6 @@ proxies:
   port: 64546
   cipher: chacha20-ietf-poly1305
   password: U83u9OGpvSatIUW7LsWffr
-- name: '🏳[www.v2nodes.com] ss- #6'
-  type: ss
-  server: 154.46.31.106
-  port: 443
-  cipher: chacha20-ietf-poly1305
-  password: QFWzCw2uX9B9i6qAYeFBIE
-- name: '🏳[www.v2nodes.com] trojan- #3'
-  type: trojan
-  server: 185.220.100.168
-  port: 443
-  network: ws
-  password: humanity
-  skip-cert-verify: false
-  sni: www.calmlunch.com
-  ws-opts:
-    headers:
-      Host: www.calmlunch.com
-    path: '%2Fassignment'
-- name: '🏳[www.v2nodes.com] trojan- #2'
-  type: trojan
-  server: 45.87.41.18
-  port: 443
-  network: ws
-  password: humanity
-  skip-cert-verify: false
-  sni: www.calmlunch.com
-  ws-opts:
-    headers:
-      Host: www.calmlunch.com
-    path: /assignment
 - name: 🇭🇰 香港3|@ripaojiedian
   type: vmess
   server: ADncdOvLHR4M1P36.v.3dns.vip
@@ -189,36 +168,6 @@ proxies:
   ws-opts:
     headers:
       Host: syJ2gGUgMwBwQwQx.v.3dns.vip
-    path: /ws-vmess
-- name: 🇯🇵 日本2|@ripaojiedian
-  type: vmess
-  server: kQov7UKaDknXb8a3.v.3dns.vip
-  port: 443
-  alterId: 0
-  cipher: auto
-  network: ws
-  servername: kQov7UKaDknXb8a3.v.3dns.vip
-  skip-cert-verify: false
-  tls: true
-  uuid: 88888888-8888-8888-8888-888888888888
-  ws-opts:
-    headers:
-      Host: kQov7UKaDknXb8a3.v.3dns.vip
-    path: /ws-vmess
-- name: 🇯🇵 日本3|@ripaojiedian
-  type: vmess
-  server: kneNaKHeSXnZH259.v.3dns.vip
-  port: 443
-  alterId: 0
-  cipher: auto
-  network: ws
-  servername: kneNaKHeSXnZH259.v.3dns.vip
-  skip-cert-verify: false
-  tls: true
-  uuid: 88888888-8888-8888-8888-888888888888
-  ws-opts:
-    headers:
-      Host: kneNaKHeSXnZH259.v.3dns.vip
     path: /ws-vmess
 - name: 🇸🇬 新加坡|@ripaojiedian
   type: vmess
@@ -293,14 +242,6 @@ proxies:
   type: trojan
   server: 7d0a2gz0-7a0c.aws-agent.net
   port: 12102
-  network: tcp
-  password: AA885B42-133C-3828-FB69-E45105C06092
-  skip-cert-verify: true
-  sni: m.ctrip.com
-- name: 日本2|@ripaojiedian
-  type: trojan
-  server: 63182sh8-4d7b.aws-agent.net
-  port: 10125
   network: tcp
   password: AA885B42-133C-3828-FB69-E45105C06092
   skip-cert-verify: true

@@ -1,15 +1,6 @@
-# clash-source 自动生成 —— 源 autojiedian，共 261 节点（稳定性加权后留在竞速池内的部分）
+# clash-source 自动生成 —— 源 autojiedian，共 262 节点（稳定性加权后留在竞速池内的部分）
 # 不要手改；改动会在下次定时任务被覆盖（上游 https://pala911.github.io/clash-source/nodes/autojiedian.yaml）
 proxies:
-- name: 134.195.196.211_Gemini
-  type: vmess
-  server: 134.195.196.211
-  port: 18000
-  alterId: 0
-  cipher: auto
-  network: tcp
-  udp: true
-  uuid: f8c8dc3d-0d37-46b0-8b34-a7232882fcfe
 - name: 158.101.158.101_Claude
   type: vless
   server: 104.16.111.102
@@ -1477,6 +1468,20 @@ proxies:
   network: tcp
   udp: true
   uuid: c6362720-0931-4b91-b187-d8ecf3149734
+- name: 英国_Blackburn_OVH SAS_Claude
+  type: vmess
+  server: www.ubuntuupdates.com
+  port: 443
+  alterId: 0
+  cipher: auto
+  network: ws
+  skip-cert-verify: true
+  tls: true
+  uuid: 83b09a64-1eaf-4c4d-89ed-866d4b6b8115
+  ws-opts:
+    headers:
+      Host: www.ubuntuupdates.com
+    path: /truth
 - name: 英国_Canary Wharf_Clouvider Limited_Claude
   type: vless
   server: 92.113.107.120
@@ -1693,6 +1698,17 @@ proxies:
   port: 43385
   cipher: chacha20-ietf-poly1305
   password: AwW1fV6oDDQKh8r2znmptv59tPgt4eHVTgFaTqgKS2jiSdikJ7GyGCBYehDaK38S8yMgHFdbJqcTmRJSfYS5CFw345bNhFZa
+- name: 荷兰_Amsterdam_Matteo Martelloni trading as DELUXHOST_Claude
+  type: vless
+  server: s170.gogocs.xyz
+  port: 443
+  flow: xtls-rprx-vision
+  network: raw
+  servername: s170.gogocs.xyz
+  skip-cert-verify: false
+  tls: true
+  udp: true
+  uuid: 30e52776-55ac-3cb4-8d36-e2910f07e2c3
 - name: 荷兰_Amsterdam_Servers Tech Fzco_Claude1
   type: vless
   server: alice.proxyplankton.ru
