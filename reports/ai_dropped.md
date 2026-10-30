@@ -1,102 +1,94 @@
-# AI 审核逐条留痕（生成于 2026-10-29T23:01:48Z，模型 `http`）
+# AI 审核逐条留痕（生成于 2026-10-30T06:04:04Z，模型 `http`）
 
-共剔除 63 簇 / 238 节点（下表每簇列一条代表节点 + 理由，「节点数」列是该簇实际覆盖的节点数）。若发现误杀，把节点名与理由贴回来即可针对性收窄 prompt。
+共剔除 55 簇 / 158 节点（下表每簇列一条代表节点 + 理由，「节点数」列是该簇实际覆盖的节点数）。若发现误杀，把节点名与理由贴回来即可针对性收窄 prompt。
 
 
 ## yypool
 
 | 节点名 | 类型 | server | 节点数 | 模型理由 |
 |---|---|---|---|---|
-| [freeSub#243] D🔴🇱🇻hos[🎬🤖📺🎭]_dokng.com_68942936 | http | 85.203.39.130 | 6 | 广告位 |
-| [freeSub#199] D🔴🇨🇦hos[🎬🤖📺🎪]_dokng.com_6b584743 | http | 198.44.157.27 | 6 | 广告位 |
-| [freeSub#117] D🔴🇺🇸hos[🎬🤖📺🎭]_dokng.com_3094d52f | http | carolinafreigh.fun | 5 | 广告位 |
-| [freeSub#160] D🔴🇳🇱hos[🎬🤖📺🎭]_dokng.com_902e7569 | http | 84.17.47.147 | 4 | 广告位 |
-| [freeSub#088] D🔴🇨🇭hos[🎬🤖📺🎭]_dokng.com_295196f5 | http | 37.120.213.210 | 4 | 广告位 |
-| [freeSub#060] D🔴🇺🇸hos[🎬🤖📺🎭]_dokng.com_59f060e6 | http | berniesbodybla.fun | 4 | 广告位 |
-| [Eternity#105] 🇰🇷KR-211.178.105.134-0247 \| 0.177MB | ss | 211.178.105.134 | 2 | 广告引流克隆位 |
-| [freeSub#128] C🟠🇬🇧hos[🎬🤖📺🎭]_dokng.com_25669227 | http | 185.164.138.156 | 2 | 订阅地址本身 |
-| [freeSub#025] C🟠🇸🇬hos[🎬🤖📺🎭]_dokng.com_51a7e463 | http | 13.250.6.249 | 2 | 订阅地址本身 |
-| [freeSub#007] C🟠🇸🇬hos[🎬📦]_dokng.com_7b001401 | http | 54.255.133.243 | 2 | 订阅地址本身 |
-| [freeSub#027] C🟠🇸🇬hos[🎬🤖📺]_dokng.com_e4405807 | http | 13.212.235.123 | 2 | 订阅地址本身 |
-| [freeSub#053] C🟠🇸🇬hos[🎬🤖📺🎭]_dokng.com_351f7141 | http | 156.146.56.97 | 2 | 订阅地址本身 |
-| [freeSub#090] D🔴🇺🇸hos[🎬🤖📺🎭]_dokng.com_1a62785b | http | fullmanfirm.icu | 2 | 订阅地址本身 |
-| [freeSub#164] D🔴🇺🇸hos[🎬🤖📺🎭]_dokng.com_a8e49557 | http | 35.84.133.236 | 2 | 订阅地址本身 |
-| [freeSub#326] D🔴🇦🇱hos[🎬🤖📺🎭]_dokng.com_a9e6b475 | http | 91.92.250.33 | 2 | 订阅地址本身 |
-| [freeSub#317] D🔴🇮🇳hos[🤖📺🔍]_dokng.com_1b23a856 | http | 110.173.188.221 | 2 | 订阅地址本身 |
-| [freeSub#310] D🔴🇸🇬hos[🎬🤖📺🎭]_dokng.com_6b1b4589 | http | 104.248.151.93 | 2 | 订阅地址本身 |
-| [freeSub#089] D🔴🇮🇩hos[🎬🤖📺🎭]_dokng.com_0b3b46c7 | http | carolinafreigh.fun | 2 | 订阅地址本身 |
-| [freeSub#284] D🔴🇨🇿hos[🎬🤖📺🎭]_dokng.com_232b47f5 | http | 185.216.35.130 | 2 | 订阅地址本身 |
-| [freeSub#145] D🔴🇸🇬hos[📺✨✈️🔍]_dokng.com_47836c39 | http | 128.199.121.61 | 2 | 订阅地址本身 |
-| [freeSub#061] D🔴🇩🇪hos[🎬🤖📺🎭]_dokng.com_c423a817 | http | 193.233.75.115 | 2 | 订阅地址本身 |
-| [freeSub#101] D🔴🇺🇸hos[🎬🤖📺🎭]_dokng.com_9c9060c4 | http | mmgr.club | 2 | 广告/引流节点簇 |
-| [freeSub#103] D🔴🇩🇪hos[🎬🤖📺🎭]_dokng.com_08269e1a | http | 79.76.126.155 | 2 | 广告/引流节点簇 |
-| [freeSub#118] D🔴🇺🇸hos[🎬🤖📺🎭]_dokng.com_5e148d55 | http | 38.95.111.226 | 2 | 广告/引流节点簇 |
-| [freeSub#165] D🔴🇺🇸hos[🎬🤖📺🎭]_dokng.com_1668ea55 | http | tzoa.fun | 2 | 广告/引流节点簇 |
-| [freeSub#121] D🔴🇩🇪hos[🎬🤖📺🎭]_dokng.com_9085ec51 | http | 158.173.154.1 | 2 | 广告/引流节点簇 |
-| [freeSub#235] D🔴🇬🇪hos[🎬🤖📺🎪]_dokng.com_7129f6a8 | http | 195.54.178.210 | 2 | 广告/引流节点簇 |
-| [freeSub#099] D🔴🇺🇸hos[🎬🤖📺🎭]_dokng.com_19f240f6 | http | fullmanfirm.icu | 2 | 广告/引流节点簇 |
-| [clashfree#002] 🇸🇬 SG SS-06 \| free-nodes | ss | 192.0.2.1 | 1 | 占位符测试网地址 |
-| [free18#016] 🇱🇻_拉脱维亚 | vless | 195.123.213.28 | 1 | 占位符示例 |
+| [clashfree#001] 未知 VLESS-05 \| free-nodes | vless | 192.0.2.1 | 20 | 占位符示例 |
+| [NoMoreWalls#001] 防范境外势力渗透 | vmess | 127.0.0.53 | 10 | 群组引流 |
+| [freeSub#052] D🔴🇺🇸hos[🎬🤖📺🎭]_dokng.com_83989905 | http | efr-marktplatz.club | 9 | 订阅地址本身 |
+| [Eternity#035] RELAY-172.67.153.127-0947 \| 28.231MB | vmess | www.windowsmsidownloads.com | 7 | 引流广告 |
+| [freeSub#137] C🟠🇬🇧hos[🎬🤖📺🎭]_dokng.com_74a6434d | vless | 92.113.107.120 | 3 | 订阅地址/占位符 |
+| [freeSub#161] D🔴🇺🇸hos[🎬🤖📺🎭]_dokng.com_78231d9b | http | 23.133.176.14 | 2 | 广告位克隆 |
+| [freeSub#290] D🔴🇺🇸hos[🎬🤖📺🎭]_dokng.com_03e35574 | http | 198.44.138.27 | 2 | 广告位克隆 |
+| [freeSub#085] D🔴🇺🇸hos[🎬🤖📺🎭]_dokng.com_5e03a401 | http | tzoa.fun | 2 | 广告位克隆 |
+| [freeSub#141] D🔴🇺🇸hos[🎬🤖📺🎭]_dokng.com_415e35b6 | http | 54.190.176.228 | 2 | 广告位克隆 |
+| [freeSub#088] D🔴🇳🇱hos[🎬🤖📺🎭]_dokng.com_0789ea12 | http | 84.17.47.124 | 2 | 广告位克隆 |
+| [freeSub#063] D🔴🇩🇪hos[🎬🤖📺🎭]_dokng.com_9085ec51 | http | 158.173.154.1 | 2 | 广告位克隆 |
+| [freeSub#119] D🔴🇨🇭hos[🎬🤖📺🎭]_dokng.com_7844f23c | http | 149.88.27.33 | 2 | 广告位克隆 |
+| [freeSub#338] D🔴🇬🇧hos[📺🎪✨✈️]_dokng.com_5f056d03 | http | 84.233.178.33 | 2 | 广告位克隆 |
+| [freeSub#115] D🔴🇺🇸hos[🎬🤖📺🎭]_dokng.com_59f060e6 | http | berniesbodybla.fun | 2 | 广告位克隆 |
+| [freeSub#304] D🔴🇩🇪hos[🎬🤖📺🎭]_dokng.com_f467085f | http | 185.44.107.166 | 2 | 广告位克隆 |
+| [clashfree#002] 🇸🇬 SG SS-06 \| free-nodes | ss | 192.0.2.1 | 1 | 占位符IP |
+| [Eternity#036] 🇸🇬SG-68.183.227.4-0205 \| 27.438MB | ss | 68.183.227.4 | 1 | 引流广告批量 |
+| [free18#003] 日期：10-29 | vless | 177.7.51.29 | 1 | 占位符失效提示 |
+| [freeSub#423] A🟢🇩🇪res_dokng.com_4a8b472c | vless | z1q3pv4g78.rucdncomp.pro | 1 | 订阅地址本身 |
+| [freeSub#231] A🟢🇻🇪res_dokng.com_6284af37 | http | 38.188.201.10 | 1 | 订阅地址本身 |
+| [freeSub#024] A🟢🇨🇳res_dokng.com_98c3a925 | vmess | 120.48.133.162 | 1 | 订阅地址本身 |
 
 ## automerge
 
 | 节点名 | 类型 | server | 节点数 | 模型理由 |
 |---|---|---|---|---|
-| 防范境外势力渗透 | vmess | 127.0.0.53 | 10 | 广告 |
+| 防范境外势力渗透 | vmess | 127.0.0.53 | 10 | 占位符无效 |
+| 🇧🇪BE_1\|2.6MB/s | http | 146.70.123.98 | 1 | server字段异常 |
 
 ## ermaozi
 
 | 节点名 | 类型 | server | 节点数 | 模型理由 |
 |---|---|---|---|---|
-| 🏳[www.v2nodes.com] vless- | vless | vl.cocopon.top | 18 | 广告网站引流 |
-| 🏳[www.v2nodes.com] trojan- | trojan | 185.255.179.166 | 12 | 广告网站引流 |
-| 🏳[www.v2nodes.com] ss- | ss | 51.222.155.113 | 11 | 广告网站引流 |
-| 防范境外势力渗透 | vmess | 127.0.0.53 | 10 | 境外势力渗透 |
-| 🇺🇸[www.v2nodes.com] trojan-US-... | trojan | 216.152.155.176 | 9 | 广告网站引流 |
-| 🇸🇬[www.v2nodes.com] vless-SG | vless | 104.26.4.2 | 9 | 广告网站引流 |
-| 🇮🇹_IT_意大利 (2) | ss | 202.50.253.36 | 9 | IP伪装意大利 |
-| 🇨🇦[www.v2nodes.com] ss-CA-1559... | ss | 51.222.141.125 | 7 | 广告网站引流 |
-| 🇫🇷[www.v2nodes.com] trojan-FR-... | trojan | www.calmlunch.com | 6 | 广告网站引流 |
-| NL_speednode_0022 | http | 103.97.88.154 | 6 | 占位符示例 |
-| 🇳🇱[www.v2nodes.com] trojan-NL-... | trojan | 8.6.112.206 | 5 | 广告位 |
-| 🇵🇱[www.v2nodes.com] vless-PL-1... #1 | vless | pl2.pad-sservice.lat | 5 | 广告位 |
-| 🇩🇪[www.v2nodes.com] vless-DE-1... #5 | vless | 146.75.57.238 | 4 | 广告位 |
-| 🇪🇸[www.v2nodes.com] trojan-ES-... | trojan | 66.163.118.166 | 3 | 广告位 |
-| 🇦🇪[www.v2nodes.com] vless-AE-1... | vless | 95.174.68.188 | 3 | 广告位 |
-| 🇫🇮[www.v2nodes.com] vless-FI-1... #1 | vless | hw3.divarkhaghazi.com | 3 | 广告位 |
-| 🇮🇳[www.v2nodes.com] vless-IN-1... | vless | sinavm.soft10.ir | 3 | 广告位 |
-| 🇳🇱[www.v2nodes.com] vless-NL | vless | 198.211.123.90 | 3 | 广告位 |
-| 🇯🇵 日本2\|@ripaojiedian | vmess | kQov7UKaDknXb8a3.v.3dns.vip | 3 | 广告位 |
-| @Begoo_VPN ²⁹⁰ | hysteria2 | 91.142.73.159 | 1 | 占位符 |
-| @fastkanfig کانال تلگرام | hysteria2 | bwdf2fnt.xn--e1aatfr8bwa.online | 1 | Telegram引流 |
-| @vmess_ir | hysteria2 | nas.aizhzo.com | 1 | 推广位 |
-| ♾️Join->🆔️@ATLAS_V2VPN🆓️📶🛰️63... | hysteria2 | r5ycmuko.zibayeman.com | 1 | 群组引流/含用户名 |
+| 防范境外势力渗透 | vmess | 127.0.0.53 | 10 | 广告引流节点 |
+| 🇳🇱[www.v2nodes.com] vless-NL | vless | 198.211.123.90 | 4 | 广告位克隆 |
+| 🇦🇪[www.v2nodes.com] vless-AE-1... | vless | 95.174.68.188 | 3 | 广告位克隆 |
+| 🇧🇾[www.v2nodes.com] vless-BY-1... | vless | 178.172.227.228 | 3 | 广告位克隆 |
+| 🇩🇪[www.v2nodes.com] vless-DE-1... #5 | vless | 146.75.57.238 | 3 | 广告位克隆 |
+| 🇬🇧[www.v2nodes.com] vless-GB-1... | vless | ru3.radiolumens.uk | 3 | 广告位克隆 |
+| 🇭🇰[www.v2nodes.com] vless-HK-1... | vless | 38.76.180.144 | 3 | 广告位克隆 |
+| 🇮🇳[www.v2nodes.com] vless-IN-1... | vless | sinavm.soft10.ir | 3 | 广告位克隆 |
+| 🇵🇱[www.v2nodes.com] vless-PL-1... #1 | vless | ru1.radiolumens.uk | 3 | 广告位克隆 |
+| 🇸🇬SG_1\|4.0MB/s | http | 13.250.6.200 | 2 | server为速度指标，非真实地址 |
+| 🇰🇷 韩国\|@ripaojiedian | vmess | 8nTzyR5KNivfabaT.v.3dns.vip | 2 | 订阅群组引流 |
+| @Begoo_VPN ²⁹⁰ | hysteria2 | 91.142.73.159 | 1 | 290节点营销推广 |
+| @confiig_hub #1 | hysteria2 | 130.49.161.70 | 1 | 群组hub引流 |
+| @fastkanfig کانال تلگرام | hysteria2 | bwdf2fnt.xn--e1aatfr8bwa.online | 1 | Telegram频道引流 |
+| 🇱🇰[www.v2nodes.com] vless-LK-6... | vless | support.zoom.us | 1 | Zoom支持域名疑似占位 |
+| 🇵🇭[www.v2nodes.com] vless-PH-1... #2 | vless | ph001.zestapp778.com | 1 | 菲律宾节点占位域名 |
+| 🇷🇺[www.v2nodes.com] vless-RU-1... #3 | vless | xssite.webredirect.org | 1 | 俄罗斯节点web重定向 |
+| BR_speednode_0003 | vless | de9.pad-sservice.lat | 1 | 巴西节点占位域名 |
+| ♾️Join->🆔️@ATLAS_V2VPN🆓️📶🛰️63... | hysteria2 | r5ycmuko.zibayeman.com | 1 | 营销位引流 |
+| tg频道:@ripaojiedian #1 | ss | 63.180.254.10 | 1 | Telegram引流 |
+| 台湾\|@ripaojiedian | trojan | 7d0a2gz0-7a0c.aws-agent.net | 1 | 伪装台湾节点 |
+| 🇭🇰 香港\|@ripaojiedian | vmess | v10.hdacd.com | 1 | 境内中转 |
+
+## ruk1ng001
+
+| 节点名 | 类型 | server | 节点数 | 模型理由 |
+|---|---|---|---|---|
+| A🟢🇨🇦res[🤖📺🎪✨]_dokng.com_0e94351e | http | 206.223.183.13 | 2 | 广告/引流节点 |
+| D🔴🇺🇸hos[🎬🤖📺🎭]_dokng.com_112b6b35 | http | webdrone.club | 2 | 营销位/占位符 |
 
 ## nomorewalls
 
 | 节点名 | 类型 | server | 节点数 | 模型理由 |
 |---|---|---|---|---|
-| 防范境外势力渗透 | vmess | 127.0.0.53 | 10 | 引流广告节点 |
-| 🇸🇬SG_1\|4.0MB/s | http | 13.250.6.200 | 2 | server为速度指标失效 |
+| 防范境外势力渗透 | vmess | 127.0.0.53 | 10 | 引流广告伪装节点 |
+| 🇺🇸US_3\|2.1MB/s\|K001-260618 | http | 148.135.10.80 | 1 | 占位符格式 |
+| 🇹🇷 土耳其 \| TUR #1 | vmess | octpus1.gsmonline.ir | 1 | 土耳其实为伊朗伪装 |
 
 ## autojiedian
 
 | 节点名 | 类型 | server | 节点数 | 模型理由 |
 |---|---|---|---|---|
-| 134.195.196.211_Gemini | vmess | 134.195.196.211 | 1 | 占位符示例 |
-| 其他地区_Kharkiv_Digital LLC_Claude | ss | staging.lastilhame.monster | 1 | staging失效提示 |
+| 其他地区_Kharkiv_Digital LLC_Claude | ss | staging.lastilhame.monster | 1 | staging占位域名 |
+| 日本_Tokyo_Alibaba (US) Technology Co., Ltd._Claude | hysteria2 | 8.209.247.109 | 1 | server疑似境内中转 |
 
 ## shaoyouvip
 
 | 节点名 | 类型 | server | 节点数 | 模型理由 |
 |---|---|---|---|---|
-| 🇺🇸US_3\|3.6MB/s\|K001-260618 | http | 148.135.10.80 | 2 | 营销位克隆 |
-| 🇦🇱AL_1\|1.4MB/s\|K001-260618 | http | 31.171.155.210 | 1 | 营销位克隆 |
-| 🇮🇪IE_3\|1.3MB/s\|P002-260618 | http | 149.88.96.1 | 1 | 营销位克隆 |
-| 🇮🇱IL_1\|1.7MB/s\|K001-260618 | http | 169.150.248.17 | 1 | 营销位克隆 |
-
-## leilaomi
-
-| 节点名 | 类型 | server | 节点数 | 模型理由 |
-|---|---|---|---|---|
-| 🇺🇸 [307.0ms +/-17ms] 🇺🇸 美国 \| USA | hysteria2 | 130.94.16.109 | 1 | 伪装美国节点 |
+| 🇵🇹PT_1\|2.6MB/s | http | 149.22.86.14 | 2 | 广告引流节点 |
+| 🇭🇷HR_2\|1.3MB/s\|K001-260618 | http | 154.47.29.174 | 1 | 占位符节点 |
+| 🇮🇪IE_1\|1.2MB/s\|P002-260618 | http | 149.88.96.1 | 1 | 占位符节点 |
