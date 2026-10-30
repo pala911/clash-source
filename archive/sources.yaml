@@ -2,4 +2,19 @@
 # 判据：真探针（youtube/generate_204）连续 3 轮 0 活，且横跨 ≥ 48 小时。
 # 恢复：alive ≥ 5 且通过率 ≥ 8.0% 连续 2 轮 -> health.py 自动回填 enabled: true。
 # ⚠ 探针 runner 在美国，判据偏保守（宁可多留，不可错杀）。
-sources: []
+sources:
+- name: anaer
+  url: https://raw.githubusercontent.com/wzmwayne/proxy-node/main/output/anaer/clash.yaml
+  note: 🏆 33 产出→26 通过(78.8%)，密度全场最高；用的是清洗版（去控制字符，Clash YAML 可直读）；anaer/Sub 原仓 09-17 时是 4/626
+  quarantined_at: '2026-10-30T13:14:33Z'
+  quarantine_reason: 真探针连续 3 轮 0 活（横跨 48h）
+- name: passcro
+  url: https://raw.githubusercontent.com/wzmwayne/proxy-node/main/output/passcro/clash.yaml
+  note: 145 产出→21 通过(14.5%)，89% 是 http 明文代理
+  quarantined_at: '2026-10-30T13:14:33Z'
+  quarantine_reason: 真探针连续 3 轮 0 活（横跨 48h）
+- name: wzmfree
+  url: https://raw.githubusercontent.com/wzmwayne/proxy-node/main/output/freesub/clash.yaml
+  note: 2026-10-28 实测 23% 通过(14 活)1159ms；与 anaer/passcro 同仓的新产物（镜像链按 raw 走）
+  quarantined_at: '2026-10-30T13:14:33Z'
+  quarantine_reason: 真探针连续 3 轮 0 活（横跨 48h）
