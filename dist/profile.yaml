@@ -10,6 +10,21 @@
 # ⚠ iOS 蜂窝网络下 github.io/raw 直链几乎拉不动 —— proxy-providers 的节点池
 #   已统一走 gh-proxy 中转（10-31 两段式修复：先 jsdelivr 后按用户拍板换
 #   gh-proxy 零缓存），订阅 URL 本身拉到即生效，无需改 nodes 链。
+profile:
+  store-selected: true
+sniffer:
+  enable: true
+  parse-pure-ip: true
+  override-destination: false
+  sniff:
+    TLS:
+      ports:
+      - 443
+      - 8443
+    QUIC:
+      ports:
+      - 443
+      - 8443
 mode: rule
 unified-delay: true
 tcp-concurrent: true

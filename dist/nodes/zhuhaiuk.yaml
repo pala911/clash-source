@@ -1,4 +1,4 @@
-# clash-source 自动生成 —— 源 zhuhaiuk，共 27 节点（稳定性加权后留在竞速池内的部分）
+# clash-source 自动生成 —— 源 zhuhaiuk，共 23 节点（稳定性加权后留在竞速池内的部分）
 # 不要手改；改动会在下次定时任务被覆盖（上游 https://pala911.github.io/clash-source/nodes/zhuhaiuk.yaml）
 proxies:
 - name: US - zhuhai.uk
@@ -63,23 +63,6 @@ proxies:
   type: socks5
   server: 202.4.116.146
   port: 9090
-- name: SG - zhuhai.uk
-  type: vless
-  server: sg2-8sb.6121999.dpdns.org
-  port: 19825
-  uuid: 2d1ad594-80a4-4bfb-87a6-038e39701f51
-  flow: xtls-rprx-vision
-  tls: true
-  client-fingerprint: chrome
-  reality-opts:
-    public-key: GvvkY8xYb9QjvwvzYq_uNC4tOGd0DCxRnz6770-xgkI
-    short-id: 6ba85179e30d4fc2
-- name: RU - zhuhai.uk
-  type: http
-  server: 87.242.85.187
-  port: 8443
-  tls: true
-  skip-cert-verify: true
 - name: LV - zhuhai.uk
   type: http
   server: 185.219.159.15
@@ -132,17 +115,6 @@ proxies:
   password: 'null'
   tls: true
   skip-cert-verify: true
-- name: TW - zhuhai.uk
-  type: anytls
-  server: 684616s4.df6h451rh.xin
-  port: 443
-  password: 0324fbc29561
-  udp: true
-  sni: px.ads.linkedin.com
-  alpn:
-  - http/1.1
-  skip-cert-verify: true
-  client-fingerprint: chrome
 - name: AU - zhuhai.uk
   type: http
   server: 159.13.44.228
@@ -184,16 +156,3 @@ proxies:
   port: 443
   tls: true
   skip-cert-verify: true
-- name: TH - zhuhai.uk 01
-  type: vless
-  server: 141.193.154.234
-  port: 443
-  uuid: 80fdddb8-3eb8-41ad-9916-fbb42c442e6e
-  udp: true
-  network: tcp
-  tls: true
-  servername: cloudflare.com
-  client-fingerprint: firefox
-  reality-opts:
-    public-key: dN2EhTLZsQ1RsO4rCdoIBIi7mFtmqsC2iekPft3MPnY
-    short-id: '1835'
