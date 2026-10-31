@@ -335,9 +335,10 @@ def main():
     if args.pages_base:
         for n, p in profile["proxy-providers"].items():
             p["url"] = p["url"].replace(build.mirror_base(owner, repo), base)
-        # 覆盖后仍要保证不是 raw 直链
+        # 覆盖后仍要保证不是 raw 直链（gh-proxy 中转 URL 含 raw 子串，看的是起头）
         for n, p in profile["proxy-providers"].items():
-            assert "raw.githubusercontent" not in p["url"], "%s 用了 raw 直链" % n
+            assert not p["url"].startswith("https://raw.githubusercontent"), \
+                "%s 用了 raw 直链" % n
 
     manifest = {
         "generated_at": datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),

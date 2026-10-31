@@ -10,9 +10,10 @@ dist/manifest.json     本次运行统计（手机排障 / 后续 diff 用）
 - 9 个自动组探针必须是 youtube/generate_204
 - 每个 provider 的 health-check 也必须是 youtube
 - 全文不得残留 gstatic
-- provider URL 走 jsdelivr 的 gh-pages 镜像（10-31 iOS 实测：蜂窝网络下
-  github.io 几乎拉不动 provider -> 组全空 ->「几乎用不了」；jsdelivr 国内
-  直连常年可达，@gh-pages 引用对 手机/PC 一律生效；raw 被墙不用）
+- provider URL 走 gh-proxy 中转的 gh-pages raw（10-31 用户拍板，替代
+  jsdelivr@gh-pages：gh-proxy 零缓存、CI 发完池子 ≤1h 内就到手机，
+  jsdelivr 分支引用缓存 ~12h 太慢；同理禁用 raw 直链——蜂窝网络
+  github.io/raw 都拉不动，中转必须带 gh-proxy.com 前缀）
 """
 import json
 import os
@@ -45,13 +46,15 @@ def pages_base(owner, repo):
 
 
 def mirror_base(owner, repo):
-    """provider 节点池的镜像基址（2026-10-31：iOS 蜂窝网络 github.io 拉不动）。
+    """provider 节点池的分发基址（2026-10-31 用户拍板：gh-proxy 替代 jsdelivr）。
 
-    jsdelivr 的 gh 分支引用（@gh-pages）国内直连常年可达（本仓 fetch 链多年
-    实测），分支缓存约 12h —— 对 provider 每小时自动刷新来说足够新鲜，
-    换它换「手机 / PC / 各客户端一条链」全部生效。
+    走 gh-proxy.com 中转的 gh-pages raw：**零缓存**，CI 每 6h 重建的池子
+    ≤1h 内就到手机（jsdelivr 的 @gh-pages 分支引用缓存 ~12h，新鲜度
+    打了折）。同款服务在 fetch.py 的 fallback 链和订阅备2 已多年实测；
+    gh-proxy 间歇性抽风时手机端用上次成功的 provider 文件顶住、下个
+    拉取周期自愈。raw 直链被墙不用，中转必须带 gh-proxy.com 前缀。
     """
-    return "https://cdn.jsdelivr.net/gh/%s/%s@gh-pages" % (
+    return "https://gh-proxy.com/raw.githubusercontent.com/%s/%s/gh-pages" % (
         owner if owner != "YOUR_GITHUB_ID" else "YOUR_GITHUB_ID", repo)
 
 
@@ -356,8 +359,8 @@ def build_profile(enabled_sources, exclude_map, owner, repo, flaky_sources=()):
     with open(TEMPLATE, encoding="utf-8") as f:
         tpl = yaml.safe_load(f)
 
-    base = pages_base(owner, repo)          # 订阅入口（github.io / jsdelivr 备链）仍走原链
-    mbase = mirror_base(owner, repo)        # provider 节点池一律走 jsdelivr（iOS 蜂窝实测）
+    base = pages_base(owner, repo)          # 订阅入口（github.io 主链 + jsdelivr/gh-proxy 备链）仍走原链
+    mbase = mirror_base(owner, repo)        # provider 节点池一律走 gh-proxy 中转（零缓存、iOS 蜂窝可达）
     providers = {}
     for s in enabled_sources:
         providers[s["name"]] = provider_block(
@@ -421,10 +424,13 @@ def build_profile(enabled_sources, exclude_map, owner, repo, flaky_sources=()):
         assert g["url"] == YOUTUBE, "%s 探针非 youtube: %s" % (g["name"], g["url"])
     for n, p in providers.items():
         assert p["health-check"]["url"] == YOUTUBE, "%s provider 探针非 youtube" % n
-        assert "raw.githubusercontent" not in p["url"], "%s provider URL 用了 raw（手机被墙）" % n
-        assert p["url"].startswith("https://cdn.jsdelivr.net/gh/"), \
-            "%s provider URL 未走 jsdelivr 镜像（iOS 蜂窝直连 github.io 拉不动）" % n
-        assert "@gh-pages/nodes/" in p["url"], "%s provider URL 未引 gh-pages 节点文件" % n
+        # raw 直链被墙（手机蜂窝拉不动）——但 gh-proxy 中转 URL 里**含**
+        # raw.githubusercontent 子串，禁的是「直链起头」不是子串（10-31 教训）
+        assert not p["url"].startswith("https://raw.githubusercontent"), \
+            "%s provider URL 用了 raw 直链（手机被墙）" % n
+        assert p["url"].startswith("https://gh-proxy.com/raw.githubusercontent.com/"), \
+            "%s provider URL 未走 gh-proxy 中转（iOS 蜂窝直连 github.io/raw 拉不动）" % n
+        assert "/gh-pages/nodes/" in p["url"], "%s provider URL 未引 gh-pages 节点文件" % n
     raw = yaml.safe_dump(tpl, allow_unicode=True, sort_keys=False, width=4096)
     assert "gstatic" not in raw, "残留 gstatic"
     # PROXY 必须引用存在的组或本 profile 的静态代理，否则手机上一进去就报错
@@ -512,17 +518,17 @@ def write_dist(dist_dir, per_source_nodes, all_nodes, profile, manifest, base,
               os.path.join(nodes_dir, "all.yaml"))
     dump_yaml(profile,
               "# clash-source 自动生成 —— 手机订阅入口\n"
-              "# 订阅 URL（任选其一；iOS/手机端建议主链）：\n"
+              "# 订阅 URL（任选其一；iOS/手机端建议主链，备2 零缓存最快拿到新配置）：\n"
               "# 主:  %s/profile.yaml\n"
-              "# 备1 jsdelivr（免 Pages 设置，国内直连实测可达）:\n"
+              "# 备1 jsdelivr（国内直连可达；⚠ 分支引用缓存 ~12h，改配置后要等）：\n"
               "#   https://cdn.jsdelivr.net/gh/%s/%s@gh-pages/profile.yaml\n"
-              "# 备2 gh-proxy raw（github.io 不达时）:\n"
+              "# 备2 gh-proxy raw（零缓存，推送后立即可拉）：\n"
               "#   https://gh-proxy.com/raw.githubusercontent.com/%s/%s/gh-pages/profile.yaml\n"
               "# 备3 gh-proxy raw（main 分支）:\n"
               "#   https://gh-proxy.com/raw.githubusercontent.com/%s/%s/main/dist/profile.yaml\n"
-              "# ⚠ iOS 蜂窝网络下 github.io 几乎拉不动 —— proxy-providers 的节点池\n"
-              "#   已统一走 jsdelivr 镜像（10-31 实测修复「几乎用不了」），订阅 URL 本身\n"
-              "#   一换上 profile 就生效，无需改 nodes 链。"
+              "# ⚠ iOS 蜂窝网络下 github.io/raw 直链几乎拉不动 —— proxy-providers 的节点池\n"
+              "#   已统一走 gh-proxy 中转（10-31 两段式修复：先 jsdelivr 后按用户拍板换\n"
+              "#   gh-proxy 零缓存），订阅 URL 本身拉到即生效，无需改 nodes 链。"
               % (base, owner, repo, owner, repo, owner, repo),
               os.path.join(dist_dir, "profile.yaml"))
     with open(os.path.join(dist_dir, "manifest.json"), "w", encoding="utf-8") as f:
