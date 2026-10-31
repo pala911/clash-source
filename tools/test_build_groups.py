@@ -140,6 +140,15 @@ ai_ok = all(
     for svc in ("Claude", "Gemini"))
 print("  %s Claude/Gemini 默认跟随 PROXY" % ("✓" if ai_ok else "✗"))
 ok = ok and home_ok and ai_ok
+# provider 节点池必须走 jsdelivr 镜像（2026-10-31 iOS 实测：蜂窝网络下
+# github.io 几乎拉不动 provider -> 组全空「几乎用不了」，修复后写入回归）
+pv = p["proxy-providers"]
+pv_ok = all(pv[n]["url"].startswith("https://cdn.jsdelivr.net/gh/pala911/clash-source@gh-pages/nodes/")
+            for n in pv) and not any(
+    "raw.githubusercontent" in pv[n]["url"] for n in pv)
+print("  %s 全部 provider URL 走 jsdelivr@gh-pages 镜像（户数 %d）"
+      % ("✓" if pv_ok else "✗", len(pv)))
+ok = ok and pv_ok
 
 # ---------- B 达标源不足 ----------
 print("")

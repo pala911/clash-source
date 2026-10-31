@@ -118,9 +118,14 @@ def main():
     parsed = yaml.safe_load(after)
     got = {s["name"]: s.get("enabled", True) for s in parsed["sources"]}
     check(got.get("autojiedian") is False, "解析后 autojiedian.enabled = false")
-    check(all(v is True for k, v in got.items() if k != "autojiedian"),
-          "其余源一律没被动过",
-          "；".join("%s=%s" % (k, v) for k, v in got.items() if k != "autojiedian" and v is not True))
+    # 其余源必须「保持写入前的状态」（2026-10-31 变相对断言：真文件里
+    # anaer/passcro/wzmfree 已被 CI 判死降级成 false ——「全为 true」的旧
+    # 假设过时；测试要锁的是 write_src_cfg 的行为，不是真公司的运营状态）
+    expect = {s["name"]: s.get("enabled", True)
+              for s in yaml.safe_load(base)["sources"]}
+    bad_non = [k for k in got if k != "autojiedian" and got[k] != expect[k]]
+    check(not bad_non, "其余源一律没被动过（相对写入前状态）",
+          "；".join("%s %s->%s" % (k, expect[k], got[k]) for k in bad_non))
     check([s["name"] for s in parsed["sources"]] ==
           [s["name"] for s in yaml.safe_load(base)["sources"]],
           "源的数量与顺序不变")

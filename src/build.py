@@ -10,7 +10,9 @@ dist/manifest.json     本次运行统计（手机排障 / 后续 diff 用）
 - 9 个自动组探针必须是 youtube/generate_204
 - 每个 provider 的 health-check 也必须是 youtube
 - 全文不得残留 gstatic
-- provider URL 一律走 github.io（手机端 CN 直连可达），不用 raw.githubusercontent
+- provider URL 走 jsdelivr 的 gh-pages 镜像（10-31 iOS 实测：蜂窝网络下
+  github.io 几乎拉不动 provider -> 组全空 ->「几乎用不了」；jsdelivr 国内
+  直连常年可达，@gh-pages 引用对 手机/PC 一律生效；raw 被墙不用）
 """
 import json
 import os
@@ -40,6 +42,17 @@ def pages_base(owner, repo):
     if tail.count("/") != 1 or tail.startswith(owner + "/"):
         raise ValueError("pages 基址非法: %s（repo 应为纯仓库名，不能含 owner/）" % base)
     return base
+
+
+def mirror_base(owner, repo):
+    """provider 节点池的镜像基址（2026-10-31：iOS 蜂窝网络 github.io 拉不动）。
+
+    jsdelivr 的 gh 分支引用（@gh-pages）国内直连常年可达（本仓 fetch 链多年
+    实测），分支缓存约 12h —— 对 provider 每小时自动刷新来说足够新鲜，
+    换它换「手机 / PC / 各客户端一条链」全部生效。
+    """
+    return "https://cdn.jsdelivr.net/gh/%s/%s@gh-pages" % (
+        owner if owner != "YOUR_GITHUB_ID" else "YOUR_GITHUB_ID", repo)
 
 
 HEALTH = os.path.join(ROOT, "state", "source_health.json")
@@ -343,17 +356,18 @@ def build_profile(enabled_sources, exclude_map, owner, repo, flaky_sources=()):
     with open(TEMPLATE, encoding="utf-8") as f:
         tpl = yaml.safe_load(f)
 
-    base = pages_base(owner, repo)
+    base = pages_base(owner, repo)          # 订阅入口（github.io / jsdelivr 备链）仍走原链
+    mbase = mirror_base(owner, repo)        # provider 节点池一律走 jsdelivr（iOS 蜂窝实测）
     providers = {}
     for s in enabled_sources:
         providers[s["name"]] = provider_block(
-            s["name"], base + "/nodes/%s.yaml" % s["name"],
+            s["name"], mbase + "/nodes/%s.yaml" % s["name"],
             exclude_map.get(s["name"], ""))
     # 被稳定性加权移出的节点单独成为一个 provider，只挂到「备用」组。
     # 命名 SRCFL-<源名>，与源名区分开，避免和 SRC-* 的引用混淆。
     for n in flaky_sources or ():
         providers["SRCFL-" + n] = provider_block(
-            "SRCFL-" + n, base + "/nodes/%s--flaky.yaml" % n,
+            "SRCFL-" + n, mbase + "/nodes/%s--flaky.yaml" % n,
             exclude_map.get(n, ""))
 
     names = [s["name"] for s in enabled_sources]
@@ -408,7 +422,9 @@ def build_profile(enabled_sources, exclude_map, owner, repo, flaky_sources=()):
     for n, p in providers.items():
         assert p["health-check"]["url"] == YOUTUBE, "%s provider 探针非 youtube" % n
         assert "raw.githubusercontent" not in p["url"], "%s provider URL 用了 raw（手机被墙）" % n
-        assert ".github.io/" in p["url"], "%s provider URL 未走 github.io" % n
+        assert p["url"].startswith("https://cdn.jsdelivr.net/gh/"), \
+            "%s provider URL 未走 jsdelivr 镜像（iOS 蜂窝直连 github.io 拉不动）" % n
+        assert "@gh-pages/nodes/" in p["url"], "%s provider URL 未引 gh-pages 节点文件" % n
     raw = yaml.safe_dump(tpl, allow_unicode=True, sort_keys=False, width=4096)
     assert "gstatic" not in raw, "残留 gstatic"
     # PROXY 必须引用存在的组或本 profile 的静态代理，否则手机上一进去就报错
@@ -496,13 +512,17 @@ def write_dist(dist_dir, per_source_nodes, all_nodes, profile, manifest, base,
               os.path.join(nodes_dir, "all.yaml"))
     dump_yaml(profile,
               "# clash-source 自动生成 —— 手机订阅入口\n"
+              "# 订阅 URL（任选其一；iOS/手机端建议主链）：\n"
               "# 主:  %s/profile.yaml\n"
               "# 备1 jsdelivr（免 Pages 设置，国内直连实测可达）:\n"
               "#   https://cdn.jsdelivr.net/gh/%s/%s@gh-pages/profile.yaml\n"
               "# 备2 gh-proxy raw（github.io 不达时）:\n"
               "#   https://gh-proxy.com/raw.githubusercontent.com/%s/%s/gh-pages/profile.yaml\n"
               "# 备3 gh-proxy raw（main 分支）:\n"
-              "#   https://gh-proxy.com/raw.githubusercontent.com/%s/%s/main/dist/profile.yaml"
+              "#   https://gh-proxy.com/raw.githubusercontent.com/%s/%s/main/dist/profile.yaml\n"
+              "# ⚠ iOS 蜂窝网络下 github.io 几乎拉不动 —— proxy-providers 的节点池\n"
+              "#   已统一走 jsdelivr 镜像（10-31 实测修复「几乎用不了」），订阅 URL 本身\n"
+              "#   一换上 profile 就生效，无需改 nodes 链。"
               % (base, owner, repo, owner, repo, owner, repo),
               os.path.join(dist_dir, "profile.yaml"))
     with open(os.path.join(dist_dir, "manifest.json"), "w", encoding="utf-8") as f:

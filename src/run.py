@@ -334,7 +334,7 @@ def main():
         % ("、".join(ranking["不稳定"]) or "无"))
     if args.pages_base:
         for n, p in profile["proxy-providers"].items():
-            p["url"] = p["url"].replace(build.pages_base(owner, repo), base)
+            p["url"] = p["url"].replace(build.mirror_base(owner, repo), base)
         # 覆盖后仍要保证不是 raw 直链
         for n, p in profile["proxy-providers"].items():
             assert "raw.githubusercontent" not in p["url"], "%s 用了 raw 直链" % n
