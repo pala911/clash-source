@@ -1,7 +1,7 @@
 # clash-source 自动生成 —— 源 ermaozi，被稳定性加权移出的 21 个节点
 # 历史可用率偏低，不参与 AUTO 自动竞速；需要时可从「备用」组手工切。
 proxies:
-- name: '🏳[www.v2nodes.com] vless- #4'
+- name: '🏳[www.v2nodes.com] vless- #2'
   type: vless
   server: 155.103.71.142
   port: 443
@@ -26,12 +26,14 @@ proxies:
     headers:
       Host: free.cndyw.ggff.net
     path: pyip=bpb.yousef.isegaro.comfp=chrome
-- name: 🇬🇧[www.v2nodes.com] ss-GB-1451...
-  type: ss
-  server: 158.173.24.73
-  port: 443
-  cipher: aes-128-gcm
-  password: shadowsocks
+- name: '🇷🇴[www.v2nodes.com] vless-RO-1... #1'
+  type: vless
+  server: edge10.cyrionflare.com
+  port: 2052
+  encryption: none
+  network: tcp
+  tls: false
+  uuid: 1a8ecc41-6e62-431b-8eca-87c2fa4dc286
 - name: 🇮🇳[www.v2nodes.com] ss-IN-1561...
   type: ss
   server: 139.84.166.47
@@ -44,12 +46,26 @@ proxies:
   port: 64546
   cipher: chacha20-ietf-poly1305
   password: U83u9OGpvSatIUW7LsWffr
-- name: 🇷🇴[www.v2nodes.com] ss-RO-1298...
+- name: 🇿🇦[www.v2nodes.com] ss-ZA-1534...
   type: ss
-  server: 154.46.31.106
-  port: 443
+  server: 139.84.247.164
+  port: 8388
   cipher: chacha20-ietf-poly1305
-  password: QFWzCw2uX9B9i6qAYeFBIE
+  password: tfAcRikawhNoZAhu
+- name: '🇫🇷[www.v2nodes.com] trojan-FR-... #1'
+  type: trojan
+  server: 212.227.144.37
+  port: 8443
+  alpn:
+  - v2rayNplus--v2rayNplus--v2rayNplus--v2rayNplus--v2rayNplus--v2rayNplus--v2rayNplus--v2rayNplus
+  network: ws
+  password: humanity
+  skip-cert-verify: false
+  sni: www.calmlunch.com
+  ws-opts:
+    headers:
+      Host: www.calmlunch.com
+    path: /assignment
 - name: '🇫🇷[www.v2nodes.com] trojan-FR-... #2'
   type: trojan
   server: 45.87.41.18
@@ -83,7 +99,7 @@ proxies:
   sni: www.alibaba.com
   ws-opts:
     path: /
-- name: 🇳🇱[www.v2nodes.com] trojan-NL-...
+- name: '🇳🇱[www.v2nodes.com] trojan-NL-... #1'
   type: trojan
   server: 161.35.192.122
   port: 443
@@ -97,13 +113,6 @@ proxies:
     headers:
       Host: www.pleadcourt.org
     path: /assignment
-- name: '🇳🇱[www.v2nodes.com] trojan-NL-... #3'
-  type: trojan
-  server: 219.76.13.177
-  port: 443
-  password: humanity
-  ws-opts:
-    path: '%2Fassignment'
 - name: 🇯🇵 日本2|@ripaojiedian
   type: vmess
   server: kQov7UKaDknXb8a3.v.3dns.vip
@@ -188,23 +197,25 @@ proxies:
   password: AA885B42-133C-3828-FB69-E45105C06092
   skip-cert-verify: true
   sni: m.ctrip.com
-- name: 🇬🇧GB_1|1017KB/s
-  type: http
-  server: 185.164.138.156
-  port: 443
-  skip-cert-verify: true
-  tls: true
-- name: 🇸🇪SE_1|1.0MB/s
+- name: 🇸🇪SE_1|1.7MB/s
   type: http
   server: 146.70.242.146
   port: 443
   password: None
   skip-cert-verify: true
   tls: true
-- name: 🇨🇿CZ_1|1.0MB/s
+- name: 🇹🇼TW_1|2.7MB/s
   type: http
-  server: 185.216.35.130
+  server: twmoon1-cdn-route.couldflare-cdn.com
+  port: 1443
+  password: exaxgqkKkd0TAMrCxeonWg==
+  skip-cert-verify: false
+  sni: twmoon1-cdn-route.couldflare-cdn.com
+  tls: true
+  username: mrwdfNTD8M79LCukCieldrqZWqs=
+- name: 🇺🇸US_8|1022KB/s
+  type: http
+  server: 167.88.60.242
   port: 443
-  password: None
   skip-cert-verify: true
   tls: true

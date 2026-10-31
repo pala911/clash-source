@@ -162,9 +162,9 @@ proxy-groups:
 - name: AUTO
   type: url-test
   proxies:
-  - SRC-leilaomi
-  - SRC-clashdaily
   - SRC-zhuhaiuk
+  - SRC-clashdaily
+  - SRC-leilaomi
   - SRC-ssrsub
   - SRC-ruk1ng001
   - SRC-shaoyouvip
@@ -177,6 +177,7 @@ proxy-groups:
   type: url-test
   use:
   - SRCFL-autojiedian
+  - SRCFL-automerge
   - SRCFL-ermaozi
   - SRCFL-nomorewalls
   - SRCFL-ruk1ng001
@@ -191,15 +192,15 @@ proxy-groups:
 - name: 备用
   type: select
   proxies:
-  - SRC-automerge
-  - SRC-nomorewalls
-  - SRC-yypool
   - SRC-autojiedian
+  - SRC-nomorewalls
+  - SRC-automerge
+  - SRC-yypool
+  - SRC-ermaozi
   - 不稳定
 - name: 观察
   type: select
   proxies:
-  - SRC-ermaozi
   - SRC-snakem982
 - name: FAILOVER
   type: fallback
@@ -722,6 +723,18 @@ proxy-providers:
     type: http
     url: https://pala911.github.io/clash-source/nodes/autojiedian--flaky.yaml
     path: ./providers/SRCFL-autojiedian.yaml
+    interval: 3600
+    exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
+    health-check:
+      enable: true
+      url: https://www.youtube.com/generate_204
+      interval: 300
+      timeout: 5000
+      expected-status: 204
+  SRCFL-automerge:
+    type: http
+    url: https://pala911.github.io/clash-source/nodes/automerge--flaky.yaml
+    path: ./providers/SRCFL-automerge.yaml
     interval: 3600
     exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
     health-check:
