@@ -1,15 +1,15 @@
 # clash-source 自动生成 —— 手机订阅入口
-# 订阅 URL（任选其一；iOS/手机端建议主链）：
+# 订阅 URL（任选其一；iOS/手机端建议主链，备2 零缓存最快拿到新配置）：
 # 主:  https://pala911.github.io/clash-source/profile.yaml
-# 备1 jsdelivr（免 Pages 设置，国内直连实测可达）:
+# 备1 jsdelivr（国内直连可达；⚠ 分支引用缓存 ~12h，改配置后要等）：
 #   https://cdn.jsdelivr.net/gh/pala911/clash-source@gh-pages/profile.yaml
-# 备2 gh-proxy raw（github.io 不达时）:
+# 备2 gh-proxy raw（零缓存，推送后立即可拉）：
 #   https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/profile.yaml
 # 备3 gh-proxy raw（main 分支）:
 #   https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/main/dist/profile.yaml
-# ⚠ iOS 蜂窝网络下 github.io 几乎拉不动 —— proxy-providers 的节点池
-#   已统一走 jsdelivr 镜像（10-31 实测修复「几乎用不了」），订阅 URL 本身
-#   一换上 profile 就生效，无需改 nodes 链。
+# ⚠ iOS 蜂窝网络下 github.io/raw 直链几乎拉不动 —— proxy-providers 的节点池
+#   已统一走 gh-proxy 中转（10-31 两段式修复：先 jsdelivr 后按用户拍板换
+#   gh-proxy 零缓存），订阅 URL 本身拉到即生效，无需改 nodes 链。
 mode: rule
 unified-delay: true
 tcp-concurrent: true
@@ -186,7 +186,6 @@ proxy-groups:
   - SRCFL-leilaomi
   - SRCFL-nomorewalls
   - SRCFL-ruk1ng001
-  - SRCFL-shaoyouvip
   - SRCFL-ssrsub
   - SRCFL-yypool
   url: https://www.youtube.com/generate_204
@@ -582,7 +581,7 @@ rules:
 proxy-providers:
   yypool:
     type: http
-    url: https://cdn.jsdelivr.net/gh/pala911/clash-source@gh-pages/nodes/yypool.yaml
+    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/yypool.yaml
     path: ./providers/yypool.yaml
     interval: 3600
     exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
@@ -594,7 +593,7 @@ proxy-providers:
       expected-status: 204
   automerge:
     type: http
-    url: https://cdn.jsdelivr.net/gh/pala911/clash-source@gh-pages/nodes/automerge.yaml
+    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/automerge.yaml
     path: ./providers/automerge.yaml
     interval: 3600
     exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
@@ -606,7 +605,7 @@ proxy-providers:
       expected-status: 204
   ermaozi:
     type: http
-    url: https://cdn.jsdelivr.net/gh/pala911/clash-source@gh-pages/nodes/ermaozi.yaml
+    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/ermaozi.yaml
     path: ./providers/ermaozi.yaml
     interval: 3600
     exclude-filter: (?i)(过期|剩余|流量|官网|订阅|加群|电报|telegram|t\.me|https?://)
@@ -618,7 +617,7 @@ proxy-providers:
       expected-status: 204
   zhuhaiuk:
     type: http
-    url: https://cdn.jsdelivr.net/gh/pala911/clash-source@gh-pages/nodes/zhuhaiuk.yaml
+    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/zhuhaiuk.yaml
     path: ./providers/zhuhaiuk.yaml
     interval: 3600
     exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
@@ -630,7 +629,7 @@ proxy-providers:
       expected-status: 204
   ssrsub:
     type: http
-    url: https://cdn.jsdelivr.net/gh/pala911/clash-source@gh-pages/nodes/ssrsub.yaml
+    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/ssrsub.yaml
     path: ./providers/ssrsub.yaml
     interval: 3600
     exclude-filter: 机场推荐:dafei\.de 德国 07|🇨🇳CN_[0-9]
@@ -642,7 +641,7 @@ proxy-providers:
       expected-status: 204
   ruk1ng001:
     type: http
-    url: https://cdn.jsdelivr.net/gh/pala911/clash-source@gh-pages/nodes/ruk1ng001.yaml
+    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/ruk1ng001.yaml
     path: ./providers/ruk1ng001.yaml
     interval: 3600
     exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
@@ -654,7 +653,7 @@ proxy-providers:
       expected-status: 204
   snakem982:
     type: http
-    url: https://cdn.jsdelivr.net/gh/pala911/clash-source@gh-pages/nodes/snakem982.yaml
+    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/snakem982.yaml
     path: ./providers/snakem982.yaml
     interval: 3600
     exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
@@ -666,7 +665,7 @@ proxy-providers:
       expected-status: 204
   nomorewalls:
     type: http
-    url: https://cdn.jsdelivr.net/gh/pala911/clash-source@gh-pages/nodes/nomorewalls.yaml
+    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/nomorewalls.yaml
     path: ./providers/nomorewalls.yaml
     interval: 3600
     exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
@@ -678,7 +677,7 @@ proxy-providers:
       expected-status: 204
   autojiedian:
     type: http
-    url: https://cdn.jsdelivr.net/gh/pala911/clash-source@gh-pages/nodes/autojiedian.yaml
+    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/autojiedian.yaml
     path: ./providers/autojiedian.yaml
     interval: 3600
     exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
@@ -690,7 +689,7 @@ proxy-providers:
       expected-status: 204
   shaoyouvip:
     type: http
-    url: https://cdn.jsdelivr.net/gh/pala911/clash-source@gh-pages/nodes/shaoyouvip.yaml
+    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/shaoyouvip.yaml
     path: ./providers/shaoyouvip.yaml
     interval: 3600
     exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
@@ -702,7 +701,7 @@ proxy-providers:
       expected-status: 204
   clashdaily:
     type: http
-    url: https://cdn.jsdelivr.net/gh/pala911/clash-source@gh-pages/nodes/clashdaily.yaml
+    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/clashdaily.yaml
     path: ./providers/clashdaily.yaml
     interval: 3600
     exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
@@ -714,7 +713,7 @@ proxy-providers:
       expected-status: 204
   leilaomi:
     type: http
-    url: https://cdn.jsdelivr.net/gh/pala911/clash-source@gh-pages/nodes/leilaomi.yaml
+    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/leilaomi.yaml
     path: ./providers/leilaomi.yaml
     interval: 3600
     exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
@@ -726,7 +725,7 @@ proxy-providers:
       expected-status: 204
   SRCFL-autojiedian:
     type: http
-    url: https://cdn.jsdelivr.net/gh/pala911/clash-source@gh-pages/nodes/autojiedian--flaky.yaml
+    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/autojiedian--flaky.yaml
     path: ./providers/SRCFL-autojiedian.yaml
     interval: 3600
     exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
@@ -738,7 +737,7 @@ proxy-providers:
       expected-status: 204
   SRCFL-automerge:
     type: http
-    url: https://cdn.jsdelivr.net/gh/pala911/clash-source@gh-pages/nodes/automerge--flaky.yaml
+    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/automerge--flaky.yaml
     path: ./providers/SRCFL-automerge.yaml
     interval: 3600
     exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
@@ -750,7 +749,7 @@ proxy-providers:
       expected-status: 204
   SRCFL-ermaozi:
     type: http
-    url: https://cdn.jsdelivr.net/gh/pala911/clash-source@gh-pages/nodes/ermaozi--flaky.yaml
+    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/ermaozi--flaky.yaml
     path: ./providers/SRCFL-ermaozi.yaml
     interval: 3600
     exclude-filter: (?i)(过期|剩余|流量|官网|订阅|加群|电报|telegram|t\.me|https?://)
@@ -762,7 +761,7 @@ proxy-providers:
       expected-status: 204
   SRCFL-leilaomi:
     type: http
-    url: https://cdn.jsdelivr.net/gh/pala911/clash-source@gh-pages/nodes/leilaomi--flaky.yaml
+    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/leilaomi--flaky.yaml
     path: ./providers/SRCFL-leilaomi.yaml
     interval: 3600
     exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
@@ -774,7 +773,7 @@ proxy-providers:
       expected-status: 204
   SRCFL-nomorewalls:
     type: http
-    url: https://cdn.jsdelivr.net/gh/pala911/clash-source@gh-pages/nodes/nomorewalls--flaky.yaml
+    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/nomorewalls--flaky.yaml
     path: ./providers/SRCFL-nomorewalls.yaml
     interval: 3600
     exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
@@ -786,20 +785,8 @@ proxy-providers:
       expected-status: 204
   SRCFL-ruk1ng001:
     type: http
-    url: https://cdn.jsdelivr.net/gh/pala911/clash-source@gh-pages/nodes/ruk1ng001--flaky.yaml
+    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/ruk1ng001--flaky.yaml
     path: ./providers/SRCFL-ruk1ng001.yaml
-    interval: 3600
-    exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
-    health-check:
-      enable: true
-      url: https://www.youtube.com/generate_204
-      interval: 300
-      timeout: 5000
-      expected-status: 204
-  SRCFL-shaoyouvip:
-    type: http
-    url: https://cdn.jsdelivr.net/gh/pala911/clash-source@gh-pages/nodes/shaoyouvip--flaky.yaml
-    path: ./providers/SRCFL-shaoyouvip.yaml
     interval: 3600
     exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
     health-check:
@@ -810,7 +797,7 @@ proxy-providers:
       expected-status: 204
   SRCFL-ssrsub:
     type: http
-    url: https://cdn.jsdelivr.net/gh/pala911/clash-source@gh-pages/nodes/ssrsub--flaky.yaml
+    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/ssrsub--flaky.yaml
     path: ./providers/SRCFL-ssrsub.yaml
     interval: 3600
     exclude-filter: 机场推荐:dafei\.de 德国 07|🇨🇳CN_[0-9]
@@ -822,7 +809,7 @@ proxy-providers:
       expected-status: 204
   SRCFL-yypool:
     type: http
-    url: https://cdn.jsdelivr.net/gh/pala911/clash-source@gh-pages/nodes/yypool--flaky.yaml
+    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/yypool--flaky.yaml
     path: ./providers/SRCFL-yypool.yaml
     interval: 3600
     exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
