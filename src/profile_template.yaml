@@ -1,6 +1,22 @@
 # 手机 profile 模板 —— 由 mk_profile_template.py 从生产 clash-verge.yaml 抽取
 # proxy-providers 段由 build.py 注入（指向本仓 gh-pages）；不要手改 providers
 # 12 源档位依据 2026-10-13 youtube 真探针；自动组探针全 youtube，规则集走 gh-proxy
+# sniffer（2026-10-31）：修 iOS 日志实证的「QUIC UDP 不带 fake-ip 域名元数据 →
+#   googlevideo 等域名 UDP 漏走 DIRECT 必死」。parse-pure-ip 让纯 IP 连接也嗅探；
+#   override-destination 关掉以免改动直连目标的解析行为（只影响规则匹配）。
+sniffer:
+  enable: true
+  parse-pure-ip: true
+  override-destination: false
+  sniff:
+    TLS:
+      ports:
+      - 443
+      - 8443
+    QUIC:
+      ports:
+      - 443
+      - 8443
 mode: rule
 unified-delay: true
 tcp-concurrent: true
