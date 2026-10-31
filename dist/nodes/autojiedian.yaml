@@ -7,6 +7,15 @@ proxies:
   port: 1080
   password: test123
   username: test123
+- name: 134.195.196.211_Gemini
+  type: vmess
+  server: 134.195.196.211
+  port: 18000
+  alterId: 0
+  cipher: auto
+  network: tcp
+  udp: true
+  uuid: f8c8dc3d-0d37-46b0-8b34-a7232882fcfe
 - name: 149.88.23.207_Claude
   type: vmess
   server: 149.88.23.207
@@ -288,6 +297,13 @@ proxies:
   password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
   skip-cert-verify: false
   sni: learn.discovergreatjobsandadvanceyourcareer.com
+- name: 其他地区_Mexico City_Bedge CO Limited_Claude
+  type: trojan
+  server: mx001.zestapp778.com
+  port: 15083
+  password: 5t6i121em5lkmsmk
+  skip-cert-verify: true
+  sni: mx001.zestapp778.com
 - name: 其他地区_Milan_Datacamp Limited_Claude
   type: ss
   server: 185.164.175.81
@@ -360,6 +376,13 @@ proxies:
     headers:
       Host: 5.178.109.174
     path: /vless
+- name: 其他地区_Stockholm_FDCservers.net_Claude
+  type: hysteria2
+  server: promo.betust.net
+  port: 443
+  password: d4ca9415f0eac7897472e1e5b86d2e96
+  skip-cert-verify: false
+  sni: ''
 - name: 其他地区_Stockholm_LLC FZ_Claude
   type: hysteria2
   server: 192.142.23.46
@@ -899,13 +922,6 @@ proxies:
   port: 8080
   cipher: rc4-md5
   password: 14fFPrbezE3HDZzsMOr6
-- name: 日本_Chiyoda City_M247 Europe SRL_Claude
-  type: hysteria2
-  server: freedom.chenlan.top
-  port: 12765
-  password: STYyftThFn
-  skip-cert-verify: false
-  sni: ''
 - name: 日本_Minamishinagawa_Vultr_Claude2
   type: hysteria2
   server: vp3.yysyy.online
@@ -981,13 +997,6 @@ proxies:
     headers:
       Host: jp3.yohototo.top
     path: /tyxyws
-- name: 日本_Tokyo_Shenzhen Tencent Computer Systems Company Limited_C
-  type: trojan
-  server: 43.167.186.78
-  port: 8443
-  password: 9646699a-18b0-4ebc-9f53-453cc1c8e637
-  skip-cert-verify: true
-  sni: ''
 - name: 法国_Paris_Amazon Technologies Inc._Claude1
   type: vless
   server: w.geogame.ir
@@ -1642,34 +1651,6 @@ proxies:
   port: 8080
   cipher: rc4-md5
   password: 14fFPrbezE3HDZzsMOr6
-- name: 美国_Seattle_GTHost_Claude1
-  type: trojan
-  server: resources.findlocaljobnetworkandbuildcommunityconnections.com
-  port: 443
-  password: f0eb8c92ce8946aaba856569cff1a16b
-  skip-cert-verify: false
-  sni: ''
-- name: 美国_Seattle_GTHost_Claude2
-  type: trojan
-  server: 216.106.186.33
-  port: 443
-  password: f0eb8c92ce8946aaba856569cff1a16b
-  skip-cert-verify: false
-  sni: resources.findlocaljobnetworkandbuildcommunityconnections.com
-- name: 美国_Seattle_GTHost_Claude3
-  type: trojan
-  server: 216.106.186.32
-  port: 443
-  password: dba20dcb635e430fa4d3bfc303a149d2
-  skip-cert-verify: true
-  sni: blog.findlocaljobnetworkandbuildcommunityconnections.com
-- name: 美国_Seattle_GTHost_Claude4
-  type: trojan
-  server: www.findlocaljobnetworkandbuildcommunityconnections.com
-  port: 443
-  password: 242a3d8eee5e4ed1a6bfa4141d549a25
-  skip-cert-verify: true
-  sni: ''
 - name: 美国_Seattle_Spartan Host Ltd_Claude
   type: http
   server: 45.150.164.18
@@ -2051,13 +2032,6 @@ proxies:
   port: 43385
   cipher: chacha20-ietf-poly1305
   password: AwW1fV6oDDQKh8r2znmptv59tPgt4eHVTgFaTqgKS2jiSdikJ7GyGCBYehDaK38S8yMgHFdbJqcTmRJSfYS5CFw345bNhFZa
-- name: 荷兰_Amsterdam_Servers Tech Fzco_Claude
-  type: hysteria2
-  server: store.blog-forme.ru
-  port: 443
-  password: 6da2c981-8c77-4340-bda3-93399b7aea26
-  skip-cert-verify: true
-  sni: ''
 - name: 荷兰_Dronten_The Infrastructure Group B.V._Claude
   type: http
   server: 5.255.118.82
@@ -2071,12 +2045,48 @@ proxies:
   port: 443
   skip-cert-verify: true
   tls: true
+- name: 荷兰_Haarlem_SCALEWAY_Claude1
+  type: http
+  server: 51.159.225.196
+  port: 23856
+  skip-cert-verify: true
+  tls: true
+- name: 荷兰_Haarlem_SCALEWAY_Claude2
+  type: http
+  server: 51.159.225.196
+  port: 23856
+  password: None
+  skip-cert-verify: true
+  tls: true
+- name: 荷兰_Haarlem_SCALEWAY_Claude4
+  type: vless
+  server: 163.172.214.188
+  port: 80
+  network: ws
+  skip-cert-verify: false
+  tls: false
+  udp: true
+  uuid: 40cc9b52-25b8-4cd5-8b45-715ae26e6baf
+  ws-opts:
+    path: /vless/
 - name: 荷兰_Haarlem_Scaleway SAS_Claude
   type: http
   server: 51.158.243.91
   port: 443
   skip-cert-verify: true
   tls: true
+- name: 荷兰_Haarlem_Scaleway_Claude
+  type: vless
+  server: SC-TheNetherlands1.09vpn.com
+  port: 80
+  network: ws
+  skip-cert-verify: false
+  tls: false
+  uuid: 40cc9b52-25b8-4cd5-8b45-715ae26e6baf
+  ws-opts:
+    headers:
+      Host: SC-TheNetherlands1.09vpn.com
+    path: /vless/
 - name: 荷兰_Meppel_Scalaxy_Claude
   type: http
   server: 185.238.170.10
