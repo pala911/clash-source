@@ -10,13 +10,14 @@
 
 ## 1. 日常怎么用
 
-**手机订阅地址**（唯一一个你需要记的）：
+**手机订阅地址**：打开本仓 `dist/profile.yaml`，**文件头注释里印着主链和全部备链**
+（订阅链只在 profile 头注释这一处维护，本文档不复制，保证改基底永远不失同步）。
+- 主链 = GitHub Pages：gh-pages 每轮全量重建，CI 发布 1~2 分钟内就是新版
+- 备链之一 = gh-proxy 中转，**零缓存**（改了配置后最快可拉）
+- 备链之一 = jsdelivr：直连可达，但分支引用缓存 ~12h（救急别用它）
 
-```
-https://pala911.github.io/clash-source/profile.yaml
-```
-
-在 Clash Verge / Clash Meta / Mihomo 里添加为「订阅」。
+添加到 Clash Verge / Clash Meta / Mihomo 为「订阅」即可。⚠ 蜂窝网络（手机流量）
+下 nodes 直链几乎必挂——profile 内部已把节点池指向镜像分发（见 §9 已知坑）。
 
 ### 1.1 手机上会看到哪些组
 
@@ -537,6 +538,7 @@ python tools\probe_field_types.py     # mihomo 接受哪些字段类型
 | 钩子里的 git 不是你以为的那个仓 | 造竞态时 `git -C B push` 推的还是 A 的 ref，外层 push 变成空推、**测试假通过**（"竞态"根本没发生） | `pre-push` 这类钩子是**在 `GIT_DIR=<本仓>/.git` 的环境里**跑的（git 会把这些变量导出给钩子）。要操作别的仓必须 `( unset GIT_DIR GIT_WORK_TREE GIT_INDEX_FILE GIT_PREFIX; cd 别的仓 && git … )`。同理「插队方」自己的基点也得先跟上远端，否则它先被 `fetch first` 拒 |
 | 一次推送撞车 = 一轮 L1 整层缺失 | CI step 6 被拒 → 后面 9 步 skip：gh-pages 不发布、美国口径判死不跑、健康档案不提交 | L1（GitHub CI，`17 */6 * * *` 会被排队延迟几十分钟）与 L2（本机探针，固定 12:30）**时间窗天然会撞**。三处裸 `git push` 都必须带重试；且失败要降级成 warning 不染红（红只会连带 skip 下游）。见 `tools/ci_git_push.sh` 与 `tools/test_ci_workflow.py` |
 | 测试往源清单里追加合成源 | 报 `mapping values are not allowed here` | `sources:` 的条目缩进 2 格，且文件末尾是另一个顶层键 `excluded:` |
+| **iOS 蜂窝下「几乎用不了」**（10-31 用户实测） | 手机流量下 13 个 SRC 组全空、订阅几乎不可用；WiFi 宽带却一切正常 | provider 节点池直链（github.io / raw 国内直链）蜂窝网络几乎拉不动 → **池 URL 基底全走镜像**，`build.mirror_base()` 一处定义（现=gh-proxy 中转 gh-pages raw，**零缓存**；曾先用 jsdelivr 因分支缓存 ~12h 被用户否掉）。⚠ 写断言时区分：gh-proxy 中转 URL **含** `raw.githubusercontent` **子串**——禁的是「直链**起头**」，用 `startswith` 判，别用子串 `in`（否则把合法中转也误杀）。池子更新时效：CI 每 6h 重建，零缓存下手机 ≤1h 内拿到新池 |
 
 ---
 
