@@ -1,11 +1,5 @@
 # 未过滤原始快照（对比用，勿订阅）—— 源 autojiedian
 proxies:
-- name: 104.168.215.83_Claude
-  password: test123
-  port: 1080
-  server: 104.168.249.36
-  type: socks5
-  username: test123
 - alterId: 0
   cipher: auto
   name: 134.195.196.211_Gemini
@@ -15,6 +9,12 @@ proxies:
   type: vmess
   udp: true
   uuid: f8c8dc3d-0d37-46b0-8b34-a7232882fcfe
+- name: 137.220.221.179_Claude
+  port: 443
+  server: 137.220.221.179
+  tls: false
+  type: vless
+  uuid: a16a3336-c9ab-489f-9b85-c973f5e2cfa4
 - alterId: 0
   cipher: auto
   name: 149.88.23.207_Claude
@@ -24,22 +24,18 @@ proxies:
   type: vmess
   udp: true
   uuid: f8c8dc3d-0d37-46b0-8b34-a7232882fcfe
-- name: 158.101.158.101_Claude1
-  network: ws
-  port: 443
-  server: 104.16.10.2
-  servername: jp3.yohototo.top
-  tls: true
+- name: 152.69.195.67_Claude
+  network: tcp
+  port: 47878
+  server: 152.69.195.67
+  servername: 152.69.195.67
+  tls: false
   type: vless
-  uuid: 4e4f1f70-5e56-4a76-bb9d-db087f4690c4
-  ws-opts:
-    headers:
-      Host: jp3.yohototo.top
-    path: /tyxyws
-- name: 158.101.158.101_Claude2
+  uuid: eb8613e3-8393-4cff-a3ad-6501fd4adc63
+- name: 158.101.158.101_Claude
   network: ws
   port: 443
-  server: 172.67.156.147
+  server: 188.114.98.0
   servername: jp3.yohototo.top
   skip-cert-verify: false
   tls: true
@@ -56,13 +52,6 @@ proxies:
   tls: false
   type: vless
   uuid: a1962f23-f8f8-412d-f2ce-3361e7b72889
-- name: 185.53.129.141_Claude
-  password: None
-  port: 9090
-  server: 185.53.129.141
-  skip-cert-verify: true
-  tls: true
-  type: http
 - name: 193.176.84.25_Claude
   port: 9002
   server: 193.176.84.25
@@ -87,6 +76,14 @@ proxies:
   port: 8080
   server: 193.29.139.225
   type: ss
+- name: 2.26.6.1_Claude
+  port: 2087
+  server: 2.26.6.1
+  skip-cert-verify: true
+  tls: true
+  type: vless
+  udp: true
+  uuid: b9fdc03f-389b-4cda-9be4-155b623bee15
 - name: 208.69.78.222_Claude
   password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
   port: 443
@@ -94,12 +91,6 @@ proxies:
   skip-cert-verify: false
   sni: cdn.yourultimateprofessionalcareerhub.com
   type: trojan
-- cipher: aes-256-gcm
-  name: 51.222.12.127_Claude
-  password: zDNVedRFPQexG9v
-  port: 445
-  server: 51.222.12.127
-  type: ss
 - cipher: aes-256-gcm
   name: 51.222.141.125_Claude
   password: zDNVedRFPQexG9v
@@ -124,6 +115,12 @@ proxies:
   port: 19999
   server: 202.50.253.72
   type: ss
+- cipher: chacha20-ietf-poly1305
+  name: 80.66.78.91_Claude
+  password: MODziWLa9qMuW-4yPa0rfw
+  port: 8388
+  server: msk2.rvpn.app
+  type: ss
 - name: 84.235.244.108_Claude
   network: ws
   port: 22573
@@ -136,10 +133,20 @@ proxies:
     headers:
       Host: uae.unixzone.us
     path: /
-- name: 其他地区_Bucharest_Eclipse Networking Ltd_Claude1
+- name: 俄罗斯_St Petersburg_JSC Selectel_Claude
   network: tcp
+  port: 443
+  server: 87.242.119.253
+  servername: hvtlr-ru-47sb.fade.mom
+  tls: true
+  type: vless
+  uuid: aba9cdd4-026c-0001-87a9-9b3e5f24dd82
+  ws-opts:
+    path: /
+- name: 其他地区_Bucharest_Eclipse Networking Ltd_Claude1
+  network: raw
   port: 2052
-  server: 155.117.5.208
+  server: 178.83.45.226
   type: vless
   udp: true
   uuid: 1a8ecc41-6e62-431b-8eca-87c2fa4dc286
@@ -151,20 +158,14 @@ proxies:
   udp: true
   uuid: 1a8ecc41-6e62-431b-8eca-87c2fa4dc286
 - name: 其他地区_Bucharest_Eclipse Networking Ltd_Claude3
-  network: raw
+  network: tcp
   port: 2052
-  server: 178.83.45.226
+  server: 155.117.5.208
   type: vless
   udp: true
   uuid: 1a8ecc41-6e62-431b-8eca-87c2fa4dc286
 - name: 其他地区_Bucharest_Eclipse Networking Ltd_Claude4
   network: tcp
-  port: 2052
-  server: edge10.cyrionflare.com
-  tls: false
-  type: vless
-  uuid: 1a8ecc41-6e62-431b-8eca-87c2fa4dc286
-- name: 其他地区_Bucharest_Eclipse Networking Ltd_Claude5
   port: 2052
   server: edge10.cyrionflare.com
   tls: false
@@ -297,13 +298,12 @@ proxies:
   skip-cert-verify: true
   tls: true
   type: http
-- name: 其他地区_Dublin_Amazon.com, Inc._Claude
-  password: None
-  port: 443
-  server: 34.249.214.108
-  skip-cert-verify: true
-  tls: true
-  type: http
+- cipher: chacha20-ietf-poly1305
+  name: 其他地区_Helsinki_Ihor Hosting LTD_Claude
+  password: x2A6AsyZ-rAllz0wbKHzWA
+  port: 8388
+  server: 178.253.16.185
+  type: ss
 - cipher: chacha20-ietf-poly1305
   name: 其他地区_Isando_Vultr_Claude
   password: tfAcRikawhNoZAhu
@@ -333,7 +333,6 @@ proxies:
   udp: true
   uuid: 03fcc618-b93d-6796-6aed-8a38c975d581
 - name: 其他地区_Madrid_GTHost_Claude
-  network: tcp
   password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
   port: 443
   server: 66.163.118.166
@@ -347,6 +346,19 @@ proxies:
   skip-cert-verify: true
   sni: mx001.zestapp778.com
   type: trojan
+- name: 其他地区_Milan_Akamai Technologies, Inc._Claude
+  network: ws
+  port: 443
+  server: www.visa.com.hk
+  servername: it-mil.862400.xyz
+  tls: true
+  type: vless
+  udp: true
+  uuid: 4f735420-0179-45d7-ba4e-ed66d1bf3a89
+  ws-opts:
+    headers:
+      Host: it-mil.862400.xyz
+    path: /announcement?ed=2048
 - cipher: aes-256-gcm
   name: 其他地区_Milan_Datacamp Limited_Claude
   password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
@@ -357,55 +369,49 @@ proxies:
   name: 其他地区_Milan_EUROPEAN-LEASE1_Claude1
   password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
   port: 19999
-  server: 202.50.253.27
+  server: 202.50.253.90
   type: ss
 - cipher: aes-256-gcm
   name: 其他地区_Milan_EUROPEAN-LEASE1_Claude2
   password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
   port: 19999
-  server: 202.50.253.90
+  server: 202.50.253.27
   type: ss
 - cipher: aes-256-gcm
   name: 其他地区_Milan_GTHost_Claude1
   password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
   port: 19999
-  server: 202.50.253.99
+  server: 202.50.253.63
   type: ss
 - cipher: aes-256-gcm
   name: 其他地区_Milan_GTHost_Claude2
   password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
   port: 19999
-  server: 202.50.253.45
+  server: 202.50.253.36
   type: ss
 - cipher: aes-256-gcm
   name: 其他地区_Milan_GTHost_Claude3
   password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
   port: 19999
-  server: 202.50.253.36
+  server: 202.50.253.18
   type: ss
 - cipher: aes-256-gcm
   name: 其他地区_Milan_GTHost_Claude4
   password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
   port: 19999
-  server: 202.50.253.63
+  server: 202.50.253.54
   type: ss
 - cipher: aes-256-gcm
   name: 其他地区_Milan_GTHost_Claude5
   password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
   port: 19999
-  server: 202.50.253.18
+  server: 202.50.253.81
   type: ss
 - cipher: aes-256-gcm
   name: 其他地区_Milan_GTHost_Claude6
   password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
   port: 19999
-  server: 202.50.253.54
-  type: ss
-- cipher: aes-256-gcm
-  name: 其他地区_Milan_GTHost_Claude7
-  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
-  port: 19999
-  server: 202.50.253.81
+  server: 202.50.253.45
   type: ss
 - cipher: chacha20-ietf-poly1305
   name: 其他地区_Oslo_BrainStorm Network_Claude
@@ -420,6 +426,28 @@ proxies:
   skip-cert-verify: false
   sni: connectwithtopemployersandfindidealjobs.com
   type: trojan
+- name: 其他地区_Sri Lanka_Cyberzone S.A._Claude1
+  network: ws
+  port: 8080
+  server: 170.114.45.6
+  tls: false
+  type: vless
+  uuid: 990bf436-f1b9-4e7f-857d-14378acc4ae5
+  ws-opts:
+    headers:
+      Host: free.nadun.store
+    path: /
+- name: 其他地区_Sri Lanka_Cyberzone S.A._Claude2
+  network: ws
+  port: 8080
+  server: support.zoom.us
+  tls: false
+  type: vless
+  uuid: 990bf436-f1b9-4e7f-857d-14378acc4ae5
+  ws-opts:
+    headers:
+      Host: Free.nadun.store
+    path: /
 - name: 其他地区_Stockholm_Baykov Ilya Sergeevich_Claude
   network: ws
   port: 14430
@@ -445,17 +473,6 @@ proxies:
   skip-cert-verify: false
   sni: diffoscope.com
   type: hysteria2
-- alpn:
-  - h3
-  down: '200'
-  name: 其他地区_Tallinn_Paul Sagov_Claude
-  password: 2a0fc918-9c61-451b-a9ad-e8f796e70f52
-  port: 443
-  server: 13.143.239.127
-  skip-cert-verify: true
-  sni: nl1.obxodvpn.us
-  type: hysteria2
-  up: '100'
 - cipher: chacha20-ietf-poly1305
   name: 其他地区_Tirana_Global Connectivity Solutions LLP_Claude
   password: hTTg7lwQMzpaF7KXpY3A8w
@@ -468,40 +485,11 @@ proxies:
   port: 19999
   server: 82.110.60.9
   type: ss
-- name: 其他地区_Warsaw_KABAT-OU_Claude1
-  network: tcp
-  port: 2052
-  server: 168.222.43.53
-  type: vless
-  udp: true
-  uuid: 1a8ecc41-6e62-431b-8eca-87c2fa4dc286
-- name: 其他地区_Warsaw_KABAT-OU_Claude2
-  network: raw
-  port: 20001
-  server: site.teslamotor.site
-  type: vless
-  udp: true
-  uuid: 8e8210b7-71a4-4799-8b9b-2e69698b1eaf
-- name: 其他地区_Warsaw_KABAT-OU_Claude3
-  network: tcp
-  port: 20001
-  server: 155.117.5.208
-  type: vless
-  udp: true
-  uuid: 8e8210b7-71a4-4799-8b9b-2e69698b1eaf
-- name: 其他地区_Warsaw_KABAT-OU_Claude4
-  network: tcp
-  port: 20001
-  server: site.teslamotor.site
-  tls: false
-  type: vless
-  uuid: 8e8210b7-71a4-4799-8b9b-2e69698b1eaf
 - name: 其他地区_Warsaw_Mitelis Security Limited_Claude
   network: tcp
   port: 2087
   server: 2.26.6.1
   servername: 2.26.6.1
-  skip-cert-verify: false
   tls: true
   type: vless
   uuid: b9fdc03f-389b-4cda-9be4-155b623bee15
@@ -528,13 +516,13 @@ proxies:
   name: 其他地区_Wroclaw_OVH SAS_Claude1
   password: 6heexyz
   port: 443
-  server: pl140.vpnbook.com
+  server: pl134.vpnbook.com
   type: ss
 - cipher: chacha20-ietf-poly1305
   name: 其他地区_Wroclaw_OVH SAS_Claude2
   password: 6heexyz
   port: 443
-  server: 54.36.174.140
+  server: pl140.vpnbook.com
   type: ss
 - cipher: chacha20-ietf-poly1305
   name: 其他地区_Wroclaw_OVH SAS_Claude3
@@ -546,21 +534,21 @@ proxies:
   name: 其他地区_Wroclaw_OVH SAS_Claude4
   password: 6heexyz
   port: 443
-  server: pl134.vpnbook.com
+  server: 54.36.174.140
   type: ss
 - name: 其他地区_Zurich_GTHost_Claude1
-  password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
-  port: 443
-  server: 208.69.78.19
-  skip-cert-verify: false
-  sni: www.yourultimateprofessionalcareerhub.com
-  type: trojan
-- name: 其他地区_Zurich_GTHost_Claude2
   password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
   port: 443
   server: 208.69.78.29
   skip-cert-verify: false
   sni: learn.yourultimateprofessionalcareerhub.com
+  type: trojan
+- name: 其他地区_Zurich_GTHost_Claude2
+  password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
+  port: 443
+  server: 208.69.78.19
+  skip-cert-verify: false
+  sni: www.yourultimateprofessionalcareerhub.com
   type: trojan
 - name: 其他地区_Zurich_Ontario Inc._Claude
   password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
@@ -569,17 +557,7 @@ proxies:
   skip-cert-verify: false
   sni: resources.yourultimateprofessionalcareerhub.com
   type: trojan
-- client-fingerprint: chrome
-  name: 其他地区_Zurich_Oracle Cloud_Claude1
-  obfs: salamander
-  obfs_password: c13f29db6a638ad2b211b9ce2669ef27
-  password: 3a702d4d1de4949005d8431220e040fb
-  port: 443
-  server: 152.67.75.161
-  skip-cert-verify: true
-  sni: www.bing.com
-  type: hysteria2
-- name: 其他地区_Zurich_Oracle Cloud_Claude2
+- name: 其他地区_Zurich_Oracle Cloud_Claude
   password: 84a506ca5aca505696a454d828420b3f
   port: 50160
   server: 140.238.213.114
@@ -595,20 +573,27 @@ proxies:
   type: vless
   uuid: 054362fb-e485-4a3f-9568-4c5b0f60e074
 - name: 加拿大_Beauharnois_OVH SAS_Claude1
-  network: raw
-  port: 8080
-  server: milo.networkforexir.site
-  type: vless
-  udp: true
-  uuid: 6bceb548-d9b6-461f-8e37-a5a7fbcdc2c8
-- name: 加拿大_Beauharnois_OVH SAS_Claude2
   network: tcp
   port: 8080
   server: 168.222.43.53
   type: vless
   udp: true
   uuid: 6bceb548-d9b6-461f-8e37-a5a7fbcdc2c8
+- name: 加拿大_Beauharnois_OVH SAS_Claude2
+  network: tcp
+  port: 8080
+  server: milo.rubinaz.xyz
+  type: vless
+  udp: true
+  uuid: 6bceb548-d9b6-461f-8e37-a5a7fbcdc2c8
 - name: 加拿大_Beauharnois_OVH SAS_Claude3
+  network: raw
+  port: 8080
+  server: milo.networkforexir.site
+  type: vless
+  udp: true
+  uuid: 6bceb548-d9b6-461f-8e37-a5a7fbcdc2c8
+- name: 加拿大_Beauharnois_OVH SAS_Claude4
   network: ws
   port: 8443
   server: 148.113.196.75
@@ -620,7 +605,7 @@ proxies:
   uuid: 08f96221-9b7b-4e6f-8ffe-aee8b9c9b504
   ws-opts:
     path: /vless/
-- name: 加拿大_Beauharnois_OVH SAS_Claude4
+- name: 加拿大_Beauharnois_OVH SAS_Claude5
   network: tcp
   port: 8080
   server: milo.networkforexir.site
@@ -628,25 +613,12 @@ proxies:
   tls: false
   type: vless
   uuid: 6bceb548-d9b6-461f-8e37-a5a7fbcdc2c8
-- name: 加拿大_Beauharnois_OVH SAS_Claude5
-  network: tcp
-  port: 8080
-  server: milo.rubinaz.xyz
-  type: vless
-  udp: true
-  uuid: 6bceb548-d9b6-461f-8e37-a5a7fbcdc2c8
-- cipher: aes-256-gcm
-  name: 加拿大_Beauharnois_OVH SAS_Claude6
-  password: Y6R9pAtvxxzmGC
-  port: 5601
-  server: 51.222.155.113
-  type: ss
-- name: 加拿大_Beauharnois_OVH SAS_Claude7
+- name: 加拿大_Beauharnois_OVH SAS_Claude6
   network: tcp
   port: 8080
   server: 178.83.45.226
-  tls: false
   type: vless
+  udp: true
   uuid: 6bceb548-d9b6-461f-8e37-a5a7fbcdc2c8
 - cipher: aes-256-gcm
   name: 加拿大_Montreal_OVH SAS_Claude
@@ -669,9 +641,9 @@ proxies:
 - name: 加拿大_Toronto_GLOBALTELEHOST Corp._Claude1
   password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
   port: 443
-  server: 216.152.147.74
-  skip-cert-verify: false
-  sni: api.connectingpeoplewithgreatjobs.com
+  server: 216.152.147.79
+  skip-cert-verify: true
+  sni: blog.connectingpeoplewithgreatjobs.com
   type: trojan
 - name: 加拿大_Toronto_GLOBALTELEHOST Corp._Claude2
   password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
@@ -683,37 +655,37 @@ proxies:
 - name: 加拿大_Toronto_GLOBALTELEHOST Corp._Claude3
   password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
   port: 443
-  server: 216.152.147.201
+  server: 216.152.147.48
   skip-cert-verify: false
-  sni: resources.connectingpeoplewithgreatjobs.com
+  sni: courses.connectingpeoplewithgreatjobs.com
   type: trojan
 - name: 加拿大_Toronto_GLOBALTELEHOST Corp._Claude4
-  password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
-  port: 443
-  server: 216.152.147.93
-  skip-cert-verify: false
-  sni: connectingpeoplewithgreatjobs.com
-  type: trojan
-- name: 加拿大_Toronto_GLOBALTELEHOST Corp._Claude5
   password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
   port: 443
   server: 216.152.147.85
   skip-cert-verify: false
   sni: cdn.connectingpeoplewithgreatjobs.com
   type: trojan
+- name: 加拿大_Toronto_GLOBALTELEHOST Corp._Claude5
+  password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
+  port: 443
+  server: 216.152.147.201
+  skip-cert-verify: false
+  sni: resources.connectingpeoplewithgreatjobs.com
+  type: trojan
 - name: 加拿大_Toronto_GLOBALTELEHOST Corp._Claude6
   password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
   port: 443
-  server: 216.152.147.79
-  skip-cert-verify: true
-  sni: blog.connectingpeoplewithgreatjobs.com
+  server: 216.152.147.74
+  skip-cert-verify: false
+  sni: api.connectingpeoplewithgreatjobs.com
   type: trojan
 - name: 加拿大_Toronto_GLOBALTELEHOST Corp._Claude7
   password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
   port: 443
-  server: 216.152.147.48
+  server: 216.152.147.93
   skip-cert-verify: false
-  sni: courses.connectingpeoplewithgreatjobs.com
+  sni: connectingpeoplewithgreatjobs.com
   type: trojan
 - alterId: 0
   cipher: auto
@@ -756,41 +728,26 @@ proxies:
     headers:
       Host: 13.140.56.100
     path: /vless
-- cipher: aes-256-gcm
-  name: 印度_Noida_The Constant Company_Claude
-  password: GEdoeeqLZtkJRgSa
-  port: 8388
-  server: 139.84.166.47
-  type: ss
-- name: 台湾_Chang-hua_Chunghwa Telecom Co., Ltd._Claude
-  password: exaxgqkKkd0TAMrCxeonWg==
-  port: 1443
-  server: twmoon1-cdn-route.couldflare-cdn.com
-  skip-cert-verify: false
-  sni: twmoon1-cdn-route.couldflare-cdn.com
-  tls: true
-  type: http
-  username: mrwdfNTD8M79LCukCieldrqZWqs=
 - name: 台湾_Taipei_Global Communication Network Limited_Claude1
-  password: H7mP2xY9kJ4nQ8wR5tF6vB3z
-  port: 443
-  server: 103.115.109.49
-  skip-cert-verify: true
-  sni: https://t.me/WangCai2🇨🇳
-  type: hysteria2
-- name: 台湾_Taipei_Global Communication Network Limited_Claude2
   password: H7mP2xY9kJ4nQ8wR5tF6vB3z
   port: 443
   server: 160.187.100.109
   skip-cert-verify: true
   sni: 160.187.100.109
   type: hysteria2
-- name: 台湾_Taipei_Global Communication Network Limited_Claude3
+- name: 台湾_Taipei_Global Communication Network Limited_Claude2
   password: H7mP2xY9kJ4nQ8wR5tF6vB3z
   port: 443
   server: vpn-tw-002.fastervpn.world
   skip-cert-verify: true
   sni: css.rbxcdn.com
+  type: hysteria2
+- name: 台湾_Taipei_Global Communication Network Limited_Claude3
+  password: H7mP2xY9kJ4nQ8wR5tF6vB3z
+  port: 443
+  server: 103.115.109.49
+  skip-cert-verify: true
+  sni: https://t.me/WangCai2🇨🇳
   type: hysteria2
 - name: 土耳其_Istanbul_Sunucun Bilgi Iletisim Teknolojileri ve Ticaret Ltd. Sti._Claude
   network: ws
@@ -802,25 +759,6 @@ proxies:
   uuid: 4f34bc04-479c-49ba-91a8-6bb9ed15031c
   ws-opts:
     path: /vless-tr
-- name: 德国_Berlin_IONOS SE_Claude
-  password: None
-  port: 443
-  server: 87.106.223.158
-  skip-cert-verify: true
-  tls: true
-  type: http
-- name: 德国_Frankfurt Am Main_Hetzner Online AG_Claude
-  network: ws
-  port: 465
-  server: 91.107.180.176
-  servername: hw7.divarkhaghazi.com
-  tls: true
-  type: vless
-  uuid: d0d3d49c-56e8-40e1-9e83-793d03f83d93
-  ws-opts:
-    headers:
-      Host: hw7.divarkhaghazi.com.
-    path: /
 - name: 德国_Frankfurt am Main_Amazon.com_Claude
   password: H7mP2xY9kJ4nQ8wR5tF6vB3z
   port: 443
@@ -828,33 +766,19 @@ proxies:
   skip-cert-verify: true
   sni: 3.76.221.4
   type: hysteria2
+- name: 德国_Frankfurt am Main_Astra VPS_Claude
+  password: 23c82941-70f4-4381-90db-bd28e9a902e9
+  port: 443
+  server: steel7.hadsvpn.com
+  skip-cert-verify: false
+  sni: ''
+  type: hysteria2
 - cipher: rc4-md5
-  name: 德国_Frankfurt am Main_Datacamp Limited_Claude1
+  name: 德国_Frankfurt am Main_Datacamp Limited_Claude
   password: 14fFPrbezE3HDZzsMOr6
   port: 8080
   server: 169.150.210.233
   type: ss
-- name: 德国_Frankfurt am Main_Datacamp Limited_Claude2
-  password: None
-  port: 9002
-  server: 158.173.154.3
-  skip-cert-verify: true
-  tls: true
-  type: http
-- name: 德国_Frankfurt am Main_Datacamp Limited_Claude3
-  password: None
-  port: 9002
-  server: 158.173.154.4
-  skip-cert-verify: true
-  tls: true
-  type: http
-- name: 德国_Frankfurt am Main_Datacamp Limited_Claude4
-  password: None
-  port: 9002
-  server: 158.173.154.2
-  skip-cert-verify: true
-  tls: true
-  type: http
 - cipher: aes-256-gcm
   name: 德国_Frankfurt am Main_GTHost_Claude
   password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
@@ -868,34 +792,6 @@ proxies:
   skip-cert-verify: false
   sni: derfderf.ru
   type: hysteria2
-- name: 德国_Frankfurt am Main_Kabat OU_Claude1
-  network: tcp
-  port: 10000
-  server: 178.83.45.226
-  type: vless
-  udp: true
-  uuid: a05ecf37-c661-4247-ab09-4432cf0f3cc1
-- name: 德国_Frankfurt am Main_Kabat OU_Claude2
-  network: tcp
-  port: 10000
-  server: 168.222.43.53
-  type: vless
-  udp: true
-  uuid: a05ecf37-c661-4247-ab09-4432cf0f3cc1
-- name: 德国_Frankfurt am Main_Kabat OU_Claude3
-  network: tcp
-  port: 10000
-  server: connect.wecantos.site
-  type: vless
-  udp: true
-  uuid: a05ecf37-c661-4247-ab09-4432cf0f3cc1
-- name: 德国_Frankfurt am Main_Kabat OU_Claude4
-  network: tcp
-  port: 10000
-  server: 155.117.5.208
-  type: vless
-  udp: true
-  uuid: a05ecf37-c661-4247-ab09-4432cf0f3cc1
 - cipher: rc4-md5
   name: 德国_Frankfurt am Main_M247 LTD Frankfurt Infrastructure_Claude
   password: 14fFPrbezE3HDZzsMOr6
@@ -923,6 +819,47 @@ proxies:
     headers:
       Host: OV-Germany1.09vpn.com
     path: /vless/
+- down: ''
+  fingerprint: ''
+  name: 德国_Frankfurt am Main_RCS Technologies FZE LLC_Claude1
+  obfs: ''
+  password: 2a0fc918-9c61-451b-a9ad-e8f796e70f52
+  port: 443
+  server: 9.247.54.69
+  skip-cert-verify: true
+  sni: nl1.obxodvpn.us
+  type: hysteria2
+  up: ''
+- alpn:
+  - h3
+  client-fingerprint: chrome
+  name: 德国_Frankfurt am Main_RCS Technologies FZE LLC_Claude2
+  password: c9aca131-c6a4-4518-9d7d-be52a60b4a3f
+  port: 443
+  server: nlll.obxodvpn.us
+  skip-cert-verify: false
+  sni: nl1.obxodvpn.us
+  type: hysteria2
+- client-fingerprint: chrome
+  name: 德国_Frankfurt am Main_RCS Technologies FZE LLC_Claude3
+  password: c9aca131-c6a4-4518-9d7d-be52a60b4a3f
+  port: 443
+  server: 9.247.54.68
+  skip-cert-verify: true
+  sni: nl1.obxodvpn.us
+  type: hysteria2
+- name: 德国_Frankfurt am Main_SEBEK sp. z o.o_Claude
+  network: ws
+  port: 443
+  server: 195.141.65.98
+  servername: 148-253-210-191.sslip.io
+  tls: true
+  type: vless
+  uuid: 53f03acd-fec1-6685-fc8f-03baf9550cb8
+  ws-opts:
+    headers:
+      Host: 148-253-210-191.sslip.io
+    path: /test-ws
 - name: 德国_Frankfurt_Amazon Technologies Inc._Claude1
   password: H7mP2xY9kJ4nQ8wR5tF6vB3z
   port: 443
@@ -948,23 +885,23 @@ proxies:
 - name: 德国_Frankfurt_GTHost_Claude1
   password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
   port: 443
-  server: 193.108.119.29
-  skip-cert-verify: false
-  sni: blog.iloverussia2026.com
-  type: trojan
-- name: 德国_Frankfurt_GTHost_Claude2
-  password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
-  port: 443
   server: 193.108.119.193
   skip-cert-verify: false
   sni: resources.iloverussia2026.com
   type: trojan
-- name: 德国_Frankfurt_GTHost_Claude3
+- name: 德国_Frankfurt_GTHost_Claude2
   password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
   port: 443
   server: 193.108.119.96
   skip-cert-verify: false
   sni: learn.iloverussia2026.com
+  type: trojan
+- name: 德国_Frankfurt_GTHost_Claude3
+  password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
+  port: 443
+  server: 193.108.119.29
+  skip-cert-verify: false
+  sni: blog.iloverussia2026.com
   type: trojan
 - name: 德国_Frankfurt_GTHost_Claude4
   password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
@@ -985,22 +922,9 @@ proxies:
   type: vmess
   udp: true
   uuid: 5c040f1d-45db-43bd-8d46-e4950e433735
-- name: 德国_Limburg an der Lahn_OVH SAS_Claude2
-  network: ws
-  port: 8443
-  server: 104.17.70.206
-  servername: free.sahanwickramasinghe.com
-  tls: true
-  type: vless
-  udp: true
-  uuid: 5f704d93-7e7f-45b5-81f5-08db4a946220
-  ws-opts:
-    headers:
-      Host: free.sahanwickramasinghe.com
-    path: /
 - alterId: 0
   cipher: auto
-  name: 德国_Limburg an der Lahn_OVH SAS_Claude3
+  name: 德国_Limburg an der Lahn_OVH SAS_Claude2
   network: tcp
   port: 1234
   server: 162.19.204.71
@@ -1030,31 +954,26 @@ proxies:
   name: 新加坡_Singapore_DigitalOcean, LLC_Claude1
   password: 14fFPrbezE3HDZzsMOr6
   port: 8080
-  server: 68.183.235.240
+  server: 68.183.227.236
   type: ss
 - cipher: rc4-md5
   name: 新加坡_Singapore_DigitalOcean, LLC_Claude2
   password: 14fFPrbezE3HDZzsMOr6
   port: 8080
-  server: 68.183.235.122
+  server: 68.183.227.4
   type: ss
 - cipher: rc4-md5
   name: 新加坡_Singapore_DigitalOcean, LLC_Claude3
   password: 14fFPrbezE3HDZzsMOr6
   port: 8080
-  server: 68.183.227.4
+  server: 68.183.235.122
   type: ss
 - cipher: rc4-md5
   name: 新加坡_Singapore_DigitalOcean, LLC_Claude4
   password: 14fFPrbezE3HDZzsMOr6
   port: 8080
-  server: 68.183.227.236
+  server: 68.183.235.240
   type: ss
-- name: 新加坡_Singapore_DigitalOcean, LLC_Claude5
-  port: 9090
-  server: 152.42.170.187
-  skip-cert-verify: true
-  type: http
 - name: 新加坡_Singapore_LINODE_Claude1
   network: tcp
   port: 443
@@ -1116,16 +1035,16 @@ proxies:
 - name: 日本_Minamishinagawa_Vultr_Claude1
   password: 96ab5cd282733fd4c312a61f972f330a
   port: 443
-  server: 45.32.10.7
-  skip-cert-verify: false
-  sni: vp3.yysyy.online
+  server: vp3.yysyy.online
+  skip-cert-verify: true
+  sni: ''
   type: hysteria2
 - name: 日本_Minamishinagawa_Vultr_Claude2
   password: 96ab5cd282733fd4c312a61f972f330a
   port: 443
-  server: vp3.yysyy.online
-  skip-cert-verify: true
-  sni: ''
+  server: 45.32.10.7
+  skip-cert-verify: false
+  sni: vp3.yysyy.online
   type: hysteria2
 - name: 日本_Tokyo_Alibaba (US) Technology Co., Ltd._Claude1
   password: u63SxILNwtrQZ7Y1ZrFaZfsA
@@ -1171,54 +1090,19 @@ proxies:
   port: 443
   server: 149.22.87.241
   type: ss
-- name: 日本_Tokyo_Ipxo LLC_Claude
-  network: ws
-  port: 80
-  server: 172.111.146.64
-  skip-cert-verify: false
-  type: vless
-  udp: true
-  uuid: 904f8ffa-4652-4076-8f2f-e586807840ec
-  ws-opts:
-    path: /vless/
-- alterId: 0
-  cipher: auto
-  name: 日本_Tokyo_Latitude.sh_Claude
-  network: ws
-  port: 80
-  server: 172.111.146.64
-  tls: false
-  type: vmess
-  uuid: 05b8c783-7f59-47f9-9923-06a465679f6a
-  ws-opts:
-    headers: {}
-    path: /vmess/
 - cipher: aes-256-gcm
   name: 日本_Tokyo_NetLab Global_Claude
   password: BeaUf9c0AEWH40Pu
   port: 8388
   server: 154.36.158.197
   type: ss
-- name: 日本_Tokyo_Oracle Corporation_Claude1
+- name: 日本_Tokyo_Oracle Corporation_Claude
   password: 184cdec28da5a09450803c8debcd2cc9
   port: 50160
   server: 138.3.208.26
   skip-cert-verify: true
   sni: ''
   type: hysteria2
-- name: 日本_Tokyo_Oracle Corporation_Claude2
-  network: ws
-  port: 443
-  server: 104.21.0.87
-  servername: jp3.yohototo.top
-  tls: true
-  type: vless
-  udp: true
-  uuid: 4e4f1f70-5e56-4a76-bb9d-db087f4690c4
-  ws-opts:
-    headers:
-      Host: jp3.yohototo.top
-    path: /tyxyws
 - name: 日本_Tokyo_Shenzhen Tencent Computer Systems Company Limited_Claude
   password: 9646699a-18b0-4ebc-9f53-453cc1c8e637
   port: 8443
@@ -1226,30 +1110,13 @@ proxies:
   skip-cert-verify: true
   sni: ''
   type: trojan
-- name: 法国_Paris_Amazon Technologies Inc._Claude1
-  network: tcp
-  port: 2053
-  server: w.geogame.ir
-  servername: w.geogame.ir
-  skip-cert-verify: false
-  tls: true
-  type: vless
-  uuid: fbda2834-b1e7-4148-afb9-deda31036a30
-- name: 法国_Paris_Amazon Technologies Inc._Claude2
+- name: 法国_Paris_Amazon Technologies Inc._Claude
   password: H7mP2xY9kJ4nQ8wR5tF6vB3z
   port: 443
   server: 13.36.234.11
   skip-cert-verify: true
   sni: ''
   type: hysteria2
-- name: 法国_Paris_Amazon Technologies Inc._Claude3
-  port: 2053
-  server: w.geogame.ir
-  servername: w.geogame.ir
-  skip-cert-verify: false
-  tls: true
-  type: vless
-  uuid: fbda2834-b1e7-4148-afb9-deda31036a30
 - name: 法国_Paris_Scaleway SAS_Claude
   password: github.com/Alvin9999-newpac/fanqiang
   port: 60111
@@ -1264,12 +1131,6 @@ proxies:
   skip-cert-verify: true
   sni: th001.zestapp778.com
   type: trojan
-- name: 澳大利亚_South Brisbane_Cloudflare, Inc_Claude
-  port: 443
-  server: 172.64.68.89
-  skip-cert-verify: true
-  tls: true
-  type: http
 - name: 澳大利亚_Sydney_Vultr_Claude
   password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
   port: 443
@@ -1285,13 +1146,6 @@ proxies:
 - name: 美国_Ashburn_GTHost_Claude2
   password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
   port: 443
-  server: 66.163.122.7
-  skip-cert-verify: true
-  sni: www.searchnationwidecareerchangehelperandguidancetoday.com
-  type: trojan
-- name: 美国_Ashburn_GTHost_Claude3
-  password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
-  port: 443
   server: 66.163.122.113
   sni: api.searchnationwidecareerchangehelperandguidancetoday.com
   type: trojan
@@ -1305,7 +1159,7 @@ proxies:
 - name: 美国_Atlanta_GTHost_Claude1
   password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
   port: 443
-  server: 216.152.156.81
+  server: 216.152.156.65
   skip-cert-verify: true
   sni: ''
   type: trojan
@@ -1319,14 +1173,22 @@ proxies:
 - name: 美国_Atlanta_GTHost_Claude3
   password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
   port: 443
-  server: 216.152.156.65
+  server: 216.152.156.81
   skip-cert-verify: true
   sni: ''
   type: trojan
 - name: 美国_Atlanta_GTHost_Claude4
   password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
   port: 443
+  server: 216.152.156.42
+  skip-cert-verify: true
+  sni: blog.healthcarejobshubenhancemedicalprofessionalskillstoday.com
+  type: trojan
+- name: 美国_Atlanta_GTHost_Claude5
+  password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
+  port: 443
   server: 216.152.156.212
+  skip-cert-verify: true
   sni: courses.healthcarejobshubenhancemedicalprofessionalskillstoday.com
   type: trojan
 - name: 美国_Boardman_Amazon.com, Inc._Claude
@@ -1344,16 +1206,16 @@ proxies:
 - name: 美国_Chicago_GTHost_Claude1
   password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
   port: 443
-  server: 216.152.155.59
-  skip-cert-verify: false
-  sni: api.nextjobopportunityandclaimyouridealrole.com
+  server: 216.152.155.131
+  skip-cert-verify: true
+  sni: ''
   type: trojan
 - name: 美国_Chicago_GTHost_Claude2
   password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
   port: 443
-  server: 216.152.155.131
-  skip-cert-verify: true
-  sni: ''
+  server: 216.152.155.59
+  skip-cert-verify: false
+  sni: api.nextjobopportunityandclaimyouridealrole.com
   type: trojan
 - name: 美国_Chicago_GTHost_Claude3
   password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
@@ -1363,49 +1225,24 @@ proxies:
   sni: 216.152.155.54
   type: trojan
 - name: 美国_Chicago_GTHost_Claude4
-  network: tcp
-  password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
-  port: 443
-  server: 216.152.155.158
-  skip-cert-verify: true
-  sni: resources.nextjobopportunityandclaimyouridealrole.com
-  type: trojan
-- name: 美国_Chicago_GTHost_Claude5
   password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
   port: 443
   server: 216.152.155.23
   skip-cert-verify: false
   sni: courses.nextjobopportunityandclaimyouridealrole.com
   type: trojan
-- name: 美国_Chicago_GTHost_Claude6
+- name: 美国_Chicago_GTHost_Claude5
   password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
   port: 443
   server: 216.152.155.176
   sni: blog.nextjobopportunityandclaimyouridealrole.com
   type: trojan
-- alterId: 0
-  cipher: auto
-  name: 美国_Chicago_Oracle Corporation_Claude
-  network: ws
+- cipher: aes-128-gcm
+  name: 美国_Dallas_Datacamp Limited_Claude
+  password: shadowsocks
   port: 443
-  server: 104.27.0.1
-  servername: vmess.lbw666.dpdns.org
-  skip-cert-verify: true
-  tls: true
-  type: vmess
-  udp: true
-  uuid: 0cf6d970-3f1d-4aae-a989-92a8f76ae3db
-  ws-opts:
-    headers:
-      Host: vmess.lbw666.dpdns.org
-    path: /ws
-- name: 美国_Columbus_Amazon.com, Inc._Claude
-  password: H7mP2xY9kJ4nQ8wR5tF6vB3z
-  port: 443
-  server: vpn-us-004.fastervpn.world
-  skip-cert-verify: true
-  sni: vpn-us-004.fastervpn.world
-  type: hysteria2
+  server: 156.146.38.167
+  type: ss
 - cipher: aes-128-gcm
   name: 美国_Dallas_Datacamp Limited_Gemini_Claude1
   password: shadowsocks
@@ -1425,32 +1262,26 @@ proxies:
   skip-cert-verify: true
   sni: 66.23.203.21
   type: trojan
-- name: 美国_Dallas_HIVELOCITY, Inc._Claude
-  port: 443
-  server: 23.133.176.14
-  skip-cert-verify: true
-  tls: true
-  type: http
 - name: 美国_Denver_GTHost_Claude1
+  password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
+  port: 443
+  server: 66.163.114.106
+  skip-cert-verify: false
+  sni: www.findconnectwithemployersandbuildprofessionalnetwork.com
+  type: trojan
+- name: 美国_Denver_GTHost_Claude2
+  password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
+  port: 443
+  server: 66.163.114.114
+  skip-cert-verify: true
+  sni: 66.163.114.114
+  type: trojan
+- name: 美国_Denver_GTHost_Claude3
   password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
   port: 443
   server: 66.163.114.166
   skip-cert-verify: true
   sni: blog.findconnectwithemployersandbuildprofessionalnetwork.com
-  type: trojan
-- name: 美国_Denver_GTHost_Claude2
-  password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
-  port: 443
-  server: 66.163.114.245
-  skip-cert-verify: true
-  sni: findconnectwithemployersandbuildprofessionalnetwork.com
-  type: trojan
-- name: 美国_Denver_GTHost_Claude3
-  password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
-  port: 443
-  server: 66.163.114.45
-  skip-cert-verify: false
-  sni: cdn.findconnectwithemployersandbuildprofessionalnetwork.com
   type: trojan
 - name: 美国_Denver_GTHost_Claude4
   password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
@@ -1462,65 +1293,65 @@ proxies:
 - name: 美国_Denver_GTHost_Claude5
   password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
   port: 443
-  server: 66.163.114.132
-  skip-cert-verify: true
-  sni: 66.163.114.132
+  server: 66.163.114.45
+  skip-cert-verify: false
+  sni: cdn.findconnectwithemployersandbuildprofessionalnetwork.com
   type: trojan
 - name: 美国_Denver_GTHost_Claude6
   password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
   port: 443
-  server: 66.163.114.114
+  server: 66.163.114.132
   skip-cert-verify: true
-  sni: 66.163.114.114
+  sni: 66.163.114.132
   type: trojan
 - name: 美国_Denver_GTHost_Claude7
   password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
   port: 443
-  server: 66.163.114.106
-  skip-cert-verify: false
-  sni: www.findconnectwithemployersandbuildprofessionalnetwork.com
+  server: 66.163.114.245
+  skip-cert-verify: true
+  sni: findconnectwithemployersandbuildprofessionalnetwork.com
   type: trojan
 - name: 美国_Detroit_GTHost_Claude1
   password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
   port: 443
-  server: 170.101.101.211
-  skip-cert-verify: true
-  sni: api.explorecreativejobsandenhanceyourcareerportfolio.com
+  server: 170.101.101.112
+  skip-cert-verify: false
+  sni: resources.explorecreativejobsandenhanceyourcareerportfolio.com
   type: trojan
 - name: 美国_Detroit_GTHost_Claude2
-  password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
-  port: 443
-  server: 170.101.101.53
-  skip-cert-verify: false
-  sni: www.explorecreativejobsandenhanceyourcareerportfolio.com
-  type: trojan
-- name: 美国_Detroit_GTHost_Claude3
   password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
   port: 443
   server: 170.101.101.19
   skip-cert-verify: false
   sni: learn.explorecreativejobsandenhanceyourcareerportfolio.com
   type: trojan
-- name: 美国_Detroit_GTHost_Claude4
+- name: 美国_Detroit_GTHost_Claude3
   password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
   port: 443
   server: 170.101.101.67
   skip-cert-verify: false
   sni: courses.explorecreativejobsandenhanceyourcareerportfolio.com
   type: trojan
+- name: 美国_Detroit_GTHost_Claude4
+  password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
+  port: 443
+  server: 170.101.101.53
+  skip-cert-verify: false
+  sni: www.explorecreativejobsandenhanceyourcareerportfolio.com
+  type: trojan
 - name: 美国_Detroit_GTHost_Claude5
+  password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
+  port: 443
+  server: 170.101.101.211
+  skip-cert-verify: true
+  sni: api.explorecreativejobsandenhanceyourcareerportfolio.com
+  type: trojan
+- name: 美国_Detroit_GTHost_Claude6
   password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
   port: 443
   server: 170.101.101.131
   skip-cert-verify: false
   sni: blog.explorecreativejobsandenhanceyourcareerportfolio.com
-  type: trojan
-- name: 美国_Detroit_GTHost_Claude6
-  password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
-  port: 443
-  server: 170.101.101.112
-  skip-cert-verify: false
-  sni: resources.explorecreativejobsandenhanceyourcareerportfolio.com
   type: trojan
 - name: 美国_Elk Grove Village_The Constant Company_Claude1
   password: 5t6i121em5lkmsmk
@@ -1539,14 +1370,6 @@ proxies:
   type: vless
   udp: true
   uuid: e9a8144e-5237-488a-afb1-9ca3d8d54c80
-- name: 美国_Elk Grove Village_The Constant Company_Claude3
-  network: tcp
-  port: 18580
-  server: us007.zestapp778.com
-  servername: us007.zestapp778.com
-  tls: true
-  type: vless
-  uuid: e9a8144e-5237-488a-afb1-9ca3d8d54c80
 - name: 美国_Elk Grove Village_Vultr_Claude
   port: 18580
   server: us007.zestapp778.com
@@ -1554,6 +1377,12 @@ proxies:
   tls: true
   type: vless
   uuid: e9a8144e-5237-488a-afb1-9ca3d8d54c80
+- name: 美国_Irvine_1515 ROUNDTABLE DR PROPERTY, LLC_Claude
+  port: 443
+  server: 38.247.141.135
+  skip-cert-verify: true
+  tls: true
+  type: http
 - cipher: rc4-md5
   name: 美国_Las Vegas_M247 Europe SRL_Claude
   password: 14fFPrbezE3HDZzsMOr6
@@ -1563,29 +1392,29 @@ proxies:
 - name: 美国_Liberty Lake_MillenialHost Limited_Claude1
   password: ee78c844-83b6-4508-b1f9-b3f00c8e0556
   port: 443
-  server: us.mi11o4ka.com
+  server: 167.148.201.99
   skip-cert-verify: false
   sni: us.mi11o4ka.com
   type: hysteria2
 - name: 美国_Liberty Lake_MillenialHost Limited_Claude2
-  password: 7c9c7f52-5a8c-43e0-b6d1-c8552289f230
+  password: ee78c844-83b6-4508-b1f9-b3f00c8e0556
   port: 443
-  server: 167.148.201.99
+  server: us.mi11o4ka.com
   skip-cert-verify: false
   sni: us.mi11o4ka.com
   type: hysteria2
 - name: 美国_Liberty Lake_MillenialHost Limited_Claude3
   password: 7c9c7f52-5a8c-43e0-b6d1-c8552289f230
   port: 443
-  server: us.mi11o4ka.com
-  skip-cert-verify: true
+  server: 167.148.201.99
+  skip-cert-verify: false
   sni: us.mi11o4ka.com
   type: hysteria2
 - name: 美国_Liberty Lake_MillenialHost Limited_Claude4
-  password: ee78c844-83b6-4508-b1f9-b3f00c8e0556
+  password: 7c9c7f52-5a8c-43e0-b6d1-c8552289f230
   port: 443
-  server: 167.148.201.99
-  skip-cert-verify: false
+  server: us.mi11o4ka.com
+  skip-cert-verify: true
   sni: us.mi11o4ka.com
   type: hysteria2
 - cipher: 2022-blake3-aes-128-gcm
@@ -1651,24 +1480,17 @@ proxies:
   port: 8080
   server: 107.151.182.197
   type: ss
-- name: 美国_McLean_Cox Communications Inc._Claude
-  password: None
-  port: 8090
-  server: 184.188.139.2
-  skip-cert-verify: true
-  tls: true
-  type: http
 - cipher: aes-256-gcm
   name: 美国_Miami_GTHost_Claude1
   password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
   port: 19999
-  server: 193.151.160.18
+  server: 193.151.160.9
   type: ss
 - cipher: aes-256-gcm
   name: 美国_Miami_GTHost_Claude2
   password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
   port: 19999
-  server: 193.151.160.9
+  server: 193.151.160.18
   type: ss
 - name: 美国_Miami_GTHost_Claude3
   password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
@@ -1698,15 +1520,6 @@ proxies:
   skip-cert-verify: false
   sni: learn.discoverfreshgraduatejobsstartyourprofessionaljourney.com
   type: trojan
-- alterId: 0
-  cipher: auto
-  name: 美国_Miami_GTHost_Claude7
-  network: tcp
-  port: 18000
-  server: 38.91.107.49
-  tls: false
-  type: vmess
-  uuid: f8c8dc3d-0d37-46b0-8b34-a7232882fcfe
 - alterId: 0
   cipher: auto
   name: 美国_Miami_GTHost_Gemini_Claude
@@ -1740,12 +1553,6 @@ proxies:
   port: 443
   server: 198.98.53.130
   type: ss
-- name: 美国_New York_Zayo Bandwidth_Claude
-  port: 8090
-  server: 209.148.53.153
-  skip-cert-verify: true
-  tls: true
-  type: http
 - alterId: 0
   cipher: aes-128-gcm
   name: 美国_New York_objx.net_Gemini_Claude
@@ -1761,18 +1568,31 @@ proxies:
   port: 19999
   server: 193.151.163.18
   type: ss
-- name: 美国_North Bergen_DigitalOcean, LLC_Claude
+- name: 美国_North Bergen_Digital Ocean_Claude
   network: ws
   port: 2053
   server: fast.145779.xyz
   servername: fast.145779.xyz
   tls: true
   type: vless
-  uuid: e3149c82-00f6-4227-b2c0-b78f1dd81279
+  uuid: c83f15bf-1817-4ec8-a19f-6393d226434c
   ws-opts:
     headers:
       Host: fast.145779.xyz
     path: /ws-tesla
+- name: 美国_North Kansas City_Fro LLC_Claude
+  network: ws
+  port: 8080
+  server: 208.84.100.209
+  type: vless
+  udp: true
+  uuid: 36c3dcc2-17b6-4478-b8a7-3978e6d5afe9
+- cipher: aes-128-gcm
+  name: 美国_Phoenix_GSL Networks Pty LTD_Claude
+  password: shadowsocks
+  port: 443
+  server: 173.244.56.9
+  type: ss
 - cipher: aes-256-gcm
   name: 美国_Phoenix_GTHost_Claude1
   password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
@@ -1782,9 +1602,9 @@ proxies:
 - name: 美国_Phoenix_GTHost_Claude2
   password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
   port: 443
-  server: 66.163.112.142
+  server: 66.163.112.76
   skip-cert-verify: true
-  sni: cdn.unlockyourfuturefindyourperfectcareer.com
+  sni: api.unlockyourfuturefindyourperfectcareer.com
   type: trojan
 - name: 美国_Phoenix_GTHost_Claude3
   password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
@@ -1803,15 +1623,16 @@ proxies:
 - name: 美国_Phoenix_GTHost_Claude5
   password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
   port: 443
-  server: 66.163.112.76
+  server: 66.163.112.242
   skip-cert-verify: true
-  sni: api.unlockyourfuturefindyourperfectcareer.com
+  sni: api.nextjobopportunityandclaimyouridealrole.com
   type: trojan
 - name: 美国_Phoenix_GTHost_Claude6
   password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
   port: 443
-  server: 66.163.112.121
-  sni: www.unlockyourfuturefindyourperfectcareer.com
+  server: 66.163.112.142
+  skip-cert-verify: true
+  sni: cdn.unlockyourfuturefindyourperfectcareer.com
   type: trojan
 - name: 美国_Phoenix_GTHost_Claude7
   password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
@@ -1823,16 +1644,16 @@ proxies:
 - name: 美国_Phoenix_GTHost_Claude8
   password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
   port: 443
-  server: 66.163.112.242
-  skip-cert-verify: true
-  sni: api.nextjobopportunityandclaimyouridealrole.com
+  server: 66.163.112.13
+  skip-cert-verify: false
+  sni: blog.unlockyourfuturefindyourperfectcareer.com
   type: trojan
 - name: 美国_Phoenix_GTHost_Claude9
   password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
   port: 443
-  server: 66.163.112.13
-  skip-cert-verify: false
-  sni: blog.unlockyourfuturefindyourperfectcareer.com
+  server: 66.163.112.121
+  skip-cert-verify: true
+  sni: 66.163.112.121
   type: trojan
 - alterId: 0
   cipher: auto
@@ -1849,13 +1670,6 @@ proxies:
   port: 4444
   server: 15.204.247.206
   type: ss
-- name: 美国_Sabetha_Carson Communications, LLC_Claude
-  password: None
-  port: 443
-  server: 162.244.227.36
-  skip-cert-verify: true
-  tls: true
-  type: http
 - name: 美国_San Francisco_Newserverlife LLC_Claude
   network: ws
   port: 8443
@@ -1888,54 +1702,54 @@ proxies:
   name: 美国_San Jose_Zenlayer Inc_Claude1
   password: 14fFPrbezE3HDZzsMOr6
   port: 8080
-  server: 23.251.121.242
+  server: 107.155.57.51
   type: ss
 - cipher: rc4-md5
   name: 美国_San Jose_Zenlayer Inc_Claude2
   password: 14fFPrbezE3HDZzsMOr6
   port: 8080
-  server: 107.155.57.51
+  server: 107.155.57.11
   type: ss
 - cipher: rc4-md5
   name: 美国_San Jose_Zenlayer Inc_Claude3
   password: 14fFPrbezE3HDZzsMOr6
   port: 8080
-  server: 107.155.57.11
+  server: 23.251.121.242
   type: ss
 - name: 美国_Santa Clara_GlobalTeleHost Corp._Claude1
+  password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
+  port: 443
+  server: 167.88.61.198
+  skip-cert-verify: false
+  sni: cdn.browseseniorrolesandenhanceyourcareertoday.com
+  type: trojan
+- name: 美国_Santa Clara_GlobalTeleHost Corp._Claude2
   password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
   port: 443
   server: 167.88.61.20
   skip-cert-verify: false
   sni: api.browseseniorrolesandenhanceyourcareertoday.com
   type: trojan
-- name: 美国_Santa Clara_GlobalTeleHost Corp._Claude2
-  password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
-  port: 443
-  server: 167.88.61.175
-  skip-cert-verify: false
-  sni: blog.browseseniorrolesandenhanceyourcareertoday.com
-  type: trojan
 - name: 美国_Santa Clara_GlobalTeleHost Corp._Claude3
-  password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
-  port: 443
-  server: 167.88.61.85
-  skip-cert-verify: false
-  sni: resources.browseseniorrolesandenhanceyourcareertoday.com
-  type: trojan
-- name: 美国_Santa Clara_GlobalTeleHost Corp._Claude4
   password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
   port: 443
   server: 167.88.61.193
   skip-cert-verify: false
   sni: browseseniorrolesandenhanceyourcareertoday.com
   type: trojan
+- name: 美国_Santa Clara_GlobalTeleHost Corp._Claude4
+  password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
+  port: 443
+  server: 167.88.61.175
+  skip-cert-verify: false
+  sni: blog.browseseniorrolesandenhanceyourcareertoday.com
+  type: trojan
 - name: 美国_Santa Clara_GlobalTeleHost Corp._Claude5
   password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
   port: 443
-  server: 167.88.61.198
+  server: 167.88.61.85
   skip-cert-verify: false
-  sni: cdn.browseseniorrolesandenhanceyourcareertoday.com
+  sni: resources.browseseniorrolesandenhanceyourcareertoday.com
   type: trojan
 - name: 美国_Seattle_Contabo Inc._Claude
   password: gf1:gfhysteria2024
@@ -1962,37 +1776,31 @@ proxies:
 - name: 美国_Seattle_GTHost_Claude1
   password: f0eb8c92ce8946aaba856569cff1a16b
   port: 443
-  server: resources.findlocaljobnetworkandbuildcommunityconnections.com
-  skip-cert-verify: false
-  sni: ''
-  type: trojan
-- name: 美国_Seattle_GTHost_Claude2
-  password: f0eb8c92ce8946aaba856569cff1a16b
-  port: 443
   server: 216.106.186.33
   skip-cert-verify: false
   sni: resources.findlocaljobnetworkandbuildcommunityconnections.com
   type: trojan
-- name: 美国_Seattle_GTHost_Claude3
+- name: 美国_Seattle_GTHost_Claude2
   password: dba20dcb635e430fa4d3bfc303a149d2
   port: 443
   server: 216.106.186.32
   skip-cert-verify: true
   sni: blog.findlocaljobnetworkandbuildcommunityconnections.com
   type: trojan
-- name: 美国_Seattle_GTHost_Claude4
+- name: 美国_Seattle_GTHost_Claude3
   password: 242a3d8eee5e4ed1a6bfa4141d549a25
   port: 443
   server: www.findlocaljobnetworkandbuildcommunityconnections.com
   skip-cert-verify: true
   sni: ''
   type: trojan
-- name: 美国_Seattle_Spartan Host Ltd_Claude
-  port: 8443
-  server: 45.150.164.18
-  skip-cert-verify: true
-  tls: true
-  type: http
+- name: 美国_Seattle_GTHost_Claude4
+  password: f0eb8c92ce8946aaba856569cff1a16b
+  port: 443
+  server: resources.findlocaljobnetworkandbuildcommunityconnections.com
+  skip-cert-verify: false
+  sni: ''
+  type: trojan
 - name: 美国_Secaucus_Baykov Ilya Sergeevich_Claude
   network: tcp
   port: 10443
@@ -2037,22 +1845,21 @@ proxies:
 - name: 英国_Bexley_OVH SAS_Claude3
   network: tcp
   port: 10002
-  server: connect.hondamotor.site
-  servername: connect.hondamotor.site
-  tls: false
+  server: 168.222.43.53
   type: vless
+  udp: true
   uuid: c6362720-0931-4b91-b187-d8ecf3149734
 - name: 英国_Bexley_OVH SAS_Claude4
   network: tcp
   port: 10002
-  server: 178.83.45.226
+  server: connect.hondamotor.site
   type: vless
   udp: true
   uuid: c6362720-0931-4b91-b187-d8ecf3149734
-- name: 英国_Bexley_OVH SAS_Claude5
+- name: 英国_Bexley_OVHcloud_Claude
   network: tcp
   port: 10002
-  server: 168.222.43.53
+  server: 178.83.45.226
   tls: false
   type: vless
   uuid: c6362720-0931-4b91-b187-d8ecf3149734
@@ -2062,27 +1869,19 @@ proxies:
   port: 8080
   server: 146.70.61.37
   type: ss
-- cipher: aes-256-gcm
-  name: 英国_City of London_BrainStorm Network, Inc_Claude
-  password: RexnBgU7EV5ADxG
-  port: 7001
-  server: 94.156.250.148
-  type: ss
+- name: 英国_City of London_LIGHT NODE LIMITED_Claude
+  password: 5t6i121em5lkmsmk
+  port: 29813
+  server: en001.zestapp778.com
+  skip-cert-verify: true
+  sni: en001.zestapp778.com
+  type: trojan
 - cipher: aes-256-gcm
   name: 英国_London_GTHost_Claude
   password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
   port: 19999
   server: 185.176.206.9
   type: ss
-- name: 英国_London_OVH SAS_Claude
-  network: tcp
-  port: 8443
-  server: 51.38.71.147
-  servername: node-uk.connectsuite.org
-  skip-cert-verify: false
-  tls: true
-  type: vless
-  uuid: c08f0056-7a6d-4931-813b-aaa3cdd00aed
 - cipher: rc4-md5
   name: 英国_London_Zenlayer Inc_Claude1
   password: 14fFPrbezE3HDZzsMOr6
@@ -2113,58 +1912,29 @@ proxies:
   skip-cert-verify: true
   tls: true
   type: http
-- name: 荷兰_Amsterdam_DataCamp Limited_Claude3
-  password: 'null'
-  port: 9002
-  server: 84.17.47.146
-  skip-cert-verify: true
-  tls: true
-  type: http
-  username: 'null'
-- name: 荷兰_Amsterdam_DataCamp Limited_Claude4
-  port: 9002
-  server: 84.17.47.149
-  skip-cert-verify: true
-  tls: true
-  type: http
-- name: 荷兰_Amsterdam_DataCamp Limited_Claude5
-  password: None
-  port: 9002
-  server: 84.17.47.126
-  skip-cert-verify: true
-  tls: true
-  type: http
 - cipher: aes-128-gcm
   name: 荷兰_Amsterdam_Datacamp Limited_Claude
   password: shadowsocks
   port: 443
   server: 158.173.20.208
   type: ss
-- name: 荷兰_Amsterdam_DigitalOcean, LLC_Claude
-  password: e4b72b531a2d10900519
-  port: 443
-  server: 82.196.9.7
-  sni: 52c40907.acsnet.co
-  tls: true
-  type: http
-  username: testuser1
 - cipher: chacha20-ietf-poly1305
   name: 荷兰_Amsterdam_Greenhost BV_Claude1
-  password: oZIoA69Q8yhcQV8ka3Pa3A
+  password: QCXDxuDlTTMD7jtgHUjIoj
   port: 8080
-  server: 82.38.31.26
+  server: 193.29.139.168
   type: ss
 - cipher: chacha20-ietf-poly1305
   name: 荷兰_Amsterdam_Greenhost BV_Claude10
   password: oZIoA69Q8yhcQV8ka3Pa3A
-  port: 443
-  server: 82.38.31.159
+  port: 8080
+  server: 193.29.139.197
   type: ss
 - cipher: chacha20-ietf-poly1305
   name: 荷兰_Amsterdam_Greenhost BV_Claude11
   password: oZIoA69Q8yhcQV8ka3Pa3A
-  port: 443
-  server: 82.38.31.171
+  port: 8080
+  server: 193.29.139.202
   type: ss
 - cipher: chacha20-ietf-poly1305
   name: 荷兰_Amsterdam_Greenhost BV_Claude12
@@ -2176,163 +1946,163 @@ proxies:
   name: 荷兰_Amsterdam_Greenhost BV_Claude13
   password: oZIoA69Q8yhcQV8ka3Pa3A
   port: 443
-  server: 82.38.31.169
+  server: 82.38.31.162
   type: ss
 - cipher: chacha20-ietf-poly1305
   name: 荷兰_Amsterdam_Greenhost BV_Claude14
   password: oZIoA69Q8yhcQV8ka3Pa3A
   port: 8080
-  server: 82.38.31.54
+  server: 82.38.31.171
   type: ss
 - cipher: chacha20-ietf-poly1305
   name: 荷兰_Amsterdam_Greenhost BV_Claude15
-  password: oZIoA69Q8yhcQV8ka3Pa3A
-  port: 8080
-  server: 82.38.31.39
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 荷兰_Amsterdam_Greenhost BV_Claude16
-  password: oZIoA69Q8yhcQV8ka3Pa3A
-  port: 8080
-  server: 82.38.31.66
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 荷兰_Amsterdam_Greenhost BV_Claude17
-  password: oZIoA69Q8yhcQV8ka3Pa3A
-  port: 8080
-  server: 82.38.31.48
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 荷兰_Amsterdam_Greenhost BV_Claude18
-  password: oZIoA69Q8yhcQV8ka3Pa3A
-  port: 8080
-  server: 193.29.139.179
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 荷兰_Amsterdam_Greenhost BV_Claude19
-  password: oZIoA69Q8yhcQV8ka3Pa3A
-  port: 8080
-  server: 193.29.139.197
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 荷兰_Amsterdam_Greenhost BV_Claude2
-  password: oZIoA69Q8yhcQV8ka3Pa3A
-  port: 443
-  server: 82.38.31.170
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 荷兰_Amsterdam_Greenhost BV_Claude20
-  password: oZIoA69Q8yhcQV8ka3Pa3A
-  port: 443
-  server: 82.38.31.165
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 荷兰_Amsterdam_Greenhost BV_Claude21
-  password: oZIoA69Q8yhcQV8ka3Pa3A
-  port: 8080
-  server: 82.38.31.62
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 荷兰_Amsterdam_Greenhost BV_Claude22
-  password: k1dBOmOB4oqi7Ump37a1bQ
-  port: 8080
-  server: 82.38.31.185
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 荷兰_Amsterdam_Greenhost BV_Claude23
-  password: oZIoA69Q8yhcQV8ka3Pa3A
-  port: 8080
-  server: 82.38.31.28
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 荷兰_Amsterdam_Greenhost BV_Claude24
-  password: oZIoA69Q8yhcQV8ka3Pa3A
-  port: 8080
-  server: 193.29.139.188
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 荷兰_Amsterdam_Greenhost BV_Claude25
-  password: QCXDxuDlTTMD7jtgHUjIoj
-  port: 8080
-  server: 193.29.139.168
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 荷兰_Amsterdam_Greenhost BV_Claude26
-  password: k1dBOmOB4oqi7Ump37a1bQ
-  port: 8080
-  server: 193.29.139.132
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 荷兰_Amsterdam_Greenhost BV_Claude27
-  password: oZIoA69Q8yhcQV8ka3Pa3A
-  port: 8080
-  server: 82.38.31.18
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 荷兰_Amsterdam_Greenhost BV_Claude28
   password: k1dBOmOB4oqi7Ump37a1bQ
   port: 8080
   server: 82.38.31.201
   type: ss
 - cipher: chacha20-ietf-poly1305
-  name: 荷兰_Amsterdam_Greenhost BV_Claude29
-  password: oZIoA69Q8yhcQV8ka3Pa3A
-  port: 8080
-  server: 82.38.31.49
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 荷兰_Amsterdam_Greenhost BV_Claude3
-  password: k1dBOmOB4oqi7Ump37a1bQ
-  port: 8080
-  server: 82.38.31.219
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 荷兰_Amsterdam_Greenhost BV_Claude30
-  password: k1dBOmOB4oqi7Ump37a1bQ
-  port: 8080
-  server: 82.38.31.179
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 荷兰_Amsterdam_Greenhost BV_Claude31
-  password: oZIoA69Q8yhcQV8ka3Pa3A
-  port: 8080
-  server: 82.38.31.34
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 荷兰_Amsterdam_Greenhost BV_Claude32
-  password: k1dBOmOB4oqi7Ump37a1bQ
-  port: 8080
-  server: 193.29.139.198
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 荷兰_Amsterdam_Greenhost BV_Claude33
-  password: oZIoA69Q8yhcQV8ka3Pa3A
-  port: 443
-  server: 82.38.31.174
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 荷兰_Amsterdam_Greenhost BV_Claude34
-  password: oZIoA69Q8yhcQV8ka3Pa3A
-  port: 8080
-  server: 82.38.31.10
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 荷兰_Amsterdam_Greenhost BV_Claude35
+  name: 荷兰_Amsterdam_Greenhost BV_Claude16
   password: oZIoA69Q8yhcQV8ka3Pa3A
   port: 8080
   server: 82.38.31.156
   type: ss
 - cipher: chacha20-ietf-poly1305
-  name: 荷兰_Amsterdam_Greenhost BV_Claude36
+  name: 荷兰_Amsterdam_Greenhost BV_Claude17
+  password: oZIoA69Q8yhcQV8ka3Pa3A
+  port: 443
+  server: 82.38.31.170
+  type: ss
+- cipher: chacha20-ietf-poly1305
+  name: 荷兰_Amsterdam_Greenhost BV_Claude18
+  password: oZIoA69Q8yhcQV8ka3Pa3A
+  port: 8080
+  server: 82.38.31.48
+  type: ss
+- cipher: chacha20-ietf-poly1305
+  name: 荷兰_Amsterdam_Greenhost BV_Claude19
+  password: oZIoA69Q8yhcQV8ka3Pa3A
+  port: 8080
+  server: 82.38.31.3
+  type: ss
+- cipher: chacha20-ietf-poly1305
+  name: 荷兰_Amsterdam_Greenhost BV_Claude2
+  password: oZIoA69Q8yhcQV8ka3Pa3A
+  port: 8080
+  server: 193.29.139.188
+  type: ss
+- cipher: chacha20-ietf-poly1305
+  name: 荷兰_Amsterdam_Greenhost BV_Claude20
   password: k1dBOmOB4oqi7Ump37a1bQ
   port: 8080
   server: 82.38.31.187
   type: ss
 - cipher: chacha20-ietf-poly1305
-  name: 荷兰_Amsterdam_Greenhost BV_Claude37
+  name: 荷兰_Amsterdam_Greenhost BV_Claude21
+  password: k1dBOmOB4oqi7Ump37a1bQ
+  port: 8080
+  server: 193.29.139.198
+  type: ss
+- cipher: chacha20-ietf-poly1305
+  name: 荷兰_Amsterdam_Greenhost BV_Claude22
+  password: oZIoA69Q8yhcQV8ka3Pa3A
+  port: 8080
+  server: 82.38.31.18
+  type: ss
+- cipher: chacha20-ietf-poly1305
+  name: 荷兰_Amsterdam_Greenhost BV_Claude23
+  password: k1dBOmOB4oqi7Ump37a1bQ
+  port: 8080
+  server: 193.29.139.132
+  type: ss
+- cipher: chacha20-ietf-poly1305
+  name: 荷兰_Amsterdam_Greenhost BV_Claude24
+  password: oZIoA69Q8yhcQV8ka3Pa3A
+  port: 8080
+  server: 82.38.31.10
+  type: ss
+- cipher: chacha20-ietf-poly1305
+  name: 荷兰_Amsterdam_Greenhost BV_Claude25
+  password: oZIoA69Q8yhcQV8ka3Pa3A
+  port: 443
+  server: 82.38.31.169
+  type: ss
+- cipher: chacha20-ietf-poly1305
+  name: 荷兰_Amsterdam_Greenhost BV_Claude26
+  password: k1dBOmOB4oqi7Ump37a1bQ
+  port: 8080
+  server: 82.38.31.219
+  type: ss
+- cipher: chacha20-ietf-poly1305
+  name: 荷兰_Amsterdam_Greenhost BV_Claude27
+  password: oZIoA69Q8yhcQV8ka3Pa3A
+  port: 8080
+  server: 82.38.31.62
+  type: ss
+- cipher: chacha20-ietf-poly1305
+  name: 荷兰_Amsterdam_Greenhost BV_Claude28
+  password: oZIoA69Q8yhcQV8ka3Pa3A
+  port: 8080
+  server: 82.38.31.28
+  type: ss
+- cipher: chacha20-ietf-poly1305
+  name: 荷兰_Amsterdam_Greenhost BV_Claude29
+  password: k1dBOmOB4oqi7Ump37a1bQ
+  port: 8080
+  server: 82.38.31.179
+  type: ss
+- cipher: chacha20-ietf-poly1305
+  name: 荷兰_Amsterdam_Greenhost BV_Claude3
+  password: k1dBOmOB4oqi7Ump37a1bQ
+  port: 8080
+  server: 82.38.31.185
+  type: ss
+- cipher: chacha20-ietf-poly1305
+  name: 荷兰_Amsterdam_Greenhost BV_Claude30
+  password: oZIoA69Q8yhcQV8ka3Pa3A
+  port: 443
+  server: 82.38.31.174
+  type: ss
+- cipher: chacha20-ietf-poly1305
+  name: 荷兰_Amsterdam_Greenhost BV_Claude31
+  password: oZIoA69Q8yhcQV8ka3Pa3A
+  port: 8080
+  server: 82.38.31.49
+  type: ss
+- cipher: chacha20-ietf-poly1305
+  name: 荷兰_Amsterdam_Greenhost BV_Claude32
+  password: oZIoA69Q8yhcQV8ka3Pa3A
+  port: 8080
+  server: 82.38.31.54
+  type: ss
+- cipher: chacha20-ietf-poly1305
+  name: 荷兰_Amsterdam_Greenhost BV_Claude33
+  password: oZIoA69Q8yhcQV8ka3Pa3A
+  port: 8080
+  server: 82.38.31.155
+  type: ss
+- cipher: chacha20-ietf-poly1305
+  name: 荷兰_Amsterdam_Greenhost BV_Claude34
+  password: oZIoA69Q8yhcQV8ka3Pa3A
+  port: 8080
+  server: 82.38.31.66
+  type: ss
+- cipher: chacha20-ietf-poly1305
+  name: 荷兰_Amsterdam_Greenhost BV_Claude35
+  password: oZIoA69Q8yhcQV8ka3Pa3A
+  port: 443
+  server: 82.38.31.171
+  type: ss
+- cipher: chacha20-ietf-poly1305
+  name: 荷兰_Amsterdam_Greenhost BV_Claude36
   password: oZIoA69Q8yhcQV8ka3Pa3A
   port: 8080
   server: 82.38.31.47
+  type: ss
+- cipher: chacha20-ietf-poly1305
+  name: 荷兰_Amsterdam_Greenhost BV_Claude37
+  password: oZIoA69Q8yhcQV8ka3Pa3A
+  port: 443
+  server: 82.38.31.159
   type: ss
 - cipher: chacha20-ietf-poly1305
   name: 荷兰_Amsterdam_Greenhost BV_Claude38
@@ -2344,211 +2114,205 @@ proxies:
   name: 荷兰_Amsterdam_Greenhost BV_Claude39
   password: oZIoA69Q8yhcQV8ka3Pa3A
   port: 8080
-  server: 82.38.31.155
+  server: 82.38.31.61
   type: ss
 - cipher: chacha20-ietf-poly1305
   name: 荷兰_Amsterdam_Greenhost BV_Claude4
   password: oZIoA69Q8yhcQV8ka3Pa3A
-  port: 443
-  server: 82.38.31.175
+  port: 8080
+  server: 82.38.31.34
   type: ss
 - cipher: chacha20-ietf-poly1305
   name: 荷兰_Amsterdam_Greenhost BV_Claude40
   password: k1dBOmOB4oqi7Ump37a1bQ
   port: 8080
-  server: 82.38.31.214
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 荷兰_Amsterdam_Greenhost BV_Claude41
-  password: k1dBOmOB4oqi7Ump37a1bQ
-  port: 8080
-  server: 82.38.31.194
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 荷兰_Amsterdam_Greenhost BV_Claude42
-  password: oZIoA69Q8yhcQV8ka3Pa3A
-  port: 8080
-  server: 82.38.31.7
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 荷兰_Amsterdam_Greenhost BV_Claude43
-  password: k1dBOmOB4oqi7Ump37a1bQ
-  port: 8080
   server: 82.38.31.202
   type: ss
 - cipher: chacha20-ietf-poly1305
-  name: 荷兰_Amsterdam_Greenhost BV_Claude44
+  name: 荷兰_Amsterdam_Greenhost BV_Claude41
   password: oZIoA69Q8yhcQV8ka3Pa3A
   port: 8080
   server: 82.38.31.9
   type: ss
 - cipher: chacha20-ietf-poly1305
-  name: 荷兰_Amsterdam_Greenhost BV_Claude45
+  name: 荷兰_Amsterdam_Greenhost BV_Claude42
   password: k1dBOmOB4oqi7Ump37a1bQ
   port: 8080
   server: 82.38.31.210
   type: ss
 - cipher: chacha20-ietf-poly1305
-  name: 荷兰_Amsterdam_Greenhost BV_Claude46
-  password: oZIoA69Q8yhcQV8ka3Pa3A
-  port: 8080
-  server: 82.38.31.46
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 荷兰_Amsterdam_Greenhost BV_Claude47
-  password: oZIoA69Q8yhcQV8ka3Pa3A
-  port: 8080
-  server: 82.38.31.42
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 荷兰_Amsterdam_Greenhost BV_Claude48
-  password: oZIoA69Q8yhcQV8ka3Pa3A
-  port: 8080
-  server: 82.38.31.69
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 荷兰_Amsterdam_Greenhost BV_Claude49
-  password: k1dBOmOB4oqi7Ump37a1bQ
-  port: 8080
-  server: 82.38.31.193
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 荷兰_Amsterdam_Greenhost BV_Claude5
-  password: oZIoA69Q8yhcQV8ka3Pa3A
-  port: 8080
-  server: 82.38.31.3
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 荷兰_Amsterdam_Greenhost BV_Claude50
-  password: k1dBOmOB4oqi7Ump37a1bQ
-  port: 8080
-  server: 82.38.31.211
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 荷兰_Amsterdam_Greenhost BV_Claude51
-  password: k1dBOmOB4oqi7Ump37a1bQ
-  port: 8080
-  server: 82.38.31.191
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 荷兰_Amsterdam_Greenhost BV_Claude52
-  password: oZIoA69Q8yhcQV8ka3Pa3A
-  port: 8080
-  server: 193.29.139.235
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 荷兰_Amsterdam_Greenhost BV_Claude53
-  password: k1dBOmOB4oqi7Ump37a1bQ
-  port: 8080
-  server: 82.38.31.213
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 荷兰_Amsterdam_Greenhost BV_Claude54
-  password: k1dBOmOB4oqi7Ump37a1bQ
-  port: 8080
-  server: 82.38.31.207
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 荷兰_Amsterdam_Greenhost BV_Claude55
-  password: oZIoA69Q8yhcQV8ka3Pa3A
-  port: 8080
-  server: 82.38.31.17
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 荷兰_Amsterdam_Greenhost BV_Claude56
-  password: k1dBOmOB4oqi7Ump37a1bQ
-  port: 8080
-  server: 82.38.31.208
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 荷兰_Amsterdam_Greenhost BV_Claude57
-  password: k1dBOmOB4oqi7Ump37a1bQ
-  port: 8080
-  server: 82.38.31.215
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 荷兰_Amsterdam_Greenhost BV_Claude58
-  password: k1dBOmOB4oqi7Ump37a1bQ
-  port: 8080
-  server: 82.38.31.195
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 荷兰_Amsterdam_Greenhost BV_Claude59
-  password: k1dBOmOB4oqi7Ump37a1bQ
-  port: 8080
-  server: 82.38.31.212
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 荷兰_Amsterdam_Greenhost BV_Claude6
-  password: oZIoA69Q8yhcQV8ka3Pa3A
-  port: 8080
-  server: 82.38.31.171
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 荷兰_Amsterdam_Greenhost BV_Claude60
-  password: oZIoA69Q8yhcQV8ka3Pa3A
-  port: 8080
-  server: 82.38.31.11
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 荷兰_Amsterdam_Greenhost BV_Claude61
-  password: k1dBOmOB4oqi7Ump37a1bQ
-  port: 8080
-  server: 82.38.31.206
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 荷兰_Amsterdam_Greenhost BV_Claude62
-  password: k1dBOmOB4oqi7Ump37a1bQ
-  port: 8080
-  server: 82.38.31.181
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 荷兰_Amsterdam_Greenhost BV_Claude63
-  password: k1dBOmOB4oqi7Ump37a1bQ
-  port: 8080
-  server: 82.38.31.200
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 荷兰_Amsterdam_Greenhost BV_Claude64
-  password: k1dBOmOB4oqi7Ump37a1bQ
-  port: 8080
-  server: 82.38.31.203
-  type: ss
-- cipher: chacha20-ietf-poly1305
-  name: 荷兰_Amsterdam_Greenhost BV_Claude65
+  name: 荷兰_Amsterdam_Greenhost BV_Claude43
   password: oZIoA69Q8yhcQV8ka3Pa3A
   port: 8080
   server: 82.38.31.149
   type: ss
 - cipher: chacha20-ietf-poly1305
-  name: 荷兰_Amsterdam_Greenhost BV_Claude66
+  name: 荷兰_Amsterdam_Greenhost BV_Claude44
   password: oZIoA69Q8yhcQV8ka3Pa3A
   port: 8080
   server: 82.38.31.2
   type: ss
 - cipher: chacha20-ietf-poly1305
-  name: 荷兰_Amsterdam_Greenhost BV_Claude67
+  name: 荷兰_Amsterdam_Greenhost BV_Claude45
+  password: oZIoA69Q8yhcQV8ka3Pa3A
+  port: 8080
+  server: 82.38.31.46
+  type: ss
+- cipher: chacha20-ietf-poly1305
+  name: 荷兰_Amsterdam_Greenhost BV_Claude46
+  password: oZIoA69Q8yhcQV8ka3Pa3A
+  port: 8080
+  server: 82.38.31.42
+  type: ss
+- cipher: chacha20-ietf-poly1305
+  name: 荷兰_Amsterdam_Greenhost BV_Claude47
+  password: oZIoA69Q8yhcQV8ka3Pa3A
+  port: 8080
+  server: 82.38.31.69
+  type: ss
+- cipher: chacha20-ietf-poly1305
+  name: 荷兰_Amsterdam_Greenhost BV_Claude48
+  password: k1dBOmOB4oqi7Ump37a1bQ
+  port: 8080
+  server: 82.38.31.193
+  type: ss
+- cipher: chacha20-ietf-poly1305
+  name: 荷兰_Amsterdam_Greenhost BV_Claude49
+  password: k1dBOmOB4oqi7Ump37a1bQ
+  port: 8080
+  server: 82.38.31.211
+  type: ss
+- cipher: chacha20-ietf-poly1305
+  name: 荷兰_Amsterdam_Greenhost BV_Claude5
+  password: oZIoA69Q8yhcQV8ka3Pa3A
+  port: 8080
+  server: 82.38.31.39
+  type: ss
+- cipher: chacha20-ietf-poly1305
+  name: 荷兰_Amsterdam_Greenhost BV_Claude50
+  password: k1dBOmOB4oqi7Ump37a1bQ
+  port: 8080
+  server: 82.38.31.191
+  type: ss
+- cipher: chacha20-ietf-poly1305
+  name: 荷兰_Amsterdam_Greenhost BV_Claude51
+  password: oZIoA69Q8yhcQV8ka3Pa3A
+  port: 8080
+  server: 193.29.139.235
+  type: ss
+- cipher: chacha20-ietf-poly1305
+  name: 荷兰_Amsterdam_Greenhost BV_Claude52
+  password: k1dBOmOB4oqi7Ump37a1bQ
+  port: 8080
+  server: 82.38.31.213
+  type: ss
+- cipher: chacha20-ietf-poly1305
+  name: 荷兰_Amsterdam_Greenhost BV_Claude53
+  password: k1dBOmOB4oqi7Ump37a1bQ
+  port: 8080
+  server: 82.38.31.207
+  type: ss
+- cipher: chacha20-ietf-poly1305
+  name: 荷兰_Amsterdam_Greenhost BV_Claude54
+  password: oZIoA69Q8yhcQV8ka3Pa3A
+  port: 8080
+  server: 82.38.31.17
+  type: ss
+- cipher: chacha20-ietf-poly1305
+  name: 荷兰_Amsterdam_Greenhost BV_Claude55
+  password: k1dBOmOB4oqi7Ump37a1bQ
+  port: 8080
+  server: 82.38.31.208
+  type: ss
+- cipher: chacha20-ietf-poly1305
+  name: 荷兰_Amsterdam_Greenhost BV_Claude56
+  password: k1dBOmOB4oqi7Ump37a1bQ
+  port: 8080
+  server: 82.38.31.215
+  type: ss
+- cipher: chacha20-ietf-poly1305
+  name: 荷兰_Amsterdam_Greenhost BV_Claude57
+  password: k1dBOmOB4oqi7Ump37a1bQ
+  port: 8080
+  server: 82.38.31.195
+  type: ss
+- cipher: chacha20-ietf-poly1305
+  name: 荷兰_Amsterdam_Greenhost BV_Claude58
+  password: k1dBOmOB4oqi7Ump37a1bQ
+  port: 8080
+  server: 82.38.31.212
+  type: ss
+- cipher: chacha20-ietf-poly1305
+  name: 荷兰_Amsterdam_Greenhost BV_Claude59
+  password: oZIoA69Q8yhcQV8ka3Pa3A
+  port: 8080
+  server: 82.38.31.11
+  type: ss
+- cipher: chacha20-ietf-poly1305
+  name: 荷兰_Amsterdam_Greenhost BV_Claude6
+  password: oZIoA69Q8yhcQV8ka3Pa3A
+  port: 8080
+  server: 193.29.139.179
+  type: ss
+- cipher: chacha20-ietf-poly1305
+  name: 荷兰_Amsterdam_Greenhost BV_Claude60
+  password: k1dBOmOB4oqi7Ump37a1bQ
+  port: 8080
+  server: 82.38.31.206
+  type: ss
+- cipher: chacha20-ietf-poly1305
+  name: 荷兰_Amsterdam_Greenhost BV_Claude61
+  password: k1dBOmOB4oqi7Ump37a1bQ
+  port: 8080
+  server: 82.38.31.181
+  type: ss
+- cipher: chacha20-ietf-poly1305
+  name: 荷兰_Amsterdam_Greenhost BV_Claude62
+  password: k1dBOmOB4oqi7Ump37a1bQ
+  port: 8080
+  server: 82.38.31.200
+  type: ss
+- cipher: chacha20-ietf-poly1305
+  name: 荷兰_Amsterdam_Greenhost BV_Claude63
+  password: k1dBOmOB4oqi7Ump37a1bQ
+  port: 8080
+  server: 82.38.31.203
+  type: ss
+- cipher: chacha20-ietf-poly1305
+  name: 荷兰_Amsterdam_Greenhost BV_Claude64
   password: k1dBOmOB4oqi7Ump37a1bQ
   port: 8080
   server: 82.38.31.192
   type: ss
 - cipher: chacha20-ietf-poly1305
+  name: 荷兰_Amsterdam_Greenhost BV_Claude65
+  password: k1dBOmOB4oqi7Ump37a1bQ
+  port: 8080
+  server: 82.38.31.176
+  type: ss
+- cipher: chacha20-ietf-poly1305
+  name: 荷兰_Amsterdam_Greenhost BV_Claude66
+  password: k1dBOmOB4oqi7Ump37a1bQ
+  port: 8080
+  server: 82.38.31.184
+  type: ss
+- cipher: chacha20-ietf-poly1305
   name: 荷兰_Amsterdam_Greenhost BV_Claude7
   password: oZIoA69Q8yhcQV8ka3Pa3A
   port: 8080
-  server: 193.29.139.202
+  server: 82.38.31.26
   type: ss
 - cipher: chacha20-ietf-poly1305
   name: 荷兰_Amsterdam_Greenhost BV_Claude8
   password: oZIoA69Q8yhcQV8ka3Pa3A
   port: 443
-  server: 82.38.31.162
+  server: 82.38.31.175
   type: ss
 - cipher: chacha20-ietf-poly1305
   name: 荷兰_Amsterdam_Greenhost BV_Claude9
   password: oZIoA69Q8yhcQV8ka3Pa3A
-  port: 8080
-  server: 82.38.31.61
+  port: 443
+  server: 82.38.31.165
   type: ss
 - cipher: chacha20-ietf-poly1305
   name: 荷兰_Amsterdam_Hostkey B.V._Claude1
@@ -2569,13 +2333,6 @@ proxies:
   skip-cert-verify: true
   sni: ''
   type: hysteria2
-- name: 荷兰_Dronten_The Infrastructure Group B.V._Claude
-  password: None
-  port: 443
-  server: 5.255.118.82
-  skip-cert-verify: true
-  tls: true
-  type: http
 - name: 荷兰_Dronten_The Infrastructure Group_Claude
   port: 443
   server: 5.255.118.82
@@ -2601,13 +2358,6 @@ proxies:
   tls: true
   type: http
 - name: 荷兰_Haarlem_SCALEWAY_Claude2
-  password: None
-  port: 23856
-  server: 51.159.225.196
-  skip-cert-verify: true
-  tls: true
-  type: http
-- name: 荷兰_Haarlem_SCALEWAY_Claude3
   network: ws
   port: 80
   server: 163.172.213.174
@@ -2618,23 +2368,18 @@ proxies:
   uuid: e73df646-1f62-41bf-8c50-653497d603d0
   ws-opts:
     path: /vless/
-- name: 荷兰_Haarlem_SCALEWAY_Claude4
+- name: 荷兰_Haarlem_SCALEWAY_Claude3
   network: ws
-  port: 80
+  port: 8443
   server: 163.172.214.188
-  skip-cert-verify: false
-  tls: false
+  servername: SC-TheNetherlands1.09vpn.com
+  skip-cert-verify: true
+  tls: true
   type: vless
   udp: true
   uuid: 40cc9b52-25b8-4cd5-8b45-715ae26e6baf
   ws-opts:
     path: /vless/
-- name: 荷兰_Haarlem_Scaleway SAS_Claude
-  port: 443
-  server: 51.158.243.91
-  skip-cert-verify: true
-  tls: true
-  type: http
 - name: 荷兰_Haarlem_Scaleway_Claude
   network: ws
   port: 80
@@ -2647,15 +2392,8 @@ proxies:
     headers:
       Host: SC-TheNetherlands1.09vpn.com
     path: /vless/
-- name: 荷兰_Meppel_Scalaxy_Claude
-  password: None
-  port: 443
-  server: 185.238.170.10
-  skip-cert-verify: true
-  tls: true
-  type: http
 - cipher: aes-128-cfb
-  name: 荷兰_Rozendaal_NFOrce Entertainment B.V._Claude
+  name: 荷兰_Rozendaal_NFOrce Entertainment B.V._Claude1
   obfs: plain
   obfs-param: ''
   password: shadowsocks
@@ -2664,13 +2402,13 @@ proxies:
   protocol-param: ''
   server: 109.201.152.181
   type: ssr
-- name: 越南_Hanoi_GMO-Z.com Runsystem Joint Stock Company_Claude1
-  port: 2086
-  server: 150.95.109.109
-  tls: false
-  type: vless
-  uuid: b83faafc-cbb7-4655-99d4-2c4c39a49d1b
-- name: 越南_Hanoi_GMO-Z.com Runsystem Joint Stock Company_Claude2
+- cipher: aes-128-cfb
+  name: 荷兰_Rozendaal_NFOrce Entertainment B.V._Claude2
+  password: shadowsocks
+  port: 443
+  server: 109.201.152.181
+  type: ss
+- name: 越南_Hanoi_GMO-Z.com Runsystem Joint Stock Company_Claude
   network: tcp
   port: 2086
   server: 150.95.109.109
@@ -2708,24 +2446,33 @@ proxies:
   port: 6123
   server: 211.178.105.134
   type: ss
+- name: 韩国_Chuncheon_Oracle Corporation_Claude
+  network: ws
+  port: 25555
+  server: 152.69.226.63
+  tls: false
+  type: vless
+  uuid: 27c5483f-17f4-48ae-9a04-def53d88440d
+  ws-opts:
+    path: /
+- fingerprint: 89:61:86:FE:B2:0C:B7:40:31:87:A4:5F:F3:BD:5D:DC:8B:FB:DD:41:9D:77:9D:55:D7:86:18:9D:36:73:1A:69
+  name: 韩国_Incheon_Amazon.com, Inc._Claude
+  password: 7e68e32f-8015-4f37-9082-70e8b0b58043
+  port: 443
+  server: 3.36.61.213
+  skip-cert-verify: true
+  sni: www.bing.com
+  type: hysteria2
+- name: 韩国_Seoul_Oracle Cloud_Claude1
+  password: 1671a252e2a97dc2bda4e515475931da
+  port: 50160
+  server: 132.226.226.189
+  skip-cert-verify: true
+  sni: ''
+  type: hysteria2
 - alterId: 0
   cipher: auto
-  name: 韩国_Chuncheon_Oracle Corporation_Claude
-  network: tcp
-  port: 8888
-  server: 146.56.112.110
-  type: vmess
-  udp: true
-  uuid: e7c302f3-90d6-42dd-9d7d-94a3683a3707
-- cipher: aes-256-cfb
-  name: 韩国_Gwangmyeong_Korea Telecom_Claude
-  password: 1234!@#$
-  port: 1774
-  server: 49.254.204.133
-  type: ss
-- alterId: 0
-  cipher: auto
-  name: 韩国_Seoul_Oracle Cloud_Claude1
+  name: 韩国_Seoul_Oracle Cloud_Claude2
   network: none
   port: 443
   server: 140.238.2.250
@@ -2734,7 +2481,7 @@ proxies:
   uuid: 41a7089a-040b-4538-8b8d-010902405bde
 - alterId: 0
   cipher: auto
-  name: 韩国_Seoul_Oracle Cloud_Claude2
+  name: 韩国_Seoul_Oracle Cloud_Claude3
   network: ws
   port: 80
   server: 132.145.80.230
@@ -2745,13 +2492,6 @@ proxies:
     headers:
       Host: kr02.a0a.xyz
     path: /cctv13.m3u8
-- name: 韩国_Seoul_Oracle Cloud_Claude3
-  password: 1671a252e2a97dc2bda4e515475931da
-  port: 50160
-  server: 132.226.226.189
-  skip-cert-verify: true
-  sni: ''
-  type: hysteria2
 - name: 韩国_Seoul_Oracle Corporation_Claude
   password: maintell
   port: 2053
