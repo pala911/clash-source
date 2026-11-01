@@ -2,8 +2,10 @@
 """产出 dist/ —— 手机订阅目标。
 
 dist/profile.yaml      完整 profile：模板(组结构/规则/dns) + 注入指向本仓 gh-pages 的 proxy-providers
+dist/mobile.yaml       iOS 精简版：单 provider（~120 节点）+ 全 lazy 规则集，给网络扩展省内存
 dist/nodes/<src>.yaml  各源过滤后的节点池（provider 格式）
 dist/nodes/all.yaml    全源合并池（provider 格式）
+dist/nodes/mobile.yaml 精简版单池（源间轮询取样、按 server:port 去重）
 dist/manifest.json     本次运行统计（手机排障 / 后续 diff 用）
 
 产出纪律（对应 9-26 探针根治 §29）：
@@ -65,6 +67,17 @@ HEALTH = os.path.join(ROOT, "state", "source_health.json")
 STABILITY_MIN_KNOWN = 100     # 至少这么多节点攒够 MIN_ROUNDS 轮，才敢开始加权
 STABILITY_MIN_PER_SRC = 20    # 单个源至少保留这么多节点
 STABILITY_MIN_RATIO = 0.2     # 单个源最多砍掉的比例（保留比例下限）
+
+# ---- 移动端精简版（2026-11-02，iOS 内存修复）----
+# 实测：完整 profile（20 provider / 5707 节点 / 33 个非 lazy rule-provider）
+# 桌面 mihomo 峰值 ~95MB；iOS 网络扩展上限约 50MB，Clash MI 启动 2 秒即被
+# 系统按内存杀掉（jetsam，无错误日志）。精简版把节点压到 120、规则集全 lazy。
+MOBILE_NODE_CAP = 120
+MOBILE_PER_SRC = 25
+# 近 7 天本机口径活率最高的几个源（2026-11-01 数据）；缺哪个就跳过哪个。
+MOBILE_PREFERRED = ("zhuhaiuk", "clashdaily", "ssrsub", "ruk1ng001",
+                    "leilaomi", "nomorewalls", "automerge")
+MOBILE_PROVIDER = "mobile"
 
 
 def split_by_stability(per_source):
@@ -471,6 +484,114 @@ def build_profile(enabled_sources, exclude_map, owner, repo, flaky_sources=()):
     return tpl, base, ranking
 
 
+def pick_mobile_nodes(per_source_nodes, cap=MOBILE_NODE_CAP, per_src=MOBILE_PER_SRC,
+                      preferred=MOBILE_PREFERRED):
+    """源间轮询取节点（保证多样性），按 (type, server, port) 去重。
+
+    不用「按源顺序取满」——那样前几个源就把名额吃光，等于单源订阅。
+    轮询后即使某个源节点全重复，也能从其他源补满。
+    """
+    sources = [s for s in preferred if per_source_nodes.get(s)]
+    if not sources:                       # 首选源一个都不在（极端情况）就退回全部
+        sources = [s for s, v in per_source_nodes.items() if v]
+    buckets = {s: list(per_source_nodes[s]) for s in sources}
+    used = {s: 0 for s in sources}
+    picked, seen = [], set()
+    while len(picked) < cap:
+        progressed = False
+        for s in sources:
+            if len(picked) >= cap:
+                break
+            while used[s] < len(buckets[s]) and used[s] < per_src:
+                node = buckets[s][used[s]]
+                used[s] += 1
+                key = (str(node.get("type")), str(node.get("server")),
+                       str(node.get("port")))
+                if key in seen:
+                    continue
+                seen.add(key)
+                picked.append(dict(node, name="%s_%s" % (s, node.get("name"))))
+                progressed = True
+                break
+        if not progressed:
+            break
+    return picked, [s for s in sources if used[s] > 0]
+
+
+def build_mobile_profile(per_source_nodes, owner, repo):
+    """iOS 精简版：单 provider + select/url-test 两种组 + 全 lazy 规则集。
+
+    为什么单 provider：iOS 网络扩展内存上限约 50MB，节点数是最主要的变量
+    （5707 节点实测 95MB，120 节点目标 ≤45MB）。规则集加 lazy 后只在
+    命中时加载，33 个全留着不影响启动内存。
+
+    为什么没有 fallback：Karing 官方兼容表明确不支持 fallback / load-balance /
+    relay，只保留 select + url-test 才能让 Karing 和 Clash Mi 都正常。
+    """
+    mbase = mirror_base(owner, repo)
+    with open(TEMPLATE, encoding="utf-8") as f:
+        tpl = yaml.safe_load(f)
+
+    nodes, used_sources = pick_mobile_nodes(per_source_nodes)
+    assert nodes, "移动端精简版没有任何节点（per_source_nodes 为空？）"
+
+    provider = provider_block(MOBILE_PROVIDER,
+                              mbase + "/nodes/mobile.yaml", "")
+    provider["health-check"]["lazy"] = True      # 不用就不测，省电省内存
+    tpl["proxy-providers"] = {MOBILE_PROVIDER: provider}
+    # 家里的静态 HTTP 代理在手机上没有意义，去掉（也避免组里引用它）
+    tpl.pop("proxies", None)
+
+    tpl["proxy-groups"] = [
+        {"name": "AUTO", "type": "url-test", "use": [MOBILE_PROVIDER],
+         "url": YOUTUBE, "expected-status": 204, "interval": 120,
+         "timeout": 5000, "tolerance": 200},
+        {"name": "PROXY", "type": "select", "proxies": ["AUTO", "DIRECT"],
+         "use": [MOBILE_PROVIDER]},
+        {"name": "Claude", "type": "select", "proxies": ["PROXY"],
+         "use": [MOBILE_PROVIDER]},
+        {"name": "Gemini", "type": "select", "proxies": ["PROXY"],
+         "use": [MOBILE_PROVIDER]},
+    ]
+
+    # 规则集全部 lazy：启动只建索引，命中才加载。33 个全保留（分流不变）。
+    for v in (tpl.get("rule-providers") or {}).values():
+        v["lazy"] = True
+
+    # iOS 上 MMDB 可能没随 App 打包；默认下载源是 GitHub，蜂窝下极慢/被墙。
+    # 指到 gh-proxy 镜像，首次用到 GEOIP 时也能拿到（Karing 会忽略该键）。
+    tpl["geox-url"] = {
+        "geoip": "https://gh-proxy.com/https://github.com/MetaCubeX/meta-rules-dat/"
+                 "releases/download/latest/geoip.dat",
+        "geosite": "https://gh-proxy.com/https://github.com/MetaCubeX/meta-rules-dat/"
+                   "releases/download/latest/geosite.dat",
+        "mmdb": "https://gh-proxy.com/https://github.com/MetaCubeX/meta-rules-dat/"
+                "releases/download/latest/country.mmdb",
+    }
+
+    # ---- 校验（手机一进去就报错的坑，必须在出仓前挡住）----
+    gtypes = {g["type"] for g in tpl["proxy-groups"]}
+    banned = gtypes & {"fallback", "load-balance", "relay"}
+    assert not banned, "移动端不能含 Karing 不支持的组类型: %s" % banned
+    gp = {g["name"] for g in tpl["proxy-groups"]}
+    BUILTIN = {"DIRECT", "REJECT", "REJECT-DROP", "PASS", "COMPATIBLE", "GLOBAL"}
+    for r in (tpl.get("rules") or []):
+        parts = [x.strip() for x in r.split(",")]
+        if len(parts) < 2:
+            continue
+        tgt = parts[-2] if parts[-1] == "no-resolve" else parts[-1]
+        if tgt in BUILTIN or tgt in gp or tgt == MOBILE_PROVIDER:
+            continue
+        raise AssertionError("移动端规则 %r 指向不存在的目标 %r" % (r, tgt))
+    assert len(nodes) <= MOBILE_NODE_CAP, "精简版节点数超上限"
+    assert provider["url"].startswith("https://gh-proxy.com/raw.githubusercontent.com/")
+    assert provider["url"].endswith("/gh-pages/nodes/mobile.yaml")
+    # 名字必须全局唯一（provider 内同名会被内核拒绝）
+    names = [n["name"] for n in nodes]
+    assert len(names) == len(set(names)), "精简版节点名重复"
+    return nodes, tpl, used_sources
+
+
 def dump_yaml(obj, header, path):
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w", encoding="utf-8") as f:
@@ -494,7 +615,7 @@ def write_nodes(dist_dir, per_source_nodes, all_nodes, base=""):
 
 
 def write_dist(dist_dir, per_source_nodes, all_nodes, profile, manifest, base,
-               flaky_nodes=None):
+               flaky_nodes=None, mobile=None):
     nodes_dir = os.path.join(dist_dir, "nodes")
     os.makedirs(nodes_dir, exist_ok=True)
     owner = manifest.get("owner") or "YOUR_GITHUB_ID"
@@ -516,6 +637,26 @@ def write_dist(dist_dir, per_source_nodes, all_nodes, profile, manifest, base,
               "# clash-source 自动生成 —— 全源合并，共 %d 节点（名字带源前缀）\n"
               "# 供多源合并场景使用；profile.yaml 默认按源分文件挂载" % len(all_nodes),
               os.path.join(nodes_dir, "all.yaml"))
+    if mobile:
+        mobile_nodes, mobile_profile, mobile_sources = mobile
+        dump_yaml({"proxies": mobile_nodes},
+                  "# clash-source 自动生成 —— 移动端精简池，共 %d 节点\n"
+                  "# 源间轮询取样 + 按 server:port 去重；只挂 mobile.yaml 一个 provider"
+                  % len(mobile_nodes),
+                  os.path.join(nodes_dir, "mobile.yaml"))
+        dump_yaml(mobile_profile,
+                  "# clash-source 移动端精简版（iOS 网络扩展内存优化，2026-11-02）\n"
+                  "# 订阅 URL（任选其一）：\n"
+                  "# 主:  %s/mobile.yaml\n"
+                  "# 备1 gh-proxy raw（零缓存）:\n"
+                  "#   https://gh-proxy.com/raw.githubusercontent.com/%s/%s/gh-pages/mobile.yaml\n"
+                  "# 备2 gh-proxy raw（main 分支）:\n"
+                  "#   https://gh-proxy.com/raw.githubusercontent.com/%s/%s/main/dist/mobile.yaml\n"
+                  "# 说明：单 provider（~%d 节点）+ rule-provider 全 lazy；\n"
+                  "#   不含 fallback/load-balance（Karing 官方不支持，只有 select/url-test）。\n"
+                  "#   完整多源版见同目录 profile.yaml（桌面端用，iOS 上会因内存被杀）。"
+                  % (base, owner, repo, owner, repo, MOBILE_NODE_CAP),
+                  os.path.join(dist_dir, "mobile.yaml"))
     dump_yaml(profile,
               "# clash-source 自动生成 —— 手机订阅入口\n"
               "# 订阅 URL（任选其一；iOS/手机端建议主链，备2 零缓存最快拿到新配置）：\n"

@@ -45,6 +45,27 @@ profile 含两层，节点更新不必等 profile 刷新：
 > 而 **L2（本机探针）只推 `state/`，从不碰 `dist/`** ——
 > 所以「节点新不新鲜」完全取决于 L1 跑得勤不勤（见 §3）。
 
+### 1.2 iOS 精简版（`mobile.yaml`）
+
+iOS 的系统网络扩展有约 **50 MB 内存上限**，超了会被系统直接杀掉（jetsam，
+无错误日志，表现就是「打开代理 2 秒后自动关闭」）。完整版 profile 有 20 个
+provider、5700+ 节点，桌面实测峰值 ~95 MB，iOS 上必然被杀。
+
+`dist/mobile.yaml` 是同一轮流水线**顺带产出**的精简版（**不额外抓源、不额外探测、
+不额外调 AI**，只是从内存里已有的稳定节点取样）：
+
+| 项 | 完整版 | 精简版 |
+|---|---|---|
+| provider 数 | 20 个（按源分文件） | **1 个**（`nodes/mobile.yaml` 单池） |
+| 节点数 | ~5700 | **≤120**（源间轮询 + `server:port` 去重） |
+| 组类型 | select / url-test / fallback | **只有 select + url-test**（Karing 官方不支持 fallback/load-balance/relay） |
+| rule-provider | 33 个 | 33 个，但**全部 `lazy: true`**（命中才加载） |
+| 静态代理「家里路由」 | 有 | 无（手机用不到） |
+| 实测峰值 | 95 MB | **46.5 MB**（同内核、同机器） |
+
+订阅地址同样只写在 `dist/mobile.yaml` 文件头注释里。iOS 上（Clash Mi / Karing）
+优先用这一条；桌面/安卓继续用完整版 `profile.yaml`。
+
 ---
 
 ## 2. 系统怎么跑
@@ -382,7 +403,7 @@ python tools\cnci_trigger.py --status   # 只看云效最近几次运行，不�
 ok=0; for i in $(seq 1 8); do git fetch origin && git reset --hard origin/master && { ok=1; break; }; sleep 20; done; [ "$ok" = "1" ] && bash tools/sync_and_probe.sh || { echo "同步失败"; exit 1; }
 ```
 
-### 交付前必跑（全部十九道）
+### 交付前必跑（全部二十道）
 
 ```powershell
 python tools\check_ci_scripts.py      # Python 3.6 静态门禁
@@ -402,6 +423,7 @@ python tools\test_report_ai.py        # AI 留痕链：生产端键名 ↔ 报�
 python tools\test_ci_workflow.py      # CI 推送必须带重试、失败不许染红（连带 skip 下游）
 python tools\test_hardening.py        # 硬化回归：dist 残留清理 / raw 快照原貌 / TPM 闸门不死循环 / review_source 源级合同
 python tools\test_refill.py           # 自动补员：cap/节流/排重/选优/命名/损坏/停用/dry-run + append-only 子序列断言
+python tools\test_mobile_profile.py   # 移动端精简版：单 provider / 120 节点上限 / 源间去重 / 只含 select+url-test（Karing 兼容）/ 规则集全 lazy
 python tools\verify_profile.py        # 真 mihomo 内核校验
 python tools\probe_field_types.py     # mihomo 接受哪些字段类型
 ```
@@ -566,7 +588,7 @@ src/
   ai_review.py          AI 审核      filters.py  硬过滤
   fetch.py  discover.py  run.py  report.py
 .github/workflows/update.yml   13 步流水线
-dist/                   产物：profile.yaml + nodes/*.yaml（含 *--flaky.yaml）
+dist/                   产物：profile.yaml + mobile.yaml + nodes/*.yaml（含 *--flaky.yaml）
 reports/                审计留痕（含质量分桶表）
 state/                  probe_latest.json / probe_cnci_latest.json
                         source_health.json / node_stability.json

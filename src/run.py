@@ -320,6 +320,11 @@ def main():
 
     profile, _, ranking = build.build_profile(enabled, excl_map, owner, repo,
                                               flaky_sources=sorted(flaky_nodes))
+    # 移动端精简版（iOS 内存优化）：从同一批稳定节点里取样，不额外抓源/探测/AI。
+    mobile_nodes, mobile_profile, mobile_sources = build.build_mobile_profile(
+        stable_nodes, owner, repo)
+    log("移动端精简版：%d 节点（源 %s）"
+        % (len(mobile_nodes), "、".join(mobile_sources) or "无"))
     log("质量分桶（国内口径）：AUTO=%s" % ("、".join(ranking["auto"]) or "无"))
     if ranking.get("degraded"):
         # 降级发布（用户 2026-10-18 拍板）：档案坏/缺时**不中断订阅**，
@@ -337,6 +342,11 @@ def main():
             p["url"] = p["url"].replace(build.mirror_base(owner, repo), base)
         # 覆盖后仍要保证不是 raw 直链（gh-proxy 中转 URL 含 raw 子串，看的是起头）
         for n, p in profile["proxy-providers"].items():
+            assert not p["url"].startswith("https://raw.githubusercontent"), \
+                "%s 用了 raw 直链" % n
+        # 精简版同口径覆盖，否则本地预览会指向线上 gh-pages
+        for n, p in mobile_profile["proxy-providers"].items():
+            p["url"] = p["url"].replace(build.mirror_base(owner, repo), base)
             assert not p["url"].startswith("https://raw.githubusercontent"), \
                 "%s 用了 raw 直链" % n
 
@@ -365,12 +375,17 @@ def main():
                                    if ai_stats else sum(ai_reviewed.values()))},
         "ai_scope": scope,
         "ai_usage": ai_review.usage_report(),
+        "mobile": {"provider": build.MOBILE_PROVIDER,
+                   "nodes": len(mobile_nodes),
+                   "cap": build.MOBILE_NODE_CAP,
+                   "sources": mobile_sources},
         "warnings": warnings,
     }
 
     dist = os.path.join(ROOT, "dist")
     build.write_dist(dist, stable_nodes, all_nodes, profile, manifest, base,
-                     flaky_nodes=flaky_nodes)
+                     flaky_nodes=flaky_nodes,
+                     mobile=(mobile_nodes, mobile_profile, mobile_sources))
     u = manifest["ai_usage"]
     log("AI 用量：送审 %d 条 / %d 次调用 / prompt %d + completion %d = %d token（超时记账 %d 次）"
         % (manifest["totals"]["ai_reviewed"], u.get("calls", 0), u.get("prompt", 0),
