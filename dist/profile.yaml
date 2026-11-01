@@ -196,11 +196,11 @@ proxy-groups:
   type: url-test
   use:
   - SRCFL-autojiedian
+  - SRCFL-automerge
   - SRCFL-ermaozi
-  - SRCFL-leilaomi
   - SRCFL-nomorewalls
   - SRCFL-ruk1ng001
-  - SRCFL-shaoyouvip
+  - SRCFL-snakem982
   - SRCFL-ssrsub
   - SRCFL-yypool
   url: https://www.youtube.com/generate_204
@@ -750,24 +750,24 @@ proxy-providers:
       interval: 300
       timeout: 5000
       expected-status: 204
-  SRCFL-ermaozi:
+  SRCFL-automerge:
     type: http
-    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/ermaozi--flaky.yaml
-    path: ./providers/SRCFL-ermaozi.yaml
+    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/automerge--flaky.yaml
+    path: ./providers/SRCFL-automerge.yaml
     interval: 3600
-    exclude-filter: (?i)(过期|剩余|流量|官网|订阅|加群|电报|telegram|t\.me|https?://)
+    exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
     health-check:
       enable: true
       url: https://www.youtube.com/generate_204
       interval: 300
       timeout: 5000
       expected-status: 204
-  SRCFL-leilaomi:
+  SRCFL-ermaozi:
     type: http
-    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/leilaomi--flaky.yaml
-    path: ./providers/SRCFL-leilaomi.yaml
+    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/ermaozi--flaky.yaml
+    path: ./providers/SRCFL-ermaozi.yaml
     interval: 3600
-    exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
+    exclude-filter: (?i)(过期|剩余|流量|官网|订阅|加群|电报|telegram|t\.me|https?://)
     health-check:
       enable: true
       url: https://www.youtube.com/generate_204
@@ -798,10 +798,10 @@ proxy-providers:
       interval: 300
       timeout: 5000
       expected-status: 204
-  SRCFL-shaoyouvip:
+  SRCFL-snakem982:
     type: http
-    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/shaoyouvip--flaky.yaml
-    path: ./providers/SRCFL-shaoyouvip.yaml
+    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/snakem982--flaky.yaml
+    path: ./providers/SRCFL-snakem982.yaml
     interval: 3600
     exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
     health-check:
