@@ -1,96 +1,6 @@
-# clash-source 自动生成 —— 源 automerge，共 90 节点（稳定性加权后留在竞速池内的部分）
+# clash-source 自动生成 —— 源 automerge，共 67 节点（稳定性加权后留在竞速池内的部分）
 # 不要手改；改动会在下次定时任务被覆盖（上游 https://pala911.github.io/clash-source/nodes/automerge.yaml）
 proxies:
-- name: 防范境外势力渗透
-  type: vmess
-  server: 127.0.0.53
-  port: 80
-  alterId: 0
-  cipher: auto
-  network: tcp
-  tls: false
-  uuid: 88888888-8888-8888-8888-888888888888
-- name: '防范境外势力渗透 #1'
-  type: vmess
-  server: 127.0.0.53
-  port: 81
-  alterId: 0
-  cipher: auto
-  network: tcp
-  tls: false
-  uuid: 88888888-8888-8888-8888-888888888888
-- name: '防范境外势力渗透 #2'
-  type: vmess
-  server: 127.0.0.53
-  port: 82
-  alterId: 0
-  cipher: auto
-  network: tcp
-  tls: false
-  uuid: 88888888-8888-8888-8888-888888888888
-- name: '防范境外势力渗透 #3'
-  type: vmess
-  server: 127.0.0.53
-  port: 83
-  alterId: 0
-  cipher: auto
-  network: tcp
-  tls: false
-  uuid: 88888888-8888-8888-8888-888888888888
-- name: '防范境外势力渗透 #4'
-  type: vmess
-  server: 127.0.0.53
-  port: 84
-  alterId: 0
-  cipher: auto
-  network: tcp
-  tls: false
-  uuid: 88888888-8888-8888-8888-888888888888
-- name: '防范境外势力渗透 #5'
-  type: vmess
-  server: 127.0.0.53
-  port: 85
-  alterId: 0
-  cipher: auto
-  network: tcp
-  tls: false
-  uuid: 88888888-8888-8888-8888-888888888888
-- name: '防范境外势力渗透 #6'
-  type: vmess
-  server: 127.0.0.53
-  port: 86
-  alterId: 0
-  cipher: auto
-  network: tcp
-  tls: false
-  uuid: 88888888-8888-8888-8888-888888888888
-- name: '防范境外势力渗透 #7'
-  type: vmess
-  server: 127.0.0.53
-  port: 87
-  alterId: 0
-  cipher: auto
-  network: tcp
-  tls: false
-  uuid: 88888888-8888-8888-8888-888888888888
-- name: '防范境外势力渗透 #8'
-  type: vmess
-  server: 127.0.0.53
-  port: 88
-  alterId: 0
-  cipher: auto
-  network: tcp
-  tls: false
-  uuid: 88888888-8888-8888-8888-888888888888
-- name: '防范境外势力渗透 #9'
-  type: vmess
-  server: 127.0.0.53
-  port: 89
-  alterId: 0
-  cipher: auto
-  network: tcp
-  tls: false
-  uuid: 88888888-8888-8888-8888-888888888888
 - name: 🇱🇻hysteria
   type: hysteria2
   server: pro2.riziro.ir
@@ -146,6 +56,22 @@ proxies:
   port: 3128
   skip-cert-verify: true
   tls: true
+- name: 🇰🇷KR_1|1.5MB/s
+  type: trojan
+  server: ench-snet-app.w-ctrip.cn
+  port: 29628
+  password: b17e9b52db9623bd6c16eea3d7adb5b3
+  skip-cert-verify: true
+  sni: cm.g.doubleclick.net
+  udp: true
+- name: ❓Other_1|1.9MB/s
+  type: trojan
+  server: ench-snet-app.w-ctrip.cn
+  port: 45502
+  password: b17e9b52db9623bd6c16eea3d7adb5b3
+  skip-cert-verify: true
+  sni: cm.g.doubleclick.net
+  udp: true
 - name: 🇺🇸US_1|1.1MB/s
   type: http
   server: 87992eef-te9j40-teq7xb-dnss.fmtdc1.sghuawei.com
@@ -160,6 +86,14 @@ proxies:
   password: f13f964e-f06c-11ec-a858-f23c91cfbbc9
   tls: true
   username: f13f964e-f06c-11ec-a858-f23c91cfbbc9
+- name: '🇧🇷 巴西 | BRA #1'
+  type: trojan
+  server: ench-snet-app.w-ctrip.cn
+  port: 16932
+  password: b17e9b52db9623bd6c16eea3d7adb5b3
+  skip-cert-verify: true
+  sni: cm.g.doubleclick.net
+  udp: true
 - name: 🇩🇪 德国 | DEU 2
   type: vmess
   server: 109.70.74.113
@@ -473,225 +407,6 @@ proxies:
   type: trojan
   server: ench-snet-app.w-ctrip.cn
   port: 47786
-  password: b17e9b52db9623bd6c16eea3d7adb5b3
-  skip-cert-verify: true
-  sni: cm.g.doubleclick.net
-  udp: true
-- name: '🇺🇸 美国 | USA #1'
-  type: vless
-  server: piracy-android.video-streams.org
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: piracy-android.video-streams.org
-  tls: true
-  udp: true
-  uuid: 71ee5343-b431-44be-bed7-22b9b9f7253c
-  ws-opts:
-    headers:
-      Host: piracy-android.video-streams.org
-    path: /ws
-- name: '🇺🇸 美国 | USA #2'
-  type: vless
-  server: 151.101.21.242
-  port: 443
-  alpn:
-  - http/1.1
-  client-fingerprint: chrome
-  network: ws
-  servername: bounded-crammed.video-streams.org
-  tls: true
-  udp: true
-  uuid: f80cfcb4-9bd1-4a0d-a50b-28e3eea107d8
-  ws-opts:
-    headers:
-      Host: bounded-crammed.video-streams.org
-    path: /ws
-- name: '🇺🇸 美国 | USA #3'
-  type: vless
-  server: ghosts-spasm.quick-cdn.net
-  port: 443
-  alpn:
-  - http/1.1
-  client-fingerprint: chrome
-  network: ws
-  servername: ghosts-spasm.quick-cdn.net
-  tls: true
-  udp: true
-  uuid: e262a993-a3be-4f36-95ba-81dc1e32d78c
-  ws-opts:
-    headers:
-      Host: ghosts-spasm.quick-cdn.net
-    path: /ws
-- name: '🇺🇸 美国 | USA #4'
-  type: vless
-  server: adheres-scruple.quick-cdn.net
-  port: 443
-  alpn:
-  - http/1.1
-  client-fingerprint: chrome
-  network: ws
-  servername: adheres-scruple.quick-cdn.net
-  tls: true
-  udp: true
-  uuid: ecbc4229-e8d3-4607-8f02-fd592c9a0743
-  ws-opts:
-    headers:
-      Host: adheres-scruple.quick-cdn.net
-    path: /ws
-- name: '🇺🇸 美国 | USA #5'
-  type: vless
-  server: 151.101.201.242
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: bounded-crammed.video-streams.org
-  tls: true
-  udp: true
-  uuid: 11e6c528-434f-4b15-83b3-40a46237ea13
-  ws-opts:
-    headers:
-      Host: bounded-crammed.video-streams.org
-    path: /ws
-- name: '🇺🇸 美国 | USA #6'
-  type: vless
-  server: freev2.cloudflare.182682.xyz
-  port: 443
-  client-fingerprint: random
-  network: ws
-  servername: ap-south.862400.xyz
-  tls: true
-  udp: true
-  uuid: 9c55c7eb-d53e-40fa-a0c9-e25d2a345073
-  ws-opts:
-    headers:
-      Host: ap-south.862400.xyz
-    path: /announcement?ed=2048
-- name: '🇺🇸 美国 | USA #7'
-  type: vless
-  server: 151.101.161.242
-  port: 443
-  alpn:
-  - http/1.1
-  client-fingerprint: chrome
-  network: ws
-  servername: bounded-crammed.video-streams.org
-  tls: true
-  udp: true
-  uuid: f80cfcb4-9bd1-4a0d-a50b-28e3eea107d8
-  ws-opts:
-    headers:
-      Host: bounded-crammed.video-streams.org
-    path: /ws
-- name: '🇺🇸 美国 | USA #8'
-  type: vless
-  server: 199.232.78.160
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: firefox.com
-  tls: true
-  udp: true
-  uuid: 780aa2f6-1a02-4fa2-bcd0-fa7d469bdff7
-  ws-opts:
-    headers:
-      Host: copy_az_channel_NUFiLTER_10i.global.ssl.fastly.net.
-    path: /?Telegram---PLANB_NET---PLANB_NET---PLANB_NET---PLANB_NET
-- name: '🇺🇸 美国 | USA #9'
-  type: trojan
-  server: ench-snet-app.w-ctrip.cn
-  port: 35929
-  password: b17e9b52db9623bd6c16eea3d7adb5b3
-  skip-cert-verify: true
-  sni: cm.g.doubleclick.net
-  udp: true
-- name: '🇺🇸 美国 | USA #10'
-  type: vless
-  server: adheres-scruple.quick-cdn.net
-  port: 443
-  alpn:
-  - http/1.1
-  client-fingerprint: chrome
-  network: ws
-  servername: adheres-scruple.quick-cdn.net
-  tls: true
-  udp: true
-  uuid: 316f013e-4cf9-4a02-8415-73c22932594a
-  ws-opts:
-    headers:
-      Host: adheres-scruple.quick-cdn.net
-    path: /ws
-- name: '🇺🇸 美国 | USA #11'
-  type: vless
-  server: ghosts-spasm.quick-cdn.net
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: ghosts-spasm.quick-cdn.net
-  tls: true
-  udp: true
-  uuid: 9d50fde6-7e89-4dee-9fee-17a77046604c
-  ws-opts:
-    headers:
-      Host: ghosts-spasm.quick-cdn.net
-    path: /ws
-- name: '🇺🇸 美国 | USA #12'
-  type: vmess
-  server: cf.0sm.com
-  port: 443
-  alterId: 0
-  cipher: auto
-  network: ws
-  servername: vmess.lbw666.dpdns.org
-  skip-cert-verify: true
-  tls: true
-  udp: true
-  uuid: 0cf6d970-3f1d-4aae-a989-92a8f76ae3db
-  ws-opts:
-    headers:
-      Host: vmess.lbw666.dpdns.org
-    path: /ws
-- name: '🇺🇸 美国 | USA #13'
-  type: vless
-  server: grimness-backlogs.cdn-content.com
-  port: 443
-  alpn:
-  - http/1.1
-  client-fingerprint: safari
-  network: ws
-  tls: true
-  udp: true
-  uuid: 8fa74247-8816-4caf-b2c8-0dadff14ee3c
-  ws-opts:
-    headers:
-      Host: grimness-backlogs.cdn-content.com
-    path: /ws
-- name: 🇺🇸 美国 | USA 14
-  type: hysteria2
-  server: 179.255.107.182
-  port: 443
-  alpn:
-  - h3
-  down: 200
-  obfs: salamander
-  obfs-password: 5c8f1a3e7b2d9046c1f8a5e3b7d04f2a
-  password: 3be5bdf034cd9dc2c152d5d57bd2db7f
-  skip-cert-verify: true
-  sni: bing.com
-  udp: true
-  up: 100
-- name: '🇺🇸 美国 | USA #15'
-  type: trojan
-  server: zz.usa02.fogvip-zz.uk
-  port: 40044
-  password: ef95390a-0bcb-45b8-a2bc-3ab33bf0e297
-  skip-cert-verify: true
-  sni: ld.meiguo02.yuiuingkig.icu
-  udp: true
-- name: '🇺🇸 美国 | USA #16'
-  type: trojan
-  server: ench-snet-app.w-ctrip.cn
-  port: 38994
   password: b17e9b52db9623bd6c16eea3d7adb5b3
   skip-cert-verify: true
   sni: cm.g.doubleclick.net
