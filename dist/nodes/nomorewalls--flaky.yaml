@@ -1,51 +1,36 @@
-# clash-source 自动生成 —— 源 nomorewalls，被稳定性加权移出的 6 个节点
+# clash-source 自动生成 —— 源 nomorewalls，被稳定性加权移出的 3 个节点
 # 历史可用率偏低，不参与 AUTO 自动竞速；需要时可从「备用」组手工切。
 proxies:
-- name: 🇦🇱AL_1|1.7MB/s
-  type: http
-  server: 31.171.155.210
-  port: 9443
-  skip-cert-verify: true
-  tls: true
-- name: 🇺🇸US_6|1.3MB/s
-  type: http
-  server: 138.199.35.212
-  port: 9002
-  skip-cert-verify: true
-  tls: true
+- name: '🇸🇬 新加坡 | SGP #2'
+  type: vless
+  server: 104.18.35.86
+  port: 8080
+  network: ws
+  servername: hhlfy.twiladaphne.ndjp.net
+  tls: false
   udp: true
-- name: 🇩🇪DE_2|2.1MB/s
+  uuid: e5cc16a6-ea42-46b2-82ae-ad2157e1641b
+  ws-opts:
+    headers:
+      Host: hhlfy.twiladaphne.ndjp.net
+    path: /sg-melbi
+- name: 🇩🇪DE_2|1.9MB/s
   type: http
   server: 149.36.50.157
   port: 443
   password: None
   skip-cert-verify: true
   tls: true
-- name: 🇺🇸US_9|2.4MB/s
-  type: http
-  server: 167.88.60.242
-  port: 443
-  skip-cert-verify: true
-  tls: true
-- name: 🇸🇪SE_4|3.6MB/s
-  type: http
-  server: 146.70.242.146
-  port: 443
-  password: None
-  skip-cert-verify: true
-  tls: true
-- name: '🇭🇰 香港 | HKG #3'
-  type: vmess
-  server: 8.218.195.61
-  port: 443
-  alterId: 0
-  cipher: auto
+- name: '🇸🇬 新加坡 | SGP #4'
+  type: vless
+  server: 104.18.35.86
+  port: 2082
   network: ws
-  skip-cert-verify: true
-  tls: true
+  servername: hhlfy.twiladaphne.ndjp.net
+  tls: false
   udp: true
-  uuid: f23bb427-c1f9-4373-876c-2f43e9f790f3
+  uuid: e5cc16a6-ea42-46b2-82ae-ad2157e1641b
   ws-opts:
     headers:
-      Host: EX1oGt73NzPQKAc2.v.3dns.vip
-    path: /ws-vmess
+      Host: hhlfy.twiladaphne.ndjp.net
+    path: /fp

@@ -70,28 +70,10 @@ proxies:
   port: 7890
   udp: false
 proxy-groups:
-- name: SRC-yypool
-  type: url-test
-  use:
-  - yypool
-  url: https://www.youtube.com/generate_204
-  expected-status: 204
-  interval: 300
-  timeout: 5000
-  tolerance: 200
 - name: SRC-automerge
   type: url-test
   use:
   - automerge
-  url: https://www.youtube.com/generate_204
-  expected-status: 204
-  interval: 300
-  timeout: 5000
-  tolerance: 200
-- name: SRC-ermaozi
-  type: url-test
-  use:
-  - ermaozi
   url: https://www.youtube.com/generate_204
   expected-status: 204
   interval: 300
@@ -124,37 +106,10 @@ proxy-groups:
   interval: 300
   timeout: 5000
   tolerance: 200
-- name: SRC-snakem982
-  type: url-test
-  use:
-  - snakem982
-  url: https://www.youtube.com/generate_204
-  expected-status: 204
-  interval: 300
-  timeout: 5000
-  tolerance: 200
 - name: SRC-nomorewalls
   type: url-test
   use:
   - nomorewalls
-  url: https://www.youtube.com/generate_204
-  expected-status: 204
-  interval: 300
-  timeout: 5000
-  tolerance: 200
-- name: SRC-autojiedian
-  type: url-test
-  use:
-  - autojiedian
-  url: https://www.youtube.com/generate_204
-  expected-status: 204
-  interval: 300
-  timeout: 5000
-  tolerance: 200
-- name: SRC-shaoyouvip
-  type: url-test
-  use:
-  - shaoyouvip
   url: https://www.youtube.com/generate_204
   expected-status: 204
   interval: 300
@@ -184,9 +139,6 @@ proxy-groups:
   - SRC-zhuhaiuk
   - SRC-clashdaily
   - SRC-leilaomi
-  - SRC-ssrsub
-  - SRC-ruk1ng001
-  - SRC-shaoyouvip
   url: https://www.youtube.com/generate_204
   expected-status: 204
   interval: 120
@@ -195,14 +147,11 @@ proxy-groups:
 - name: 不稳定
   type: url-test
   use:
-  - SRCFL-autojiedian
   - SRCFL-automerge
-  - SRCFL-ermaozi
   - SRCFL-leilaomi
+  - SRCFL-nomorewalls
   - SRCFL-ruk1ng001
-  - SRCFL-snakem982
   - SRCFL-ssrsub
-  - SRCFL-yypool
   url: https://www.youtube.com/generate_204
   expected-status: 204
   interval: 300
@@ -210,31 +159,24 @@ proxy-groups:
   tolerance: 200
 - name: 备用
   type: select
-  proxies:
+  proxies: &id001
+  - SRC-ssrsub
+  - SRC-ruk1ng001
   - SRC-automerge
   - SRC-nomorewalls
-  - SRC-yypool
-  - SRC-ermaozi
   - 不稳定
 - name: 观察
   type: select
-  proxies:
-  - SRC-autojiedian
-  - SRC-snakem982
+  proxies: *id001
 - name: FAILOVER
   type: fallback
   proxies:
   - AUTO
-  - SRC-yypool
   - SRC-automerge
-  - SRC-ermaozi
   - SRC-zhuhaiuk
   - SRC-ssrsub
   - SRC-ruk1ng001
-  - SRC-snakem982
   - SRC-nomorewalls
-  - SRC-autojiedian
-  - SRC-shaoyouvip
   - SRC-clashdaily
   - SRC-leilaomi
   url: https://www.youtube.com/generate_204
@@ -249,31 +191,21 @@ proxy-groups:
   - AUTO
   - 备用
   - 观察
-  - SRC-yypool
   - SRC-automerge
-  - SRC-ermaozi
   - SRC-zhuhaiuk
   - SRC-ssrsub
   - SRC-ruk1ng001
-  - SRC-snakem982
   - SRC-nomorewalls
-  - SRC-autojiedian
-  - SRC-shaoyouvip
   - SRC-clashdaily
   - SRC-leilaomi
 - name: Claude
   type: select
   use:
-  - yypool
   - automerge
-  - ermaozi
   - zhuhaiuk
   - ssrsub
   - ruk1ng001
-  - snakem982
   - nomorewalls
-  - autojiedian
-  - shaoyouvip
   - clashdaily
   - leilaomi
   proxies:
@@ -281,16 +213,11 @@ proxy-groups:
 - name: Gemini
   type: select
   use:
-  - yypool
   - automerge
-  - ermaozi
   - zhuhaiuk
   - ssrsub
   - ruk1ng001
-  - snakem982
   - nomorewalls
-  - autojiedian
-  - shaoyouvip
   - clashdaily
   - leilaomi
   proxies:
@@ -594,36 +521,12 @@ rules:
 - GEOIP,CN,DIRECT
 - MATCH,PROXY
 proxy-providers:
-  yypool:
-    type: http
-    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/yypool.yaml
-    path: ./providers/yypool.yaml
-    interval: 3600
-    exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
-    health-check:
-      enable: true
-      url: https://www.youtube.com/generate_204
-      interval: 300
-      timeout: 5000
-      expected-status: 204
   automerge:
     type: http
     url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/automerge.yaml
     path: ./providers/automerge.yaml
     interval: 3600
     exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
-    health-check:
-      enable: true
-      url: https://www.youtube.com/generate_204
-      interval: 300
-      timeout: 5000
-      expected-status: 204
-  ermaozi:
-    type: http
-    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/ermaozi.yaml
-    path: ./providers/ermaozi.yaml
-    interval: 3600
-    exclude-filter: (?i)(过期|剩余|流量|官网|订阅|加群|电报|telegram|t\.me|https?://)
     health-check:
       enable: true
       url: https://www.youtube.com/generate_204
@@ -666,46 +569,10 @@ proxy-providers:
       interval: 300
       timeout: 5000
       expected-status: 204
-  snakem982:
-    type: http
-    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/snakem982.yaml
-    path: ./providers/snakem982.yaml
-    interval: 3600
-    exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
-    health-check:
-      enable: true
-      url: https://www.youtube.com/generate_204
-      interval: 300
-      timeout: 5000
-      expected-status: 204
   nomorewalls:
     type: http
     url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/nomorewalls.yaml
     path: ./providers/nomorewalls.yaml
-    interval: 3600
-    exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
-    health-check:
-      enable: true
-      url: https://www.youtube.com/generate_204
-      interval: 300
-      timeout: 5000
-      expected-status: 204
-  autojiedian:
-    type: http
-    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/autojiedian.yaml
-    path: ./providers/autojiedian.yaml
-    interval: 3600
-    exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
-    health-check:
-      enable: true
-      url: https://www.youtube.com/generate_204
-      interval: 300
-      timeout: 5000
-      expected-status: 204
-  shaoyouvip:
-    type: http
-    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/shaoyouvip.yaml
-    path: ./providers/shaoyouvip.yaml
     interval: 3600
     exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
     health-check:
@@ -738,18 +605,6 @@ proxy-providers:
       interval: 300
       timeout: 5000
       expected-status: 204
-  SRCFL-autojiedian:
-    type: http
-    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/autojiedian--flaky.yaml
-    path: ./providers/SRCFL-autojiedian.yaml
-    interval: 3600
-    exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
-    health-check:
-      enable: true
-      url: https://www.youtube.com/generate_204
-      interval: 300
-      timeout: 5000
-      expected-status: 204
   SRCFL-automerge:
     type: http
     url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/automerge--flaky.yaml
@@ -762,22 +617,22 @@ proxy-providers:
       interval: 300
       timeout: 5000
       expected-status: 204
-  SRCFL-ermaozi:
+  SRCFL-leilaomi:
     type: http
-    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/ermaozi--flaky.yaml
-    path: ./providers/SRCFL-ermaozi.yaml
+    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/leilaomi--flaky.yaml
+    path: ./providers/SRCFL-leilaomi.yaml
     interval: 3600
-    exclude-filter: (?i)(过期|剩余|流量|官网|订阅|加群|电报|telegram|t\.me|https?://)
+    exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
     health-check:
       enable: true
       url: https://www.youtube.com/generate_204
       interval: 300
       timeout: 5000
       expected-status: 204
-  SRCFL-leilaomi:
+  SRCFL-nomorewalls:
     type: http
-    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/leilaomi--flaky.yaml
-    path: ./providers/SRCFL-leilaomi.yaml
+    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/nomorewalls--flaky.yaml
+    path: ./providers/SRCFL-nomorewalls.yaml
     interval: 3600
     exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
     health-check:
@@ -798,36 +653,12 @@ proxy-providers:
       interval: 300
       timeout: 5000
       expected-status: 204
-  SRCFL-snakem982:
-    type: http
-    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/snakem982--flaky.yaml
-    path: ./providers/SRCFL-snakem982.yaml
-    interval: 3600
-    exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
-    health-check:
-      enable: true
-      url: https://www.youtube.com/generate_204
-      interval: 300
-      timeout: 5000
-      expected-status: 204
   SRCFL-ssrsub:
     type: http
     url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/ssrsub--flaky.yaml
     path: ./providers/SRCFL-ssrsub.yaml
     interval: 3600
     exclude-filter: 机场推荐:dafei\.de 德国 07|🇨🇳CN_[0-9]
-    health-check:
-      enable: true
-      url: https://www.youtube.com/generate_204
-      interval: 300
-      timeout: 5000
-      expected-status: 204
-  SRCFL-yypool:
-    type: http
-    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/yypool--flaky.yaml
-    path: ./providers/SRCFL-yypool.yaml
-    interval: 3600
-    exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
     health-check:
       enable: true
       url: https://www.youtube.com/generate_204

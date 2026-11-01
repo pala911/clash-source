@@ -1,81 +1,58 @@
-# AI 审核逐条留痕（生成于 2026-11-01T18:42:49Z，模型 `http`）
+# AI 审核逐条留痕（生成于 2026-11-01T19:44:57Z，模型 `http`）
 
-共剔除 32 簇 / 121 节点（下表每簇列一条代表节点 + 理由，「节点数」列是该簇实际覆盖的节点数）。若发现误杀，把节点名与理由贴回来即可针对性收窄 prompt。
+共剔除 34 簇 / 54 节点（下表每簇列一条代表节点 + 理由，「节点数」列是该簇实际覆盖的节点数）。若发现误杀，把节点名与理由贴回来即可针对性收窄 prompt。
 
-
-## yypool
-
-| 节点名 | 类型 | server | 节点数 | 模型理由 |
-|---|---|---|---|---|
-| [NoMoreWalls#001] 防范境外势力渗透 | vmess | 127.0.0.53 | 10 | 防范境外势力渗透为广告引流 |
-| [freeSub#053] D🔴🇨🇭hos[🎬🤖📺🎭]_dokng.com_a0520042 | http | 149.88.27.33 | 8 | 名称含D🔴及广告标识 |
-| [NoMoreWalls#299] 🇸🇪 瑞典 \| SWE #1 | vless | 83.147.241.197 | 3 | 广告位 |
-| [zhuhaiuk#003] US - zhuhai.uk | http | 2bf1e5af-tdsv40-tf8z9r-1pr35.se.oshuawei.com | 3 | 占位符 |
-| [ermaozi#006] 🇨🇳_CN_中国 | vmess | 120.48.133.162 | 2 | 伪装 |
-| [freeSub#428] A🟢🇻🇪res[🎭]_dokng.com_0c8e0d98 | http | 38.51.207.104 | 2 | 引流 |
-| [freeSub#179] C🟠🇬🇧hos[🎬📺🎭🎪]_dokng.com_25669227 | http | 185.164.138.156 | 2 | 引流 |
-| [NoMoreWalls#275] 🇸🇬 新加坡 \| SGP #2 | trojan | ench-snet-app.w-ctrip.cn | 2 | 伪装海外节点 |
-| [NoMoreWalls#287] 🇪🇸 西班牙 \| ESP #1 | trojan | ench-snet-app.w-ctrip.cn | 2 | 伪装海外节点 |
-| [NoMoreWalls#274] 🇰🇷 韩国 \| KOR #2 | trojan | ench-snet-app.w-ctrip.cn | 2 | 伪装海外节点 |
-| [free18#003] 免费VPN：tt.vg/FJOE2Mm | vless | 62.182.196.194 | 1 | 广告引流链接 |
-| [free18#002] 日期：11-01 | vless | 175.41.179.37 | 1 | 占位符示例 |
 
 ## automerge
 
 | 节点名 | 类型 | server | 节点数 | 模型理由 |
 |---|---|---|---|---|
-| 🇺🇸 美国 \| USA #1 | vless | piracy-android.video-streams.org | 16 |  piracy引流 |
-| 防范境外势力渗透 | vmess | 127.0.0.53 | 10 |  境外势力渗透营销位 |
-| ❓Other_1\|1.9MB/s | trojan | ench-snet-app.w-ctrip.cn | 1 | 占位符示例节点 |
-
-## ermaozi
-
-| 节点名 | 类型 | server | 节点数 | 模型理由 |
-|---|---|---|---|---|
-| 防范境外势力渗透 | vmess | 127.0.0.53 | 10 | 广告引流节点 |
-| 🇩🇪DE_1\|1.0MB/s | http | 149.36.50.129 | 7 | 失效提示占位符 |
-| 🇬🇧GB_7\|1.2MB/s | http | 84.17.50.214 | 7 | 失效提示占位符 |
-| @fastkanfig کانال تلگرام | hysteria2 | bwdf2fnt.xn--e1aatfr8bwa.online | 1 | 群组引流 |
-| 🇦🇹[www.v2nodes.com] ss-AT-1595... | ss | 82.110.60.9 | 1 | 导航站 |
-| 🇪🇬[www.v2nodes.com] ss-EG-1599... | ss | 38.54.59.102 | 1 | 导航站 |
-| 🇫🇮[www.v2nodes.com] ss-FI-1606... | ss | 178.253.16.185 | 1 | 导航站 |
-| 🇫🇷[www.v2nodes.com] ss-FR-1609... | ss | 51.75.118.5 | 1 | 导航站 |
-
-## zhuhaiuk
-
-| 节点名 | 类型 | server | 节点数 | 模型理由 |
-|---|---|---|---|---|
-| RO - zhuhai.uk | http | 135.136.1.2 | 5 | 伪装营销位 |
+| 🇰🇷KR_1\|1.5MB/s | trojan | ench-snet-app.w-ctrip.cn | 1 | 伪装为韩国server |
+| ❓Other_1\|1.9MB/s | trojan | ench-snet-app.w-ctrip.cn | 1 | 伪装为其他server |
+| 🇧🇷 巴西 \| BRA #1 | trojan | ench-snet-app.w-ctrip.cn | 1 | 伪装为巴西server |
 
 ## ruk1ng001
 
 | 节点名 | 类型 | server | 节点数 | 模型理由 |
 |---|---|---|---|---|
-| A🟢🇹🇼res[🎬🤖📺🎭]_dokng.com_e59ee48e | anytls | 684616s4.df6h451rh.xin | 1 | 广告位克隆节点 |
+| D🔴🇨🇭hos[🎬🤖📺🎭]_dokng.com_c3243a72 | http | 37.120.213.210 | 2 | 广告克隆位 |
+| D🔴🇨🇿hos[🎬🤖📺🎭]_dokng.com_cf772891 | http | 185.216.35.130 | 2 | 广告克隆位 |
+| D🔴🇵🇱hos[🎬🤖📺🎭]_dokng.com_6d895544 | http | 37.120.156.18 | 2 | 广告克隆位 |
+| D🔴🇸🇬hos[🎬🤖📺🎭]_dokng.com_5012d8c8 | http | 152.42.170.187 | 2 | 广告克隆位 |
+| D🔴🇺🇸hos[🎬🤖📺🎭]_dokng.com_02619dd0 | http | 138.199.35.201 | 2 | 广告克隆位 |
+| D🔴🇩🇪hos[🤖📺🎭🎪]_dokng.com_e19d9a95 | http | 158.173.154.2 | 2 | 广告克隆位 |
+| D🔴🇺🇸hos[🎬🤖📺🎭]_dokng.com_3e969f49 | http | 138.199.35.205 | 2 | 广告克隆位 |
+| D🔴🇦🇱hos[🤖📺🎭🎪]_dokng.com_f9a7a740 | http | 31.171.155.210 | 2 | 广告克隆位 |
+| U⚪🏳️ukn[🎬🤖📺🎭]_dokng.com_0464a06d | http | fr017.freeconnect.link | 2 | 占位符 |
+| U⚪🏳️ukn[✈️]_dokng.com_6763f660 | vless | 163.245.42.157 | 2 | 占位符 |
+| U⚪🏳️ukn[🎬🤖📺🎭]_dokng.com_1258f05e | http | 176.111.37.5 | 2 | 占位符 |
+| C🟠🇯🇵hos[🎬🤖📺🎭]_dokng.com_cd2e1ad0 | vmess | g03.jp04-1d-vm0.entry.fr0528.art | 1 | 广告位 |
+| C🟠🇮🇹hos[🎬🤖📺🎭]_dokng.com_cdde7d80 | ss | 202.50.253.18 | 1 | 广告位 |
+| C🟠🇺🇸hos[🎬🤖📺🎭]_dokng.com_ce52d3b0 | vless | 43.153.121.144 | 1 | 广告位 |
+| C🟠🇯🇵hos[🎬🤖📺🎭]_dokng.com_503d087a | vmess | mi7lcpe-g06.jp07-sh-vm0.entry.fr0528.art | 1 | 广告位 |
+| C🟠🇱🇺hos[🎬🤖📺🎭]_dokng.com_d227b762 | http | 185.221.132.226 | 1 | 广告位 |
+| C🟠🇲🇾hos[🎬🤖📺🎭]_dokng.com_480d1bcf | http | 152.233.3.14 | 1 | 广告位 |
+| C🟠🇱🇺hos[🎬🤖📺🎭]_dokng.com_60d4bed5 | http | 185.221.132.242 | 1 | 广告位 |
+| C🟠🇯🇵hos[🎬🤖📺🎭]_dokng.com_d82326de | vmess | hx79bxj-g04.jp06-jz-vm0.entry.fr0528.art | 1 | 广告位 |
+| C🟠🇳🇱hos[🤖📺🎭🎪]_dokng.com_d211f69f | http | 161.129.60.66 | 1 | 广告位 |
+| C🟠🇷🇴hos[🎬🤖📺🎭]_dokng.com_d6fb427b | http | 169.150.199.1 | 1 | 广告位 |
+| C🟠🇯🇵hos[🎬🤖📺🎭]_dokng.com_169da99a | vmess | qdiypr1-g05.jp03-j7-vm0.entry.fr0528.art | 1 | 广告位 |
+| C🟠🇸🇬hos[🎬🤖📺🎭]_dokng.com_52724db1 | socks5 | 47.236.168.243 | 1 | 广告位 |
+| C🟠🇭🇰hos[📺]_dokng.com_db363b3a | socks5 | 47.242.19.215 | 1 | 广告位 |
+| C🟠🇵🇹hos[🎬🤖📺🎭]_dokng.com_1db5bd58 | http | 149.22.86.14 | 1 | 广告位 |
+| C🟠🇯🇵hos[🎬🤖📺🎭]_dokng.com_267dd0c3 | vmess | fgu5sqy-g05.jp04-1d-vm0.entry.fr0528.art | 1 | 广告位 |
 
 ## nomorewalls
 
 | 节点名 | 类型 | server | 节点数 | 模型理由 |
 |---|---|---|---|---|
-| 防范境外势力渗透 | vmess | 127.0.0.53 | 10 | 国内广告/中转节点 |
-
-## autojiedian
-
-| 节点名 | 类型 | server | 节点数 | 模型理由 |
-|---|---|---|---|---|
-| 荷兰_Amsterdam_UAB Cherry Servers_Claude | hysteria2 | promo.betust.net | 1 | promo为广告引流域名 |
-
-## shaoyouvip
-
-| 节点名 | 类型 | server | 节点数 | 模型理由 |
-|---|---|---|---|---|
-| 🇭🇰HK_1\|1.0MB/s | trojan | ench-snet-app.w-ctrip.cn | 3 | 伪装为HK但用携程服务器 |
-| 🇨🇭CH_1\|1.4MB/s\|K001-260618 | http | 149.88.27.33 | 2 | server为占位符格式 |
-| ❓Other_1\|2.2MB/s | vless | 31.77.13.22 | 2 | 节点名为占位符Other |
+| 防范境外势力渗透 | vmess | 127.0.0.53 | 10 | 境外渗透节点 |
+| برای اتصال دائمی جوین شو🪭 Tele... | hysteria2 | 13.143.188.142 | 1 | 群组引流 |
+| 🇧🇷 巴西 \| BRA #1 | trojan | ench-snet-app.w-ctrip.cn | 1 | 占位符 |
+| 🇳🇱 荷兰 \| NLD #1 | vless | 89.105.218.106 | 1 | 占位符 |
 
 ## leilaomi
 
 | 节点名 | 类型 | server | 节点数 | 模型理由 |
 |---|---|---|---|---|
-| [301.7ms +/-1ms] US_speednode_0039 | http | 44.248.167.117 | 2 | 同簇节点数为2 |
-| 🇮🇹 [1438.4ms +/-37ms] shadowsocks-1875023009 | ss | 202.50.253.27 | 1 | server为境内IP |
+| [1467.5ms +/-70ms] [84098] | vless | 151.101.193.242 | 1 | 占位符节点 |
