@@ -1,0 +1,441 @@
+# clash-source 移动端精简版（iOS 网络扩展内存优化，2026-11-02）
+# 订阅 URL（任选其一）：
+# 主:  https://pala911.github.io/clash-source/mobile.yaml
+# 备1 gh-proxy raw（零缓存）:
+#   https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/mobile.yaml
+# 备2 gh-proxy raw（main 分支）:
+#   https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/main/dist/mobile.yaml
+# 说明：单 provider（~120 节点）+ rule-provider 全 lazy；
+#   不含 fallback/load-balance（Karing 官方不支持，只有 select/url-test）。
+#   完整多源版见同目录 profile.yaml（桌面端用，iOS 上会因内存被杀）。
+profile:
+  store-selected: true
+sniffer:
+  enable: true
+  parse-pure-ip: true
+  override-destination: false
+  sniff:
+    TLS:
+      ports:
+      - 443
+      - 8443
+    QUIC:
+      ports:
+      - 443
+      - 8443
+mode: rule
+unified-delay: true
+tcp-concurrent: true
+dns:
+  enable: true
+  ipv6: false
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  nameserver:
+  - 223.5.5.5
+  - 119.29.29.29
+  fallback:
+  - 8.8.8.8
+  - 1.1.1.1
+  fallback-filter:
+    geoip: false
+    geoip-code: CN
+  fake-ip-filter:
+  - '*.lan'
+  - '*.local'
+  - '*.localdomain'
+  - '*.home.arpa'
+  - '*.example'
+  - '*.invalid'
+  - '*.localhost'
+  - '*.test'
+  - localhost
+  - '*.msftconnecttest.com'
+  - '*.msftncsi.com'
+  - time.*.com
+  - time.*.gov
+  - time.*.edu.cn
+  - time.*.apple.com
+  - ntp.*.com
+  - +.pool.ntp.org
+  - +.xboxlive.com
+  - xbox.*.*.microsoft.com
+  - +.stun.playstation.net
+proxy-groups:
+- name: AUTO
+  type: url-test
+  use:
+  - mobile
+  url: https://www.youtube.com/generate_204
+  expected-status: 204
+  interval: 120
+  timeout: 5000
+  tolerance: 200
+- name: PROXY
+  type: select
+  proxies:
+  - AUTO
+  - DIRECT
+  use:
+  - mobile
+- name: Claude
+  type: select
+  proxies:
+  - PROXY
+  use:
+  - mobile
+- name: Gemini
+  type: select
+  proxies:
+  - PROXY
+  use:
+  - mobile
+rule-providers:
+  LocalAreaNetwork:
+    type: http
+    behavior: classical
+    format: text
+    interval: 86400
+    path: ./ruleset/LocalAreaNetwork.list
+    url: https://gh-proxy.com/raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/LocalAreaNetwork.list
+    lazy: true
+  UnBan:
+    type: http
+    behavior: classical
+    format: text
+    interval: 86400
+    path: ./ruleset/UnBan.list
+    url: https://gh-proxy.com/raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/UnBan.list
+    lazy: true
+  BanAD:
+    type: http
+    behavior: classical
+    format: text
+    interval: 86400
+    path: ./ruleset/BanAD.list
+    url: https://gh-proxy.com/raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/BanAD.list
+    lazy: true
+  BanProgramAD:
+    type: http
+    behavior: classical
+    format: text
+    interval: 86400
+    path: ./ruleset/BanProgramAD.list
+    url: https://gh-proxy.com/raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/BanProgramAD.list
+    lazy: true
+  GoogleCN:
+    type: http
+    behavior: classical
+    format: text
+    interval: 86400
+    path: ./ruleset/GoogleCN.list
+    url: https://gh-proxy.com/raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/GoogleCN.list
+    lazy: true
+  GoogleFCM:
+    type: http
+    behavior: classical
+    format: text
+    interval: 86400
+    path: ./ruleset/GoogleFCM.list
+    url: https://gh-proxy.com/raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/GoogleFCM.list
+    lazy: true
+  Apple:
+    type: http
+    behavior: classical
+    format: text
+    interval: 86400
+    path: ./ruleset/Apple.list
+    url: https://gh-proxy.com/raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Apple.list
+    lazy: true
+  Microsoft:
+    type: http
+    behavior: classical
+    format: text
+    interval: 86400
+    path: ./ruleset/Microsoft.list
+    url: https://gh-proxy.com/raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Microsoft.list
+    lazy: true
+  OneDrive:
+    type: http
+    behavior: classical
+    format: text
+    interval: 86400
+    path: ./ruleset/OneDrive.list
+    url: https://gh-proxy.com/raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/OneDrive.list
+    lazy: true
+  Bing:
+    type: http
+    behavior: classical
+    format: text
+    interval: 86400
+    path: ./ruleset/Bing.list
+    url: https://gh-proxy.com/raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Bing.list
+    lazy: true
+  ChinaDomain:
+    type: http
+    behavior: domain
+    format: text
+    interval: 86400
+    path: ./ruleset/ChinaDomain.list
+    url: https://gh-proxy.com/raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ChinaDomain.list
+    lazy: true
+  ChinaCompanyIp:
+    type: http
+    behavior: ipcidr
+    format: text
+    interval: 86400
+    path: ./ruleset/ChinaCompanyIp.list
+    url: https://gh-proxy.com/raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ChinaCompanyIp.list
+    lazy: true
+  ChinaMedia:
+    type: http
+    behavior: classical
+    format: text
+    interval: 86400
+    path: ./ruleset/ChinaMedia.list
+    url: https://gh-proxy.com/raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ChinaMedia.list
+    lazy: true
+  Bilibili:
+    type: http
+    behavior: classical
+    format: text
+    interval: 86400
+    path: ./ruleset/Bilibili.list
+    url: https://gh-proxy.com/raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/Bilibili.list
+    lazy: true
+  BilibiliHMT:
+    type: http
+    behavior: classical
+    format: text
+    interval: 86400
+    path: ./ruleset/BilibiliHMT.list
+    url: https://gh-proxy.com/raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/BilibiliHMT.list
+    lazy: true
+  NetEaseMusic:
+    type: http
+    behavior: classical
+    format: text
+    interval: 86400
+    path: ./ruleset/NetEaseMusic.list
+    url: https://gh-proxy.com/raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/NetEaseMusic.list
+    lazy: true
+  Download:
+    type: http
+    behavior: classical
+    format: text
+    interval: 86400
+    path: ./ruleset/Download.list
+    url: https://gh-proxy.com/raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Download.list
+    lazy: true
+  SteamCN:
+    type: http
+    behavior: classical
+    format: text
+    interval: 86400
+    path: ./ruleset/SteamCN.list
+    url: https://gh-proxy.com/raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/SteamCN.list
+    lazy: true
+  Steam:
+    type: http
+    behavior: classical
+    format: text
+    interval: 86400
+    path: ./ruleset/Steam.list
+    url: https://gh-proxy.com/raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/Steam.list
+    lazy: true
+  Epic:
+    type: http
+    behavior: classical
+    format: text
+    interval: 86400
+    path: ./ruleset/Epic.list
+    url: https://gh-proxy.com/raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/Epic.list
+    lazy: true
+  Origin:
+    type: http
+    behavior: classical
+    format: text
+    interval: 86400
+    path: ./ruleset/Origin.list
+    url: https://gh-proxy.com/raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/Origin.list
+    lazy: true
+  Sony:
+    type: http
+    behavior: classical
+    format: text
+    interval: 86400
+    path: ./ruleset/Sony.list
+    url: https://gh-proxy.com/raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/Sony.list
+    lazy: true
+  Nintendo:
+    type: http
+    behavior: classical
+    format: text
+    interval: 86400
+    path: ./ruleset/Nintendo.list
+    url: https://gh-proxy.com/raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/Nintendo.list
+    lazy: true
+  Telegram:
+    type: http
+    behavior: classical
+    format: text
+    interval: 86400
+    path: ./ruleset/Telegram.list
+    url: https://gh-proxy.com/raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Telegram.list
+    lazy: true
+  YouTube:
+    type: http
+    behavior: classical
+    format: text
+    interval: 86400
+    path: ./ruleset/YouTube.list
+    url: https://gh-proxy.com/raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/YouTube.list
+    lazy: true
+  Netflix:
+    type: http
+    behavior: classical
+    format: text
+    interval: 86400
+    path: ./ruleset/Netflix.list
+    url: https://gh-proxy.com/raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/Netflix.list
+    lazy: true
+  Bahamut:
+    type: http
+    behavior: classical
+    format: text
+    interval: 86400
+    path: ./ruleset/Bahamut.list
+    url: https://gh-proxy.com/raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/Bahamut.list
+    lazy: true
+  OpenAi:
+    type: http
+    behavior: classical
+    format: text
+    interval: 86400
+    path: ./ruleset/OpenAi.list
+    url: https://gh-proxy.com/raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/OpenAi.list
+    lazy: true
+  ProxyMedia:
+    type: http
+    behavior: classical
+    format: text
+    interval: 86400
+    path: ./ruleset/ProxyMedia.list
+    url: https://gh-proxy.com/raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ProxyMedia.list
+    lazy: true
+  ProxyGFWlist:
+    type: http
+    behavior: classical
+    format: text
+    interval: 86400
+    path: ./ruleset/ProxyGFWlist.list
+    url: https://gh-proxy.com/raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ProxyGFWlist.list
+    lazy: true
+  category-ads-all:
+    type: http
+    behavior: domain
+    format: yaml
+    interval: 86400
+    path: ./ruleset/category-ads-all.yaml
+    url: https://gh-proxy.com/raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-ads-all.yaml
+    lazy: true
+  claude:
+    type: http
+    behavior: domain
+    format: mrs
+    interval: 86400
+    path: ./ruleset/claude.mrs
+    url: https://hvwin8.github.io/autojiedian/rules/claude/claude.mrs
+    lazy: true
+  gemini:
+    type: http
+    behavior: domain
+    format: mrs
+    interval: 86400
+    path: ./ruleset/gemini.mrs
+    url: https://hvwin8.github.io/autojiedian/rules/gemini/gemini.mrs
+    lazy: true
+rules:
+- IP-CIDR6,::/0,REJECT,no-resolve
+- DOMAIN-SUFFIX,doubleclick.net,REJECT
+- DOMAIN-SUFFIX,googleadservices.com,REJECT
+- DOMAIN-SUFFIX,googlesyndication.com,REJECT
+- DOMAIN-SUFFIX,mobileads.google.com,REJECT
+- DOMAIN-SUFFIX,github.com,PROXY
+- DOMAIN-SUFFIX,githubusercontent.com,PROXY
+- DOMAIN-SUFFIX,github.io,PROXY
+- DOMAIN-SUFFIX,githubassets.com,PROXY
+- DOMAIN-SUFFIX,github.dev,PROXY
+- DOMAIN-SUFFIX,gh-proxy.com,DIRECT
+- RULE-SET,LocalAreaNetwork,DIRECT
+- IP-CIDR,127.0.0.0/8,DIRECT,no-resolve
+- IP-CIDR,10.0.0.0/8,DIRECT,no-resolve
+- IP-CIDR,172.16.0.0/12,DIRECT,no-resolve
+- IP-CIDR,192.168.0.0/16,DIRECT,no-resolve
+- DOMAIN-SUFFIX,digitalchina.com,DIRECT
+- RULE-SET,BanAD,REJECT
+- RULE-SET,BanProgramAD,REJECT
+- RULE-SET,category-ads-all,REJECT
+- RULE-SET,UnBan,DIRECT
+- RULE-SET,ChinaDomain,DIRECT
+- RULE-SET,ChinaCompanyIp,DIRECT
+- RULE-SET,ChinaMedia,DIRECT
+- RULE-SET,Bilibili,DIRECT
+- RULE-SET,GoogleCN,DIRECT
+- RULE-SET,Apple,DIRECT
+- RULE-SET,Microsoft,DIRECT
+- RULE-SET,OneDrive,DIRECT
+- RULE-SET,Bing,DIRECT
+- RULE-SET,NetEaseMusic,DIRECT
+- RULE-SET,SteamCN,DIRECT
+- RULE-SET,Download,DIRECT
+- DOMAIN-REGEX,^assets\d+\.xboxlive\.(com|cn)$,DIRECT
+- DOMAIN-SUFFIX,twimg.com,PROXY
+- DOMAIN-SUFFIX,tiktokcdn.com,PROXY
+- DOMAIN-SUFFIX,tiktokcdn-eu.com,PROXY
+- DOMAIN-SUFFIX,tiktokcdn-us.com,PROXY
+- DOMAIN-SUFFIX,tiktokv.com,PROXY
+- DOMAIN-SUFFIX,byteoversea.com,PROXY
+- DOMAIN-SUFFIX,fbcdn.net,PROXY
+- DOMAIN-SUFFIX,fbcdn.com,PROXY
+- DOMAIN-SUFFIX,cdninstagram.com,PROXY
+- RULE-SET,claude,Claude
+- DOMAIN-SUFFIX,claude.com,Claude
+- RULE-SET,gemini,Gemini
+- RULE-SET,YouTube,PROXY
+- RULE-SET,Netflix,PROXY
+- RULE-SET,ProxyMedia,PROXY
+- RULE-SET,Bahamut,PROXY
+- RULE-SET,BilibiliHMT,PROXY
+- RULE-SET,OpenAi,PROXY
+- RULE-SET,GoogleFCM,PROXY
+- RULE-SET,Telegram,PROXY
+- RULE-SET,Steam,PROXY
+- RULE-SET,Epic,PROXY
+- RULE-SET,Origin,PROXY
+- RULE-SET,Sony,PROXY
+- RULE-SET,Nintendo,PROXY
+- RULE-SET,ProxyGFWlist,PROXY
+- IP-CIDR,10.0.0.0/8,DIRECT
+- IP-CIDR,172.16.0.0/12,DIRECT
+- IP-CIDR,192.168.0.0/16,DIRECT
+- GEOIP,CN,DIRECT
+- MATCH,PROXY
+proxy-providers:
+  mobile:
+    type: http
+    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/mobile.yaml
+    path: ./providers/mobile.yaml
+    interval: 3600
+    exclude-filter: ''
+    health-check:
+      enable: true
+      url: https://www.youtube.com/generate_204
+      interval: 300
+      timeout: 5000
+      expected-status: 204
+      lazy: true
+geox-url:
+  geoip: https://gh-proxy.com/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip.dat
+  geosite: https://gh-proxy.com/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geosite.dat
+  mmdb: https://gh-proxy.com/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/country.mmdb
