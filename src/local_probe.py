@@ -508,6 +508,46 @@ def run_eval_chain(push_it=True):
     return prc
 
 
+LEAGUE_SCRIPT = os.path.join(HERE, "league.py")
+LEAGUE_TIMEOUT = 900      # 重探 relegated（fetch+抽样 25/源）+ 决策的时间盒（秒）
+
+
+def run_league_chain(push_it=True):
+    """7 源末位淘汰联赛（2026-11-02）：排在评估链之后，独立时间盒。
+
+    重探 relegated（fetch+真探针）+ 全量排名 + 换位写 sources.yaml。
+    任何失败只大声说明，绝不带崩 L2 主链。换位后 sources.yaml 单独推送
+    （主链默认推送集里也有这个文件，推送失败会由下一轮主链带走）。
+    """
+    script = LEAGUE_SCRIPT
+    if not os.path.isfile(script):
+        print("[league] ⚠ 找不到 %s，跳过末位联赛（主链不受影响）" % script)
+        return None
+    print("[league] 末位淘汰联赛开跑（时间盒 %ds）…" % LEAGUE_TIMEOUT)
+    try:
+        p = subprocess.run(
+            [sys.executable, script],
+            cwd=ROOT, stdout=sys.stdout, stderr=subprocess.STDOUT,
+            timeout=LEAGUE_TIMEOUT, creationflags=NOWIN)
+        rc = p.returncode
+    except subprocess.TimeoutExpired:
+        print("[league] ⚠ 时间盒 %ds 到点被掐断（无写入半成品风险："
+              "sources.yaml 是末尾原子写）" % LEAGUE_TIMEOUT)
+        rc = 124
+    if rc != 0:
+        print("[league] exit=%d（0=换位或无事，2=拒绝写入，124=超盒）" % rc)
+        return rc
+    if not push_it:
+        print("[league] --no-push 生效：换位结果留在本地")
+        return rc
+    print("[league] 推送换位结果 …")
+    prc = push_to_github(paths=["src/sources.yaml", "state/league_last.json"],
+                         msg="chore: 末位联赛换位 " + time.strftime("%Y%m%d-%H%M"))
+    if prc != 0:
+        print("[league] ⚠ 换位推送失败（exit=%d）：下次主链推送会带上去" % prc)
+    return prc
+
+
 def main():
     ap = argparse.ArgumentParser(description="本机（国内口径）真探针，计划任务每天 12:30 跑")
     ap.add_argument("--no-push", action="store_true", help="只探针，不推回 GitHub")
@@ -575,6 +615,11 @@ def main():
         erc = run_eval_chain(push_it=not args.no_push)
         if erc is not None:
             _oplog("eval exit=%d" % erc)
+        # 末位淘汰联赛（2026-11-02）：读本轮 scope=local 探针 + 评估通道排名，
+        # 挑战者超在册末位 +5pp 就换位。独立时间盒，失败不影响主链。
+        lrc = run_league_chain(push_it=not args.no_push)
+        if lrc is not None:
+            _oplog("league exit=%d" % lrc)
     _oplog("done, exit=%d" % rc)
     return rc
 

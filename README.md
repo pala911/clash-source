@@ -66,6 +66,23 @@ provider、5700+ 节点，桌面实测峰值 ~95 MB，iOS 上必然被杀。
 订阅地址同样只写在 `dist/mobile.yaml` 文件头注释里。iOS 上（Clash Mi / Karing）
 优先用这一条；桌面/安卓继续用完整版 `profile.yaml`。
 
+### 1.3 七源末位淘汰联赛（2026-11-02）
+
+启用源稳态 **7 个**（
+efill.py TARGET_CAP=7），AUTO 只挂**国内口径排名前 3**
+（uild.py AUTO_MAX=3），其余达标源在「备用」组手动可切。
+
+换位规则（src/league.py，本机 12:30 链每日一轮）：
+
+- 挑战者 = 评估通道里 approved 且未入组的候选 + 被降级的 elegated\ 源（每轮重探）
+- 挑战者（alive ≥ 3）超过**在册末位 +5pp** → 换位：末位打 elegated\ 日期标
+  退回竞争池，挑战者入册；每轮 ≤1 次、间隔 ≥24h
+- 被淘汰源**不消失**：留在 \sources.yaml\（enabled=false）每轮重探，翻盘即回归
+- 排名只用国内口径（美国 CI rho=0.48 不可排序）；scope=ci 的探针文件会被
+  league 拒绝消费
+
+门禁：\	ools/test_league.py\（决策/防抖/alive 门槛/换位对账/回归换位/cap 守恒）。
+
 ---
 
 ## 2. 系统怎么跑

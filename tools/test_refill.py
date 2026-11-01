@@ -180,14 +180,17 @@ try:
     print()
 
     # ---------------- B cap 满 ----------------
-    print("B cap 满：enabled=12 -> 挂待用（pending-cap），不写入")
+    # 2026-11-02：cap 12 -> 7（7 源末位淘汰制，用户拍板）。本场景直接用 7 个
+    # enabled 验证「满员挂待用」，顺带覆盖新 cap 值本身。
+    print("B cap 满：enabled=7 -> 挂待用（pending-cap），不写入")
     setup()
-    base12 = make_text(12)
+    base12 = make_text(refill.TARGET_CAP)
     with io.open(refill.SOURCES, "w", encoding="utf-8", newline="\n") as f:
         f.write(base12)
     write_channel([cand(url="https://example/waiter")])
     rc, out = run()
-    check(rc == 0 and "挂待用" in out and "12/12" in out,
+    cap_s = "%d/%d" % (refill.TARGET_CAP, refill.TARGET_CAP)
+    check(rc == 0 and "挂待用" in out and cap_s in out,
           "cap 满 -> 挂待用且人数说了出来", out.strip().splitlines()[-1][:100])
     check(io.open(refill.SOURCES, encoding="utf-8").read() == base12,
           "cap 满时文件一字未动")

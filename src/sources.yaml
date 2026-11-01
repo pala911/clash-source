@@ -17,6 +17,12 @@
 #   nomorewalls 14% / autojiedian 12% / shaoyouvip 10%
 #   已排除（0%）：clashfree(611→0) Au1rxx(1745→2) mahdibland Eternity(美机测速 200→0)
 #   已消亡：barry-far(仓库被 GitHub 封禁) pepedog/404 soroushmirzaei/404
+#
+# 7 源末位淘汰制（2026-11-02 用户拍板）：
+#   enabled 稳态 = 7 个；refill.py TARGET_CAP=7；src/league.py 每日按国内口径排名，
+#   挑战者（云效粗筛通过的本机终审候选 + relegated 降级源）超过在册末位 +5pp 则换位。
+#   被淘汰源打 relegated 日期标留在本文件（enabled=false），每轮参与重探，可回归。
+#   AUTO 只挂国内口径排名前 3 的源竞速（build.py cap=3）。
 
 # 兜底过滤（未单独指定 exclude_filter 的源用这个）
 exclude_filter_default: '(?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])'
@@ -25,10 +31,10 @@ sources:
   # ===== 2026-10-13 真探针新测出的高价值源 =====
   - name: yypool
     url: https://raw.githubusercontent.com/yy1588133/proxy-pool/main/clash.yaml
-    enabled: true
+    enabled: false
     max_nodes: 900
-    note: 🏆 800 产出→200 通过(25%)，最快 75ms；上游就是现有源的聚合去重版（freeSub/NoMoreWalls/AutoMergePublicNodes/zhuhaiuk/get_subscribe/clashfree/Free-servers），补宽度+质量都最划算
-    probe_interval: 180
+    relegated: '2026-11-02'
+    note: 🏆 800 产出→200 通过(25%)，最快 75ms；上游就是现有源的聚合去重版（freeSub/NoMoreWalls/AutoMergePublicNodes/zhuhaiuk/get_subscribe/clashfree/Free-servers），补宽度+质量都最划算；2026-11-02 7源末位淘汰——与保留源高度重叠（上游本就是它们的聚合），宽度价值被 automerge 覆盖
   - name: anaer
     url: https://raw.githubusercontent.com/wzmwayne/proxy-node/main/output/anaer/clash.yaml
     enabled: false
@@ -45,10 +51,11 @@ sources:
   # ===== 原有 8 源（2026-10-13 实测见下）=====
   - name: ermaozi
     url: https://raw.githubusercontent.com/ermaozi/get_subscribe/main/subscribe/clash.yml
-    enabled: true
+    enabled: false
     max_nodes: 800
+    relegated: '2026-11-02'
     exclude_filter: '(?i)(过期|剩余|流量|官网|订阅|加群|电报|telegram|t\.me|https?://)'
-    note: 352 测/69 活(20%)→当日复测 500 产出/34 活(6.8%，上游 12h 换池+晚高峰)；价值主要在 http 段
+    note: 352 测/69 活(20%)→当日复测 500 产出/34 活(6.8%，上游 12h 换池+晚高峰)；价值主要在 http 段；2026-11-02 7源末位淘汰——晚高峰波动最大（上游 12h 换池）
 
   - name: zhuhaiuk
     url: https://raw.githubusercontent.com/zhuhaiuk/free-nodes/main/clash_config.yaml
@@ -68,8 +75,9 @@ sources:
 
   - name: snakem982
     url: https://raw.githubusercontent.com/snakem982/proxypool/main/source/clash-meta-2.yaml
-    enabled: true
-    note: 21% 通过率
+    enabled: false
+    relegated: '2026-11-02'
+    note: 21% 通过率；2026-11-02 7源末位淘汰——T3 已降级，且节点侧封机房 IP（云效 0 活）
 
   - name: nomorewalls
     url: https://raw.githubusercontent.com/peasoft/NoMoreWalls/master/list.meta.yml
@@ -78,13 +86,15 @@ sources:
 
   - name: autojiedian
     url: https://hvwin8.github.io/autojiedian/clash.yaml
-    enabled: true
-    note: 12% 通过率但 2100+ 节点，兜底宽度池
+    enabled: false
+    relegated: '2026-11-02'
+    note: 12% 通过率但 2100+ 节点，兜底宽度池；2026-11-02 7源末位淘汰——T4 已降级，2100 节点是 iOS 网络扩展内存杀手
 
   - name: shaoyouvip
     url: https://raw.githubusercontent.com/shaoyouvip/free/refs/heads/main/all.yaml
-    enabled: true
-    note: 10% 通过率，主体为 http 明文代理；观察中，AI 复核仍无用则下轮摘掉
+    enabled: false
+    relegated: '2026-11-02'
+    note: 10% 通过率，主体为 http 明文代理；观察中，AI 复核仍无用则下轮摘掉；2026-11-02 7源末位淘汰——长期 10% 垫底
 
   # ===== 2026-10-28 候选池评估接入（tools/eval_candidates.py 本机真探针）=====
   # 97 条 pending 首轮全清：77 rejected / 20 approved；此为 approved 前三名。

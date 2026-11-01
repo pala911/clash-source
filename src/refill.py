@@ -54,8 +54,9 @@ SOURCES = os.path.join(HERE, "sources.yaml")
 CHANNEL = os.path.join(ROOT, "data", "eval_verdicts.json")
 STATE = os.path.join(ROOT, "state", "refill_last.json")
 
-# cap（10-19 拍板 TARGET_SOURCES=12）与节流
-TARGET_CAP = 12          # enabled 稳态上限；现存 15 个不动，cap 只管未来
+# cap（2026-11-02 用户拍板 7 源末位淘汰制，原 10-19 TARGET_SOURCES=12）
+# 与节流。enabled >= 7 不补员：approved 候选挂待用，由 league.py 按末位淘汰换位。
+TARGET_CAP = 7
 MIN_GAP_HOURS = 24       # 两次补员的最小间隔（ISO 时间口径，坏时间戳=不补）
 NAME_RE = re.compile(r"[^A-Za-z0-9_\-]")
 NOTE_MAX = 240           # note 防御上限：评估结论可能异常长，别把清单撑爆
