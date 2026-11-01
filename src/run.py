@@ -40,7 +40,13 @@ def _prune_dist_stale(dist_dir, keep_names):
     profile 不引用它们（gh-pages 每轮全量重建），但仓库里越积越旧，没人清理
     就更没人敢信。keep_names = 本轮源名集合；--sources 局部调试不调（只跑了
     部分源，没跑的源本来就是完整有效的，不能删）。
+
+    ⚠ keep_names 强制并入 MOBILE_PROVIDER（2026-11-02 真事故）：write_dist
+      会写 dist/nodes/mobile.yaml（非源名），白名单不含它时刚写完就被这里
+      当残留删掉 —— gh-pages 404、轻量版订阅 0 节点，而 dist/mobile.yaml
+      在根目录幸存，极难察觉。防护放在函数内部：任何调用方都无法漏传。
     """
+    keep = set(keep_names) | {build.MOBILE_PROVIDER}
     for sub in ("nodes", "raw"):
         d = os.path.join(dist_dir, sub)
         if not os.path.isdir(d):
@@ -49,9 +55,9 @@ def _prune_dist_stale(dist_dir, keep_names):
             stem, ext = os.path.splitext(fn)
             if ext not in (".yaml", ".yml"):
                 continue
-            if stem == "all" or (stem.endswith("--flaky") and stem[:-7] in keep_names):
+            if stem == "all" or (stem.endswith("--flaky") and stem[:-7] in keep):
                 continue
-            if stem in keep_names:
+            if stem in keep:
                 continue
             try:
                 os.remove(os.path.join(d, fn))

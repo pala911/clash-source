@@ -110,5 +110,21 @@ check("落盘配置可解析且组类型合规",
       {g["type"] for g in loaded["proxy-groups"]} <= {"select", "url-test"})
 
 print("")
+print("=" * 68)
+print("场景 E：_prune_dist_stale 不得删 nodes/mobile.yaml（2026-11-02 真事故：")
+print("        prune 按源名白名单清理，mobile 不是源名 -> 刚写完就被删，")
+print("        gh-pages 404、轻量版订阅 0 节点，而 dist/mobile.yaml 幸存极难察觉）")
+print("=" * 68)
+import run as run_mod  # noqa: E402
+
+# 造一个「本轮已不存在的源」快照，验证 prune 的本职还在
+stale = os.path.join(tmp, "nodes", "deadsrc.yaml")
+io.open(stale, "w", encoding="utf-8").write("proxies: []\n")
+run_mod._prune_dist_stale(tmp, {"zhuhaiuk"})
+check("prune 后 nodes/mobile.yaml 幸存", os.path.isfile(np_))
+check("prune 后 mobile.yaml 幸存", os.path.isfile(mp))
+check("prune 本职仍在：已消失的源快照被清", not os.path.isfile(stale))
+
+print("")
 print("结果：%s" % ("全部通过" if ok else "有失败项"))
 sys.exit(0 if ok else 1)
