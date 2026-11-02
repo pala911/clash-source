@@ -203,5 +203,75 @@ check("jsdelivr 与 raw 归一",
       == league.source_identity("https://raw.githubusercontent.com/o/r/main/x.yaml"))
 
 print("")
+print("=" * 68)
+print("场景 J：main() 端到端 —— 通道挑战者真正写进 sources.yaml + 24h 节流")
+print("=" * 68)
+jtmp = tempfile.mkdtemp(prefix="league_j_")
+jsrc = os.path.join(jtmp, "sources.yaml")
+jstate = os.path.join(jtmp, "league_last.json")
+jverdicts = os.path.join(jtmp, "eval_verdicts.json")
+jprobe = os.path.join(jtmp, "probe_latest.json")
+with io.open(jsrc, "w", encoding="utf-8", newline="\n") as f:
+    f.write(make_text(7))
+with io.open(jverdicts, "w", encoding="utf-8") as f:
+    json.dump({"candidates": [{
+        "url": "https://raw.githubusercontent.com/owner/new/main/x.yaml",
+        "verdict": "approved", "repo": "owner/new", "rate": 40.0,
+        "alive": 24, "nodes": 60,
+        "evaluated_at": "2026-11-02T00:00:00Z"}, {
+        # 第二轮仍在通道里的次强候选：用来验证 24h 节流，而不是「无挑战者」
+        "url": "https://raw.githubusercontent.com/owner/other/main/y.yaml",
+        "verdict": "approved", "repo": "owner/other", "rate": 35.0,
+        "alive": 20, "nodes": 60,
+        "evaluated_at": "2026-11-02T00:00:00Z"}]}, f)
+with io.open(jprobe, "w", encoding="utf-8") as f:
+    json.dump({"scope": "local", "sources": {
+        "src%02d" % i: {"rate": 30.0 - i * 3, "alive": 10, "settled": True}
+        for i in range(7)}}, f)
+_old = (league.SOURCES, league.STATE, league.VERDICTS, league.PROBE_LATEST)
+league.SOURCES, league.STATE = jsrc, jstate
+league.VERDICTS, league.PROBE_LATEST = jverdicts, jprobe
+try:
+    rc = league.main(["--skip-reprobe"])
+    jd = yaml.safe_load(io.open(jsrc, encoding="utf-8"))
+    john = [s for s in jd["sources"] if s.get("enabled")]
+    jworst = next(s for s in jd["sources"] if s["name"] == "src06")
+    jnew = next((s for s in jd["sources"] if s["name"] == "new"), None)
+    check("返回 0（已换位）", rc == 0, str(rc))
+    check("源数 +1（append 新块）", len(jd["sources"]) == 8,
+          str(len(jd["sources"])))
+    check("enabled 仍 7", len(john) == 7, str(len(john)))
+    check("末位 src06 降级带日期",
+          jworst.get("enabled") is False and bool(jworst.get("relegated")))
+    check("通道挑战者入册且 enabled",
+          jnew is not None and jnew.get("enabled") is True)
+    check("state/league_last.json 落盘", os.path.exists(jstate))
+    # 下一轮本机探针没测到新源：缺速率必须 hold（不能按 0 分误杀）
+    with io.open(jprobe, "w", encoding="utf-8") as f:
+        json.dump({"scope": "local", "sources": {
+            "src%02d" % i: {"rate": 30.0 - i * 3, "alive": 10, "settled": True}
+            for i in range(6)}}, f)
+    before_missing = io.open(jsrc, encoding="utf-8").read()
+    rc_missing = league.main(["--skip-reprobe"])
+    check("在册源缺速率 -> 返回 3 且不写（不按 0 分误杀）",
+          rc_missing == 3
+          and io.open(jsrc, encoding="utf-8").read() == before_missing,
+          str(rc_missing))
+    # 补齐新源速率后再跑：应命中 24h 节流
+    rates2 = {"src%02d" % i: {"rate": 30.0 - i * 3, "alive": 10,
+                              "settled": True} for i in range(6)}
+    rates2["new"] = {"rate": 20.0, "alive": 10, "settled": True}
+    with io.open(jprobe, "w", encoding="utf-8") as f:
+        json.dump({"scope": "local", "sources": rates2}, f)
+    before2 = io.open(jsrc, encoding="utf-8").read()
+    rc2 = league.main(["--skip-reprobe"])
+    after2 = io.open(jsrc, encoding="utf-8").read()
+    check("第二次 24h 节流返回 3（无换位）", rc2 == 3, str(rc2))
+    check("节流后文件逐字节不变", before2 == after2)
+finally:
+    (league.SOURCES, league.STATE,
+     league.VERDICTS, league.PROBE_LATEST) = _old
+
+print("")
 print("结果：%s" % ("全部通过" if ok else "有失败项"))
 sys.exit(0 if ok else 1)

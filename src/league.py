@@ -466,10 +466,11 @@ def main(argv=None):
                      for s in enabled if s["name"] in enabled_rates}
     missing = [s["name"] for s in enabled if s["name"] not in enabled_rates]
     if missing:
-        warn("在册源缺本机速率（未测/未 settled）：%s —— 按 0 分参与排名"
+        # 缺速率不等于 0 分：本机探针没测完（网络差/时间盒）时给 0 分会把
+        # 好源误判成末位。与 health 的「未测完不参与判定」保持同一纪律。
+        warn("在册源缺本机速率（未测/未 settled）：%s —— 本轮不排名（不给 0 分）"
              % "、".join(missing))
-        for n in missing:
-            enabled_rates[n] = (0.0, 0.0)
+        return 3
 
     known = set()
     for s in (doc.get("sources") or []) + (doc.get("excluded") or []):
@@ -551,8 +552,12 @@ def main(argv=None):
     health._atomic_write(SOURCES, new_text)
     rec = {"at": now, "out": out_name, "in": check_name, "why": why}
     save_state(st or {}, rec)
+    try:
+        state_disp = os.path.relpath(STATE, ROOT)
+    except ValueError:                          # 测试把 STATE 放到别的盘
+        state_disp = STATE
     say("✅ 换位完成：%s → relegated，%s 入册（state=%s）"
-        % (out_name, check_name, os.path.relpath(STATE, ROOT)))
+        % (out_name, check_name, state_disp))
     return 0
 
 
