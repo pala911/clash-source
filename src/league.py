@@ -31,6 +31,7 @@ excluded、不消失**——打 relegated 日期标留在 sources.yaml，每轮�
 import argparse
 import json
 import os
+import re
 import sys
 import time
 
@@ -53,6 +54,9 @@ STAGEDIR = os.path.join(ROOT, ".league_stage")
 
 MARGIN_PP = 5.0          # 挑战者必须比在册末位高这么多 pp 才换位（防抖动）
 CHALL_MIN_ALIVE = 3      # 挑战者最少活节点
+CHANNEL_MIN_NODES = 20   # 通道候选最少样本数（2026-11-02 真事故：7 节点 3 活的
+                         # 小源 42.9% 差点换掉 184 节点的 leilaomi —— 样本太小，
+                         # 比率不可比。relegated 重探固定抽 25，不存在这个问题）
 REPROBE_SAMPLE = 25      # relegated 重探抽样数（分层）
 MIN_GAP_HOURS = 24       # 两次换位最小间隔
 
@@ -150,27 +154,137 @@ def load_local_rates():
     return out or None
 
 
+_IDENT_RAW = re.compile(r"raw\.githubusercontent\.com/(.+)$", re.I)
+_IDENT_GHRAW = re.compile(r"github\.com/([^/]+)/([^/]+)/(?:raw|blob)/([^/]+)/(.+)$", re.I)
+_IDENT_JSD = re.compile(r"jsdelivr\.net/gh/([^/]+)/([^/@]+)@[^/]+/(.+)$", re.I)
+_IDENT_CNB = re.compile(r"cnb\.cool/([^/]+)/([^/]+)/-/git/raw/[^/]+/(.+)$", re.I)
+
+
+def _clean_path(p):
+    return p.split("?")[0].split("#")[0].strip("/")
+
+
+def source_identity(url):
+    """把镜像/分支差异归一成「仓库内文件身份」，用于判重。
+
+    ghproxy.net/https://raw.githubusercontent.com/a/b/main/x.yaml
+    raw.githubusercontent.com/a/b/refs/heads/main/x.yaml
+    cdn.jsdelivr.net/gh/a/b@main/x.yaml
+    三者都 -> gh:a/b/x.yaml
+    """
+    u = str(url or "").strip()
+    m = _IDENT_RAW.search(u)
+    if m:
+        parts = _clean_path(m.group(1)).split("/")
+        if len(parts) >= 3:
+            owner, repo, rest = parts[0], parts[1], parts[2:]
+            if rest[:2] == ["refs", "heads"]:
+                rest = rest[2:]
+            if len(rest) >= 2:                      # 第一段是分支
+                return ("gh:%s/%s/%s"
+                        % (owner, repo, "/".join(rest[1:]))).lower()
+    m = _IDENT_GHRAW.search(u)                      # ghproxy.net/github.com/...
+    if m:
+        return ("gh:%s/%s/%s"
+                % (m.group(1), m.group(2), _clean_path(m.group(4)))).lower()
+    m = _IDENT_JSD.search(u)
+    if m:
+        return ("gh:%s/%s/%s"
+                % (m.group(1), m.group(2), _clean_path(m.group(3)))).lower()
+    m = _IDENT_CNB.search(u)
+    if m:
+        return ("cnb:%s/%s/%s"
+                % (m.group(1), m.group(2), _clean_path(m.group(3)))).lower()
+    return None
+
+
+def source_repo(url):
+    """同一仓库（忽略文件路径/分支）—— 挡住「同一运营方的另一个文件」。"""
+    ident = source_identity(url)
+    if not ident:
+        return None
+    kind, rest = ident.split(":", 1)
+    parts = rest.split("/")
+    if len(parts) < 2:
+        return None
+    return "%s:%s/%s" % (kind, parts[0], parts[1])
+
+
 def load_challengers_from_channel(known_urls):
-    """评估通道里 approved 且尚未入组的候选（本机终审 rate 就是国内口径）。"""
+    """评估通道里 approved 且尚未入组的候选（本机终审 rate 就是国内口径）。
+
+    判重不能只看 URL 字符串：同一个源在通道里会有 raw / ghproxy / jsdelivr
+    三种写法（2026-11-02 实测 Reconss 一份源三条结论），同一个仓库也可能
+    被不同分支/文件的结论带回来。所以按「仓库内文件身份」+「仓库」两级挡。
+    """
     try:
         d = json.load(open(VERDICTS, encoding="utf-8"))
     except Exception as e:                          # noqa: BLE001
         warn("eval_verdicts.json 读不了：%r" % e)
         return {}
-    out = {}
+    known_urls = known_urls or set()
+    known_ids, known_repos = set(), set()
+    for u in known_urls:
+        ident, repo = source_identity(u), source_repo(u)
+        if ident:
+            known_ids.add(ident)
+        if repo:
+            known_repos.add(repo)
+    best = {}
     for c in (d.get("candidates") or []):
         if not isinstance(c, dict) or c.get("verdict") != "approved":
             continue
         url = c.get("url")
         if not url or url in known_urls:
             continue
+        ident, repo = source_identity(url), source_repo(url)
+        if ident and ident in known_ids:
+            continue
+        if repo and repo in known_repos:
+            continue
         rate, alive = fnum(c.get("rate")), fnum(c.get("alive"))
+        nodes = fnum(c.get("nodes") or 0)
         if rate <= 0:
             continue
+        if nodes < CHANNEL_MIN_NODES:
+            # 样本太小：7 节点里 3 个活 = 42.9%，与 184 节点的 26% 不是同一量纲。
+            # 这类候选留在通道里继续观察，但不进本轮换位比较。
+            continue
         name = c.get("name") or (c.get("repo") or "").rsplit("/", 1)[-1] or url
+        key = ident or ("url:" + url)
+        old = best.get(key)
+        if old is None or (rate, alive) > (old[0], old[1]):
+            best[key] = (rate, alive, url, name, c)
+    out = {}
+    for _key, (rate, alive, url, name, c) in best.items():
         out["channel:" + url] = (rate, alive, {"url": url, "name": name,
                                                "src": "channel", "cand": c})
     return out
+
+
+def resolve_challenger(challengers, in_name, taken_names):
+    """把 decide() 返回的参赛键翻译成写入所需的三元组。
+
+    decide() 用带前缀的键参赛（channel:<url> / relegated:<name>），
+    写入层却需要「块名 / 回归源名」。2026-11-02 首跑就是在这里按
+    meta["name"] 反查键，永远对不上，换位被放弃。
+
+    返回 (cand_meta, cand_block_name, ret_name)；任何一项为 None 都表示
+    该路径不适用。调用方必须放弃写入，不许猜。
+    """
+    hit = challengers.get(in_name)
+    if not hit:
+        return None, None, None
+    meta = hit[2] if isinstance(hit[2], dict) else {}
+    if in_name.startswith("channel:"):
+        cand = dict(meta.get("cand") or {})
+        cand.setdefault("url", meta.get("url"))
+        cand.setdefault("rate", hit[0])
+        cand.setdefault("alive", hit[1])
+        return cand, refill.derive_name(cand, taken_names), None
+    if in_name.startswith("relegated:"):
+        return None, None, (meta.get("name") or in_name.split(":", 1)[1])
+    return None, None, None
 
 
 def reprobe_relegated(relegated, mihomo, log):
@@ -180,6 +294,7 @@ def reprobe_relegated(relegated, mihomo, log):
     import probe as probe_mod                       # noqa: E402
     import shutil                                   # noqa: E402
 
+    shutil.rmtree(STAGEDIR, ignore_errors=True)      # 上一轮失败留下的半成品
     exclude_rx = ""
     try:
         doc = yaml.safe_load(open(SOURCES, encoding="utf-8")) or {}
@@ -378,7 +493,7 @@ def main(argv=None):
         refill.TARGET_CAP)
     say("决策：%s —— %s" % (action, why))
     if action == "hold":
-        return 0
+        return 3
 
     st = None
     try:
@@ -391,25 +506,21 @@ def main(argv=None):
             last, time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()))
         if gap is not None and gap < MIN_GAP_HOURS:
             say("距上次换位 %.1fh（< %dh），节流生效本轮不换" % (gap, MIN_GAP_HOURS))
-            return 0
+            return 3
 
     today = time.strftime("%Y-%m-%d", time.gmtime())
     now = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
     if args.dry_run:
         say("--dry-run：未写入（out=%s in=%s）" % (out_name, in_name))
-        return 0
+        return 3
 
     # 挑战者分两类，写法与对账口径完全不同：
     #   channel:*   = 评估通道里的新源 -> append 块（复用 refill 的渲染/插入）
     #   relegated:* = 被降级的老源回归 -> 原条目原地翻回 enabled:true + 摘掉标记
-    cand_meta, ret_name = None, None
-    for k, (_r, _a, m) in challengers.items():
-        if m.get("name") != in_name:
-            continue
-        if k.startswith("channel:"):
-            cand_meta = m
-        elif k.startswith("relegated:"):
-            ret_name = in_name
+    taken = {s.get("name") for s in (doc.get("sources") or [])
+             if isinstance(s, dict) and s.get("name")}
+    cand_meta, cand_name, ret_name = resolve_challenger(
+        challengers, in_name, taken)
     is_promote = (action == "promote")
 
     new_text = text
@@ -418,7 +529,7 @@ def main(argv=None):
         new_text = _flip_to_relegated(text, out_name, today)
         expect_releg = True
     if cand_meta is not None:                       # 通道新源 append
-        block = refill.render_block(in_name, cand_meta, now)
+        block = refill.render_block(cand_name, cand_meta, now)
         new_text = refill.insert_block(new_text, block)
         d_src = 1
     elif ret_name is not None:                      # relegated 回归
@@ -426,21 +537,22 @@ def main(argv=None):
         new_text = _drop_relegated_field(new_text, ret_name)
     else:
         warn("挑战者 %s 既不在通道也不是 relegated，写入路径缺失，本轮放弃" % in_name)
-        return 0
+        return 3
     if is_promote:
         d_en = 1                                    # 补空位：enabled 净增 1
 
+    check_name = cand_name if cand_meta is not None else ret_name
     try:
-        verify_swap(doc, new_text, out_name, in_name, len(enabled),
+        verify_swap(doc, new_text, out_name, check_name, len(enabled),
                     d_src, d_en, expect_releg)
     except SystemExit as e:
         print(str(e))
         return 2
     health._atomic_write(SOURCES, new_text)
-    rec = {"at": now, "out": out_name, "in": in_name, "why": why}
+    rec = {"at": now, "out": out_name, "in": check_name, "why": why}
     save_state(st or {}, rec)
     say("✅ 换位完成：%s → relegated，%s 入册（state=%s）"
-        % (out_name, in_name, os.path.relpath(STATE, ROOT)))
+        % (out_name, check_name, os.path.relpath(STATE, ROOT)))
     return 0
 
 

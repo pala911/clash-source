@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """league.py 门禁：末位淘汰决策纯函数 + sources.yaml 换位写入对账。"""
 import io
+import json
 import os
 import sys
 import tempfile
@@ -121,6 +122,85 @@ d3 = yaml.safe_load(text5)
 w = next(s for s in d3["sources"] if s["name"] == "src06")
 check("src06 回归 enabled=true 且无 relegated 标",
       w["enabled"] is True and "relegated" not in w)
+
+print("")
+print("=" * 68)
+print("场景 H：decide 的参赛键 -> 写入路径（2026-11-02 首跑真事故）")
+print("=" * 68)
+ch_map = {
+    "channel:https://example/new.yaml": (42.9, 9, {
+        "url": "https://example/new.yaml", "name": "new", "src": "channel",
+        "cand": {"url": "https://example/new.yaml", "repo": "owner/new",
+                 "rate": 42.9, "alive": 9, "nodes": 60,
+                 "evaluated_at": "2026-11-02T00:00:00Z"}}),
+    "relegated:src03": (30.0, 20, {
+        "url": "https://example/src03.yaml", "name": "src03",
+        "src": "relegated"}),
+}
+cm, cname, ret = league.resolve_challenger(
+    ch_map, "channel:https://example/new.yaml", {"src00"})
+check("通道候选解析出块名", cm is not None and cname == "new" and ret is None,
+      "cand=%s name=%s ret=%s" % (cm is not None, cname, ret))
+cm, cname, ret = league.resolve_challenger(ch_map, "relegated:src03", {"src00"})
+check("回归源解析出原名", cm is None and cname is None and ret == "src03",
+      "name=%s ret=%s" % (cname, ret))
+cm, cname, ret = league.resolve_challenger(
+    ch_map, "channel:https://example/missing.yaml", set())
+check("未知键拒绝写入", cm is None and cname is None and ret is None)
+cm, cname, ret = league.resolve_challenger(
+    ch_map, "channel:https://example/new.yaml", {"new"})
+check("块名撞车自动 -2", cname == "new-2", str(cname))
+
+print("")
+print("=" * 68)
+print("场景 I：通道候选三道筛 —— 样本 ≥20 / 镜像判重 / 同仓库判重")
+print("=" * 68)
+vtmp = tempfile.mkdtemp(prefix="league_v_")
+vpath = os.path.join(vtmp, "eval_verdicts.json")
+with io.open(vpath, "w", encoding="utf-8") as f:
+    json.dump({"candidates": [
+        {"url": "https://example/tiny.yaml", "verdict": "approved",
+         "rate": 42.9, "alive": 3, "nodes": 7},
+        {"url": "https://example/big.yaml", "verdict": "approved",
+         "rate": 40.0, "alive": 24, "nodes": 60},
+        # 已入册源的镜像写法（同一个文件，只是换了镜像域名）
+        {"url": "https://ghproxy.net/https://raw.githubusercontent.com/"
+                "owner/known/refs/heads/main/x.yaml",
+         "verdict": "approved", "rate": 50.0, "alive": 50, "nodes": 60},
+        # 同一仓库的另一个文件（同一运营方，不许重复入册）
+        {"url": "https://raw.githubusercontent.com/owner/known/main/other.yaml",
+         "verdict": "approved", "rate": 60.0, "alive": 50, "nodes": 60},
+        # 新仓库：raw + jsdelivr 是同一文件的两条结论，只留高的那条
+        {"url": "https://raw.githubusercontent.com/other/fresh/main/y.yaml",
+         "verdict": "approved", "rate": 30.0, "alive": 20, "nodes": 60},
+        {"url": "https://cdn.jsdelivr.net/gh/other/fresh@main/y.yaml",
+         "verdict": "approved", "rate": 10.0, "alive": 6, "nodes": 60},
+    ]}, f)
+old_verdicts = league.VERDICTS
+league.VERDICTS = vpath
+try:
+    got = league.load_challengers_from_channel({
+        "https://raw.githubusercontent.com/owner/known/main/x.yaml"})
+finally:
+    league.VERDICTS = old_verdicts
+check("小样本被挡", "channel:https://example/tiny.yaml" not in got, str(list(got)))
+check("足样本保留", "channel:https://example/big.yaml" in got, str(list(got)))
+check("镜像写法被挡",
+      not any("owner/known" in k for k in got), str(list(got)))
+check("同仓库另一文件被挡",
+      not any("owner/known" in k for k in got), str(list(got)))
+fresh = [k for k in got if "other/fresh" in k]
+check("同一文件两条结论只留一条", len(fresh) == 1, str(fresh))
+check("留的是高 rate 那条", fresh and "raw.githubusercontent.com" in fresh[0],
+      str(fresh))
+check("ghproxy.net/github.com 镜像归一",
+      league.source_identity(
+          "https://ghproxy.net/github.com/o/r/raw/main/x.yaml")
+      == league.source_identity(
+          "https://raw.githubusercontent.com/o/r/refs/heads/main/x.yaml"))
+check("jsdelivr 与 raw 归一",
+      league.source_identity("https://cdn.jsdelivr.net/gh/o/r@main/x.yaml")
+      == league.source_identity("https://raw.githubusercontent.com/o/r/main/x.yaml"))
 
 print("")
 print("结果：%s" % ("全部通过" if ok else "有失败项"))

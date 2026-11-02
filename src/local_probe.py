@@ -535,7 +535,10 @@ def run_league_chain(push_it=True):
               "sources.yaml 是末尾原子写）" % LEAGUE_TIMEOUT)
         rc = 124
     if rc != 0:
-        print("[league] exit=%d（0=换位或无事，2=拒绝写入，124=超盒）" % rc)
+        if rc == 3:
+            print("[league] 本轮无换位（未写 sources.yaml/state），不产生提交")
+        else:
+            print("[league] exit=%d（0=已换位，2=拒绝写入，3=无换位，124=超盒）" % rc)
         return rc
     if not push_it:
         print("[league] --no-push 生效：换位结果留在本地")

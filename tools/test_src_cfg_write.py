@@ -3,7 +3,7 @@
 
 ## 为什么单独测这个
 
-`src/sources.yaml` 里最值钱的东西不是 12 个 URL，而是那些注释
+`src/sources.yaml` 里最值钱的东西不是那些 URL，而是那些注释
 （「为什么 exclude_filter 必须逐源」「12% 通过率但 2100+ 节点」）。
 原实现是 `yaml.safe_dump(cfg) + 4 行固定表头`，**一次降级就把注释从 23 行
 抹到 4 行**（2026-10-16 实测）。这类丢失是静默的：git status 只显示
@@ -92,13 +92,19 @@ def main():
     # ---------- A 基线 ----------
     print("A 基线：正常输入必须通过，且只动该动的那一行")
     base = seed()
+    base_doc = yaml.safe_load(base)
+    prev_count = len(base_doc["sources"])
+    # 不能写死源名：源会因判死/联赛淘汰变成 enabled:false（2026-11-02 实测
+    # autojiedian 已被裁掉，硬编码断言变成「0 行被改动」的假失败）。
+    flip = next(s["name"] for s in base_doc["sources"]
+                if s.get("enabled", True))
     n_before = comments(base)
     lines_before = base.split("\n")
     check(n_before >= 15, "真源清单里确实有足够多的注释（基线成立）",
           "%d 行注释" % n_before)
 
-    cfg = cfg_of(base, autojiedian=False)
-    health.write_src_cfg(cfg, prev_count=12)
+    cfg = cfg_of(base, **{flip: False})
+    health.write_src_cfg(cfg, prev_count=prev_count)
     after = read()
     lines_after = after.split("\n")
     check(comments(after) == n_before, "注释行数一行没少",
@@ -113,17 +119,17 @@ def main():
     check(len(diff) == 1, "只有 1 行被改动", "实际 %d 行：%s" % (len(diff), diff))
     if len(diff) == 1:
         check("enabled" in lines_after[diff[0]] and "false" in lines_after[diff[0]],
-              "改的正是 autojiedian 的 enabled", lines_after[diff[0]].strip())
+              "改的正是 %s 的 enabled" % flip, lines_after[diff[0]].strip())
 
     parsed = yaml.safe_load(after)
     got = {s["name"]: s.get("enabled", True) for s in parsed["sources"]}
-    check(got.get("autojiedian") is False, "解析后 autojiedian.enabled = false")
+    check(got.get(flip) is False, "解析后 %s.enabled = false" % flip)
     # 其余源必须「保持写入前的状态」（2026-10-31 变相对断言：真文件里
     # anaer/passcro/wzmfree 已被 CI 判死降级成 false ——「全为 true」的旧
     # 假设过时；测试要锁的是 write_src_cfg 的行为，不是真公司的运营状态）
     expect = {s["name"]: s.get("enabled", True)
               for s in yaml.safe_load(base)["sources"]}
-    bad_non = [k for k in got if k != "autojiedian" and got[k] != expect[k]]
+    bad_non = [k for k in got if k != flip and got[k] != expect[k]]
     check(not bad_non, "其余源一律没被动过（相对写入前状态）",
           "；".join("%s %s->%s" % (k, expect[k], got[k]) for k in bad_non))
     check([s["name"] for s in parsed["sources"]] ==
@@ -137,7 +143,7 @@ def main():
 
     # ---------- B 幂等 ----------
     print("B 幂等：同一份 cfg 再写一次，文件逐字节不变")
-    health.write_src_cfg(cfg_of(read(), autojiedian=False), prev_count=12)
+    health.write_src_cfg(cfg_of(read(), **{flip: False}), prev_count=prev_count)
     again = read()
     check(again == after, "第二次写入后内容与第一次完全一致",
           "长度 %d vs %d" % (len(again), len(after)))
@@ -147,7 +153,8 @@ def main():
     print("C 归零守卫：sources: [] 必须拒绝")
     seed(base)
     before_c = read()
-    expect_exit(lambda: health.write_src_cfg({"sources": []}, prev_count=12),
+    expect_exit(lambda: health.write_src_cfg({"sources": []},
+                                             prev_count=prev_count),
                 "空清单被拒绝（SystemExit）")
     check(read() == before_c, "拒绝后文件原样不动")
     print()
@@ -156,8 +163,8 @@ def main():
     print("D 暴跌守卫：源数掉到一半以下必须拒绝")
     seed(base)
     small = {"sources": cfg_of(base)["sources"][:2]}
-    expect_exit(lambda: health.write_src_cfg(small, prev_count=12),
-                "12 -> 2 被拒绝（SystemExit）")
+    expect_exit(lambda: health.write_src_cfg(small, prev_count=prev_count),
+                "%d -> 2 被拒绝（SystemExit）" % prev_count)
     check(read() == base, "拒绝后文件原样不动")
     print()
 
@@ -168,7 +175,7 @@ def main():
     # 造一个「文本里有、cfg 里没有」的场景：cfg 少一个源（但数量还是一半以上）
     short = {"sources": [s for s in full["sources"] if s["name"] != "zhuhaiuk"]}
     before_e = read()
-    expect_exit(lambda: health.write_src_cfg(short, prev_count=12),
+    expect_exit(lambda: health.write_src_cfg(short, prev_count=prev_count),
                 "cfg 比文本少一个源 -> 拒绝")
     check(read() == before_e, "拒绝后文件原样不动（没退化成整份重写）")
     print()

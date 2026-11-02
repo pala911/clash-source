@@ -48,40 +48,48 @@ profile 含两层，节点更新不必等 profile 刷新：
 ### 1.2 iOS 精简版（`mobile.yaml`）
 
 iOS 的系统网络扩展有约 **50 MB 内存上限**，超了会被系统直接杀掉（jetsam，
-无错误日志，表现就是「打开代理 2 秒后自动关闭」）。完整版 profile 有 20 个
-provider、5700+ 节点，桌面实测峰值 ~95 MB，iOS 上必然被杀。
+无错误日志，表现就是「打开代理 2 秒后自动关闭」）。内存的第一变量是**节点数**，
+不是源数：7 源完整版仍有 7 个稳定池 + 6 个 `SRCFL-*` 不稳定池 = 13 个 provider、
+约 1150 个节点；按 120 节点 46.5 MB / 5700 节点 95 MB 两点估算约 **55 MB**，
+仍在 iOS 上限之上。
 
 `dist/mobile.yaml` 是同一轮流水线**顺带产出**的精简版（**不额外抓源、不额外探测、
 不额外调 AI**，只是从内存里已有的稳定节点取样）：
 
 | 项 | 完整版 | 精简版 |
 |---|---|---|
-| provider 数 | 20 个（按源分文件） | **1 个**（`nodes/mobile.yaml` 单池） |
-| 节点数 | ~5700 | **≤120**（源间轮询 + `server:port` 去重） |
+| provider 数 | 13 个（7 稳定池 + 6 不稳定池） | **1 个**（`nodes/mobile.yaml` 单池） |
+| 节点数 | ~1150 | **≤120**（源间轮询 + `server:port` 去重） |
 | 组类型 | select / url-test / fallback | **只有 select + url-test**（Karing 官方不支持 fallback/load-balance/relay） |
 | rule-provider | 33 个 | 33 个，但**全部 `lazy: true`**（命中才加载） |
 | 静态代理「家里路由」 | 有 | 无（手机用不到） |
-| 实测峰值 | 95 MB | **46.5 MB**（同内核、同机器） |
+| 实测峰值 | 95 MB（5700 节点旧版） | **46.5 MB**（同内核、同机器） |
 
 订阅地址同样只写在 `dist/mobile.yaml` 文件头注释里。iOS 上（Clash Mi / Karing）
 优先用这一条；桌面/安卓继续用完整版 `profile.yaml`。
 
 ### 1.3 七源末位淘汰联赛（2026-11-02）
 
-启用源稳态 **7 个**（
-efill.py TARGET_CAP=7），AUTO 只挂**国内口径排名前 3**
-（uild.py AUTO_MAX=3），其余达标源在「备用」组手动可切。
+启用源稳态 **7 个**（`refill.py` 的 `TARGET_CAP=7`），AUTO 只挂**国内口径
+排名前 3**（`build.py` 的 `AUTO_MAX=3`），其余达标源在「备用」组手动可切。
 
-换位规则（src/league.py，本机 12:30 链每日一轮）：
+换位规则（`src/league.py`，本机 12:30 链每日一轮）：
 
-- 挑战者 = 评估通道里 approved 且未入组的候选 + 被降级的 elegated\ 源（每轮重探）
-- 挑战者（alive ≥ 3）超过**在册末位 +5pp** → 换位：末位打 elegated\ 日期标
+- 挑战者 = 评估通道里 approved 且未入组的候选 + 被降级的 `relegated` 源（每轮重探）
+- 通道候选要求**至少 20 个样本**：7 个节点里 3 个活的 42.9% 与 184 个节点的
+  26% 不是同一量纲，样本不足只留在通道继续观察
+- 通道候选按**仓库内文件身份 + 仓库**两级判重：同一源在通道里会有 raw /
+  ghproxy / jsdelivr 三种写法（实测一份源三条结论），同一运营方的另一个文件
+  也不许重复入册
+- 挑战者（alive ≥ 3）超过**在册末位 +5pp** → 换位：末位打 `relegated` 日期标
   退回竞争池，挑战者入册；每轮 ≤1 次、间隔 ≥24h
-- 被淘汰源**不消失**：留在 \sources.yaml\（enabled=false）每轮重探，翻盘即回归
+- 被淘汰源**不消失**：留在 `sources.yaml`（enabled=false）每轮重探，翻盘即回归
 - 排名只用国内口径（美国 CI rho=0.48 不可排序）；scope=ci 的探针文件会被
   league 拒绝消费
+- 退出码：0=已换位，2=拒绝写入，3=本轮无换位（调用方不得产生空提交）
 
-门禁：\	ools/test_league.py\（决策/防抖/alive 门槛/换位对账/回归换位/cap 守恒）。
+门禁：`tools/test_league.py`（决策/防抖/alive 门槛/通道与回归两条写入路径/
+换位对账/cap 守恒）。
 
 ---
 
@@ -90,7 +98,7 @@ efill.py TARGET_CAP=7），AUTO 只挂**国内口径排名前 3**
 ```
     ┌────────────────────────────────────────────────────────────┐
     │  每 6 小时（自动）  GitHub Actions（美国 runner）            │
-    │  抓取 12 源 → 硬过滤 → AI 审核 → build                     │
+    │  抓取 7 源 → 硬过滤 → AI 审核 → build                      │
     │                                          │                  │
     │                              ┌───────────┴────────────┐     │
     │                              │ 按实测质量分桶          │     │
@@ -179,7 +187,7 @@ efill.py TARGET_CAP=7），AUTO 只挂**国内口径排名前 3**
 
 | 模块 | 作用 | 关键点 |
 |---|---|---|
-| `fetch.py` | 抓 12 个源的原始订阅 | 走 GitHub API 取 base64（`raw.githubusercontent.com` 国内必墙） |
+| `fetch.py` | 抓 `sources.yaml` 里启用的源（当前 7 个） | 走 GitHub API 取 base64（`raw.githubusercontent.com` 国内必墙） |
 | `filters.py` | 硬过滤：明文协议放行、按簇聚类、`exclude_filter` | **明文 http/socks5 必须放行**（实测 545 明文通过 32%，733 加密协议只 1.9%）；`exclude_filter` **必须逐源取值** |
 | `ai_review.py` | AI 审核，按「簇」而非按节点审 | 4831 节点 → 1683 簇。给 LLM 的协议是「只报要删的」 |
 | `ai_backends.yaml` | 多后端故障转移链 | 腾讯 tokenhub / 硅基流动 / OpenRouter 三云冗余 |
@@ -207,9 +215,9 @@ efill.py TARGET_CAP=7），AUTO 只挂**国内口径排名前 3**
 | `--scope` | `ci` / `local` / `cnci` | 决定这轮数据能参与什么决策 |
 | `--hc-timeout` | 单节点探测超时，默认 8000ms | **直接线性偏置 alive**。调小它 = 批量制造假死亡 |
 
-✅ **收敛现在很快**（2026-10-16 实测）：CI 全量 **262 秒**、本机 **8.7 分钟**、
-12/12 源全部测完。以前跑满预算仍不收敛，根因是「一个加载不了的 provider
-会让收敛判定永不成立」—— 见 §9 的 sni 那条。
+✅ **收敛现在很快**（2026-10-16 实测，当时 12 源）：CI 全量 **262 秒**、本机
+**8.7 分钟**、12/12 源全部测完（现在 7 源只会更快）。以前跑满预算仍不收敛，
+根因是「一个加载不了的 provider 会让收敛判定永不成立」—— 见 §9 的 sni 那条。
 
 ### 节点稳定性（`src/node_stability.py`）
 
@@ -355,7 +363,8 @@ L3（云效）**只有否决权、没有决定权**：
 > 单轮噪声实测 avg 5.5pp / max 16.7pp，与 8% 阈值同量级，单轮不可用于判定。
 >
 > ✅ **2026-10-16 分级已生效**（把 Codeup 里攒着的 9 轮历史回放给 health.py，
-> 不用等一周）。当前 12 源：9 × T1、ermaozi / snakem982 / autojiedian × T3。
+> 不用等一周）。当时 12 源：9 × T1、ermaozi / snakem982 / autojiedian × T3
+> （2026-11-02 起稳态 7 源）。
 > ⚠ 别用"一天多跑几轮"去凑 7 轮 —— 7 轮的用意是**跨时间平均**抵消单轮噪声，
 > 同一天里连跑的轮次高度相关，抵消不了。额度也完全够（~3 核分/轮）。
 >
@@ -440,6 +449,7 @@ python tools\test_report_ai.py        # AI 留痕链：生产端键名 ↔ 报�
 python tools\test_ci_workflow.py      # CI 推送必须带重试、失败不许染红（连带 skip 下游）
 python tools\test_hardening.py        # 硬化回归：dist 残留清理 / raw 快照原貌 / TPM 闸门不死循环 / review_source 源级合同
 python tools\test_refill.py           # 自动补员：cap/节流/排重/选优/命名/损坏/停用/dry-run + append-only 子序列断言
+python tools\test_league.py           # 末位淘汰：决策/防抖/alive 门槛/通道样本门槛/通道与回归两条写入路径/换位对账/cap 守恒
 python tools\test_mobile_profile.py   # 移动端精简版：单 provider / 120 节点上限 / 源间去重 / 只含 select+url-test（Karing 兼容）/ 规则集全 lazy
 python tools\verify_profile.py        # 真 mihomo 内核校验
 python tools\probe_field_types.py     # mihomo 接受哪些字段类型

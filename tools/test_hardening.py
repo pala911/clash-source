@@ -39,13 +39,16 @@ try:
     raw_dir = os.path.join(d, "raw")
     os.makedirs(nodes_dir)
     os.makedirs(raw_dir)
-    for fn in ("a.yaml", "b.yaml", "a--flaky.yaml", "all.yaml", "notes.txt"):
+    for fn in ("a.yaml", "b.yaml", "a--flaky.yaml", "all.yaml", "mobile.yaml",
+               "notes.txt"):
         open(os.path.join(nodes_dir, fn), "w").close()
     for fn in ("a.yaml", "ghost.yaml"):
         open(os.path.join(raw_dir, fn), "w").close()
     run_mod._prune_dist_stale(d, {"a"})
-    check(sorted(os.listdir(nodes_dir)) == ["a--flaky.yaml", "a.yaml", "all.yaml", "notes.txt"],
-          "nodes 只认本轮源名（b 被删，all/--flaky(a)/非 yaml 保留）")
+    check(sorted(os.listdir(nodes_dir)) ==
+          ["a--flaky.yaml", "a.yaml", "all.yaml", "mobile.yaml", "notes.txt"],
+          "nodes 只认本轮源名（b 被删，all/--flaky(a)/mobile 保留；"
+          "mobile 是 2026-11-02 真事故的回归位）")
     check(sorted(os.listdir(raw_dir)) == ["a.yaml"],
           "raw 里 ghost（已消失的源）被删、a 保留")
     run_mod._prune_dist_stale(os.path.join(d, "no-such-dir"), {"a"})   # 缺目录不炸
