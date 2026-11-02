@@ -1,21 +1,30 @@
 # clash-source 自动生成 —— 源 leilaomi，被稳定性加权移出的 3 个节点
 # 历史可用率偏低，不参与 AUTO 自动竞速；需要时可从「备用」组手工切。
 proxies:
-- name: '[892.7ms +/-4ms] 🇷🇴RO_2|2.0MB/s'
+- name: '[868.1ms +/-3ms] 🇮🇹IT_1|2.1MB/s'
   type: http
-  server: 135.136.1.2
-  port: 9443
+  server: 185.183.105.130
+  port: 443
   tls: true
   skip-cert-verify: true
-- name: '[981.1ms +/-32ms] 🇳🇴NO_1|3.1MB/s'
-  type: http
-  server: 146.70.170.210
-  port: 9443
+- name: 🇮🇹 [727.4ms +/-15ms] shadowsocks-1875023048
+  type: ss
+  server: 202.50.253.72
+  port: 19999
+  cipher: aes-256-gcm
+  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
+  udp: true
+- name: 🇳🇱 [649.7ms +/-2ms] vless-1935750593
+  type: vless
+  server: 185.14.30.98
+  port: 8443
+  uuid: f5e70ce3-cfb4-4df1-b25c-d19bfae627c0
+  udp: true
+  flow: xtls-rprx-vision
   tls: true
+  servername: twitch.tv
   skip-cert-verify: true
-- name: '[1250.4ms +/-9ms] 🇦🇱AL_1|1.7MB/s'
-  type: http
-  server: 31.171.155.210
-  port: 9443
-  tls: true
-  skip-cert-verify: true
+  reality-opts:
+    public-key: Q0dPyF2hFWgxL7hxntJWJammcb6zcRCyA-NOiOFrsAo
+    short-id: 1433a38abea1191c
+  client-fingerprint: safari

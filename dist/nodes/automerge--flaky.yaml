@@ -1,29 +1,105 @@
-# clash-source 自动生成 —— 源 automerge，被稳定性加权移出的 2 个节点
+# clash-source 自动生成 —— 源 automerge，被稳定性加权移出的 9 个节点
 # 历史可用率偏低，不参与 AUTO 自动竞速；需要时可从「备用」组手工切。
 proxies:
-- name: '🇸🇬 新加坡 | SGP #2'
-  type: vless
-  server: 104.18.35.86
-  port: 8080
+- name: 🇺🇸US_11|2.3MB/s
+  type: http
+  server: 198.44.138.27
+  port: 9443
+  password: None
+  skip-cert-verify: true
+  tls: true
+- name: 🇩🇪DE_12|2.9MB/s
+  type: http
+  server: 213.177.229.161
+  port: 9443
+  password: None
+  skip-cert-verify: true
+  tls: true
+- name: 🇷🇴RO_4|2.2MB/s
+  type: http
+  server: 193.176.84.27
+  port: 9002
+  skip-cert-verify: true
+  sni: www.bing.com
+  tls: true
+- name: 🇷🇴RO_5|3.0MB/s
+  type: http
+  server: 193.176.84.35
+  port: 9002
+  skip-cert-verify: true
+  sni: www.bing.com
+  tls: true
+- name: '🇭🇰 香港 | HKG #1'
+  type: vmess
+  server: 47.244.120.197
+  port: 23026
+  alterId: 0
+  cipher: auto
   network: ws
-  servername: hhlfy.twiladaphne.ndjp.net
+  skip-cert-verify: true
   tls: false
   udp: true
-  uuid: e5cc16a6-ea42-46b2-82ae-ad2157e1641b
+  uuid: b9de1bc9-baa7-41ac-86f7-ccd59695cb21
   ws-opts:
     headers:
-      Host: hhlfy.twiladaphne.ndjp.net
-    path: /sg-melbi
-- name: '🇸🇬 新加坡 | SGP #4'
+      Host: 47.244.120.197
+    path: /arki
+- name: AT_speednode_0001
   type: vless
-  server: 104.18.35.86
-  port: 2082
+  server: au2.pad-sservice.lat
+  port: 8443
+  client-fingerprint: chrome
   network: ws
-  servername: hhlfy.twiladaphne.ndjp.net
-  tls: false
+  servername: au2.pad-sservice.lat
+  skip-cert-verify: false
+  tls: true
   udp: true
-  uuid: e5cc16a6-ea42-46b2-82ae-ad2157e1641b
+  uuid: 2b0e5676-fb62-4bf0-9607-6e7818421e8e
   ws-opts:
     headers:
-      Host: hhlfy.twiladaphne.ndjp.net
-    path: /fp
+      Host: au2.pad-service.com
+    path: /A11U
+- name: AT_speednode_0002
+  type: vless
+  server: 152.53.31.46
+  port: 8443
+  client-fingerprint: firefox
+  network: ws
+  servername: usa3.pad-sservice.lat
+  skip-cert-verify: false
+  tls: true
+  udp: true
+  uuid: 2b0e5676-fb62-4bf0-9607-6e7818421e8e
+  ws-opts:
+    headers:
+      Host: usa3.pad-service.com
+    path: /U1SA
+- name: BR_speednode_0003
+  type: vless
+  server: de9.pad-sservice.lat
+  port: 8443
+  network: ws
+  servername: de9.pad-sservice.lat
+  skip-cert-verify: false
+  tls: true
+  udp: true
+  uuid: 2b0e5676-fb62-4bf0-9607-6e7818421e8e
+  ws-opts:
+    headers:
+      Host: de9.pad-service.com
+    path: /DE9W
+- name: ES_speednode_0007
+  type: vless
+  server: au5.pad-sservice.lat
+  port: 8443
+  client-fingerprint: chrome
+  network: ws
+  servername: au5.pad-sservice.lat
+  skip-cert-verify: false
+  tls: true
+  udp: true
+  uuid: 2b0e5676-fb62-4bf0-9607-6e7818421e8e
+  ws-opts:
+    headers:
+      Host: au5.pad-sservice.lat
+    path: /AU5W
