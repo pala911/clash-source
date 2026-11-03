@@ -1,4 +1,4 @@
-# clash-source 自动生成 —— 源 clashdaily，共 42 节点（稳定性加权后留在竞速池内的部分）
+# clash-source 自动生成 —— 源 clashdaily，共 77 节点（稳定性加权后留在竞速池内的部分）
 # 不要手改；改动会在下次定时任务被覆盖（上游 https://pala911.github.io/clash-source/nodes/clashdaily.yaml）
 proxies:
 - name: 美国-01-60.4MB/S·净55
@@ -177,6 +177,27 @@ proxies:
   tls: true
   sni: 52c40907.acsnet.co
   username: testuser1
+- name: 荷兰-06-12.0MB/S·净55
+  type: socks5
+  server: 51.15.20.32
+  port: 1088
+  udp: true
+  skip-cert-verify: true
+- name: 荷兰-07-11.9MB/S·净80
+  type: vless
+  server: 5.129.234.167
+  port: 12213
+  udp: true
+  uuid: 7c464358-6c89-4623-bd20-7c7bcd51bc55
+  tls: true
+  servername: music.yandex.ru
+  flow: xtls-rprx-vision
+  client-fingerprint: firefox
+  skip-cert-verify: false
+  reality-opts:
+    public-key: kTKM-s7XF0s878Ydmq1KeZFiGT6k1Bw_rLE79s1l1jI
+    short-id: 6a29a03b21
+  network: tcp
 - name: 荷兰-08-11.9MB/S·净55
   type: http
   server: 5.255.118.82
@@ -192,6 +213,115 @@ proxies:
   udp: true
   tls: true
   skip-cert-verify: true
+- name: 荷兰-10-11.3MB/S·净50
+  type: trojan
+  server: 138.68.131.253
+  port: 443
+  udp: true
+  password: humanity
+  sni: www.pleadcourt.org
+  alpn:
+  - http/1.1
+  network: ws
+  ws-opts:
+    path: /assignment
+- name: 荷兰-11-10.6MB/S·净55
+  type: http
+  server: 185.53.129.141
+  port: 9090
+  udp: true
+  tls: true
+  skip-cert-verify: true
+- name: 俄罗斯-01-11.7MB/S·净75
+  type: vless
+  server: 45.128.78.176
+  port: 443
+  udp: true
+  uuid: 680e92ac-1688-49e0-af96-7327fbc30ce8
+  tls: true
+  sni: ozon.ru
+  servername: ozon.ru
+  flow: xtls-rprx-vision
+  client-fingerprint: firefox
+  skip-cert-verify: false
+  reality-opts:
+    public-key: SbVKOEMjK0sIlbwg4akyBg5mL5KZwwB-ed4eEE7YnRc
+  network: tcp
+- name: 俄罗斯-02-11.6MB/S·净80
+  type: vless
+  server: 193.160.140.119
+  port: 443
+  udp: true
+  uuid: 680e92ac-1688-49e0-af96-7327fbc30ce8
+  tls: true
+  sni: ozon.ru
+  servername: ozon.ru
+  flow: xtls-rprx-vision
+  client-fingerprint: ios
+  skip-cert-verify: false
+  reality-opts:
+    public-key: SbVKOEMjK0sIlbwg4akyBg5mL5KZwwB-ed4eEE7YnRc
+  network: tcp
+- name: 俄罗斯-03-11.0MB/S·净80
+  type: vless
+  server: 193.160.140.118
+  port: 443
+  udp: true
+  uuid: 680e92ac-1688-49e0-af96-7327fbc30ce8
+  tls: true
+  sni: ozon.ru
+  servername: ozon.ru
+  flow: xtls-rprx-vision
+  client-fingerprint: edge
+  skip-cert-verify: false
+  reality-opts:
+    public-key: SbVKOEMjK0sIlbwg4akyBg5mL5KZwwB-ed4eEE7YnRc
+  network: tcp
+- name: 俄罗斯-04-10.9MB/S·净75
+  type: vless
+  server: 147.45.47.107
+  port: 443
+  udp: true
+  uuid: 680e92ac-1688-49e0-af96-7327fbc30ce8
+  tls: true
+  servername: abuse.ozon.ru
+  flow: xtls-rprx-vision
+  client-fingerprint: firefox
+  skip-cert-verify: false
+  reality-opts:
+    public-key: SbVKOEMjK0sIlbwg4akyBg5mL5KZwwB-ed4eEE7YnRc
+    short-id: ''
+  network: tcp
+- name: 俄罗斯-05-10.5MB/S·净80
+  type: vless
+  server: 193.160.141.8
+  port: 443
+  udp: true
+  uuid: 680e92ac-1688-49e0-af96-7327fbc30ce8
+  tls: true
+  servername: ozon.ru
+  flow: xtls-rprx-vision
+  client-fingerprint: firefox
+  skip-cert-verify: false
+  reality-opts:
+    public-key: SbVKOEMjK0sIlbwg4akyBg5mL5KZwwB-ed4eEE7YnRc
+    short-id: ''
+  network: tcp
+- name: 俄罗斯-06-10.3MB/S·净75
+  type: vless
+  server: 45.151.71.167
+  port: 443
+  udp: true
+  uuid: 680e92ac-1688-49e0-af96-7327fbc30ce8
+  tls: true
+  sni: abuse.ozon.ru
+  servername: abuse.ozon.ru
+  flow: xtls-rprx-vision
+  client-fingerprint: firefox
+  skip-cert-verify: false
+  reality-opts:
+    public-key: SbVKOEMjK0sIlbwg4akyBg5mL5KZwwB-ed4eEE7YnRc
+  network: tcp
 - name: 德国-01-11.3MB/S·净76
   type: http
   server: 213.109.163.119
@@ -214,6 +344,20 @@ proxies:
   udp: true
   tls: true
   skip-cert-verify: true
+- name: 德国-04-10.5MB/S·净55
+  type: http
+  server: 159.69.94.125
+  port: 443
+  udp: true
+  tls: true
+  skip-cert-verify: true
+- name: 德国-05-10.0MB/S·净55
+  type: http
+  server: 116.202.172.99
+  port: 443
+  udp: true
+  tls: true
+  skip-cert-verify: true
 - name: 德国-06-9.4MB/S·净55
   type: http
   server: 158.173.154.3
@@ -222,15 +366,6 @@ proxies:
   password: None
   tls: true
   skip-cert-verify: true
-- name: 中国台湾-01-8.0MB/S·净100
-  type: http
-  server: twmoon1-cdn-route.couldflare-cdn.com
-  port: 1443
-  udp: true
-  password: exaxgqkKkd0TAMrCxeonWg==
-  tls: true
-  sni: twmoon1-cdn-route.couldflare-cdn.com
-  username: mrwdfNTD8M79LCukCieldrqZWqs=
 - name: 中国台湾-02-0.4MB/S·净100
   type: anytls
   server: 684616s4.df6h451rh.xin
@@ -252,6 +387,20 @@ proxies:
   udp: true
   password: 0324fbc29561
   sni: images.ctfassets.net
+  skip-cert-verify: true
+- name: 加拿大-01-39.5MB/S·净57
+  type: http
+  server: 198.44.157.19
+  port: 9443
+  udp: true
+  tls: true
+  skip-cert-verify: true
+- name: 加拿大-02-39.2MB/S·净55
+  type: http
+  server: 198.44.157.27
+  port: 9443
+  udp: true
+  tls: true
   skip-cert-verify: true
 - name: 印度尼西亚-01-7.2MB/S·净75
   type: http
@@ -281,6 +430,27 @@ proxies:
   udp: true
   cipher: aes-256-gcm
   password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
+- name: 日本-01-3.1MB/S
+  type: http
+  server: 133.18.200.207
+  port: 343
+  udp: true
+  password: None
+  tls: true
+  skip-cert-verify: true
+- name: 日本-02-0.7MB/S·净80
+  type: vless
+  server: funagfrdfs.alixxplay.com
+  port: 35544
+  udp: true
+  uuid: 57beeeb0-03fc-4fc9-94da-7604488a7134
+  tls: true
+  servername: iosapps.itunes.apple.com
+  flow: xtls-rprx-vision
+  client-fingerprint: chrome
+  reality-opts:
+    public-key: HrcXRHtsitc_AVlN-_8fZuRgaP-Mqa_9JJotI9OnkVc
+    short-id: 25c79e5856c7
 - name: 法国-01-10.6MB/S·净55
   type: http
   server: 87.98.174.157
@@ -295,6 +465,22 @@ proxies:
   udp: true
   tls: true
   skip-cert-verify: true
+- name: 波兰-01-12.1MB/S·净75
+  type: vless
+  server: pl1.mycloud1.org
+  port: 443
+  udp: true
+  uuid: 605dea9b-b485-45c9-af9b-cc2b0195023c
+  tls: true
+  sni: pl1.mycloud1.org
+  servername: pl1.mycloud1.org
+  flow: xtls-rprx-vision
+  client-fingerprint: firefox
+  skip-cert-verify: false
+  reality-opts:
+    public-key: Su5ULcRQKF-0DJIHZeTNEnXHBpyQtizmUrcNIYhZI0E
+    short-id: afee962d
+  network: tcp
 - name: 波兰-02-10.3MB/S·净55
   type: http
   server: 151.115.54.133
@@ -304,12 +490,126 @@ proxies:
   tls: true
   skip-cert-verify: true
   username: 'null'
+- name: 泰国-01-5.0MB/S·净70
+  type: vless
+  server: 104.18.26.90
+  port: 443
+  udp: true
+  uuid: 3c52e091-6714-4915-949f-2149fe69951b
+  tls: true
+  servername: v2ray.simspeedup.com
+  client-fingerprint: chrome
+  network: ws
+  ws-opts:
+    path: /ws
+    headers:
+      Host: v2ray.simspeedup.com
+- name: 泰国-02-2.7MB/S·净55
+  type: socks5
+  server: 47.87.97.94
+  port: 1080
+  udp: true
+  skip-cert-verify: true
+- name: 瑞典-01-4.0MB/S·净47
+  type: vless
+  server: 91.242.228.29
+  port: 443
+  udp: true
+  uuid: 605dea9b-b485-45c9-af9b-cc2b0195023c
+  tls: true
+  servername: se1.mycloud1.org
+  flow: xtls-rprx-vision
+  client-fingerprint: firefox
+  skip-cert-verify: false
+  reality-opts:
+    public-key: Su5ULcRQKF-0DJIHZeTNEnXHBpyQtizmUrcNIYhZI0E
+    short-id: afee962d
+  network: tcp
 - name: 瑞典-02-3.1MB/S·净75
   type: http
   server: 217.210.129.243
   port: 443
   udp: true
   tls: true
+  skip-cert-verify: true
+- name: 罗马尼亚-01-8.9MB/S·净52
+  type: http
+  server: 193.176.84.40
+  port: 9002
+  udp: true
+  tls: true
+  sni: www.bing.com
+  skip-cert-verify: true
+- name: 罗马尼亚-02-8.5MB/S·净55
+  type: http
+  server: 193.176.84.29
+  port: 9002
+  udp: true
+  password: None
+  tls: true
+  skip-cert-verify: true
+- name: 英国-01-10.9MB/S·净18
+  type: vless
+  server: 185.88.173.215
+  port: 443
+  udp: true
+  uuid: fd0a5c32-afc0-4d57-b95a-ca6ec8f93e87
+  tls: true
+  servername: gb.ozon.ru
+  flow: xtls-rprx-vision
+  client-fingerprint: firefox
+  reality-opts:
+    public-key: SbVKOEMjK0sIlbwg4akyBg5mL5KZwwB-ed4eEE7YnRc
+  network: tcp
+- name: 英国-02-5.0MB/S·净18
+  type: vless
+  server: 51.77.108.218
+  port: 8443
+  udp: true
+  uuid: 8a1f8853-9a71-4ef2-a64c-4f0a94c2e14b
+  tls: true
+  servername: ozon.ru
+  flow: xtls-rprx-vision
+  client-fingerprint: firefox
+  reality-opts:
+    public-key: SbVKOEMjK0sIlbwg4akyBg5mL5KZwwB-ed4eEE7YnRc
+  network: tcp
+- name: 西班牙-01-12.5MB/S·净55
+  type: http
+  server: 130.195.250.34
+  port: 443
+  udp: true
+  tls: true
+  skip-cert-verify: true
+- name: 西班牙-02-3.1MB/S·净75
+  type: http
+  server: 80.24.34.107
+  port: 8090
+  udp: true
+  tls: true
+  skip-cert-verify: true
+- name: 印度-01-6.5MB/S·净62
+  type: trojan
+  server: in.tronsg.com
+  port: 443
+  udp: true
+  password: Trojan@82164024
+  sni: in.tronsg.com
+  skip-cert-verify: true
+- name: 喀麦隆-01-0.1MB/S·净95
+  type: http
+  server: 102.244.78.61
+  port: 8084
+  udp: true
+  tls: false
+  skip-cert-verify: false
+- name: 墨西哥-01-6.3MB/S·净0
+  type: http
+  server: 45.134.9.41
+  port: 443
+  udp: true
+  tls: true
+  sni: 991cc80f13caf81d3426ddebb2da7f49-240d6105b6ef86f0.apache-iv.com
   skip-cert-verify: true
 - name: 拉脱维亚-01-9.2MB/S·净75
   type: http
@@ -318,6 +618,26 @@ proxies:
   udp: true
   tls: true
   skip-cert-verify: true
+- name: 捷克-01-3.0MB/S·净75
+  type: http
+  server: 5.35.100.14
+  port: 8443
+  udp: true
+  tls: true
+  skip-cert-verify: true
+- name: 澳大利亚-01-0.2MB/S·净55
+  type: vless
+  server: funagfrdfs.alixxplay.com
+  port: 54528
+  udp: true
+  uuid: 57beeeb0-03fc-4fc9-94da-7604488a7134
+  tls: true
+  servername: www.apple.com
+  flow: xtls-rprx-vision
+  client-fingerprint: chrome
+  reality-opts:
+    public-key: 7GvJVbR6BRhtrc8-rcZvB8qTFUF1LPeM_MmoZ04mBxo
+    short-id: 54cca3c1c1c7
 - name: 爱尔兰-01-13.0MB/S·净80
   type: http
   server: 18.200.158.139
@@ -333,3 +653,57 @@ proxies:
   udp: true
   tls: true
   skip-cert-verify: true
+- name: 芬兰-01-10.7MB/S·净80
+  type: vless
+  server: 2.27.203.251
+  port: 443
+  udp: true
+  uuid: 1ef7d97f-3aa5-4fe6-8521-84cf4794bf7a
+  tls: true
+  sni: edge-fi2.lovely.my
+  servername: edge-fi2.lovely.my
+  flow: xtls-rprx-vision
+  client-fingerprint: chrome
+  skip-cert-verify: false
+  reality-opts:
+    public-key: QYdQmsVvUj4jwo9gH20nJA5x015gaAL0nGipORe6ZmY
+  network: tcp
+- name: 越南-01-0.4MB/S·净100
+  type: vless
+  server: funagfrdfs.alixxplay.com
+  port: 55688
+  udp: true
+  uuid: 57beeeb0-03fc-4fc9-94da-7604488a7134
+  tls: true
+  servername: bilibili-vn.biliimg.com
+  flow: xtls-rprx-vision
+  client-fingerprint: chrome
+  reality-opts:
+    public-key: KeV1nArisy7FO5DjqTSmn0hBnlNd38rzhbIMMpe-MBw
+    short-id: a46bb5972cf50671
+- name: 阿尔巴尼亚-01-9.4MB/S·净55
+  type: http
+  server: 91.92.250.33
+  port: 443
+  udp: true
+  tls: true
+  skip-cert-verify: true
+- name: 韩国-01-0.5MB/S·净75
+  type: socks5
+  server: 121.169.46.116
+  port: 1090
+  tls: false
+  username: T2clM0QlM0Q6
+- name: 马来西亚-01-2.4MB/S·净100
+  type: vless
+  server: vpn.cintaku.qzz.io
+  port: 443
+  udp: true
+  uuid: fc7d2cfe-f5ef-40c8-a848-a0bdc11f6349
+  tls: true
+  servername: vpn.cintaku.qzz.io
+  network: ws
+  ws-opts:
+    path: /vlessws
+    headers:
+      Host: vpn.cintaku.qzz.io

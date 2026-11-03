@@ -1,6 +1,6 @@
 # clash-source 运行报告
 
-- 生成时间：2026-11-03 14:26:04（UTC 记录：2026-11-03T14:26:03Z）
+- 生成时间：2026-11-03 17:16:40（UTC 记录：2026-11-03T17:16:39Z）
 - AI 模式：`http`
 - 订阅入口：`https://pala911.github.io/clash-source/profile.yaml`
 - 备用入口（github.io 不达时）：`https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/profile.yaml`
@@ -10,7 +10,7 @@
 
 | 组 | 含义 | 源 |
 |---|---|---|
-| AUTO | 参与自动竞速 | zhuhaiuk、clashdaily、ssrsub |
+| AUTO | 参与自动竞速 | zhuhaiuk、clashdaily、ssrsub、leilaomi |
 | 备用 | 不自动竞速，手动切 | - |
 | 观察 | 本机实测不达标 | - |
 
@@ -18,33 +18,33 @@
 
 | 源 | 多轮均值 | 分组依据 |
 |---|---:|---|
-| automerge | 29.8% | 本机 29.8% |
-| clashdaily | 39.2% | 本机 39.2% |
-| leilaomi | 32.9% | 本机 32.9% |
-| nomorewalls | 26.6% | 本机 26.6% |
-| ruk1ng001 | 31.6% | 本机 31.6% |
-| ssrsub | 36.4% | 本机 36.4% |
-| zhuhaiuk | 41.2% | 本机 41.2% |
+| automerge | 28.6% | 本机 28.6% |
+| clashdaily | 41.8% | 本机 41.8% |
+| leilaomi | 34.5% | 本机 34.5% |
+| nomorewalls | 28.6% | 本机 28.6% |
+| ruk1ng001 | 31.3% | 本机 31.3% |
+| ssrsub | 35.0% | 本机 35.0% |
+| zhuhaiuk | 45.0% | 本机 45.0% |
 
 ## 各源漏斗
 
 | 源 | 原始 | 产出 | AI 剔除(簇/节点) | 镜像回退 | 分组 | 备注 |
 |---|---:|---:|---:|---|---|---|
 | automerge | 391 | 85 | 2 簇 / 11 节点 | 否 | - | - |
-| zhuhaiuk | 33 | 29 | 1 簇 / 1 节点 | 否 | auto | - |
+| zhuhaiuk | 33 | 30 | 0 节点 | 否 | auto | - |
 | ssrsub | 165 | 164 | 0 节点 | 否 | auto | - |
 | ruk1ng001 | 497 | 473 | 0 节点 | 否 | - | - |
 | nomorewalls | 391 | 85 | 2 簇 / 11 节点 | 否 | - | - |
 | clashdaily | 80 | 78 | 0 节点 | 否 | auto | - |
-| leilaomi | 34 | 27 | 0 节点 | 否 | - | - |
+| leilaomi | 34 | 27 | 0 节点 | 否 | auto | - |
 
-合计产出 **941** 节点（合并池 941）。
+合计产出 **942** 节点（合并池 942）。
 
 > 注意：节点数 ≠ 可用性。真实质量门禁是 **youtube/generate_204 探针**（手机/PC 侧 mihomo 自己跑）；CI 在美国机，连通性检查只能删明显死的。
 
-## ⚠ 本次告警
+## 本次告警
 
-- leilaomi AI 剔除超阈值，已整体回滚
+无。
 
 ## 硬过滤命中 TOP（按源）
 
@@ -52,13 +52,13 @@
 
 ## AI 处置摘要
 
-- **automerge**：审 96 节点，剔除 11 节点（2 个簇）；理由 TOP：群组引流广告，引流营销文案
-- **zhuhaiuk**：审 30 节点，剔除 1 节点（1 个簇）；理由 TOP：名称伪装为TW
+- **automerge**：审 96 节点，剔除 11 节点（2 个簇）；理由 TOP：群组引流，引流营销文案
+- **zhuhaiuk**：审 30 节点，剔除 0 节点
 - **ssrsub**：审 164 节点，剔除 0 节点
 - **ruk1ng001**：审 225 节点，剔除 0 节点
-- **nomorewalls**：审 96 节点，剔除 11 节点（2 个簇）；理由 TOP：群组引流广告，占位符失效提示
+- **nomorewalls**：审 96 节点，剔除 11 节点（2 个簇）；理由 TOP：群组引流广告，引流广告伪装节点
 - **clashdaily**：审 78 节点，剔除 0 节点
-- **leilaomi**：审 27 节点，剔除 0 节点（超阈值已回滚）
+- **leilaomi**：审 27 节点，剔除 0 节点
 
 ## 产物
 

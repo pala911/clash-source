@@ -1,4 +1,4 @@
-# clash-source 自动生成 —— 源 leilaomi，共 25 节点（稳定性加权后留在竞速池内的部分）
+# clash-source 自动生成 —— 源 leilaomi，共 27 节点（稳定性加权后留在竞速池内的部分）
 # 不要手改；改动会在下次定时任务被覆盖（上游 https://pala911.github.io/clash-source/nodes/leilaomi.yaml）
 proxies:
 - name: 🇺🇸 [311.3ms +/-5ms] trojan-1943480639
@@ -12,6 +12,13 @@ proxies:
 - name: 🇮🇹 [518.1ms +/-3ms] shadowsocks-1875023009
   type: ss
   server: 202.50.253.27
+  port: 19999
+  cipher: aes-256-gcm
+  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
+  udp: true
+- name: 🇮🇹 [491.2ms +/-2ms] shadowsocks-1875023048
+  type: ss
+  server: 202.50.253.72
   port: 19999
   cipher: aes-256-gcm
   password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
@@ -109,6 +116,14 @@ proxies:
   type: http
   server: 158.173.154.5
   port: 9002
+  tls: true
+  skip-cert-verify: true
+- name: '[615.0ms +/-1ms] FR_speednode_0010'
+  type: http
+  server: 51.159.225.196
+  port: 23856
+  username: 'null'
+  password: 'null'
   tls: true
   skip-cert-verify: true
 - name: '[625.4ms +/-18ms] DE_speednode_0004'
