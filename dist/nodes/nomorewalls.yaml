@@ -1,96 +1,6 @@
-# clash-source 自动生成 —— 源 nomorewalls，共 113 节点（稳定性加权后留在竞速池内的部分）
+# clash-source 自动生成 —— 源 nomorewalls，共 65 节点（稳定性加权后留在竞速池内的部分）
 # 不要手改；改动会在下次定时任务被覆盖（上游 https://pala911.github.io/clash-source/nodes/nomorewalls.yaml）
 proxies:
-- name: 防范境外势力渗透
-  type: vmess
-  server: 127.0.0.53
-  port: 80
-  alterId: 0
-  cipher: auto
-  network: tcp
-  tls: false
-  uuid: 88888888-8888-8888-8888-888888888888
-- name: '防范境外势力渗透 #1'
-  type: vmess
-  server: 127.0.0.53
-  port: 81
-  alterId: 0
-  cipher: auto
-  network: tcp
-  tls: false
-  uuid: 88888888-8888-8888-8888-888888888888
-- name: '防范境外势力渗透 #2'
-  type: vmess
-  server: 127.0.0.53
-  port: 82
-  alterId: 0
-  cipher: auto
-  network: tcp
-  tls: false
-  uuid: 88888888-8888-8888-8888-888888888888
-- name: '防范境外势力渗透 #3'
-  type: vmess
-  server: 127.0.0.53
-  port: 83
-  alterId: 0
-  cipher: auto
-  network: tcp
-  tls: false
-  uuid: 88888888-8888-8888-8888-888888888888
-- name: '防范境外势力渗透 #4'
-  type: vmess
-  server: 127.0.0.53
-  port: 84
-  alterId: 0
-  cipher: auto
-  network: tcp
-  tls: false
-  uuid: 88888888-8888-8888-8888-888888888888
-- name: '防范境外势力渗透 #5'
-  type: vmess
-  server: 127.0.0.53
-  port: 85
-  alterId: 0
-  cipher: auto
-  network: tcp
-  tls: false
-  uuid: 88888888-8888-8888-8888-888888888888
-- name: '防范境外势力渗透 #6'
-  type: vmess
-  server: 127.0.0.53
-  port: 86
-  alterId: 0
-  cipher: auto
-  network: tcp
-  tls: false
-  uuid: 88888888-8888-8888-8888-888888888888
-- name: '防范境外势力渗透 #7'
-  type: vmess
-  server: 127.0.0.53
-  port: 87
-  alterId: 0
-  cipher: auto
-  network: tcp
-  tls: false
-  uuid: 88888888-8888-8888-8888-888888888888
-- name: '防范境外势力渗透 #8'
-  type: vmess
-  server: 127.0.0.53
-  port: 88
-  alterId: 0
-  cipher: auto
-  network: tcp
-  tls: false
-  uuid: 88888888-8888-8888-8888-888888888888
-- name: '防范境外势力渗透 #9'
-  type: vmess
-  server: 127.0.0.53
-  port: 89
-  alterId: 0
-  cipher: auto
-  network: tcp
-  tls: false
-  uuid: 88888888-8888-8888-8888-888888888888
 - name: 🇱🇻hysteria
   type: hysteria2
   server: pro2.riziro.ir
@@ -103,6 +13,22 @@ proxies:
   password: rjj39jg8iphgd06h
   sni: pro2.riziro.ir
   tls: false
+- name: '🇳🇱 荷兰 | NLD #2'
+  type: vless
+  server: 45.91.202.32
+  port: 8444
+  alpn:
+  - http/1.1
+  client-fingerprint: chrome
+  network: ws
+  servername: nl15.meshbeat.online
+  tls: true
+  udp: true
+  uuid: 35c9f200-7520-4005-b78e-f8a2fb9f68f7
+  ws-opts:
+    headers:
+      Host: nl15.meshbeat.online
+    path: /api/v1/devices/02585a2d89/telemetry
 - name: '🇹🇼 🇨🇳 台湾 | TWN #1'
   type: vless
   server: 60.248.219.53
@@ -117,9 +43,9 @@ proxies:
     headers:
       Host: ty986gfazs.cainiaohub.xyz
     path: /81574b6b-c9d7-44a0-b83d-dad56e8cb530
-- name: '🇺🇸 美国 | USA #1'
+- name: '🇺🇸 美国 | USA #8'
   type: vless
-  server: 199.232.78.160
+  server: 146.75.59.186
   port: 443
   client-fingerprint: chrome
   network: ws
@@ -129,403 +55,115 @@ proxies:
   uuid: 3d9d91c0-0a90-471a-a518-a0ff66a1970a
   ws-opts:
     headers:
-      Host: copy_az_channel_NUFiLTER_10i.global.ssl.fastly.net.
+      Host: copy_az_channel_NUFiLTER_6i.global.ssl.fastly.net.
     path: /
-- name: '🇮🇹 意大利 | ITA #2'
+- name: '🇺🇸 美国 | USA #9'
   type: ss
-  server: 202.50.253.54
+  server: 202.50.253.18
   port: 19999
   cipher: aes-256-gcm
   password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
   udp: true
-- name: '🇮🇹 意大利 | ITA #1'
+- name: '🇺🇸 美国 | USA #5'
   type: ss
-  server: 202.50.253.27
+  server: 202.50.253.81
   port: 19999
   cipher: aes-256-gcm
   password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
   udp: true
-- name: '🇮🇷 伊朗 | IRN #1'
+- name: '🇰🇷 韩国 | KOR #1'
   type: ss
-  server: b2friday.buzrel.ir
-  port: 443
-  cipher: aes-256-gcm
-  password: 6lb9wr4ibspbl022
+  server: 43.202.1.87
+  port: 8443
+  cipher: chacha20-ietf-poly1305
+  password: 7e68e32f-8015-4f37-9082-70e8b0b58043
   udp: true
-- name: 🇱🇺LU_1|2.5MB/s
-  type: http
-  server: 185.221.132.242
-  port: 443
-  password: None
-  skip-cert-verify: true
-  tls: true
-- name: 🇪🇸ES_3|3.0MB/s
-  type: http
-  server: 130.195.250.34
-  port: 443
-  password: None
-  skip-cert-verify: true
-  tls: true
-- name: 🇸🇪SE_1|1.2MB/s
-  type: http
-  server: 146.70.242.130
-  port: 443
-  skip-cert-verify: true
-  tls: true
-- name: 🇪🇸ES_2|1.2MB/s
-  type: http
-  server: 130.195.250.18
-  port: 443
-  password: None
-  skip-cert-verify: true
-  tls: true
-- name: 🇷🇸RS_1|1.1MB/s
-  type: http
-  server: 146.70.221.18
-  port: 443
-  skip-cert-verify: true
-  tls: true
-- name: 🇷🇴RO_1|2.6MB/s
-  type: http
-  server: 185.163.110.194
-  port: 443
-  password: None
-  skip-cert-verify: true
-  tls: true
-- name: 🇬🇧GB_1|1.6MB/s|R002-260618
-  type: http
-  server: 37.120.233.18
-  port: 443
-  password: None
-  skip-cert-verify: true
-  tls: true
-  udp: true
-- name: 🇦🇹AT_1|1.3MB/s
-  type: http
-  server: 146.70.244.18
-  port: 443
-  password: None
-  skip-cert-verify: true
-  tls: true
-- name: 🇫🇷FR_1|1021KB/s
-  type: http
-  server: 8a7d3033-ta1og0-ta5i1s-1j61y.fr.oshuawei.com
-  port: 443
-  password: f13f964e-f06c-11ec-a858-f23c91cfbbc9
-  tls: true
-  username: f13f964e-f06c-11ec-a858-f23c91cfbbc9
-- name: 🇺🇸US_1|2.7MB/s
-  type: http
-  server: 12.221.146.147
-  port: 443
-  skip-cert-verify: true
-  tls: true
-- name: 🇮🇹IT_1|2.1MB/s
-  type: http
-  server: 185.183.105.130
-  port: 443
-  password: None
-  skip-cert-verify: true
-  tls: true
-- name: 🇪🇪EE_1|1.8MB/s
-  type: http
-  server: 95.153.31.66
-  port: 9443
-  skip-cert-verify: true
-  tls: true
-- name: 🇨🇭CH_1|1.0MB/s|K001-260618
-  type: http
-  server: 149.88.27.46
-  port: 9443
-  password: None
-  skip-cert-verify: true
-  tls: true
-  udp: true
-- name: 🇭🇺HU_1|1016KB/s
-  type: http
-  server: 146.70.203.18
-  port: 443
-  skip-cert-verify: true
-  tls: true
-- name: 🇨🇿CZ_1|1.6MB/s
-  type: http
-  server: 185.216.35.130
-  port: 443
-  password: None
-  skip-cert-verify: true
-  tls: true
-- name: 🇵🇱PL_1|1.1MB/s
-  type: http
-  server: 37.120.156.18
-  port: 443
-  password: None
-  skip-cert-verify: true
-  tls: true
-- name: 🇱🇺LU_2|2.1MB/s
-  type: http
-  server: 185.221.132.226
-  port: 443
-  password: None
-  skip-cert-verify: true
-  tls: true
-- name: 🇺🇸US_2|1.1MB/s
-  type: http
-  server: 121.127.34.82
-  port: 443
-  skip-cert-verify: true
-  tls: true
-- name: 🇧🇪BE_1|1.1MB/s
-  type: http
-  server: 146.70.123.98
-  port: 443
-  password: None
-  skip-cert-verify: true
-  tls: true
-- name: 🇩🇪DE_2|1.7MB/s
-  type: http
-  server: 87.249.132.97
-  port: 9443
-  password: None
-  skip-cert-verify: true
-  tls: true
-- name: 🇺🇸US_3|1.4MB/s
-  type: http
-  server: 12.202.180.118
-  port: 443
-  skip-cert-verify: true
-  tls: true
-- name: 🇨🇿CZ_2|3.0MB/s
+- name: 🇨🇿CZ_1|1.4MB/s
   type: http
   server: 185.216.35.66
   port: 443
   skip-cert-verify: true
   tls: true
-- name: 🇨🇭CH_2|1.2MB/s
-  type: http
-  server: 149.88.27.33
-  port: 9443
-  skip-cert-verify: true
-  tls: true
-- name: 🇺🇸US_4|2.0MB/s
-  type: http
-  server: 167.88.60.242
-  port: 443
-  skip-cert-verify: true
-  tls: true
-- name: 🇸🇪SE_2|1011KB/s
-  type: http
-  server: 146.70.242.146
-  port: 443
-  skip-cert-verify: true
-  tls: true
-- name: 🇩🇰DK_1|1.2MB/s
-  type: http
-  server: 185.245.84.50
-  port: 443
-  password: None
-  skip-cert-verify: true
-  tls: true
-- name: 🇬🇧GB_2|1.8MB/s
-  type: http
-  server: 84.233.178.33
-  port: 9443
-  password: None
-  skip-cert-verify: true
-  tls: true
-- name: 🇪🇪EE_2|1.0MB/s
-  type: http
-  server: 95.153.31.66
-  port: 9443
-  password: None
-  skip-cert-verify: true
-  tls: true
-- name: 🇺🇸US_5|1.5MB/s
-  type: http
-  server: 68.235.56.51
-  port: 443
-  skip-cert-verify: true
-  tls: true
-- name: 🇳🇱NL_1|1.2MB/s
-  type: http
-  server: 82.196.9.7
-  port: 443
-  password: e4b72b531a2d10900519
-  sni: 52c40907.acsnet.co
-  tls: true
-  username: testuser1
-- name: 🇭🇰HK_1|1.3MB/s
-  type: http
-  server: 119.28.24.235
-  port: 3128
-  skip-cert-verify: true
-  tls: true
-- name: 🇦🇪 阿联酋 | ARE
+- name: 🇧🇳 BN_73
   type: anytls
-  server: byhk1000.luoyun2.com
-  port: 16492
+  server: xxxxxx3331022.luoyun2.com
+  port: 52455
   password: 92a1538c-7801-4cca-ab98-6a9062aa507c
   skip-cert-verify: true
-  sni: ajldb0907.luoyun2.com
+  sni: wenlai000202.ly123.edu.kg
   udp: true
-- name: 🇦🇪 阿联酋 | ARE 2
-  type: hysteria2
-  server: ufcaxsoooxez3p6h.5273ef7a.e.yuetong.online
-  port: 34400
-  obfs: salamander
-  obfs-password: MlmlXBZNXlBmanWcLUCXLzKc
-  password: 171a4d7a-a1f0-499c-9fc5-3915c8b1f47b
-  skip-cert-verify: true
-  sni: box-rvg2.yuetong.online
-- name: 🇦🇺 澳大利亚 | AUS
+- name: 🇨🇱 智利 | CHL
   type: anytls
   server: rrrrrr101010r.luoyun2.com
-  port: 37237
+  port: 43675
   password: 92a1538c-7801-4cca-ab98-6a9062aa507c
   skip-cert-verify: true
-  sni: adly99.luoyun2.com
-  udp: true
-- name: 🇦🇺 澳大利亚 | AUS 2
-  type: anytls
-  server: byhk1000.luoyun2.com
-  port: 37893
-  password: 92a1538c-7801-4cca-ab98-6a9062aa507c
-  skip-cert-verify: true
-  sni: adly99.luoyun2.com
-  udp: true
-- name: 🇨🇭 瑞士 | CHE
-  type: anytls
-  server: xxxxxx444919.luoyun2.com
-  port: 61430
-  password: 92a1538c-7801-4cca-ab98-6a9062aa507c
-  skip-cert-verify: true
-  sni: rs916.luoyun2.com
+  sni: zhili666.luoyun2.com
   udp: true
 - name: '🇩🇪 德国 | DEU #1'
-  type: vless
-  server: 146.75.57.238
-  port: 443
-  client-fingerprint: firefox
-  network: ws
-  servername: cdn.akamai.steamstatic.com
-  tls: true
-  udp: true
-  uuid: 31edfa90-bc81-4534-9066-322dbf52dcef
-  ws-opts:
-    headers:
-      Host: azadi-gk-nasim.global.ssl.fastly.net
-    path: /
+  type: hysteria2
+  server: fl3.nexfile.net
+  port: 4444
+  password: a35c508f-4d5d-4531-842e-6e9d43c762c0
+  skip-cert-verify: true
+  sni: fl3.nexfile.net
+  tls: false
 - name: '🇩🇪 德国 | DEU #2'
-  type: vless
-  server: 47.251.95.178
+  type: hysteria2
+  server: forshynewh.duckdns.org
   port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: 148-253-210-191.sslip.io
-  tls: true
+  password: 69e41e64-a832-471a-b740-94577ca85520
+  skip-cert-verify: true
+  sni: forshynewh.duckdns.org
+  tls: false
+- name: 🇬🇧 英国 | GBR 2
+  type: anytls
+  server: rrrrrr101010r.luoyun2.com
+  port: 17515
+  password: 92a1538c-7801-4cca-ab98-6a9062aa507c
+  skip-cert-verify: true
+  sni: yg816.luoyun2.com
   udp: true
-  uuid: 53f03acd-fec1-6685-fc8f-03baf9550cb8
-  ws-opts:
-    headers:
-      Host: 148-253-210-191.sslip.io
-    path: /test-ws
-- name: '🇩🇪 德国 | DEU #3'
+- name: 🇬🇧 英国 | GBR 3
+  type: anytls
+  server: 9g96ulhy68tttw4t94.luoyun2.com
+  port: 49414
+  password: 92a1538c-7801-4cca-ab98-6a9062aa507c
+  skip-cert-verify: true
+  sni: nanji666.ly123.edu.kg
+  udp: true
+- name: '🇭🇰 香港 | HKG #1'
   type: vmess
-  server: d2.anonix.cloud
-  port: 8018
+  server: rhhierkwrf6fhs2h.v.3dns.vip
+  port: 443
   alterId: 0
   cipher: auto
   network: ws
+  servername: rhhierkwrf6fhs2h.v.3dns.vip
   skip-cert-verify: true
-  tls: false
-  udp: true
-  uuid: b831381d-6324-4d53-ad4f-8cda48b30811
-  ws-opts:
-    headers:
-      Host: shit.67133767.xyz
-    path: /websocket/transfer/gayporn
-- name: 🇫🇷 法国 | FRA 2
-  type: hysteria2
-  server: 47.129.112.129
-  port: 20000
-  alpn:
-  - h3
-  down: 200
-  password: rBM3dgUU0Mtjflss4jeZRw92
-  skip-cert-verify: true
-  sni: sg-transit-3.nebulacloud.win
-  udp: true
-  up: 100
-- name: '🇬🇧 英国 | GBR #1'
-  type: vless
-  server: 140.225.209.152
-  port: 2083
-  alpn:
-  - http/1.1
-  client-fingerprint: chrome
-  network: ws
-  servername: speedtestmark.com
   tls: true
   udp: true
-  uuid: 00947839-40de-4e3f-a6e5-0570c16b4bce
+  uuid: 78b3f149-f037-465d-b2fb-11adb6f73ff8
   ws-opts:
-    path: /vless-ws
-- name: 🇬🇱 GL_78
-  type: anytls
-  server: x3yzykeeka-tw2.luoyun2.com
-  port: 11939
-  password: 92a1538c-7801-4cca-ab98-6a9062aa507c
-  skip-cert-verify: true
-  sni: kll102.luoyun2.com
-  udp: true
-- name: 🇭🇰 香港 | HKG
-  type: hysteria2
-  server: 47.129.112.129
-  port: 20000
-  alpn:
-  - h3
-  down: 200
-  password: IR5Y0cfJV2A2lpHbNIeLwNTU
-  skip-cert-verify: true
-  sni: sg-transit-3.nebulacloud.win
-  udp: true
-  up: 100
+    headers:
+      Host: rhhierkwrf6fhs2h.v.3dns.vip
+    path: /ws-vmess
 - name: '🇭🇰 香港 | HKG #2'
   type: vmess
-  server: 47.244.120.197
-  port: 44867
-  alpn:
-  - ''
+  server: 47.243.194.125
+  port: 443
   alterId: 0
   cipher: auto
   network: ws
   skip-cert-verify: true
-  tls: false
+  tls: true
   udp: true
-  uuid: 845e6b08-2919-4290-ade0-5dc7dcea59ca
+  uuid: f23bb427-c1f9-4373-876c-2f43e9f790f3
   ws-opts:
-    path: /arki
-- name: 🇭🇰 香港 | HKG 3
-  type: anytls
-  server: byhk1000.luoyun2.com
-  port: 15842
-  password: 92a1538c-7801-4cca-ab98-6a9062aa507c
-  skip-cert-verify: true
-  sni: hggk99.luoyun2.com
-  udp: true
+    headers:
+      Host: nycqg19zkwacpm1b.v.3dns.vip
+    path: /ws-vmess
 - name: '🇭🇰 香港 | HKG #3'
-  type: vmess
-  server: 47.244.120.197
-  port: 36703
-  alterId: 0
-  cipher: auto
-  network: ws
-  skip-cert-verify: true
-  tls: false
-  udp: true
-  uuid: 45b83519-9c4f-4052-a11b-02e017b636d4
-  ws-opts:
-    path: /arki
-- name: '🇭🇰 香港 | HKG #4'
   type: vmess
   server: 47.243.167.44
   port: 443
@@ -543,6 +181,65 @@ proxies:
     headers:
       Host: rhHiErkwRf6fHs2H.v.3dns.vip
     path: /ws-vmess
+- name: '🇭🇰 香港 | HKG #4'
+  type: vmess
+  server: 47.244.120.197
+  port: 36703
+  alterId: 0
+  cipher: auto
+  network: ws
+  skip-cert-verify: true
+  tls: false
+  udp: true
+  uuid: 45b83519-9c4f-4052-a11b-02e017b636d4
+  ws-opts:
+    path: /arki
+- name: '🇭🇰 香港 | HKG #6'
+  type: vmess
+  server: vah4urdzl3jdx5r2.v.3dns.vip
+  port: 443
+  alterId: 0
+  cipher: auto
+  network: ws
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  uuid: f23bb427-c1f9-4373-876c-2f43e9f790f3
+  ws-opts:
+    headers:
+      Host: vah4urdzl3jdx5r2.v.3dns.vip
+    path: /ws-vmess
+- name: '🇭🇰 香港 | HKG #7'
+  type: vmess
+  server: 47.76.57.83
+  port: 443
+  alterId: 0
+  cipher: auto
+  network: ws
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  uuid: f23bb427-c1f9-4373-876c-2f43e9f790f3
+  ws-opts:
+    headers:
+      Host: vah4urdzl3jdx5r2.v.3dns.vip
+    path: /ws-vmess
+- name: '🇭🇰 香港 | HKG #8'
+  type: trojan
+  server: zz.xgb.fogvip-zz.uk
+  port: 40024
+  password: 8dc86561-24f9-4bf7-99de-1373640859eb
+  skip-cert-verify: true
+  sni: ld.xghk03.yuiuingkig.icu
+  udp: true
+- name: 🇮🇩 印尼 | IDN
+  type: anytls
+  server: xxxxxx444919.luoyun2.com
+  port: 34377
+  password: 92a1538c-7801-4cca-ab98-6a9062aa507c
+  skip-cert-verify: true
+  sni: ydnxy0912.luoyun2.com
+  udp: true
 - name: 🇮🇪 爱尔兰 | IRL
   type: anytls
   server: xxxxxx3331022.luoyun2.com
@@ -551,7 +248,15 @@ proxies:
   skip-cert-verify: true
   sni: aierl813.luoyun2.com
   udp: true
-- name: 🇯🇵 日本 | JPN
+- name: 🇮🇳 印度 | IND
+  type: anytls
+  server: 9g96ulhy68tttw4t94.luoyun2.com
+  port: 14999
+  password: 92a1538c-7801-4cca-ab98-6a9062aa507c
+  skip-cert-verify: true
+  sni: yd5156.luoyun2.com
+  udp: true
+- name: 🇯🇵 日本 | JPN 2
   type: anytls
   server: rrrrrr101010r.luoyun2.com
   port: 12899
@@ -559,30 +264,7 @@ proxies:
   skip-cert-verify: true
   sni: rr0520111.ly123.edu.kg
   udp: true
-- name: '🇰🇷 韩国 | KOR #1'
-  type: ss
-  server: 43.200.245.225
-  port: 8443
-  cipher: chacha20-ietf-poly1305
-  password: 7e68e32f-8015-4f37-9082-70e8b0b58043
-  udp: true
-- name: 🇲🇲 MM_96
-  type: anytls
-  server: xxxxxx3331022.luoyun2.com
-  port: 24314
-  password: 92a1538c-7801-4cca-ab98-6a9062aa507c
-  skip-cert-verify: true
-  sni: mdassaz.ly123.edu.kg
-  udp: true
 - name: 🇲🇽 墨西哥 | MEX
-  type: anytls
-  server: ucj87nbxk0-tw2.luoyun2.com
-  port: 10651
-  password: 92a1538c-7801-4cca-ab98-6a9062aa507c
-  skip-cert-verify: true
-  sni: mxg1024.luoyun2.com
-  udp: true
-- name: 🇲🇽 墨西哥 | MEX 2
   type: anytls
   server: mxg1024.luoyun2.com
   port: 20101
@@ -590,81 +272,36 @@ proxies:
   skip-cert-verify: true
   sni: mxg1024.luoyun2.com
   udp: true
-- name: 🇲🇾 马来西亚 | MYS
-  type: anytls
-  server: byhk1000.luoyun2.com
-  port: 19953
-  password: 92a1538c-7801-4cca-ab98-6a9062aa507c
-  skip-cert-verify: true
-  sni: malaixy94.luoyun2.com
-  udp: true
-- name: 🇲🇾 马来西亚 | MYS 2
-  type: anytls
-  server: xxxxxx3331022.luoyun2.com
-  port: 34138
-  password: 92a1538c-7801-4cca-ab98-6a9062aa507c
-  skip-cert-verify: true
-  sni: malaixy94.luoyun2.com
-  udp: true
-- name: 🇳🇬 尼日利亚 | NGA
-  type: anytls
-  server: xxxxxx3331022.luoyun2.com
-  port: 56385
-  password: 92a1538c-7801-4cca-ab98-6a9062aa507c
-  skip-cert-verify: true
-  sni: nrly916.luoyun2.com
-  udp: true
-- name: '🇳🇱 荷兰 | NLD #1'
+- name: '🇳🇱 荷兰 | NLD #3'
   type: vless
-  server: 172.67.138.17
+  server: pp-fx2.firelinkservers.ir
   port: 443
   client-fingerprint: chrome
-  network: ws
-  servername: ccc.010304.xyz
+  network: xhttp
+  servername: cdn.akamai.steamstatic.com
   tls: true
   udp: true
-  uuid: d342d11e-d224-4463-b982-532309285094
-  ws-opts:
-    headers:
-      Host: ccc.010304.xyz
-    path: /
-- name: 🇳🇱 荷兰 | NLD 3
-  type: anytls
-  server: byhk1000.luoyun2.com
-  port: 26641
-  password: 92a1538c-7801-4cca-ab98-6a9062aa507c
-  skip-cert-verify: true
-  sni: he8861.luoyun2.com
-  udp: true
-- name: '🇵🇭 菲律宾 | PHL #1'
+  uuid: ccc926e8-5468-475d-a65f-e8de383fb2c0
+- name: 🇸🇪 瑞典 | SWE
   type: trojan
-  server: 130.94.50.86
-  port: 46298
-  password: 5t6i121em5lkmsmk
-  skip-cert-verify: true
-  sni: ph001.zestapp778.com
-  udp: true
-- name: '🇵🇭 菲律宾 | PHL #2'
-  type: trojan
-  server: ph001.zestapp778.com
-  port: 46298
-  password: 5t6i121em5lkmsmk
-  skip-cert-verify: true
-  sni: ph001.zestapp778.com
-  udp: true
-- name: '🇷🇺 俄罗斯 | RUS #2'
-  type: vless
-  server: 188.72.103.4
+  server: connect-se.mimowhat.online
   port: 443
   alpn:
   - h2
-  client-fingerprint: firefox
-  network: xhttp
-  servername: ru.nnight.cfd
-  tls: true
+  - http/1.1
+  password: FkQH0Q5EFneySv20Qj3yoArD2GSb2XZF
+  skip-cert-verify: true
+  sni: connect-se.mimowhat.online
   udp: true
-  uuid: 9737cc16-7266-45ce-94d9-6e05a45e0b9c
 - name: '🇸🇬 新加坡 | SGP #1'
+  type: hysteria2
+  server: 56.10.10.106
+  port: 443
+  password: 7e68e32f-8015-4f37-9082-70e8b0b58043
+  skip-cert-verify: true
+  sni: www.bing.com
+  tls: false
+- name: '🇸🇬 新加坡 | SGP #2'
   type: vless
   server: 104.18.41.86
   port: 443
@@ -678,28 +315,7 @@ proxies:
     headers:
       Host: ccc.010304.xyz
     path: /
-- name: '🇸🇬 新加坡 | SGP #2'
-  type: vless
-  server: 104.18.35.86
-  port: 8080
-  network: ws
-  servername: hhlfy.twiladaphne.ndjp.net
-  tls: false
-  udp: true
-  uuid: e5cc16a6-ea42-46b2-82ae-ad2157e1641b
-  ws-opts:
-    headers:
-      Host: hhlfy.twiladaphne.ndjp.net
-    path: /sg-melbi
-- name: '🇸🇬 新加坡 | SGP #3'
-  type: hysteria2
-  server: 13.214.209.37
-  port: 443
-  password: 7e68e32f-8015-4f37-9082-70e8b0b58043
-  skip-cert-verify: true
-  sni: www.bing.com
-  tls: false
-- name: 🇹🇱 TL_108
+- name: 🇹🇱 TL_110
   type: anytls
   server: xxxxxx55595.luoyun2.com
   port: 20664
@@ -708,27 +324,90 @@ proxies:
   sni: ddw881.luoyun2.com
   udp: true
 - name: 🇹🇼 🇨🇳 台湾 | TWN 2
-  type: hysteria2
-  server: 47.129.112.129
-  port: 20000
-  alpn:
-  - h3
-  down: 200
-  password: CQUPACy34t6Tjx8FdQdkCiYW
+  type: anytls
+  server: 9g96ulhy68tttw4t94.luoyun2.com
+  port: 56464
+  password: 92a1538c-7801-4cca-ab98-6a9062aa507c
   skip-cert-verify: true
-  sni: sg-transit-3.nebulacloud.win
+  sni: de915.luoyun2.com
   udp: true
-  up: 100
+- name: 🇹🇼 🇨🇳 台湾 | TWN 3
+  type: anytls
+  server: 995ys2dcfwzzz.luoyun2.com
+  port: 48311
+  password: 92a1538c-7801-4cca-ab98-6a9062aa507c
+  skip-cert-verify: true
+  sni: byhk1007.luoyun2.com
+  udp: true
 - name: '🇺🇸 美国 | USA #2'
-  type: ss
-  server: 104.36.66.73
-  port: 15501
-  cipher: aes-256-gcm
-  password: FGPMqmagVnC5yNGB
-  udp: true
-- name: '🇺🇸 美国 | USA #5'
   type: vless
-  server: 104.27.93.208
+  server: 172.67.159.207
+  port: 443
+  network: ws
+  servername: ccc.010304.xyz
+  tls: true
+  udp: true
+  uuid: d342d11e-d224-4463-b982-532309285094
+  ws-opts:
+    headers:
+      Host: ccc.010304.xyz
+    path: /fp=chromefp=chrome
+- name: '🇺🇸 美国 | USA #3'
+  type: trojan
+  server: zz.usxyt.fogvip-zz.uk
+  port: 50701
+  password: 8dc86561-24f9-4bf7-99de-1373640859eb
+  skip-cert-verify: true
+  sni: ld.usxyt.yuiuingkig.icu
+  udp: true
+- name: '🇺🇸 美国 | USA #4'
+  type: vless
+  server: 104.24.173.112
+  port: 443
+  network: ws
+  servername: ccc.010304.xyz
+  tls: true
+  udp: true
+  uuid: d342d11e-d224-4463-b982-532309285094
+  ws-opts:
+    headers:
+      Host: ccc.010304.xyz
+    path: /fp=chrome
+- name: '🇺🇸 美国 | USA #12'
+  type: vless
+  server: minimize-evenness.cdn-content.com
+  port: 443
+  alpn:
+  - http/1.1
+  client-fingerprint: chrome
+  network: ws
+  servername: minimize-evenness.cdn-content.com
+  tls: true
+  udp: true
+  uuid: a580f1c9-a001-4ddf-8b0e-0b10945ee6b2
+  ws-opts:
+    headers:
+      Host: minimize-evenness.cdn-content.com
+    path: /ws
+- name: '🇺🇸 美国 | USA #13'
+  type: vless
+  server: piracy-android.video-streams.org
+  port: 443
+  alpn:
+  - http/1.1
+  client-fingerprint: chrome
+  network: ws
+  servername: piracy-android.video-streams.org
+  tls: true
+  udp: true
+  uuid: a580f1c9-a001-4ddf-8b0e-0b10945ee6b2
+  ws-opts:
+    headers:
+      Host: piracy-android.video-streams.org
+    path: /ws
+- name: '🇺🇸 美国 | USA #15'
+  type: vless
+  server: 104.18.45.38
   port: 443
   network: ws
   servername: ccc.010304.xyz
@@ -739,64 +418,37 @@ proxies:
     headers:
       Host: ccc.010304.xyz
     path: /fp
-- name: 🇺🇸 美国 | USA 7
-  type: anytls
-  server: rrrrrr101010r.luoyun2.com
-  port: 31540
-  password: 92a1538c-7801-4cca-ab98-6a9062aa507c
-  skip-cert-verify: true
-  sni: cdn-edge-sgp-m825.luoyun2.com
-  udp: true
-- name: '🇺🇸 美国 | USA #7'
+- name: '🇺🇸 美国 | USA #16'
   type: vless
-  server: 188.114.99.0
-  port: 8080
+  server: 104.18.60.55
+  port: 443
+  client-fingerprint: chrome
   network: ws
-  servername: hhlfy.twiladaphne.ndjp.net
-  tls: false
+  servername: ccc.010304.xyz
+  tls: true
   udp: true
-  uuid: e5cc16a6-ea42-46b2-82ae-ad2157e1641b
+  uuid: d342d11e-d224-4463-b982-532309285094
   ws-opts:
     headers:
-      Host: hhlfy.twiladaphne.ndjp.net
-    path: /sg-melbi
-- name: '🇺🇸 美国 | USA #8'
+      Host: ccc.010304.xyz
+    path: /?TELEGRAM--MARAMBASHI--MARAMBASHI--MARAMBASHI--MARAMBASHI?ed=2560
+- name: '🇺🇸 美国 | USA #17'
   type: vless
-  server: 104.18.35.86
-  port: 2082
-  network: ws
-  servername: hhlfy.twiladaphne.ndjp.net
+  server: 32.199.151.91
+  port: 80
+  network: tcp
   tls: false
   udp: true
-  uuid: e5cc16a6-ea42-46b2-82ae-ad2157e1641b
+  uuid: 6daa0b95-9210-4f29-be40-8c6db00bc5bb
   ws-opts:
-    headers:
-      Host: hhlfy.twiladaphne.ndjp.net
-    path: /fp
-- name: 🇻🇳 越南 | VNM
-  type: anytls
-  server: xxxxxx3331022.luoyun2.com
-  port: 64915
-  password: 92a1538c-7801-4cca-ab98-6a9062aa507c
+    path: /
+- name: '🇺🇸 美国 | USA #18'
+  type: trojan
+  server: 167.88.61.52
+  port: 443
+  password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
   skip-cert-verify: true
-  sni: yn910.luoyun2.com
-  udp: true
-- name: 🇻🇳 越南 | VNM 2
-  type: hysteria2
-  server: ufcaxsoooxez3p6h.5273ef7a.e.yuetong.online
-  port: 26300
-  obfs: salamander
-  obfs-password: HEQBKBa8fj9KmKBkIyEMpuPE
-  password: 171a4d7a-a1f0-499c-9fc5-3915c8b1f47b
-  skip-cert-verify: true
-  sni: io-kj6.yuetong.online
-- name: 🇻🇳 越南 | VNM 3
-  type: anytls
-  server: x3yzykeeka-tw2.luoyun2.com
-  port: 19816
-  password: 92a1538c-7801-4cca-ab98-6a9062aa507c
-  skip-cert-verify: true
-  sni: yn910.luoyun2.com
+  sni: courses.browseseniorrolesandenhanceyourcareertoday.com
   udp: true
 - name: DE_speednode_0004
   type: http

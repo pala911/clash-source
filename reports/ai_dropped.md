@@ -1,6 +1,6 @@
-# AI 审核逐条留痕（生成于 2026-11-02T16:09:51Z，模型 `http`）
+# AI 审核逐条留痕（生成于 2026-11-03T01:13:49Z，模型 `http`）
 
-共剔除 22 簇 / 79 节点（下表每簇列一条代表节点 + 理由，「节点数」列是该簇实际覆盖的节点数）。若发现误杀，把节点名与理由贴回来即可针对性收窄 prompt。
+共剔除 24 簇 / 43 节点（下表每簇列一条代表节点 + 理由，「节点数」列是该簇实际覆盖的节点数）。若发现误杀，把节点名与理由贴回来即可针对性收窄 prompt。
 
 
 ## automerge
@@ -8,39 +8,36 @@
 | 节点名 | 类型 | server | 节点数 | 模型理由 |
 |---|---|---|---|---|
 | 防范境外势力渗透 | vmess | 127.0.0.53 | 10 | 广告引流 |
-| 🇸🇬SG_2\|3.6MB/s | trojan | ench-snet-app.w-ctrip.cn | 2 | 引流广告位克隆 |
-| 🇨🇳 CN_129 #1 | trojan | ench-snet-app.w-ctrip.cn | 1 | 占位符失效提示 |
-| ES_speednode_0007 | vless | au5.pad-sservice.lat | 1 | 订阅地址本身 |
-| برای اتصال دائمی جوین شو🪭 Tele... | hysteria2 | 13.143.188.142 | 1 | 群组引流 |
-
-## zhuhaiuk
-
-| 节点名 | 类型 | server | 节点数 | 模型理由 |
-|---|---|---|---|---|
-| TW - zhuhai.uk | anytls | er8u54dh.df6h451rh.xin | 1 | 伪装境外节点 |
+| 🇬🇧 英国 \| GBR 2 | anytls | rrrrrr101010r.luoyun2.com | 2 | 占位符server |
+| 🇧🇳 BN_73 | anytls | xxxxxx3331022.luoyun2.com | 1 | 占位符server |
+| 🇦🇪 阿联酋 \| ARE | anytls | xxxxxx55595.luoyun2.com | 1 | server为占位符 |
+| 🇲🇾 马来西亚 \| MYS #1 | ss | xunlinknode.csdjhajkshdjkas.com | 1 | server为占位符 |
 
 ## ruk1ng001
 
 | 节点名 | 类型 | server | 节点数 | 模型理由 |
 |---|---|---|---|---|
-| D🔴🇺🇸hos[🎬🤖📺🎭]_dokng.com_47775503 | http | 138.199.35.219 | 8 | 广告克隆节点 |
-| D🔴🇺🇸hos[🎬🤖📺🎭]_dokng.com_108b6989 | vless | 144.34.162.203 | 7 | 广告克隆节点 |
-| D🔴🇮🇪hos[🎬🤖📺🎭]_dokng.com_09e87230 | http | 18.200.158.139 | 7 | 广告克隆节点 |
-| D🔴🇨🇭hos[🎬🤖📺🎭]_dokng.com_295196f5 | http | 37.120.213.210 | 7 | 广告克隆节点 |
-| D🔴🇺🇸hos[🎬🤖📺🎭]_dokng.com_27d80b03 | vless | 176.122.143.190 | 5 | 广告克隆节点 |
-| D🔴🇳🇱hos[🎬🤖📺🎭]_dokng.com_0b40d100 | vless | 162.248.73.197 | 4 | 广告克隆节点 |
-| D🔴🇬🇧hos[🎬🤖📺🎭]_dokng.com_4c325231 | http | 37.120.233.18 | 4 | 广告克隆节点 |
-| D🔴🇺🇸hos[🎬🤖📺🎭]_dokng.com_4433500a | http | 138.199.35.213 | 3 | 广告克隆节点 |
-| D🔴🇵🇱hos[🎬🤖📺🎭]_dokng.com_68a292a0 | http | 151.115.54.133 | 3 | 广告克隆节点 |
-| D🔴🇬🇧hos[📺🎪✨🔍]_dokng.com_812a49d6 | http | 212.102.63.31 | 3 | 广告克隆节点 |
-| D🔴🇺🇸hos[🎬🤖📺🎭]_dokng.com_4b3b6367 | vless | 176.122.141.199 | 3 | 广告克隆节点 |
-| D🔴🇸🇪hos[🎬🤖📺🎭]_dokng.com_d28f0884 | http | 77.221.136.60 | 3 | 广告克隆节点 |
-| D🔴🇺🇸hos[🎬🤖📺🎭]_dokng.com_92f43b70 | http | 138.199.35.216 | 2 | 广告位克隆 |
-| D🔴🇺🇸hos[🎬🤖📺🎭]_dokng.com_7f99624e | http | voteshirleysew.club | 2 | 广告位克隆 |
+| C🟠🇳🇱hos[🎬🤖📺🎭]_dokng.com_f3ab72f9 | http | 185.238.168.20 | 1 | 广告克隆节点簇 |
+| C🟠🇦🇱hos[🎬🤖📺🎭]_dokng.com_35f9b19f | http | 87.120.103.226 | 1 | 广告克隆节点簇 |
+| C🟠🇳🇱hos[🎬🤖📺🎭]_dokng.com_93f6101c | http | 149.36.51.161 | 1 | 广告克隆节点簇 |
+| C🟠🇯🇵hos[🎬📺🎭🎪]_dokng.com_0f5692d8 | http | 120.232.204.58 | 1 | 广告克隆节点簇 |
+| C🟠🇬🇷hos[🎬🤖📺🎭]_dokng.com_013f00df | http | 149.22.85.78 | 1 | 广告克隆节点簇 |
+| C🟠🇺🇸hos[🎬🤖📺🎭]_dokng.com_f7924ec8 | http | 68.235.56.51 | 1 | 广告克隆节点簇 |
+| C🟠🇬🇧hos[🎬🤖📺🎭]_dokng.com_045fb906 | http | 37.120.233.34 | 1 | 广告克隆节点簇 |
+| C🟠🇮🇸hos[🎬🤖📺🎭]_dokng.com_1fb506bc | http | 185.165.170.1 | 1 | 广告克隆节点簇 |
+| C🟠🇱🇻hos[🎬🤖📺🎭]_dokng.com_fbede378 | http | 109.248.147.66 | 1 | 广告克隆节点簇 |
+| C🟠🇸🇬hos[🎬📺🎭🎪]_dokng.com_17fbfe15 | http | 54.151.160.36 | 1 | 广告克隆节点簇 |
+| C🟠🇺🇸hos[🎬🤖📺🎭]_dokng.com_940fc9d3 | http | 43.173.67.42 | 1 | 广告克隆节点簇 |
+| C🟠🇳🇱hos[🎬🤖📺🎪]_dokng.com_fc18927e | http | 149.36.51.129 | 1 | 广告克隆节点簇 |
+| C🟠🇳🇱hos[🎬🤖📺🎭]_dokng.com_833fcf2b | http | 161.129.60.66 | 1 | 广告克隆节点簇 |
+| C🟠🇨🇦hos[🎬🤖📺🎭]_dokng.com_ff0913fd | http | 198.44.157.27 | 1 | 广告克隆节点簇 |
+| D🔴🇦🇷hos_dokng.com_217a0173 | http | 200.41.149.66 | 1 | 广告克隆节点簇 |
 
 ## nomorewalls
 
 | 节点名 | 类型 | server | 节点数 | 模型理由 |
 |---|---|---|---|---|
-| ❓Other_1\|1.4MB/s | http | 13.250.6.249 | 1 | 占位符示例 |
+| 防范境外势力渗透 | vmess | 127.0.0.53 | 10 | 广告/占位符 |
 | برای اتصال دائمی جوین شو🪭 Tele... | hysteria2 | 13.143.188.142 | 1 | 群组引流 |
+| 🇦🇪 阿联酋 \| ARE | anytls | xxxxxx55595.luoyun2.com | 1 | server为占位符 |
+| 🇲🇾 马来西亚 \| MYS #1 | ss | xunlinknode.csdjhajkshdjkas.com | 1 | server为占位符 |
