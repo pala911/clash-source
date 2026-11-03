@@ -116,15 +116,22 @@ def ci_push(other, rel, text, msg):
 
 
 def run_push(work):
-    """跑被测函数（只替换 ROOT/GAP；GIT/PROXY 保持模块原样）。"""
-    old_root, old_gap = local_probe.ROOT, local_probe.PUSH_GAP
+    """跑被测函数（只替换 ROOT/GAP；GIT/PROXY 保持模块原样）。
+
+    ENSURE_PROXY 必须关：门禁用的是本地 file remote，真去探测/拉起代理
+    只会让测试变慢且依赖机器状态。
+    """
+    old_root, old_gap, old_ep = (local_probe.ROOT, local_probe.PUSH_GAP,
+                                 local_probe.ENSURE_PROXY)
     local_probe.ROOT, local_probe.PUSH_GAP = work, 0
+    local_probe.ENSURE_PROXY = False
     buf = io.StringIO()
     try:
         with contextlib.redirect_stdout(buf):
             rc = local_probe.push_to_github()
     finally:
-        local_probe.ROOT, local_probe.PUSH_GAP = old_root, old_gap
+        (local_probe.ROOT, local_probe.PUSH_GAP,
+         local_probe.ENSURE_PROXY) = old_root, old_gap, old_ep
     return rc, buf.getvalue()
 
 
@@ -314,6 +321,35 @@ try:
 finally:
     local_probe._run_health = orig_health
 
+# ---------------------------------------------------------------- 代理自愈
+print("")
+print("=" * 72)
+print("代理自愈：门禁可关；代理不通时必须主动拉起（2026-11-04 用户要求）")
+print("=" * 72)
+old_ep = local_probe.ENSURE_PROXY
+try:
+    local_probe.ENSURE_PROXY = False
+    check(local_probe.ensure_proxy(wait=0) is True,
+          "ENSURE_PROXY=False 直接放行（门禁不碰真网络）")
+
+    calls = []
+    old_fns = (local_probe._proxy_egress_ok, local_probe._proxy_port_ok,
+               local_probe._start_proxy, local_probe.time.sleep)
+    local_probe._proxy_egress_ok = lambda timeout=8: False
+    local_probe._proxy_port_ok = lambda timeout=1.5: False
+    local_probe._start_proxy = lambda: calls.append("start")
+    local_probe.time.sleep = lambda s: None
+    local_probe.ENSURE_PROXY = True
+    try:
+        rc = local_probe.ensure_proxy(wait=0)
+    finally:
+        (local_probe._proxy_egress_ok, local_probe._proxy_port_ok,
+         local_probe._start_proxy, local_probe.time.sleep) = old_fns
+    check(rc is False and calls == ["start"],
+          "端口不通 -> 调 _start_proxy 拉起，失败也继续走推送")
+finally:
+    local_probe.ENSURE_PROXY = old_ep
+
 # ---------------------------------------------------------------- 静默化扫描
 print("")
 print("=" * 72)
@@ -339,4 +375,4 @@ print("=" * 72)
 if FAILS:
     print("结果：失败 %d 项 —— %s" % (len(FAILS), "；".join(FAILS)))
     sys.exit(1)
-print("结果：全部通过（正常 / 真竞态自愈 / 冲突干净 / 救援成功 / 救援失败不伤仓库 / 静默扫描）")
+print("结果：全部通过（正常 / 真竞态自愈 / 冲突干净 / 救援成功 / 救援失败不伤仓库 / 代理自愈开关 / 静默扫描）")

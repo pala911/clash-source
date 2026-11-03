@@ -48,10 +48,13 @@ import io
 import json
 import os
 import shutil
+import socket
 import subprocess
 import sys
 import tempfile
 import time
+import urllib.error
+import urllib.request
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
@@ -76,6 +79,90 @@ if sys.stdout is None or sys.stderr is None:
     sys.stdout = _f
     sys.stderr = _f
 PROXY = "http://127.0.0.1:7897"          # github.com 直连被墙，push 必须走代理
+
+# ── 代理自愈（2026-11-04 用户要求：代理不可用就主动起，不许一直失败）────────
+# 2026-11-03 12:37 实踩：push 三连败，schannel 握手失败；自动救援也因 fetch
+# 四连败救不了，本机数据积压一天。根因是代理在那一刻不可用。这里在推送前
+# 做「端口 + 真实 HTTPS 出口」双重检查，必要时拉起 Clash Verge / 内核。
+VERGE_EXE = r"C:\Program Files\Clash Verge\clash-verge.exe"
+VERGE_CORE = r"C:\Program Files\Clash Verge\verge-mihomo.exe"
+VERGE_HOME = os.path.join(os.environ.get("APPDATA", ""),
+                          "io.github.clash-verge-rev.clash-verge-rev")
+VERGE_CONF = os.path.join(VERGE_HOME, "clash-verge.yaml")
+ENSURE_PROXY = True     # 门禁里关掉（真网络调用不参与测试）
+
+
+def _proxy_port_ok(timeout=1.5):
+    try:
+        s = socket.create_connection(("127.0.0.1", 7897), timeout=timeout)
+        s.close()
+        return True
+    except OSError:
+        return False
+
+
+def _proxy_egress_ok(timeout=8):
+    """端口开着不等于能用：必须真发一次 HTTPS（2026-11-03 就是握手失败）。"""
+    opener = urllib.request.build_opener(
+        urllib.request.ProxyHandler({"http": PROXY, "https": PROXY}))
+    req = urllib.request.Request("https://api.github.com/",
+                                 headers={"User-Agent": "clash-source-probe"})
+    try:
+        r = opener.open(req, timeout=timeout)
+        try:
+            r.read(64)
+        finally:
+            r.close()
+        return True
+    except urllib.error.HTTPError:
+        return True          # 403/429 也说明 TLS 与代理链路通了
+    except Exception:        # noqa: BLE001
+        return False
+
+
+def _proc_alive(exe):
+    try:
+        p = subprocess.run(["tasklist", "/FI", "IMAGENAME eq " + exe, "/NH"],
+                           capture_output=True, text=True, timeout=10,
+                           creationflags=NOWIN)
+        return exe.lower() in (p.stdout or "").lower()
+    except Exception:        # noqa: BLE001
+        return False
+
+
+def _start_proxy():
+    """GUI 不在就起 GUI；GUI 在但内核死了就直接起内核。"""
+    if not _proc_alive("clash-verge.exe"):
+        print("[local] 代理未运行：启动 Clash Verge …")
+        return subprocess.Popen([VERGE_EXE], creationflags=NOWIN)
+    if not _proc_alive("verge-mihomo.exe"):
+        print("[local] Clash Verge 在但内核未运行：直接拉起 verge-mihomo …")
+        if not os.path.isfile(VERGE_CORE) or not os.path.isfile(VERGE_CONF):
+            print("[local] ⚠ 找不到内核或配置：%s / %s" % (VERGE_CORE, VERGE_CONF))
+            return None
+        return subprocess.Popen([VERGE_CORE, "-d", VERGE_HOME, "-f", VERGE_CONF],
+                                creationflags=NOWIN)
+    return None
+
+
+def ensure_proxy(wait=90):
+    """推送前确保代理可用；不可用就主动拉起并等它恢复。"""
+    if not ENSURE_PROXY:
+        return True
+    if _proxy_egress_ok(6):
+        return True
+    print("[local] ⚠ 代理出口不通（%s），尝试自愈（最多等 %ds）…" % (PROXY, wait))
+    if not _proxy_port_ok():
+        _start_proxy()
+    deadline = time.time() + wait
+    while time.time() < deadline:
+        time.sleep(3)
+        if _proxy_egress_ok(6):
+            print("[local] ✅ 代理已恢复（%s）" % PROXY)
+            return True
+    print("[local] ⚠ 代理自愈失败：%s 仍不通；继续尝试推送（失败会走救援）"
+          % PROXY)
+    return False
 
 
 def run_probe(args):
@@ -228,6 +315,7 @@ def rescue_push():
     还在，下一轮探针一来材料齐整，可以从头再救（health 的去重保证重救不脏）。
     """
     try:
+        ensure_proxy(60)            # 救援同样需要出口；先确保代理活着
         fetched = False
         for i in range(4):
             cmd = ([GIT] + (["-c", "http.proxy=" + PROXY, "-c", "https.proxy=" + PROXY]
@@ -416,6 +504,7 @@ def push_to_github(paths=None, msg=None):
         if p.returncode != 0 and not _nothing_to_commit(out):
             print("[local] 步骤失败: %s" % " ".join(c[:3]))
             return p.returncode
+    ensure_proxy()                  # 代理不可用就先拉起，别等三连败再救
     rc = 1
     last = ""
     for attempt in range(1, PUSH_TRIES + 1):

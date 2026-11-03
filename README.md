@@ -71,7 +71,7 @@ provider、约 1060~1150 个节点；按 120 节点 46.5 MB / 5700 节点 95 MB 
 ### 1.3 七源末位淘汰联赛（2026-11-02）
 
 启用源稳态 **7 个**（`refill.py` 的 `TARGET_CAP=7`），AUTO 只挂**国内口径
-排名前 3**（`build.py` 的 `AUTO_MAX=3`），其余达标源在「备用」组手动可切。
+排名前 4**（`build.py` 的 `AUTO_MAX=4`），其余达标源在「备用」组手动可切。
 
 换位规则（`src/league.py`，本机 12:30 链每日一轮）：
 
@@ -262,7 +262,7 @@ provider、约 1060~1150 个节点；按 120 节点 46.5 MB / 5700 节点 95 MB 
 ### 5.1 质量分桶（build.py 动态生成）
 
 ```
-AUTO   url-test   只放达标源（本机多轮均值 ≥ 8%），前 6 名降序
+AUTO   url-test   只放达标源（本机多轮均值 ≥ 8%），前 4 名降序（AUTO_MAX）
 备用   select     未达标但有活的 + 不稳定组
 观察   select     本机 < 8%
 FAILOVER fallback 保留全部启用源（安全网不被质量分桶削掉）
@@ -444,7 +444,7 @@ python tools\test_provider_load.py    # 一个畸形节点会不会让整源加�
 python tools\test_src_cfg_write.py    # 写回源清单只改 enabled，不抹注释
 python tools\test_push_status.py      # 云效回传的留痕必落且本机不留垃圾
 python tools\test_local_probe_obs.py  # pythonw（计划任务）下 health.py 的输出与失败必须可观测
-python tools\test_local_probe_push.py # 本机推送：真竞态自愈 + 冲突干净 + 推送三连败后的「克隆-合并-补推」自动救援（成功/失败两向）+ pythonw 子进程全静默扫描
+python tools\test_local_probe_push.py # 本机推送：真竞态自愈 + 冲突干净 + 推送三连败后的「克隆-合并-补推」自动救援（成功/失败两向）+ 代理自愈开关 + pythonw 子进程全静默扫描
 python tools\test_report_ai.py        # AI 留痕链：生产端键名 ↔ 报告/manifest
 python tools\test_ci_workflow.py      # CI 推送必须带重试、失败不许染红（连带 skip 下游）
 python tools\test_hardening.py        # 硬化回归：dist 残留清理 / raw 快照原貌 / TPM 闸门不死循环 / review_source 源级合同
@@ -496,6 +496,13 @@ python tools\probe_field_types.py     # mihomo 接受哪些字段类型
 > 现在身份随身带，失败提示附**最后一条真实错误**；而且每轮尝试前先
 > `rebase --abort`，失败方向只能是「这轮推不上去」，绝不会是「仓库卡死」。
 > 用例 B 会**断言第 1 次 push 真的被拒** —— 竞态没发生就必须红，不许绿着骗人。
+
+> ⚠️ **推送前主动自愈代理**（2026-11-04 用户要求）：2026-11-03 12:37 代理不可用
+> 时 push 三连败，救援也因 fetch 四连败告终，本机数据积压一天。现在
+> `push_to_github()` / `rescue_push()` 会先做「7897 端口 + 经代理真实 HTTPS
+> 访问 api.github.com」双重检查；不通就按「GUI 不在就起 Clash Verge、GUI 在但
+> 内核死了就直接起 `verge-mihomo`」拉起，最多等 90 秒再推。
+> 门禁里用 `ENSURE_PROXY=False` 关掉真网络调用，本地裸仓测试不受影响。
 
 > ⚠️ **`test_health_tiering.py` 的 D 段**守的是一条**从来没被执行过的代码路径**：
 > 回收分支自 2026-10-15 分级抽成 `compute_tier()` 之后就读不到 `cnci_ready`/`cn`
