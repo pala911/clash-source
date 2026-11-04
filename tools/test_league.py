@@ -99,6 +99,23 @@ check("enabled 数不变（-1+1）",
 check("challenger 已入册且 enabled",
       any(s["name"] == "challenger" and s.get("enabled") for s in d2["sources"]))
 
+# 2026-11-04：块尾有分段注释时，relegated 必须落在字段区末尾（注释之前）。
+# 首次真实换位实踩：字段插到注释之后，YAML 仍归属本块，但读起来像下一段。
+base_c = base.replace(
+    "    note: test src 06\n",
+    "    note: test src 06\n\n  # ===== 下一段 =====\n")
+text_c = league._flip_to_relegated(base_c, "src06", "2026-11-04")
+lines_c = text_c.split("\n")
+i_note = next(i for i, ln in enumerate(lines_c) if ln.strip() == "note: test src 06")
+i_rel = next(i for i, ln in enumerate(lines_c) if ln.strip().startswith("relegated:"))
+i_cmt = next(i for i, ln in enumerate(lines_c) if ln.strip().startswith("# ===== 下一段"))
+check("relegated 插在字段区末尾（分段注释之前）",
+      i_note < i_rel < i_cmt)
+d_c = yaml.safe_load(text_c)
+w_c = next(s for s in d_c["sources"] if s["name"] == "src06")
+check("带分段注释时 relegated 仍归属 src06",
+      w_c.get("relegated") == "2026-11-04")
+
 print("")
 print("场景 G：relegated 回归（换位式回归：src05 降级换 src06 回场，源数/enabled 均不变）")
 # 基线 = 换位后的当前文件（真实流程里回归发生在换位后的下一轮）

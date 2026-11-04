@@ -313,6 +313,13 @@ def build_groups(enabled_names, ranked, flaky_names=(), degraded_note=""):
             "（本机探针若长期没跑，这里就会失败，是预期行为）"
             % (len(picked), "、".join(auto) or "无", AUTO_MIN))
 
+    # 降级时 picked 可能来自上一轮名单，和 spare/dropped 有交集；备用组
+    # 必须去掉已经在 AUTO 里的源，否则同一个源会同时出现在两个组，
+    # manifest 的 ranking 也会重复（2026-11-04 修）。必须在 picked 定稿
+    # 之后过滤，不能用降级前的 auto[:AUTO_MAX]。
+    spare = [n for n in spare if n not in picked]
+    dropped = [n for n in dropped if n not in picked]
+
     groups = [_src_group(n) for n in enabled_names]
     if picked:
         groups.append(_probe_group("AUTO", "url-test",
@@ -351,7 +358,10 @@ def build_groups(enabled_names, ranked, flaky_names=(), degraded_note=""):
     #   这就是为什么必须用真内核校验，断言只能验证你想到的东西。
     for svc in ("Claude", "Gemini"):
         groups.append({"name": svc, "type": "select", "use": list(enabled_names)})
-    return groups, picked, spare, watch
+    # dropped = 达标但被 AUTO_MAX 挤出、实际仍留在「备用」组的源。
+    # 必须一起返回：manifest/report 的「备用」行要列出它们，否则报告会显示
+    # 「备用 -」，和用户手机里真实看到的组不一致（2026-11-04 实踩）。
+    return groups, picked, spare, watch, dropped
 
 
 def provider_block(name, url, exclude_filter):
@@ -392,8 +402,8 @@ def build_profile(enabled_sources, exclude_map, owner, repo, flaky_sources=()):
     names = [s["name"] for s in enabled_sources]
     ranked, degrade_note = rank_sources(names)
     flaky_names = ["SRCFL-" + n for n in (flaky_sources or ())]
-    groups, picked, spare, watch = build_groups(names, ranked, flaky_names,
-                                                degraded_note=degrade_note)
+    groups, picked, spare, watch, dropped = build_groups(
+        names, ranked, flaky_names, degraded_note=degrade_note)
     # 模板里的 proxy-groups 整块丢弃：SRC-*/AUTO/FAILOVER/PROXY 全部改由
     # build_groups 按实测质量动态生成。规则/ dns / 其他键仍保留模板的。
     tpl["proxy-groups"] = groups
@@ -480,10 +490,15 @@ def build_profile(enabled_sources, exclude_map, owner, repo, flaky_sources=()):
             % (r, tgt, "、".join(sorted(gp))))
     # ⚠ 分桶结果**不要**塞进 tpl：它会被写进 profile.yaml，给用户看一堆
     #   下划线开头的内部字段。单独作为第三个返回值交给 run.py 记进 manifest。
-    ranking = {"auto": picked, "备用": spare, "观察": watch,
+    detail = {k: {"rate": v[0], "why": v[2]} for k, v in ranked.items()}
+    for n in dropped:
+        if n in detail:
+            detail[n]["why"] = "%s（达标，但 AUTO 只取前 %d）" % (
+                detail[n]["why"], AUTO_MAX)
+    ranking = {"auto": picked, "备用": spare + dropped, "观察": watch,
                "不稳定": ["SRCFL-" + n for n in (flaky_sources or ())],
                "degraded": degrade_note,      # 非空 = 本轮是降级发布（run.py 必须喊出来）
-               "detail": {k: {"rate": v[0], "why": v[2]} for k, v in ranked.items()}}
+               "detail": detail}
     return tpl, base, ranking
 
 

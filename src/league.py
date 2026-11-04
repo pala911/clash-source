@@ -383,7 +383,16 @@ def _flip_to_relegated(text, name, today):
             flipped = True
     if not flipped:
         raise SystemExit("[league] ✗ %s 块内没有 enabled: true，形状异常拒绝写" % name)
-    lines.insert(end, "    relegated: '%s'" % today)
+    # 插在字段区末尾，而不是块尾：块尾可能跟着空行和「下一段」的分段注释。
+    # end 是下一个条目/顶层键的行号，注释也算在本块里；直接 insert(end) 会让
+    # relegated 落在注释之后 —— YAML 仍归属本块（注释不结束 mapping），但读起来
+    # 像是下一段的字段，容易误判。2026-11-04 首次换位就出现过这种排版。
+    insert_at = end
+    while insert_at > start and (
+            not lines[insert_at - 1].strip()
+            or lines[insert_at - 1].lstrip().startswith("#")):
+        insert_at -= 1
+    lines.insert(insert_at, "    relegated: '%s'" % today)
     return "\n".join(lines)
 
 

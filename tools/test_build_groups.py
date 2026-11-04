@@ -111,6 +111,27 @@ auto = [x[4:] for x in next(g for g in gs if g["name"] == "AUTO")["proxies"]]
 print("")
 print("  AUTO 实际入选: %s" % "、".join(auto))
 ok = True
+# 2026-11-04：manifest/report 的「备用」必须包含被 AUTO_MAX 挤出的达标源，
+# 否则报告显示「备用 -」，和 profile 里真实的备用组不一致。
+qualified = sorted([n for n in NAMES if LOCAL[n] >= build.GOOD_RATE],
+                   key=lambda n: (-LOCAL[n], n))
+expected_spare = [n for n in qualified if n not in auto]
+actual_spare = rank.get("备用") or []
+spare_missing = [n for n in expected_spare if n not in actual_spare]
+spare_extra = [n for n in actual_spare if n not in expected_spare]
+spare_overlap = sorted(set(auto) & set(actual_spare))
+spare_group = [x[4:] for x in next(g for g in gs if g["name"] == "备用")["proxies"]
+               if x.startswith("SRC-")]
+group_missing = [n for n in actual_spare if n not in spare_group]
+print("  ranking['备用'] = %s" % ("、".join(actual_spare) or "-"))
+if spare_missing or spare_extra or spare_overlap or group_missing:
+    print("  ✗ 备用口径不一致：缺 %s / 多 %s / 与 AUTO 重叠 %s / 未进备用组 %s"
+          % (spare_missing or "无", spare_extra or "无", spare_overlap or "无",
+             group_missing or "无"))
+    ok = False
+else:
+    print("  ✓ 被 AUTO_MAX 挤出的达标源都在备用组（%d 个），且不与 AUTO 重叠"
+          % len(actual_spare))
 if "ermaozi" in auto:
     print("  ✗ ermaozi 本机 2.9% 却进了 AUTO —— 质量分桶没起作用")
     ok = False
@@ -216,6 +237,8 @@ try:
     print("  ranking['degraded'] = %s" % (rank3.get("degraded") or "（空 —— 不该）"))
     d_ok = (len(auto3) >= build.AUTO_MIN                       # 有可用的自动组
             and auto3 == ["anaer", "ssrsub", "snakem982"]      # 用的是上一轮名单
+            and not (set(rank3.get("auto") or []) &
+                     set(rank3.get("备用") or []))             # 降级名单与备用不重叠
             and rank3.get("degraded")                          # 说明会进 warnings
             and "⚠ 降级" in out3                               # 本地日志
             and "::warning title=源健康档案降级::" in out3      # CI 注解
