@@ -1,6 +1,6 @@
 # clash-source 运行报告
 
-- 生成时间：2026-11-04 13:33:57（UTC 记录：2026-11-04T13:33:56Z）
+- 生成时间：2026-11-04 19:46:32（UTC 记录：2026-11-04T19:46:31Z）
 - AI 模式：`http`
 - 订阅入口：`https://pala911.github.io/clash-source/profile.yaml`
 - 备用入口（github.io 不达时）：`https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/profile.yaml`
@@ -30,15 +30,15 @@
 
 | 源 | 原始 | 产出 | AI 剔除(簇/节点) | 镜像回退 | 分组 | 备注 |
 |---|---:|---:|---:|---|---|---|
-| zhuhaiuk | 29 | 26 | 0 节点 | 否 | auto | - |
-| ssrsub | 167 | 166 | 0 节点 | 否 | auto | - |
-| ruk1ng001 | 497 | 473 | 0 节点 | 否 | 备用 | - |
-| snakem982 | 58 | 56 | 0 节点 | 否 | 观察 | - |
-| nomorewalls | 337 | 93 | 0 节点 | 否 | 备用 | - |
+| zhuhaiuk | 35 | 34 | 0 节点 | 否 | auto | - |
+| ssrsub | 168 | 167 | 0 节点 | 否 | auto | - |
+| ruk1ng001 | 500 | 466 | 0 节点 | 否 | 备用 | - |
+| snakem982 | 49 | 47 | 0 节点 | 否 | 观察 | - |
+| nomorewalls | 283 | 75 | 0 节点 | 否 | 备用 | - |
 | clashdaily | 80 | 80 | 0 节点 | 否 | auto | - |
-| leilaomi | 61 | 57 | 0 节点 | 否 | auto | - |
+| leilaomi | 33 | 28 | 0 节点 | 否 | auto | - |
 
-合计产出 **951** 节点（合并池 951）。
+合计产出 **897** 节点（合并池 897）。
 
 > 注意：节点数 ≠ 可用性。真实质量门禁是 **youtube/generate_204 探针**（手机/PC 侧 mihomo 自己跑）；CI 在美国机，连通性检查只能删明显死的。
 
