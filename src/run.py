@@ -85,7 +85,7 @@ def main():
                     help="mixed 模式下每源均匀抽样条数")
     ap.add_argument("--ai-unit", default=os.environ.get("AI_UNIT", "cluster"),
                     choices=["cluster", "node"],
-                    help="簇级审核(默认，省 95% token) / 单节点审核(对照用)")
+                    help="簇级审核(默认，省 95%% token) / 单节点审核(对照用)")
     ap.add_argument("--ai-max-clusters", type=int,
                     default=int(os.environ.get("AI_MAX_CLUSTERS", "150")),
                     help="每源送审簇数上限（按簇大小降序取前 N）")

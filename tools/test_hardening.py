@@ -10,6 +10,7 @@
 """
 import os
 import shutil
+import subprocess
 import sys
 import tempfile
 import time
@@ -158,6 +159,13 @@ check(ai_review._opencode_cmd({"opencode_exe": "oc", "opencode_model": "p/m#v"},
       == ["oc", "run", "--model", "p/m#v", "hi"], "带 --model 与 prompt")
 check(ai_review._opencode_cmd({"opencode_exe": "oc"}, "hi") == ["oc", "run", "hi"],
       "不配模型时不加 --model（用 OpenCode 默认模型）")
+
+print("6) run.py --help：帮助文本可打印（argparse 的 % 必须转义）")
+_help = subprocess.run([sys.executable, os.path.join(ROOT, "src", "run.py"), "--help"],
+                       capture_output=True, timeout=120)
+_out = (_help.stdout or b"").decode("utf-8", "replace")
+check(_help.returncode == 0, "退出码 0（不再因 help 里的 % 触发 unsupported format character）")
+check("usage:" in _out.lower(), "stdout 含 usage 段")
 
 print("")
 print("结果：%s（%d 项失败）" % ("全部通过" if not failures else "有失败", len(failures)))
