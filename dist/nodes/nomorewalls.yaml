@@ -1,4 +1,4 @@
-# clash-source 自动生成 —— 源 nomorewalls，共 75 节点（稳定性加权后留在竞速池内的部分）
+# clash-source 自动生成 —— 源 nomorewalls，共 77 节点（稳定性加权后留在竞速池内的部分）
 # 不要手改；改动会在下次定时任务被覆盖（上游 https://pala911.github.io/clash-source/nodes/nomorewalls.yaml）
 proxies:
 - name: 防范境外势力渗透
@@ -99,14 +99,6 @@ proxies:
   skip-cert-verify: false
   sni: bl1.nexfile.net
   tls: false
-- name: '🇩🇪 德国 | DEU #1'
-  type: hysteria2
-  server: 13.143.189.147
-  port: 4444
-  password: a35c508f-4d5d-4531-842e-6e9d43c762c0
-  skip-cert-verify: true
-  sni: pl2.nexfile.net
-  tls: false
 - name: برای اتصال دائمی جوین شو🍥 Tele...
   type: hysteria2
   server: 13.143.189.149
@@ -127,136 +119,79 @@ proxies:
   password: rjj39jg8iphgd06h
   sni: pro2.riziro.ir
   tls: false
-- name: 🇷🇺 俄罗斯 | RUS 2
+- name: '🇳🇱 荷兰 | NLD #1'
   type: vless
-  server: 89.169.47.96
+  server: 91.185.83.44
   port: 443
+  alpn:
+  - http/1.1
   client-fingerprint: firefox
-  network: grpc
-  servername: renderer-bridge-2-129.mirra.now
+  network: ws
+  servername: nguyxejonb.rucdncomp.pro
   tls: true
   udp: true
-  uuid: 27653b37-603c-4c90-b1f5-25c4d23f8932
-- name: '🇺🇸 美国 | USA #8'
+  uuid: c720cb74-4c84-4fce-b8ae-637dbaa16199
+  ws-opts:
+    headers:
+      Host: nguyxejonb.rucdncomp.pro
+    path: /service/telemetry/0294da469190/
+- name: '🇹🇼 🇨🇳 台湾 | TWN #2'
   type: vless
-  server: 146.75.59.186
+  server: 60.248.219.53
   port: 443
   client-fingerprint: chrome
   network: ws
-  servername: community.fastly.steamstatic.com
+  servername: ty986gfazs.cainiaohub.xyz
   tls: true
   udp: true
-  uuid: 58d2fb1c-7ae2-42c8-8c0d-a393603ebc9f
+  uuid: c1c04450-bf71-4049-ad0c-9cf6d94d9f1f
   ws-opts:
     headers:
-      Host: copy_az_channel_NUFiLTER_6i.global.ssl.fastly.net.
-    path: /
-- name: '🇺🇸 美国 | USA #7'
-  type: vless
-  server: 146.75.59.186
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: community.fastly.steamstatic.com
-  tls: true
-  udp: true
-  uuid: afed9510-8648-49c6-9fbd-c2d4d8bdd417
-  ws-opts:
-    headers:
-      Host: copy_az_channel_NUFiLTER_6i.global.ssl.fastly.net.
-    path: /
-- name: '🇺🇸 美国 | USA #16'
-  type: vless
-  server: wwww.qarvian.ir
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: cdn.akamai.steamstatic.com
-  tls: true
-  udp: true
-  uuid: afed9510-8648-49c6-9fbd-c2d4d8bdd417
-  ws-opts:
-    headers:
-      Host: copy_az_channel_NUFiLTER_7i.global.ssl.fastly.net.
-    path: /
-- name: '🇺🇸 美国 | USA #12'
-  type: vless
-  server: 199.232.78.160
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: community.fastly.steamstatic.com
-  tls: true
-  udp: true
-  uuid: afed9510-8648-49c6-9fbd-c2d4d8bdd417
-  ws-opts:
-    headers:
-      Host: copy_az_channel_NUFiLTER_10i.global.ssl.fastly.net.
-    path: /
-- name: '🇺🇸 美国 | USA #11'
-  type: vless
-  server: 199.232.78.160
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: community.fastly.steamstatic.com
-  tls: true
-  udp: true
-  uuid: 58d2fb1c-7ae2-42c8-8c0d-a393603ebc9f
-  ws-opts:
-    headers:
-      Host: copy_az_channel_NUFiLTER_10i.global.ssl.fastly.net.
-    path: /
-- name: '🇮🇹 意大利 | ITA #6'
-  type: ss
-  server: 202.50.253.63
-  port: 19999
-  cipher: aes-256-gcm
-  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
-  udp: true
-- name: '🇮🇹 意大利 | ITA #5'
+      Host: ty986gfazs.cainiaohub.xyz
+    path: /81574b6b-c9d7-44a0-b83d-dad56e8cb530
+- name: '🇮🇹 意大利 | ITA #7'
   type: ss
   server: 202.50.253.54
   port: 19999
   cipher: aes-256-gcm
   password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
   udp: true
-- name: '🇮🇹 意大利 | ITA #7'
+- name: '🇮🇹 意大利 | ITA #5'
   type: ss
   server: 202.50.253.72
   port: 19999
   cipher: aes-256-gcm
   password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
   udp: true
-- name: '🇮🇹 意大利 | ITA #1'
+- name: '🇮🇹 意大利 | ITA #6'
   type: ss
   server: 202.50.253.18
   port: 19999
   cipher: aes-256-gcm
   password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
   udp: true
-- name: '🇮🇹 意大利 | ITA #4'
-  type: ss
-  server: 202.50.253.45
-  port: 19999
-  cipher: aes-256-gcm
-  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
-  udp: true
-- name: '🇮🇹 意大利 | ITA #3'
+- name: '🇮🇹 意大利 | ITA #2'
   type: ss
   server: 202.50.253.36
   port: 19999
   cipher: aes-256-gcm
   password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
   udp: true
-- name: '🇮🇹 意大利 | ITA #8'
+- name: '🇮🇹 意大利 | ITA #4'
   type: ss
   server: 202.50.253.81
   port: 19999
   cipher: aes-256-gcm
   password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
   udp: true
-- name: '🇮🇹 意大利 | ITA #2'
+- name: '🇮🇹 意大利 | ITA #1'
+  type: ss
+  server: 202.50.253.90
+  port: 19999
+  cipher: aes-256-gcm
+  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
+  udp: true
+- name: '🇮🇹 意大利 | ITA #3'
   type: ss
   server: 202.50.253.27
   port: 19999
@@ -269,6 +204,22 @@ proxies:
   port: 443
   skip-cert-verify: true
   tls: true
+- name: '🇦🇪 阿联酋 | ARE #3'
+  type: trojan
+  server: sclass-c1.catcat321.com
+  port: 20086
+  password: d9064589-74af-432a-9390-5d8a9da281bf
+  skip-cert-verify: true
+  sni: hk.catxstar.com
+  udp: true
+- name: 🇦🇪 阿联酋 | ARE 2
+  type: trojan
+  server: Sclass-00.catcat321.com
+  port: 20123
+  password: d9064589-74af-432a-9390-5d8a9da281bf
+  skip-cert-verify: true
+  sni: hk.catxstar.com
+  udp: true
 - name: '🇨🇿 捷克 | CZE #1'
   type: vless
   server: 31.76.7.233
@@ -281,22 +232,42 @@ proxies:
   tls: true
   udp: true
   uuid: f8bdf363-ff05-4fe6-a013-a5605266657e
-- name: '🇭🇰 香港 | HKG #1'
-  type: vmess
-  server: 47.244.120.197
-  port: 44867
+- name: '🇩🇪 德国 | DEU #2'
+  type: vless
+  server: 193.160.208.240
+  port: 443
   alpn:
-  - ''
-  alterId: 0
-  cipher: auto
-  network: ws
-  skip-cert-verify: true
-  tls: false
+  - h2
+  - http/1.1
+  client-fingerprint: ios
+  network: xhttp
+  servername: 193.160.208.240
+  tls: true
   udp: true
-  uuid: 845e6b08-2919-4290-ade0-5dc7dcea59ca
-  ws-opts:
-    path: /arki
-- name: '🇭🇰 香港 | HKG #2'
+  uuid: c04522c4-3d53-4eab-b5b5-25385d5f11b1
+- name: '🇩🇪 德国 | DEU #3'
+  type: vless
+  server: 193.160.208.240
+  port: 443
+  client-fingerprint: firefox
+  network: xhttp
+  servername: 193.160.208.240
+  tls: true
+  udp: true
+  uuid: 4777d90d-265b-4927-a0d1-63f36ed1421c
+- name: '🇩🇪 德国 | DEU #4'
+  type: vless
+  server: 78.17.39.129
+  port: 443
+  alpn:
+  - h2
+  - http/1.1
+  client-fingerprint: chrome
+  network: xhttp
+  servername: 78.17.39.129
+  tls: true
+  uuid: c04522c4-3d53-4eab-b5b5-25385d5f11b1
+- name: '🇭🇰 香港 | HKG #1'
   type: vmess
   server: 47.76.57.83
   port: 443
@@ -311,23 +282,112 @@ proxies:
     headers:
       Host: vah4urdzl3jdx5r2.v.3dns.vip
     path: /ws-vmess
-- name: '🇭🇰 香港 | HKG #3'
+- name: '🇭🇰 香港 | HKG #2'
   type: vmess
-  server: 8.217.13.103
+  server: lcv8v9l7oyamxxfz.v.3dns.vip
   port: 443
   alterId: 0
   cipher: auto
   network: ws
-  servername: qtkdr8jxe3wefxjm.v.3dns.vip
   skip-cert-verify: true
   tls: true
   udp: true
   uuid: f23bb427-c1f9-4373-876c-2f43e9f790f3
   ws-opts:
     headers:
-      Host: qtkdr8jxe3wefxjm.v.3dns.vip
+      Host: lcv8v9l7oyamxxfz.v.3dns.vip
+    path: /ws-vmess
+- name: '🇭🇰 香港 | HKG #3'
+  type: vmess
+  server: vah4urdzl3jdx5r2.v.3dns.vip
+  port: 443
+  alterId: 0
+  cipher: auto
+  network: ws
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  uuid: f23bb427-c1f9-4373-876c-2f43e9f790f3
+  ws-opts:
+    headers:
+      Host: vah4urdzl3jdx5r2.v.3dns.vip
     path: /ws-vmess
 - name: '🇭🇰 香港 | HKG #4'
+  type: vmess
+  server: 47.243.167.44
+  port: 443
+  alterId: 0
+  cipher: auto
+  network: ws
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  uuid: 78b3f149-f037-465d-b2fb-11adb6f73ff8
+  ws-opts:
+    headers:
+      Host: rhHiErkwRf6fHs2H.v.3dns.vip
+    path: /ws-vmess
+- name: '🇭🇰 香港 | HKG #5'
+  type: vmess
+  server: 47.244.120.197
+  port: 23026
+  alterId: 0
+  cipher: auto
+  network: ws
+  skip-cert-verify: true
+  tls: false
+  udp: true
+  uuid: b9de1bc9-baa7-41ac-86f7-ccd59695cb21
+  ws-opts:
+    headers:
+      Host: 47.244.120.197
+    path: /arki
+- name: '🇭🇰 香港 | HKG #6'
+  type: vmess
+  server: 47.244.120.197
+  port: 36703
+  alterId: 0
+  cipher: auto
+  network: ws
+  skip-cert-verify: true
+  tls: false
+  udp: true
+  uuid: 45b83519-9c4f-4052-a11b-02e017b636d4
+  ws-opts:
+    path: /arki
+- name: '🇭🇰 香港 | HKG #7'
+  type: vmess
+  server: rhhierkwrf6fhs2h.v.3dns.vip
+  port: 443
+  alterId: 0
+  cipher: auto
+  network: ws
+  servername: rhhierkwrf6fhs2h.v.3dns.vip
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  uuid: 78b3f149-f037-465d-b2fb-11adb6f73ff8
+  ws-opts:
+    headers:
+      Host: rhhierkwrf6fhs2h.v.3dns.vip
+    path: /ws-vmess
+- name: '🇭🇰 香港 | HKG #8'
+  type: vmess
+  server: 47.243.65.243
+  port: 443
+  alterId: 0
+  cipher: auto
+  network: ws
+  servername: lcv8v9l7oyamxxfz.v.3dns.vip
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  uuid: f23bb427-c1f9-4373-876c-2f43e9f790f3
+  ws-opts:
+    headers:
+      Host: lcv8v9l7oyamxxfz.v.3dns.vip
+    path: /ws-vmess
+- name: '🇭🇰 香港 | HKG #9'
   type: vmess
   server: 8.217.254.88
   port: 443
@@ -343,73 +403,37 @@ proxies:
     headers:
       Host: 2b9hwy8ocx7q74nm.v.3dns.vip
     path: /ws-vmess
-- name: '🇭🇰 香港 | HKG #5'
+- name: '🇭🇰 香港 | HKG #11'
   type: vmess
-  server: 8.218.195.61
-  port: 443
-  alterId: 0
-  cipher: auto
-  network: ws
-  skip-cert-verify: true
-  tls: true
-  udp: true
-  uuid: f23bb427-c1f9-4373-876c-2f43e9f790f3
-  ws-opts:
-    headers:
-      Host: EX1oGt73NzPQKAc2.v.3dns.vip
-    path: /ws-vmess
-- name: 🇭🇰 香港 | HKG 6
-  type: anytls
-  server: 56481.df6h451rh.xin
-  port: 443
-  password: 0324fbc29561
-  skip-cert-verify: true
-  sni: images.ctfassets.net
-  udp: true
-- name: '🇭🇰 香港 | HKG #6'
-  type: vmess
-  server: rhHiErkwRf6fHs2H.v.3dns.vip
-  port: 443
-  alterId: 0
-  cipher: auto
-  network: ws
-  servername: rhHiErkwRf6fHs2H.v.3dns.vip
-  skip-cert-verify: true
-  tls: true
-  udp: true
-  uuid: 78b3f149-f037-465d-b2fb-11adb6f73ff8
-  ws-opts:
-    headers:
-      Host: rhHiErkwRf6fHs2H.v.3dns.vip
-    path: /ws-vmess
-- name: '🇭🇰 香港 | HKG #7'
-  type: vmess
-  server: nycqg19zkwacpm1b.v.3dns.vip
-  port: 443
-  alterId: 0
-  cipher: auto
-  network: ws
-  skip-cert-verify: true
-  tls: true
-  udp: true
-  uuid: f23bb427-c1f9-4373-876c-2f43e9f790f3
-  ws-opts:
-    headers:
-      Host: NYcQg19zkwaCPM1B.v.3dns.vip
-    path: /ws-vmess
-- name: 🇷🇺 俄罗斯 | RUS 3
-  type: vless
-  server: renderer-bridge-2-129.mirra.now
-  port: 443
+  server: 47.244.120.197
+  port: 44867
   alpn:
-  - h2
-  client-fingerprint: firefox
-  network: grpc
-  servername: renderer-bridge-2-129.mirra.now
-  tls: true
+  - ''
+  alterId: 0
+  cipher: auto
+  network: ws
+  skip-cert-verify: true
+  tls: false
   udp: true
-  uuid: 27653b37-603c-4c90-b1f5-25c4d23f8932
-- name: '🇸🇬 新加坡 | SGP #1'
+  uuid: 845e6b08-2919-4290-ade0-5dc7dcea59ca
+  ws-opts:
+    path: /arki
+- name: '🇰🇷 韩国 | KOR #1'
+  type: ss
+  server: 13.125.95.226
+  port: 8443
+  cipher: chacha20-ietf-poly1305
+  password: 7e68e32f-8015-4f37-9082-70e8b0b58043
+  udp: true
+- name: '🇰🇷 韩国 | KOR #2'
+  type: hysteria2
+  server: 13.125.95.226
+  port: 443
+  password: 7e68e32f-8015-4f37-9082-70e8b0b58043
+  skip-cert-verify: true
+  sni: www.bing.com
+  tls: false
+- name: '🇱🇰 LK_30 #1'
   type: vless
   server: free.vkehi.store
   port: 443
@@ -426,63 +450,42 @@ proxies:
     headers:
       Host: free.vkehi.store
     path: /
+- name: '🇳🇱 荷兰 | NLD #2'
+  type: vless
+  server: 201.34.142.108
+  port: 443
+  client-fingerprint: firefox
+  network: xhttp
+  servername: 201.34.142.108
+  tls: true
+  udp: true
+  uuid: 4777d90d-265b-4927-a0d1-63f36ed1421c
+- name: '🇸🇪 瑞典 | SWE #1'
+  type: vless
+  server: swo2.nexfile.net
+  port: 4443
+  client-fingerprint: chrome
+  network: xhttp
+  servername: swo2.nexfile.net
+  tls: true
+  uuid: a35c508f-4d5d-4531-842e-6e9d43c762c0
+- name: '🇸🇬 新加坡 | SGP #1'
+  type: hysteria2
+  server: 54.179.192.163
+  port: 443
+  password: 7e68e32f-8015-4f37-9082-70e8b0b58043
+  skip-cert-verify: true
+  sni: www.bing.com
+  tls: false
+- name: 🇹🇼 🇨🇳 台湾 | TWN
+  type: anytls
+  server: er8u54dh.df6h451rh.xin
+  port: 443
+  password: 0324fbc29561
+  skip-cert-verify: true
+  sni: px.ads.linkedin.com
+  udp: true
 - name: '🇺🇸 美国 | USA #1'
-  type: vless
-  server: 104.16.10.235
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: u.srilankangrill.online
-  tls: true
-  udp: true
-  uuid: b8d8a5b0-867f-4491-b4e4-30edc04bb10e
-  ws-opts:
-    headers:
-      Host: u.srilankangrill.online
-    path: /
-- name: '🇺🇸 美国 | USA #2'
-  type: vless
-  server: 104.19.32.166
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: u.srilankangrill.online
-  tls: true
-  udp: true
-  uuid: b8d8a5b0-867f-4491-b4e4-30edc04bb10e
-  ws-opts:
-    headers:
-      Host: u.srilankangrill.online
-    path: /
-- name: '🇺🇸 美国 | USA #3'
-  type: vless
-  server: 104.21.89.41
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: u.srilankangrill.online
-  tls: true
-  udp: true
-  uuid: b8d8a5b0-867f-4491-b4e4-30edc04bb10e
-  ws-opts:
-    headers:
-      Host: u.srilankangrill.online
-    path: /
-- name: '🇺🇸 美国 | USA #4'
-  type: vless
-  server: 104.24.0.184
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: u.srilankangrill.online
-  tls: true
-  udp: true
-  uuid: b8d8a5b0-867f-4491-b4e4-30edc04bb10e
-  ws-opts:
-    headers:
-      Host: u.srilankangrill.online
-    path: /
-- name: '🇺🇸 美国 | USA #6'
   type: vless
   server: 146.75.57.111
   port: 443
@@ -491,27 +494,40 @@ proxies:
   servername: cdn.akamai.steamstatic.com
   tls: true
   udp: true
-  uuid: afed9510-8648-49c6-9fbd-c2d4d8bdd417
+  uuid: 72881b3f-76f7-4cae-912d-e95e602a5ca4
   ws-opts:
     headers:
-      Host: copy_az_channel_NUFiLTER_7i.global.ssl.fastly.net.
+      Host: copy_az_channel_NUFiLTER_17i.global.ssl.fastly.net.
     path: /
-- name: '🇺🇸 美国 | USA #9'
+- name: '🇺🇸 美国 | USA #3'
   type: vless
-  server: 151.101.1.242
+  server: 199.232.78.160
   port: 443
-  alpn:
-  - http/1.1
+  client-fingerprint: chrome
   network: ws
-  servername: minimize-evenness.cdn-content.com
+  servername: community.fastly.steamstatic.com
   tls: true
   udp: true
-  uuid: d072677e-98c2-4ff0-a38f-4853af740ee1
+  uuid: 72881b3f-76f7-4cae-912d-e95e602a5ca4
   ws-opts:
     headers:
-      Host: minimize-evenness.cdn-content.com
-    path: /ws
-- name: '🇺🇸 美国 | USA #15'
+      Host: copy_az_channel_NUFiLTER_10i.global.ssl.fastly.net.
+    path: /?Telegram---EVAY_VPN---EVAY_VPN---EVAY_VPN---EVAY_VPN
+- name: '🇺🇸 美国 | USA #4'
+  type: vless
+  server: 146.75.59.186
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: community.fastly.steamstatic.com
+  tls: true
+  udp: true
+  uuid: 72881b3f-76f7-4cae-912d-e95e602a5ca4
+  ws-opts:
+    headers:
+      Host: copy_az_channel_NUFiLTER_6i.global.ssl.fastly.net.
+    path: /
+- name: '🇺🇸 美国 | USA #5'
   type: vless
   server: wwww.qarvian.ir
   port: 443
@@ -520,19 +536,11 @@ proxies:
   servername: cdn.akamai.steamstatic.com
   tls: true
   udp: true
-  uuid: 58d2fb1c-7ae2-42c8-8c0d-a393603ebc9f
+  uuid: 72881b3f-76f7-4cae-912d-e95e602a5ca4
   ws-opts:
     headers:
-      Host: copy_az_channel_NUFiLTER_17i.global.ssl.fastly.net.
+      Host: copy_az_channel_NUFiLTER_7i.global.ssl.fastly.net.
     path: /
-- name: '🇺🇸 美国 | USA #17'
-  type: trojan
-  server: 167.88.61.20
-  port: 443
-  password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
-  skip-cert-verify: true
-  sni: api.browseseniorrolesandenhanceyourcareertoday.com
-  udp: true
 - name: AT_speednode_0001
   type: vless
   server: au2.pad-sservice.lat
