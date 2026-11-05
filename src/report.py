@@ -118,6 +118,10 @@ def write_report(path, manifest, metas, warnings, per_source):
         note = m.get("error") or ""
         if m.get("mirror_used"):
             note = (note + " " if note else "") + "直连失败走镜像"
+        # 跨源内容去重（2026-11-05）：同一份节点配置在多个源出现时只留一份。
+        # 写进备注列，避免读者把「产出」变少误判成抓取/过滤出了问题。
+        if m.get("dup_removed"):
+            note = (note + " " if note else "") + "跨源去重 -%d" % m["dup_removed"]
         # AI 剔除同时给出「簇数 / 节点数」：簇数说明模型做了几次判定，
         # 节点数才与其他列（原始/产出）同量纲。只看簇数会把「1 簇 300 节点」
         # 读成无关紧要，只看节点数又看不出判定粒度。
@@ -134,8 +138,13 @@ def write_report(path, manifest, metas, warnings, per_source):
                     "是" if m.get("mirror_used") else "否",
                     bucket.get(m["name"], "-"), note or "-"))
     L.append("")
-    L.append("合计产出 **%d** 节点（合并池 %d）。"
-             % (manifest["totals"]["kept"], manifest["totals"]["merged"]))
+    dup = (manifest["totals"].get("dup_removed") or 0)
+    if dup:
+        L.append("合计产出 **%d** 节点（合并池 %d；跨源内容去重剔除 %d）。"
+                 % (manifest["totals"]["kept"], manifest["totals"]["merged"], dup))
+    else:
+        L.append("合计产出 **%d** 节点（合并池 %d）。"
+                 % (manifest["totals"]["kept"], manifest["totals"]["merged"]))
     L.append("")
     L.append("> 注意：节点数 ≠ 可用性。真实质量门禁是 **youtube/generate_204 探针**"
              "（手机/PC 侧 mihomo 自己跑）；CI 在美国机，连通性检查只能删明显死的。")

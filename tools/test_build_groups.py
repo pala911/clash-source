@@ -285,6 +285,60 @@ except AssertionError as e:
 finally:
     build.ROOT, build.HEALTH = _old_root, _old_health
 
+# ---------- F 跨源内容指纹去重 ----------
+print("")
+print("=" * 68)
+print("场景 F（跨源内容指纹去重：高质量源优先，不误删同端口不同凭据）")
+print("=" * 68)
+
+
+def check_f(name, cond):
+    global ok
+    print("  %s %s" % ("✓" if cond else "✗", name))
+    if not cond:
+        ok = False
+
+
+n1 = {"name": "n1", "type": "ss", "server": "1.2.3.4", "port": 8388,
+      "password": "p1"}
+n1_copy = dict(n1, name="n1-copy")              # 只差 name：必须去重
+n2 = dict(n1, name="n2", password="p2")         # 同端口不同凭据：必须保留
+n3 = dict(n1, name="n3", server="5.6.7.8")      # 不同服务器：必须保留
+n4 = dict(n1, name="n4", sni="other.example")   # 同凭据不同传输参数：必须保留
+per = {"low": [n1_copy, n3], "high": [n1], "other": [n2]}
+
+deduped, dup = build.dedupe_cross_source(per, ["high", "low", "other"])
+check_f("高质量源保留共享节点（high 保留 n1）",
+        [p["name"] for p in deduped["high"]] == ["n1"])
+check_f("低质量源的只差 name 副本被剔除（low 只剩 n3）",
+        [p["name"] for p in deduped["low"]] == ["n3"])
+check_f("同端口不同凭据不被误删（other 保留 n2）",
+        [p["name"] for p in deduped["other"]] == ["n2"])
+check_f("dup_counts 按源记账（low=1）",
+        dup.get("low") == 1 and dup.get("high") == 0 and dup.get("other") == 0)
+check_f("返回 dict 保持原键顺序（provider/报告行顺序不变）",
+        list(deduped) == list(per))
+
+deduped2, dup2 = build.dedupe_cross_source(per, ["low", "high", "other"])
+check_f("优先级反转后改由 low 保留（high 清空）",
+        [p["name"] for p in deduped2["low"]] == ["n1-copy", "n3"]
+        and deduped2["high"] == [] and dup2.get("high") == 1)
+
+deduped3, _ = build.dedupe_cross_source(per)
+check_f("不传 priority 时按 per_source 原顺序保留（low 先）",
+        [p["name"] for p in deduped3["low"]] == ["n1-copy", "n3"]
+        and deduped3["high"] == [])
+
+per_dup = {"a": [n1], "b": [n1_copy]}
+deduped4, dup4 = build.dedupe_cross_source(per_dup, ["a", "b"])
+check_f("100% 重复源会被清空（调用方据此告警）",
+        deduped4["a"] == [n1] and deduped4["b"] == [] and dup4.get("b") == 1)
+
+per_meta = {"a": [n1], "b": [n4]}
+deduped5, dup5 = build.dedupe_cross_source(per_meta, ["a", "b"])
+check_f("同凭据但传输参数不同（sni）不被误删",
+        len(deduped5["b"]) == 1 and dup5.get("b") == 0)
+
 print("")
 print("=" * 68)
 print("结果：%s" % ("全部通过" if (ok and TOLERANCE_OK) else "有失败项"))

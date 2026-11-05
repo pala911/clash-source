@@ -295,6 +295,40 @@ def main():
         log("   产出 %d 节点：%s" % (len(kept), name))
 
 
+    # 跨源内容指纹去重（2026-11-05）：同一份节点配置在多个源出现时只留一份。
+    # 优先级按本机质量分降序 —— 让高质量源保留共享节点，低质量源让位；
+    # 健康档案缺失/降级时 rank 里 rate 全是 None，退化为 sources.yaml 顺序。
+    ranked_for_dedupe, _ = build.rank_sources(list(per_source))
+    priority = sorted(per_source, key=lambda n: (
+        ranked_for_dedupe.get(n, (None,))[0] is None,
+        -(ranked_for_dedupe.get(n, (None,))[0] or 0)))
+    per_source, dup_counts = build.dedupe_cross_source(per_source, priority)
+    dup_total = sum(dup_counts.values())
+    if dup_total:
+        log("跨源内容去重：剔除 %d 个重复节点（同内容只留高质量源的一份）" % dup_total)
+        for n in per_source:
+            if dup_counts.get(n):
+                log("   %s -%d" % (n, dup_counts[n]))
+    for name, nodes in per_source.items():
+        meta = next((m for m in metas if m["name"] == name), None)
+        if meta is not None:
+            meta["kept"] = len(nodes)
+            meta["dup_removed"] = dup_counts.get(name, 0)
+            if not nodes and dup_counts.get(name):
+                warnings.append("%s 全部 %d 个节点与更优源内容重复，本轮不挂载该源"
+                                "（sources.yaml 未改；是否换源由联赛/补员决定）"
+                                % (name, dup_counts[name]))
+
+    # 100% 重复的源：本轮不挂载（provider 为空会让「备用」组里出现一个死组）。
+    # 只从本轮构建的 enabled/per_source 里移除，sources.yaml 不动 —— 源是否
+    # 淘汰由联赛/补员决定，构建层不做源级生死决策。
+    unmounted = [n for n in per_source
+                 if not per_source[n] and dup_counts.get(n)]
+    if unmounted:
+        per_source = {n: v for n, v in per_source.items() if n not in unmounted}
+        enabled = [s for s in enabled if s["name"] not in unmounted]
+        log("本轮不挂载（内容 100%% 重复）：%s" % "、".join(unmounted))
+
     # 合并池（带源前缀，名字全局唯一）
     all_nodes = []
     for name, nodes in per_source.items():
@@ -371,10 +405,12 @@ def main():
             "mirror": m.get("mirror_used"),
             "ai_dropped": (m.get("ai") or {}).get("dropped"),
             "ai_dropped_clusters": (m.get("ai") or {}).get("dropped_clusters"),
+            "dup_removed": m.get("dup_removed", 0),
             "error": m.get("error"),
         } for m in metas],
         "totals": {"kept": sum(len(v) for v in per_source.values()),
                    "merged": len(all_nodes),
+                   "dup_removed": dup_total,
                    # 统一口径 = **节点数**。原来簇级模式塞簇数、源级模式塞节点数，
                    # 同一个键两个量纲（日志里还把它标成「送审 N 条」）。
                    "ai_reviewed": (sum((s.get("reviewed") or 0) for s in ai_stats.values())

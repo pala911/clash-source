@@ -132,6 +132,46 @@ def split_by_stability(per_source):
     return stable, flaky, "稳定性加权：保留 %d / 移出 %d 个节点（%d 个源有节点被移出）" % (
         kept, dropped, len(flaky))
 
+
+def dedupe_cross_source(per_source, priority=None):
+    """跨源内容指纹去重：同一份节点配置（去掉 name 后整份 dict）只保留一份。
+
+    ## 为什么用「完整内容指纹」而不是 server:port
+
+    同一 IP:port 上可以有多个**合法但不同**的节点：shaoyouvip 曾在同一 IP 上
+    开 4 个节点，ruk1ng001 单源内也有 34 个 server:port 相同的节点（凭据不同）。
+    按 server:port 去重会把它们误删；`filters.dedupe_key` 同源去重带凭据也是
+    这个原因。这里用 `node_stability.fingerprint`（整份配置去掉 name 的 sha1），
+    只删**内容完全相同**的节点 —— automerge / nomorewalls 那种 100% 重复
+    正好被抓到，又不会误伤同端口的不同账号。
+
+    ## 保留哪一份
+
+    `priority` 是源名列表（建议按本机质量分降序）。同一指纹先出现者保留，
+    所以高质量源优先。`priority` 里没有的源按 per_source 原顺序追加。
+    返回的 dict 保持 per_source 的原键顺序（provider / 报告行顺序不变），
+    只删节点。
+
+    返回 `(deduped, dup_counts)`：`dup_counts[源名]` = 被本函数剔除的节点数。
+    """
+    import node_stability as ns
+    order = [n for n in (priority or []) if n in per_source]
+    order += [n for n in per_source if n not in order]
+    seen = set()
+    deduped = {n: [] for n in per_source}
+    dup_counts = {n: 0 for n in per_source}
+    for name in order:
+        for p in per_source[name]:
+            fp = ns.fingerprint(p)
+            if fp in seen:
+                dup_counts[name] += 1
+                continue
+            seen.add(fp)
+            deduped[name].append(p)
+    # 保持原键顺序：profile 的 provider / 报告行顺序都依赖它
+    return {n: deduped[n] for n in per_source}, dup_counts
+
+
 # 质量门槛（与 health.py 的 GOOD_RATE 保持一致）。低于它就不进 AUTO 竞速。
 GOOD_RATE = 8.0
 # AUTO 最多放几个源。url-test 会在这些源的全部节点上竞速，源太多会让
