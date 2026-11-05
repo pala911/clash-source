@@ -1,6 +1,6 @@
 # clash-source 运行报告
 
-- 生成时间：2026-11-05 06:47:25（UTC 记录：2026-11-05T06:47:24Z）
+- 生成时间：2026-11-05 14:07:10（UTC 记录：2026-11-05T14:07:09Z）
 - AI 模式：`http`
 - 订阅入口：`https://pala911.github.io/clash-source/profile.yaml`
 - 备用入口（github.io 不达时）：`https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/profile.yaml`
@@ -11,7 +11,7 @@
 | 组 | 含义 | 源 |
 |---|---|---|
 | AUTO | 参与自动竞速 | zhuhaiuk、clashdaily、ssrsub、leilaomi |
-| 备用 | 不自动竞速，手动切 | ruk1ng001、automerge、nomorewalls |
+| 备用 | 不自动竞速，手动切 | ruk1ng001、automerge |
 | 观察 | 本机实测不达标 | - |
 
 排序依据是**国内口径**（本机全量探针的多轮均值）。美国 CI 口径不用来排序 —— 实测 Spearman rho 仅 0.48，排名不可信。
@@ -21,7 +21,6 @@
 | automerge | 28.4% | 本机 28.4%（达标，但 AUTO 只取前 4） |
 | clashdaily | 47.6% | 本机 47.6% |
 | leilaomi | 38.1% | 本机 38.1% |
-| nomorewalls | 27.1% | 本机 27.1%（达标，但 AUTO 只取前 4） |
 | ruk1ng001 | 36.5% | 本机 36.5%（达标，但 AUTO 只取前 4） |
 | ssrsub | 42.3% | 本机 42.3% |
 | zhuhaiuk | 48.5% | 本机 48.5% |
@@ -30,15 +29,15 @@
 
 | 源 | 原始 | 产出 | AI 剔除(簇/节点) | 镜像回退 | 分组 | 备注 |
 |---|---:|---:|---:|---|---|---|
-| automerge | 297 | 77 | 0 节点 | 否 | 备用 | - |
-| zhuhaiuk | 33 | 32 | 0 节点 | 否 | auto | - |
-| ssrsub | 157 | 156 | 0 节点 | 否 | auto | - |
-| ruk1ng001 | 500 | 466 | 0 节点 | 否 | 备用 | - |
-| nomorewalls | 297 | 77 | 0 节点 | 否 | 备用 | - |
-| clashdaily | 80 | 80 | 0 节点 | 否 | auto | - |
-| leilaomi | 40 | 36 | 0 节点 | 否 | auto | - |
+| automerge | 340 | 81 | 0 节点 | 否 | 备用 | 跨源去重 -36 |
+| zhuhaiuk | 30 | 30 | 0 节点 | 否 | auto | - |
+| ssrsub | 157 | 152 | 0 节点 | 否 | auto | 跨源去重 -4 |
+| ruk1ng001 | 500 | 390 | 0 节点 | 否 | 备用 | 跨源去重 -76 |
+| nomorewalls | 340 | 0 | 0 节点 | 否 | - | 跨源去重 -117 |
+| clashdaily | 80 | 79 | 0 节点 | 否 | auto | 跨源去重 -1 |
+| leilaomi | 36 | 28 | 0 节点 | 否 | auto | 跨源去重 -4 |
 
-合计产出 **924** 节点（合并池 924）。
+合计产出 **760** 节点（合并池 760；跨源内容去重剔除 238）。
 
 > 注意：节点数 ≠ 可用性。真实质量门禁是 **youtube/generate_204 探针**（手机/PC 侧 mihomo 自己跑）；CI 在美国机，连通性检查只能删明显死的。
 
@@ -51,6 +50,7 @@
 - nomorewalls AI 部分批次不可用（相关批次保留全部节点）：全部批次失败
 - clashdaily AI 部分批次不可用（相关批次保留全部节点）：全部批次失败
 - leilaomi AI 部分批次不可用（相关批次保留全部节点）：全部批次失败
+- nomorewalls 全部 117 个节点与更优源内容重复，本轮不挂载该源（sources.yaml 未改；是否换源由联赛/补员决定）
 
 ## 硬过滤命中 TOP（按源）
 
