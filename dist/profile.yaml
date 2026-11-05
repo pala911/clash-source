@@ -106,6 +106,15 @@ proxy-groups:
   interval: 300
   timeout: 5000
   tolerance: 200
+- name: SRC-nomorewalls
+  type: url-test
+  use:
+  - nomorewalls
+  url: https://www.youtube.com/generate_204
+  expected-status: 204
+  interval: 300
+  timeout: 5000
+  tolerance: 200
 - name: SRC-clashdaily
   type: url-test
   use:
@@ -139,7 +148,6 @@ proxy-groups:
 - name: 不稳定
   type: url-test
   use:
-  - SRCFL-automerge
   - SRCFL-clashdaily
   - SRCFL-ruk1ng001
   - SRCFL-ssrsub
@@ -153,6 +161,7 @@ proxy-groups:
   proxies: &id001
   - SRC-ruk1ng001
   - SRC-automerge
+  - SRC-nomorewalls
   - 不稳定
 - name: 观察
   type: select
@@ -165,6 +174,7 @@ proxy-groups:
   - SRC-zhuhaiuk
   - SRC-ssrsub
   - SRC-ruk1ng001
+  - SRC-nomorewalls
   - SRC-clashdaily
   - SRC-leilaomi
   url: https://www.youtube.com/generate_204
@@ -183,6 +193,7 @@ proxy-groups:
   - SRC-zhuhaiuk
   - SRC-ssrsub
   - SRC-ruk1ng001
+  - SRC-nomorewalls
   - SRC-clashdaily
   - SRC-leilaomi
 - name: Claude
@@ -192,6 +203,7 @@ proxy-groups:
   - zhuhaiuk
   - ssrsub
   - ruk1ng001
+  - nomorewalls
   - clashdaily
   - leilaomi
   proxies:
@@ -203,6 +215,7 @@ proxy-groups:
   - zhuhaiuk
   - ssrsub
   - ruk1ng001
+  - nomorewalls
   - clashdaily
   - leilaomi
   proxies:
@@ -554,6 +567,18 @@ proxy-providers:
       interval: 300
       timeout: 5000
       expected-status: 204
+  nomorewalls:
+    type: http
+    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/nomorewalls.yaml
+    path: ./providers/nomorewalls.yaml
+    interval: 3600
+    exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
+    health-check:
+      enable: true
+      url: https://www.youtube.com/generate_204
+      interval: 300
+      timeout: 5000
+      expected-status: 204
   clashdaily:
     type: http
     url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/clashdaily.yaml
@@ -570,18 +595,6 @@ proxy-providers:
     type: http
     url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/leilaomi.yaml
     path: ./providers/leilaomi.yaml
-    interval: 3600
-    exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
-    health-check:
-      enable: true
-      url: https://www.youtube.com/generate_204
-      interval: 300
-      timeout: 5000
-      expected-status: 204
-  SRCFL-automerge:
-    type: http
-    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/automerge--flaky.yaml
-    path: ./providers/SRCFL-automerge.yaml
     interval: 3600
     exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
     health-check:
