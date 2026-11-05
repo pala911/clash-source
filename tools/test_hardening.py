@@ -135,5 +135,30 @@ finally:
     ai_review._DEADLINE[0] = _deadline_old
 
 print("")
+print("5) _chunk_backends：首选固定、其余按批轮转（加模型后不白配）")
+_b = [{"_name": "b%d" % i} for i in range(10)]
+_cfg = {"backends": _b}
+check([x["_name"] for x in ai_review._chunk_backends(_cfg, 0, 3)] == ["b0", "b1", "b2"],
+      "第 0 批：首选 + 前两个兜底")
+check([x["_name"] for x in ai_review._chunk_backends(_cfg, 1, 3)] == ["b0", "b2", "b3"],
+      "第 1 批：首选固定，兜底轮转")
+check([x["_name"] for x in ai_review._chunk_backends(_cfg, 7, 3)] == ["b0", "b8", "b9"],
+      "第 7 批：兜底轮到尾部")
+check([x["_name"] for x in ai_review._chunk_backends(_cfg, 9, 3)] == ["b0", "b1", "b2"],
+      "轮转回绕：第 9 批回到开头（9 个兜底，9 % 9 = 0）")
+check(len(ai_review._chunk_backends({"backends": _b[:2]}, 5, 3)) == 2,
+      "后端数 ≤ 上限时原样返回（不轮转）")
+check([x["_name"] for x in ai_review._chunk_backends(_cfg, 3, 1)] == ["b0"],
+      "limit=1 只试首选")
+check(ai_review._chunk_backends({"_name": "solo"}, 0, 3) == [{"_name": "solo"}],
+      "没有 backends 键时退化为单后端")
+
+print("5b) _opencode_cmd：可指定本地 OpenCode 模型")
+check(ai_review._opencode_cmd({"opencode_exe": "oc", "opencode_model": "p/m#v"}, "hi")
+      == ["oc", "run", "--model", "p/m#v", "hi"], "带 --model 与 prompt")
+check(ai_review._opencode_cmd({"opencode_exe": "oc"}, "hi") == ["oc", "run", "hi"],
+      "不配模型时不加 --model（用 OpenCode 默认模型）")
+
+print("")
 print("结果：%s（%d 项失败）" % ("全部通过" if not failures else "有失败", len(failures)))
 sys.exit(0 if not failures else 1)

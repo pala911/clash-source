@@ -241,10 +241,24 @@ def _call_http(nodes, soft_map, cfg, max_tokens=None):
     raise RuntimeError(last or "未知错误")
 
 
+def _opencode_cmd(cfg, prompt):
+    """构造 `opencode run` 命令（抽出来便于门禁单测，不真跑）。
+
+    模型优先级：cfg["opencode_model"] > 环境变量 OPENCODE_MODEL > OpenCode 默认模型。
+    值格式与 `opencode run --model` 一致：provider/model[#variant]。
+    """
+    exe = cfg.get("opencode_exe") or os.environ.get("OPENCODE_EXE", "opencode")
+    cmd = [exe, "run"]
+    model = cfg.get("opencode_model") or os.environ.get("OPENCODE_MODEL", "")
+    if model:
+        cmd += ["--model", model]
+    cmd.append(prompt)
+    return cmd
+
+
 def _call_opencode(nodes, soft_map, cfg):
     prompt = SYSTEM_PROMPT + "\n\n待审节点：\n" + _fmt_chunk(nodes, soft_map)
-    exe = cfg.get("opencode_exe") or "opencode"
-    p = subprocess.run([exe, "run", prompt], capture_output=True, text=True,
+    p = subprocess.run(_opencode_cmd(cfg, prompt), capture_output=True, text=True,
                        timeout=cfg["timeout"])
     if p.returncode != 0:
         raise RuntimeError("opencode run 退出码 %d: %s" % (p.returncode, p.stderr[:200]))
@@ -449,6 +463,26 @@ def _call_http_raw(prompt, system, cfg, max_tokens, timeout_cap=None):
     raise RuntimeError(last or "未知错误")
 
 
+def _chunk_backends(cfg, chunk_idx, limit=None):
+    """单批的后端尝试顺序：首选固定，其余按批次轮转。
+
+    为什么轮转（2026-11-05）：backends 从 3 个加到 10 个后，静态取前 N 个
+    会让后面的模型永远轮不到（等于白配）。轮转让所有后端都参与兜底，
+    而单批尝试次数不变，不会把最坏耗时放大。
+
+    `chunk_idx` 用簇级批次的序号（off // CLUSTER_CHUNK）；limit 默认
+    MAX_BACKENDS_PER_CHUNK（3）。
+    """
+    bs = list(cfg.get("backends") or [cfg])
+    limit = MAX_BACKENDS_PER_CHUNK if limit is None else max(1, int(limit))
+    if len(bs) <= limit:
+        return bs
+    head, tail = bs[0], bs[1:]
+    start = (chunk_idx or 0) % len(tail)
+    rotated = tail[start:] + tail[:start]
+    return [head] + rotated[:limit - 1]
+
+
 def review_clusters(clusters, nodes, mode, cfg, source_name, log):
     """簇级审核（并发 + 墙钟预算）。返回 (要剔除的簇下标集合, 统计dict)。"""
     import concurrent.futures as cf
@@ -470,9 +504,9 @@ def review_clusters(clusters, nodes, mode, cfg, source_name, log):
     def one(job):
         off, part = job
         prompt = _fmt_clusters(part, nodes)
-        # 后端轮换上限：防止「N 个后端依次重试」把单批最坏耗时叠加到十几分钟。
-        # 超出的后端本批不试（下一批还会从头试），保证墙钟预算不被单批吃掉。
-        for b in (cfg.get("backends") or [cfg])[:MAX_BACKENDS_PER_CHUNK]:
+        # 单批尝试上限：防止「N 个后端依次重试」把单批最坏耗时叠加到十几分钟。
+        # 首选固定，其余按批次轮转（否则清单末尾的模型永远轮不到）。
+        for b in _chunk_backends(cfg, off // CLUSTER_CHUNK):
             left = budget_left()
             if left is not None and left <= 0:
                 return off, part, None, None
@@ -586,6 +620,9 @@ def config_from_env():
         "retries": int(os.environ.get("AI_RETRIES", "4")),
         "max_tokens": int(os.environ.get("AI_MAX_TOKENS", "1500")),
         "opencode_exe": os.environ.get("OPENCODE_EXE", "opencode"),
+        # 仅 --ai-mode opencode 用：指定本地 OpenCode 的模型（provider/model[#variant]）。
+        # 留空 = 用 OpenCode 自己的默认模型。
+        "opencode_model": os.environ.get("OPENCODE_MODEL", ""),
     }
     backends = load_backends()
     if backends:

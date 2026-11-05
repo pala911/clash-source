@@ -8,13 +8,25 @@
 # 顺序即优先级；某后端失败（超时/429/非 JSON）自动切下一个，但单批最多试
 # AI_MAX_BACKENDS（默认 3）个，防止重试叠加吃掉整个墙钟预算。
 #
+# ⚠ 单批不是「整份清单依次试」：第 1 个固定（首选），第 2、3 个按**批次序号
+#   轮转**（ai_review._chunk_backends，2026-11-05 加）。这样加到清单末尾的
+#   模型也会作为兜底被轮到 —— 静态取前 3 个会让后面的模型永远不执行。
+#
 # ============ 2026-10-14 横向实测（15 簇 / 约 830 字符真实簇审 prompt） ============
-#   腾讯 mimo-v2.6-flash          11~46s /  310~898 tok  ← 首选：判定最稳定(连测3次一致)且最省
-#   硅基 Xing4.0-29B             22.5s /    843 tok     ← 次选
+#   腾讯 mimo-v2.6-flash          11~46s /  310~898 tok  ← 判定最稳定(连测3次一致)且最省
+#   硅基 Xing4.0-29B             22.5s /    843 tok
 #   腾讯 deepseek-v4.1-flash      37~50s / 5000~6500 tok ← 思维链极长，需 12000 max_tokens 才不截断
 #   硅基 Qwen3-8B                 96.7s /   2459 tok     ← 慢且啰嗦
 #   硅基 DeepSeek-R1-0528-Qwen3-8B 108.4s /  2018 tok
 #   硅基 GLM-Z1-9B-0414          104.2s /   3970 tok
+#
+# ============ 2026-11-05 调整（硅基已充值） ============
+# 1) 主力切回硅基：腾讯免费试用额度已耗尽（HTTP 402 / 401008），
+#    腾讯条目保留但降为第三云兜底，充值/换 key 后自动恢复。
+# 2) 新增 3 个硅基小模型（GLM-4-9B / Qwen3.5-4B / Qwen2.5-7B），
+#    连同原有的 Qwen3-8B / DeepSeek-R1-8B / GLM-Z1-9B，覆盖「非推理快模型」
+#    与「推理慢模型」两档。硅基小模型多为免费档（以控制台价目为准）。
+# 3) 跨云冗余原则不变：首选固定 Xing，兜底按批次轮转，腾讯仍占兜底位。
 #
 # 两条经验：
 # 1) **跨云冗余 > 同云多模型**。2026-10-14 硅基全天间歇性拥堵（同 prompt 有时 22s、
@@ -22,15 +34,6 @@
 # 2) **延迟会随机翻转**，不要指望某个模型永远最快（坑 §44/§46）。多后端轮换本身就是对症。
 
 backends:
-  - name: tencent_mimo
-    base_url: https://tokenhub.tencentmaas.com/v1
-    model: mimo-v2.6-flash
-    env_key: AI_KEY_TENCENT
-    timeout: 90
-    retries: 1
-    max_tokens: 4000
-    note: 首选。11~46s / 310~898tok，连测 3 次判定完全一致，输出精简（遵守「只报要删的」协议）
-
   - name: siliconflow_xing
     base_url: https://api.siliconflow.cn/v1
     model: XingChenAGI/Xing4.0-29B
@@ -38,25 +41,43 @@ backends:
     timeout: 150
     retries: 1
     max_tokens: 8000
-    note: 次选。22.5s/843tok；硅基拥堵时才轮到它顶上来
+    note: 首选。22.5s/843tok，判定稳；2026-11-05 起固定第 1 位
 
-  - name: siliconflow_qwen3
+  - name: siliconflow_qwen25
     base_url: https://api.siliconflow.cn/v1
-    model: Qwen/Qwen3-8B
+    model: Qwen/Qwen2.5-7B-Instruct
     env_key: AI_KEY_SILICONFLOW
-    timeout: 150
+    timeout: 90
     retries: 1
-    max_tokens: 1200
-    note: 备用。96.7s/2459tok，会逐簇解释；max_tokens 限 1200 逼它只报要删的
+    max_tokens: 1500
+    note: 非推理 7B，JSON 输出稳、快；首选失败时的第一兜底
 
-  - name: siliconflow_deepseek_r1
-    base_url: https://api.siliconflow.cn/v1
-    model: deepseek-ai/DeepSeek-R1-0528-Qwen3-8B
-    env_key: AI_KEY_SILICONFLOW
-    timeout: 180
+  - name: tencent_mimo
+    base_url: https://tokenhub.tencentmaas.com/v1
+    model: mimo-v2.6-flash
+    env_key: AI_KEY_TENCENT
+    timeout: 90
     retries: 1
-    max_tokens: 8000
-    note: 备用。108.4s/2018tok，结论与首选一致
+    max_tokens: 4000
+    note: 跨云兜底。11~46s / 310~898tok，判定最稳；2026-11-05 免费试用额度耗尽（402/401008），充值后自动恢复
+
+  - name: siliconflow_glm4
+    base_url: https://api.siliconflow.cn/v1
+    model: THUDM/GLM-4-9B-0414
+    env_key: AI_KEY_SILICONFLOW
+    timeout: 90
+    retries: 1
+    max_tokens: 1500
+    note: 非推理 9B，支持函数调用；与 Qwen2.5-7B 同档，互为替补
+
+  - name: siliconflow_qwen35
+    base_url: https://api.siliconflow.cn/v1
+    model: Qwen/Qwen3.5-4B
+    env_key: AI_KEY_SILICONFLOW
+    timeout: 90
+    retries: 1
+    max_tokens: 1500
+    note: 4B 轻量、原生 256K 上下文；本场景只用文本，图/视频能力不用
 
   - name: tencent_deepseek
     base_url: https://tokenhub.tencentmaas.com/v1
@@ -65,7 +86,25 @@ backends:
     timeout: 120
     retries: 1
     max_tokens: 12000
-    note: 末位腾讯备份。思维链极长（max_tokens 4000 时两次都撞上限导致 JSON 截断），须给到 12000；两次判定不同，慢且不稳，只作兜底
+    note: 腾讯兜底。思维链极长（max_tokens 4000 时两次都撞上限导致 JSON 截断），须给到 12000；慢且不稳
+
+  - name: siliconflow_qwen3
+    base_url: https://api.siliconflow.cn/v1
+    model: Qwen/Qwen3-8B
+    env_key: AI_KEY_SILICONFLOW
+    timeout: 150
+    retries: 1
+    max_tokens: 1200
+    note: 硅基推理档。96.7s/2459tok，会逐簇解释；max_tokens 限 1200 逼它只报要删的
+
+  - name: siliconflow_deepseek_r1
+    base_url: https://api.siliconflow.cn/v1
+    model: deepseek-ai/DeepSeek-R1-0528-Qwen3-8B
+    env_key: AI_KEY_SILICONFLOW
+    timeout: 180
+    retries: 1
+    max_tokens: 8000
+    note: 硅基推理档。108.4s/2018tok，结论与首选一致
 
   - name: siliconflow_glm_z1
     base_url: https://api.siliconflow.cn/v1
@@ -74,7 +113,7 @@ backends:
     timeout: 180
     retries: 1
     max_tokens: 8000
-    note: 末位硅基备份。3970tok 思维链长，但实测在 Xing 拥堵时能顶上来
+    note: 硅基推理档。3970tok 思维链长，Xing 拥堵时能顶上来
 
   - name: openrouter_gemma
     base_url: https://openrouter.ai/api/v1

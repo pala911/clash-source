@@ -117,7 +117,10 @@ def main():
         names = aicfg.get("_names") or ["env-single"]
         log("AI 后端：http（%s）" % " → ".join(names))
     elif mode == "opencode":
-        log("AI 后端：opencode CLI（%s）" % aicfg["opencode_exe"])
+        log("AI 后端：opencode CLI（%s / %s）"
+            % (aicfg["opencode_exe"],
+               ("model=%s" % aicfg["opencode_model"]) if aicfg.get("opencode_model")
+               else "默认模型"))
     else:
         log("AI 后端：off（本轮纯规则过滤）")
 
