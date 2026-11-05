@@ -1,22 +1,6 @@
-# clash-source 自动生成 —— 源 automerge，共 55 节点（稳定性加权后留在竞速池内的部分）
+# clash-source 自动生成 —— 源 automerge，共 69 节点（稳定性加权后留在竞速池内的部分）
 # 不要手改；改动会在下次定时任务被覆盖（上游 https://pala911.github.io/clash-source/nodes/automerge.yaml）
 proxies:
-- name: برای اتصال دائمی جوین شو🪭 Tele...
-  type: hysteria2
-  server: 13.143.188.142
-  port: 4444
-  password: a35c508f-4d5d-4531-842e-6e9d43c762c0
-  skip-cert-verify: false
-  sni: bl1.nexfile.net
-  tls: false
-- name: برای اتصال دائمی جوین شو🍥 Tele...
-  type: hysteria2
-  server: 13.143.189.149
-  port: 4444
-  password: a35c508f-4d5d-4531-842e-6e9d43c762c0
-  skip-cert-verify: false
-  sni: pl2.nexfile.net
-  tls: false
 - name: 🇱🇻hysteria
   type: hysteria2
   server: pro2.riziro.ir
@@ -29,6 +13,20 @@ proxies:
   password: rjj39jg8iphgd06h
   sni: pro2.riziro.ir
   tls: false
+- name: '🇺🇸 美国 | USA #1'
+  type: vless
+  server: wwww.qarvian.ir
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: cdn.akamai.steamstatic.com
+  tls: true
+  udp: true
+  uuid: 72881b3f-76f7-4cae-912d-e95e602a5ca4
+  ws-opts:
+    headers:
+      Host: copy_az_channel_NUFiLTER_7i.global.ssl.fastly.net.
+    path: /
 - name: '🇮🇹 意大利 | ITA #1'
   type: ss
   server: 202.50.253.90
@@ -51,6 +49,19 @@ proxies:
   password: None
   skip-cert-verify: true
   tls: true
+- name: 🇩🇪DE_1|2.2MB/s
+  type: http
+  server: 149.36.50.157
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+- name: 🇷🇸RS_2|1.9MB/s
+  type: http
+  server: 146.70.221.18
+  port: 443
+  skip-cert-verify: true
+  tls: true
 - name: 🇨🇭CH_2|2.2MB/s
   type: http
   server: 37.120.213.210
@@ -58,11 +69,31 @@ proxies:
   password: None
   skip-cert-verify: true
   tls: true
-- name: 🇬🇧GB_1|1023KB/s
+- name: 🇸🇪SE_2|1.0MB/s
   type: http
-  server: 84.17.50.193
+  server: 146.70.242.146
   port: 443
   password: None
+  skip-cert-verify: true
+  tls: true
+- name: 🇩🇪DE_2|1.1MB/s
+  type: http
+  server: 152.233.20.206
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+- name: 🇷🇺RU_1|1.8MB/s
+  type: http
+  server: 46.29.166.134
+  port: 1446
+  password: None
+  skip-cert-verify: true
+  tls: true
+- name: 🇬🇧GB_3|1.7MB/s
+  type: http
+  server: 84.17.50.129
+  port: 9443
   skip-cert-verify: true
   tls: true
 - name: 🇩🇰DK_2|1.0MB/s
@@ -87,16 +118,45 @@ proxies:
   skip-cert-verify: true
   tls: true
   udp: true
-- name: 🇪🇪EE_2|1.3MB/s
+- name: 🇺🇸US_4|1.0MB/s
   type: http
-  server: 95.153.31.66
+  server: 68.235.56.59
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+- name: 🇩🇪DE_4|1.6MB/s
+  type: http
+  server: 149.36.50.129
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+- name: 🇺🇸US_5|1.6MB/s
+  type: http
+  server: 154.47.25.78
   port: 9443
+  password: None
+  skip-cert-verify: true
+  tls: true
+- name: 🇱🇺LU_2|2.4MB/s
+  type: http
+  server: 185.221.132.226
+  port: 9443
+  password: None
   skip-cert-verify: true
   tls: true
 - name: 🇨🇿CZ_2|2.2MB/s
   type: http
   server: 152.233.16.174
   port: 9443
+  password: None
+  skip-cert-verify: true
+  tls: true
+- name: 🇷🇸RS_3|2.3MB/s
+  type: http
+  server: 146.70.221.34
+  port: 443
   password: None
   skip-cert-verify: true
   tls: true
@@ -110,6 +170,11 @@ proxies:
   type: socks5
   server: 144.24.94.153
   port: 1080
+  skip-cert-verify: true
+- name: 🇩🇪DE_5|1.1MB/s
+  type: socks5
+  server: 95.31.48.157
+  port: 60000
   skip-cert-verify: true
 - name: 🇪🇸ES_1|1023KB/s
   type: http
@@ -340,6 +405,68 @@ proxies:
   skip-cert-verify: true
   sni: www.bing.com
   tls: false
+- name: '🇺🇸 美国 | USA #4'
+  type: vless
+  server: 199.232.78.160
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: community.fastly.steamstatic.com
+  tls: true
+  udp: true
+  uuid: 72881b3f-76f7-4cae-912d-e95e602a5ca4
+  ws-opts:
+    headers:
+      Host: copy_az_channel_NUFiLTER_10i.global.ssl.fastly.net.
+    path: /?Telegram---EVAY_VPN---EVAY_VPN---EVAY_VPN---EVAY_VPN
+- name: 🇺🇸 美国 | USA 6
+  type: anytls
+  server: sdf65h46wr.df6h451rh.xin
+  port: 443
+  password: 0324fbc29561
+  skip-cert-verify: true
+  sni: images.ctfassets.net
+  udp: true
+- name: '🇺🇸 美国 | USA #5'
+  type: vless
+  server: 104.17.177.160
+  port: 8443
+  client-fingerprint: chrome
+  network: ws
+  tls: true
+  udp: true
+  uuid: fceb3200-2516-47d2-8e28-d04ecde9427a
+  ws-opts:
+    headers:
+      Host: edge-fef90023.pages.dev
+    path: /
+- name: '🇺🇸 美国 | USA #6'
+  type: vless
+  server: 104.19.52.70
+  port: 8443
+  client-fingerprint: firefox
+  network: ws
+  tls: true
+  udp: true
+  uuid: fceb3200-2516-47d2-8e28-d04ecde9427a
+  ws-opts:
+    headers:
+      Host: edge-fef90023.pages.dev
+    path: /
+- name: '🇺🇸 美国 | USA #7'
+  type: vless
+  server: www.qarvian.ir
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: cdn.akamai.steamstatic.com
+  tls: true
+  udp: true
+  uuid: 72881b3f-76f7-4cae-912d-e95e602a5ca4
+  ws-opts:
+    headers:
+      Host: copy_az_channel_NUFiLTER_17i.global.ssl.fastly.net.
+    path: /?TELEGRAM--FaraGATE-FaraGATE-FaraGATE-FaraGATE-FaraGATE-FaraGATE-FaraGATE-FaraGATE-FaraGATE-FaraGATE--TELEGRAM
 - name: AT_speednode_0001
   type: vless
   server: au2.pad-sservice.lat
