@@ -1,15 +1,20 @@
-# AI 审核逐条留痕（生成于 2026-11-06T07:00:41Z，模型 `http`）
+# AI 审核逐条留痕（生成于 2026-11-06T19:39:06Z，模型 `http`）
 
-共剔除 47 簇 / 121 节点（下表每簇列一条代表节点 + 理由，「节点数」列是该簇实际覆盖的节点数）。若发现误杀，把节点名与理由贴回来即可针对性收窄 prompt。
+共剔除 68 簇 / 134 节点（下表每簇列一条代表节点 + 理由，「节点数」列是该簇实际覆盖的节点数）。若发现误杀，把节点名与理由贴回来即可针对性收窄 prompt。
 
 
 ## automerge
 
 | 节点名 | 类型 | server | 节点数 | 模型理由 |
 |---|---|---|---|---|
-| 防范境外势力渗透 | vmess | 127.0.0.53 | 10 | 群组引流广告位 |
-| 🇧🇬BG_2\|1.3MB/s | http | 185.94.192.210 | 2 | 广告位引流 |
-| برای اتصال دائمی جوین شو🍥 Tele... | hysteria2 | 13.143.189.149 | 1 | 群组引流 |
+| 防范境外势力渗透 | vmess | 127.0.0.53 | 10 | 引流广告位 |
+| 🇷🇺 俄罗斯 \| RUS #1 | vless | 193.160.208.240 | 2 | 引流广告 |
+
+## ssrsub
+
+| 节点名 | 类型 | server | 节点数 | 模型理由 |
+|---|---|---|---|---|
+| 🇰🇷 机场推荐:dafei.de 韩国 01 | socks5 | 121.169.46.116 | 1 | 引流 |
 
 ## ruk1ng001
 
@@ -25,17 +30,12 @@
 | D🔴🇺🇸hos[🎬🤖📺🎭]_dokng.com_3094d52f | http | carolinafreigh.fun | 4 | 引流 |
 | D🔴🇧🇪hos[🎬🤖📺🎭]_dokng.com_4f224227 | http | 146.70.176.242 | 4 | 引流 |
 | D🔴🇺🇸hos[🎬🤖📺🎭]_dokng.com_51f1276e | http | 138.199.35.199 | 4 | 引流 |
-| C🟠🇷🇴hos[🎬🤖📺🎭]_dokng.com_5088397e | http | 135.136.1.2 | 3 | 引流 |
-| D🔴🇩🇪hos[🎬🤖📺🎭]_dokng.com_a741a422 | vless | 193.23.218.107 | 3 | 引流 |
-| D🔴🇩🇪hos[🎬🤖📺🎭]_dokng.com_bd282816 | http | 116.202.172.99 | 3 | 引流 |
-| D🔴🇳🇱hos[🎬🤖📺🎭]_dokng.com_c745045d | http | 185.246.153.28 | 3 | 引流 |
-| D🔴🇸🇬hos_dokng.com_049361e7 | http | 167.172.76.176 | 2 | 引流广告 |
-| A🟢🇹🇼res[🎬🤖📺🎭]_dokng.com_e59ee48e | anytls | 684616s4.df6h451rh.xin | 1 | server格式异常 |
-| A🟢🇲🇴res[📺🎪🎞️]_dokng.com_8eb94ed9 | trojan | Sclass-C1.catcat321.com | 1 | server格式异常 |
-| A🟢🇯🇵res[🎬🤖📺🎭]_dokng.com_3ed381db | trojan | 36d.catcat321.com | 1 | server格式异常 |
-| A🟢🇭🇰res[🎬📺🎭🎪]_dokng.com_9f0e8c2e | vmess | hk.wawojk.dpdns.org | 1 | server格式异常 |
-| A🟢🇺🇸res[🎬🤖📺🎭]_dokng.com_8f4f8c67 | vless | g01tig3hasus3.dnetsolutions.ru | 1 | server格式异常 |
-| A+🟢🇨🇾mob[🎬🤖📺🎪]_dokng.com_056bbe55 | http | 213.207.130.34 | 1 | server格式异常 |
+| C🟠🇷🇴hos[🎬🤖📺🎭]_dokng.com_5088397e | http | 135.136.1.2 | 3 | 占位符 |
+| D🔴🇩🇪hos[🎬🤖📺🎭]_dokng.com_a741a422 | vless | 193.23.218.107 | 3 | 占位符 |
+| D🔴🇩🇪hos[🎬🤖📺🎭]_dokng.com_bd282816 | http | 116.202.172.99 | 3 | 占位符 |
+| D🔴🇳🇱hos[🎬🤖📺🎭]_dokng.com_c745045d | http | 185.246.153.28 | 3 | 占位符 |
+| D🔴🇫🇷hos_dokng.com_c2769156 | http | 84.235.228.156 | 2 | 占位符 |
+| A🟢🇪🇨res_dokng.com_714b1721 | http | 181.188.203.40 | 1 | 引流广告 |
 | C🟠🇵🇭hos[🔍]_dokng.com_b3594ff0 | trojan | Sclass-C1.catcat321.com | 1 | 伪装广告节点 |
 | C🟠🇦🇱hos[🎬🤖📺🎭]_dokng.com_5bb324a2 | http | 87.120.103.242 | 1 | 伪装广告节点 |
 | C🟠🇸🇬hos[🎬🤖📺🎭]_dokng.com_750bc1c1 | vless | 141.193.213.20 | 1 | 伪装广告节点 |
@@ -51,16 +51,47 @@
 | C🟠🇺🇸hos[🎬🤖📺🎭]_dokng.com_6cf435c3 | trojan | 167.88.61.20 | 1 | 伪装广告节点 |
 | C🟠🇮🇸hos[🎬🤖📺🎭]_dokng.com_06981d23 | http | 185.165.170.1 | 1 | 伪装广告节点 |
 | C🟠🇱🇺hos[🎬🤖📺🎭]_dokng.com_d227b762 | http | 185.221.132.226 | 1 | 伪装广告节点 |
-| C🟠🇯🇵hos[🎬📺🎭🎪]_dokng.com_55d2834c | http | 120.232.204.58 | 1 | 日本名配境内服务器 |
+| C🟠🇬🇧hos[📺🎪✨📦]_dokng.com_ed080c73 | http | 84.17.50.129 | 1 | 引流 |
+| C🟠🇸🇪hos[🎬🤖📺🎭]_dokng.com_edc2d4d2 | http | 46.161.49.174 | 1 | 引流 |
+| C🟠🇸🇪hos[🤖📺🎭🎪]_dokng.com_9ee75ab8 | http | 149.50.216.65 | 1 | 引流 |
+| C🟠🇬🇪hos[🎬🤖📺🎪]_dokng.com_7129f6a8 | http | 195.54.178.210 | 1 | 引流 |
+| C🟠🇯🇵hos[🤖📺🎭🎪]_dokng.com_16f5ab4e | socks5 | 8.209.236.192 | 1 | 引流 |
+| C🟠🇦🇱hos[🎬🤖📺🎭]_dokng.com_35f9b19f | http | 87.120.103.226 | 1 | 引流 |
+| C🟠🇭🇰hos[🎬🤖📺🎭]_dokng.com_f18bf3fe | trojan | ddrr2.tube-cat.com | 1 | 引流 |
+| C🟠🇳🇱hos[🎬🤖📺🎭]_dokng.com_93f6101c | http | 149.36.51.161 | 1 | 引流 |
+| C🟠🇺🇸hos[🎬🤖📺🎭]_dokng.com_f7924ec8 | http | 68.235.56.51 | 1 | 引流 |
+| C🟠🇱🇻hos[🎬🤖📺🎭]_dokng.com_fbede378 | http | 109.248.147.66 | 1 | 引流 |
+| C🟠🇨🇦hos[🎬🤖📺🎭]_dokng.com_ff0913fd | http | 198.44.157.27 | 1 | 引流 |
+| D🔴🇯🇵hos_dokng.com_04207412 | trojan | ddrr2.tube-cat.com | 1 | 广告 |
+| D🔴🇸🇬hos_dokng.com_8a7c10fa | http | 104.248.151.93 | 1 | 广告 |
+| D🔴🇳🇱hos_dokng.com_a31e7c48 | vless | 186.246.9.29 | 1 | 广告 |
+| D🔴🇮🇩hos_dokng.com_67ab34a0 | socks5 | 8.215.25.3 | 1 | 广告 |
+| D🔴🇵🇰hos_dokng.com_36662abe | socks5 | 110.38.233.122 | 1 | 广告 |
+| D🔴🇯🇵hos_dokng.com_9ae35bdb | trojan | ddrr2.tube-cat.com | 1 | 广告 |
+| D🔴🇬🇧hos_dokng.com_b10ae198 | http | 206.189.118.214 | 1 | 广告 |
+| D🔴🇪🇨hos_dokng.com_92b633b5 | http | 190.12.150.244 | 1 | 广告 |
+| D🔴🇺🇸hos_dokng.com_c0876aa0 | trojan | 36d.catcat321.com | 1 | 广告 |
+| D🔴🇺🇸hos_dokng.com_cc8acd7d | http | 173.205.202.241 | 1 | 广告 |
+| D🔴🇻🇪hos_dokng.com_90ccb7e6 | http | 38.121.212.134 | 1 | 广告 |
+| D🔴🇸🇬hos_dokng.com_8496ce1e | http | 104.248.148.240 | 1 | 广告 |
+| D🔴🇸🇬hos_dokng.com_47ce18fe | http | 128.199.254.13 | 1 | 广告 |
+| D🔴🇷🇺hos_dokng.com_1ceafa90 | http | 193.187.107.120 | 1 | 广告 |
+| D🔴🇫🇷hos_dokng.com_7d655aac | http | 80.15.99.54 | 1 | 广告 |
+| D🔴🇩🇰hos_dokng.com_58da35c6 | http | 185.245.84.50 | 1 | 广告 |
+| D🔴🇷🇺hos_dokng.com_889ee745 | socks5 | 95.170.122.80 | 1 | 广告 |
+| D🔴🇻🇪hos_dokng.com_16fab950 | http | 38.172.181.0 | 1 | 广告 |
+| D🔴🇪🇨hos_dokng.com_85fea4ef | http | 200.63.104.131 | 1 | 广告 |
 
 ## nomorewalls
 
 | 节点名 | 类型 | server | 节点数 | 模型理由 |
 |---|---|---|---|---|
-| 防范境外势力渗透 | vmess | 127.0.0.53 | 10 | 引流/广告 |
-| 🇺🇸 美国 \| USA #1 | vless | 199.232.249.131 | 6 | 明显伪装 |
-| 🇩🇪 德国 \| DEU #1 | vless | latvia.zovip2.ir | 5 | 明显伪装 |
-| 🇭🇺HU_1\|2.9MB/s | http | 146.70.203.18 | 1 | 引流 |
-| برای اتصال دائمی جوین شو🍥 Tele... | hysteria2 | 13.143.189.149 | 1 | 群组引流 |
-| 🇫🇷 法国 \| FRA #1 | vless | uk.zarqivo.ir | 1 | 伪装为法国但服务器为伊朗 |
-| 🇵🇱 波兰 \| POL #1 | vless | cdn-ya.shamanapp.online | 1 | 伪装波兰但服务器可疑 |
+| 防范境外势力渗透 | vmess | 127.0.0.53 | 10 | 引流广告位 |
+| 🇪🇪EE_1\|2.4MB/s | http | 95.153.32.2 | 2 | 引流广告 |
+| 🇭🇷HR_1\|1.4MB/s | http | 154.47.29.161 | 1 | 引流 |
+
+## clashdaily
+
+| 节点名 | 类型 | server | 节点数 | 模型理由 |
+|---|---|---|---|---|
+| 奥地利-01-27.1MB/S·净0 | http | 146.70.244.18 | 1 | 净0流量失效 |

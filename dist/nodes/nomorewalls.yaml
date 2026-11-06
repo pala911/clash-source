@@ -1,196 +1,285 @@
-# clash-source 自动生成 —— 源 nomorewalls，共 27 节点（稳定性加权后留在竞速池内的部分）
+# clash-source 自动生成 —— 源 nomorewalls，共 32 节点（稳定性加权后留在竞速池内的部分）
 # 不要手改；改动会在下次定时任务被覆盖（上游 https://pala911.github.io/clash-source/nodes/nomorewalls.yaml）
 proxies:
-- name: 🇺🇸US_2|1.7MB/s
-  type: vmess
-  server: 23.94.83.37
-  port: 52080
-  alpn:
-  - ''
-  alterId: '0'
-  cipher: auto
+- name: '🇭🇰 香港 | HKG #1'
+  type: vless
+  server: 152.175.6.229
+  port: 31884
+  client-fingerprint: firefox
+  encryption: none
+  network: tcp
+  servername: hk010.zestapp778.com
+  tls: true
+  udp: true
+  uuid: e9a8144e-5237-488a-afb1-9ca3d8d54c80
+  ws-opts:
+    path: /
+- name: '🇮🇹 意大利 | ITA #8'
+  type: ss
+  server: 202.50.253.99
+  port: 19999
+  cipher: aes-256-gcm
+  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
+  udp: true
+- name: '🇮🇹 意大利 | ITA #2'
+  type: ss
+  server: 202.50.253.36
+  port: 19999
+  cipher: aes-256-gcm
+  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
+  udp: true
+- name: '🇮🇹 意大利 | ITA #6'
+  type: ss
+  server: 202.50.253.81
+  port: 19999
+  cipher: aes-256-gcm
+  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
+  udp: true
+- name: '🇯🇵 日本 | JPN #1'
+  type: ss
+  server: 154.36.158.197
+  port: 8388
+  cipher: aes-256-gcm
+  password: BeaUf9c0AEWH40Pu
+  udp: true
+- name: 未命名
+  type: ss
+  server: 84.247.155.196
+  port: 443
+  cipher: aes-256-gcm
+  password: 3eOFeNssde7PYYMv
+- name: 🇳🇱NL_4|1.7MB/s
+  type: vless
+  server: uyt24-k2.miniseries.ir
+  port: 49673
+  encryption: mlkem768x25519plus.native.0rtt.y5JdNqCVO7XqO9RT4eXLtujAUrOcx_xjNI5us06yMBI
+  flow: xtls-rprx-vision
   network: http
-  skip-cert-verify: false
-  tls: false
   udp: true
-  uuid: 355c1760-9bde-4b77-916b-5191e7f704a3
+  uuid: b86451af-4c98-4b7d-96e5-16f2e9df1d46
   xudp: true
-- name: 🇨🇿CZ_1|3.6MB/s
+- name: 🇱🇺LU_1|1.1MB/s
   type: http
-  server: 185.216.35.66
-  port: 443
-  skip-cert-verify: true
-  tls: true
-- name: 🇳🇱NL_1|2.6MB/s
-  type: http
-  server: 84.17.47.126
-  port: 9002
-  password: None
-  skip-cert-verify: true
-  tls: true
-- name: 🇦🇹AT_1|2.9MB/s
-  type: http
-  server: 146.70.244.2
-  port: 443
-  skip-cert-verify: true
-  tls: true
-- name: 🇷🇸RS_1|1.7MB/s
-  type: http
-  server: 146.70.221.34
+  server: 185.221.132.226
   port: 443
   password: None
   skip-cert-verify: true
   tls: true
-- name: 🇺🇸US_4|2.7MB/s
+- name: 🇩🇪DE_2|2.0MB/s
   type: http
-  server: 138.199.35.214
-  port: 9002
-  password: None
-  skip-cert-verify: true
-  tls: true
-- name: 🇺🇸US_5|1.5MB/s
-  type: http
-  server: 138.199.35.213
-  port: 9002
-  skip-cert-verify: true
-  tls: true
-  udp: true
-- name: 🇺🇸US_11|1.4MB/s
-  type: http
-  server: 138.199.35.198
-  port: 9002
-  password: None
-  skip-cert-verify: true
-  tls: true
-- name: 🇷🇴RO_2|1.2MB/s
-  type: http
-  server: 193.176.84.30
-  port: 9002
-  password: None
-  skip-cert-verify: true
-  tls: true
-- name: 🇪🇸ES_1|1.1MB/s
-  type: http
-  server: 82.102.17.178
+  server: 149.36.50.157
   port: 443
   password: None
   skip-cert-verify: true
   tls: true
-- name: 🇷🇴RO_3|3.2MB/s
+- name: 🇬🇧GB_2|1.2MB/s
   type: http
-  server: 193.176.84.20
-  port: 9002
+  server: 185.164.138.156
+  port: 443
   password: None
   skip-cert-verify: true
   tls: true
-- name: 🇵🇱PL_1|3.3MB/s
+- name: 🇨🇭CH_2|1.2MB/s
   type: http
-  server: 151.115.54.133
-  port: 443
+  server: 37.120.213.210
+  port: 9443
+  password: None
   skip-cert-verify: true
   tls: true
-- name: 🇩🇪DE_8|1.8MB/s
+- name: 🇩🇪DE_3|2.0MB/s
+  type: http
+  server: 87.249.132.97
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+- name: 🇧🇬BG_1|1.8MB/s
+  type: http
+  server: 185.94.192.210
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+- name: 🇩🇪DE_5|3.5MB/s
   type: http
   server: 152.233.20.206
   port: 443
   password: None
   skip-cert-verify: true
   tls: true
-- name: 🇷🇴RO_5|1.9MB/s
+- name: 🇩🇰DK_1|2.3MB/s
   type: http
-  server: 193.176.84.40
+  server: 185.245.84.50
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+- name: 🇳🇱NL_7|2.7MB/s
+  type: http
+  server: 84.17.47.147
   port: 9002
   password: None
   skip-cert-verify: true
   tls: true
-- name: 🇳🇱NL_8|1.1MB/s
+- name: 🇺🇸US_1|1.5MB/s
   type: http
-  server: 89.150.35.94
+  server: 149.88.21.129
   port: 443
   password: None
   skip-cert-verify: true
   tls: true
-- name: 🇺🇸US_18|2.4MB/s|K001-260618
+- name: 🇩🇪DE_8|1.4MB/s
   type: http
-  server: 149.34.248.65
-  port: 443
-  skip-cert-verify: true
-  tls: true
-  udp: true
-- name: 🇸🇬SG_1|1.2MB/s
-  type: http
-  server: 156.146.56.97
+  server: 149.36.50.129
   port: 443
   password: None
   skip-cert-verify: true
   tls: true
-- name: 🇳🇱NL_10|3.3MB/s
+- name: 🇨🇾CY_1|1.4MB/s
   type: http
-  server: 5.2.73.112
+  server: 213.207.130.34
   port: 443
   password: None
   skip-cert-verify: true
   tls: true
-- name: 🇵🇹PT_1|2.6MB/s
+- name: 🇵🇱PL_3|1.7MB/s
   type: http
-  server: 149.22.86.1
+  server: 37.120.156.18
   port: 443
-  skip-cert-verify: true
-  tls: true
-- name: 🇺🇸US_24|2.1MB/s
-  type: socks5
-  server: 69.55.49.177
-  port: 38182
   password: None
   skip-cert-verify: true
-  udp: true
-- name: 🇺🇸US_23|1.1MB/s
-  type: trojan
-  server: 216.106.186.46
+  tls: true
+- name: 🇬🇧GB_4|1.2MB/s
+  type: vless
+  server: www.agahiya.ir
   port: 443
   client-fingerprint: chrome
-  network: tcp
-  password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
-  skip-cert-verify: false
-  sni: cdn.findlocaljobnetworkandbuildcommunityconnections.com
+  encryption: none
+  network: ws
+  tls: true
   udp: true
-- name: 🇩🇪DE_10|2.1MB/s
+  uuid: 57e089a8-0cd1-48d0-b572-105c4804f6b8
+  ws-opts:
+    headers:
+      Host: soliconf-gghosin4-cell.dormhost.app
+      User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36
+    path: /jx-y8179aild6rsmj
+  xudp: true
+- name: 🇩🇪DE_9|2.0MB/s
   type: http
   server: 141.147.19.47
   port: 12345
   skip-cert-verify: true
-- name: 🇭🇷HR_1|2.7MB/s
-  type: http
-  server: 154.47.29.174
+- name: '🇩🇪 德国 | DEU #1'
+  type: vless
+  server: 146.75.59.186
   port: 443
-  skip-cert-verify: true
+  client-fingerprint: ios
+  network: ws
+  servername: cdn.akamai.steamstatic.com
   tls: true
-- name: 🇺🇸US_25|3.7MB/s
-  type: http
-  server: 138.199.35.217
-  port: 9002
-  password: None
-  skip-cert-verify: true
+  udp: true
+  uuid: b566e589-1c53-4c6f-ba99-5633c552cdb5
+  ws-opts:
+    headers:
+      Host: netheri.global.ssl.fastly.net.
+    path: /?Telegram---@pirozi_ArGaP---@pirozi_ArGaP---@pirozi_ArGaP---@pirozi_ArGaP
+- name: '🇩🇪 德国 | DEU #4'
+  type: vless
+  server: 193.160.208.240
+  port: 443
+  client-fingerprint: firefox
+  network: xhttp
+  servername: 193.160.208.240
   tls: true
-  username: 'null'
-- name: 🇷🇴RO_9|1.0MB/s
-  type: http
-  server: 193.176.84.30
-  port: 9002
+  udp: true
+  uuid: 4777d90d-265b-4927-a0d1-63f36ed1421c
+- name: '🇩🇪 德国 | DEU #5'
+  type: vless
+  server: freev2.cloudflare.182682.xyz
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: eu-central.862400.xyz
+  tls: true
+  udp: true
+  uuid: 557b8df0-16d9-43d0-b7ca-d08cbea06ead
+  ws-opts:
+    headers:
+      Host: eu-central.862400.xyz
+    path: /announcement?ed=2048
+- name: '🇫🇷 法国 | FRA #1'
+  type: vless
+  server: 199.232.78.120
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: cdn.akamai.steamstatic.com
+  tls: true
+  udp: true
+  uuid: b566e589-1c53-4c6f-ba99-5633c552cdb5
+  ws-opts:
+    headers:
+      Host: frenchji.global.ssl.fastly.net.
+    path: /
+- name: '🇰🇷 韩国 | KOR #1'
+  type: hysteria2
+  server: 13.125.82.209
+  port: 443
+  password: 7e68e32f-8015-4f37-9082-70e8b0b58043
   skip-cert-verify: true
   sni: www.bing.com
-  tls: true
-- name: 🇫🇷FR_4|3.2MB/s
-  type: http
-  server: 82.66.235.221
-  port: 443
-  skip-cert-verify: true
-  tls: true
-- name: '🇨🇭 瑞士 | CHE #1'
-  type: trojan
-  server: 208.69.78.33
-  port: 443
-  password: 0ab6c98dae3b48e8b9c4a776b6c9c19a
-  skip-cert-verify: true
-  sni: courses.yourultimateprofessionalcareerhub.com
+  tls: false
+- name: '🇰🇷 韩国 | KOR #2'
+  type: ss
+  server: 13.125.82.209
+  port: 8443
+  cipher: chacha20-ietf-poly1305
+  password: 7e68e32f-8015-4f37-9082-70e8b0b58043
   udp: true
+- name: '🇷🇺 俄罗斯 | RUS #2'
+  type: vless
+  server: xsru2.freeddns.org
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: xsru2.freeddns.org
+  tls: true
+  udp: true
+  uuid: c90395e6-2140-47ad-a54d-9b166729d3ef
+  ws-opts:
+    headers:
+      Host: xsru2.freeddns.org
+    path: /wsru
+- name: 🇷🇺 俄罗斯 | RUS 3
+  type: vless
+  server: xsru1.ddnsfree.com
+  port: 443
+  client-fingerprint: random
+  network: grpc
+  servername: xsru1.ddnsfree.com
+  tls: true
+  udp: true
+  uuid: c90395e6-2140-47ad-a54d-9b166729d3ef
+- name: '🇸🇬 新加坡 | SGP #1'
+  type: hysteria2
+  server: 56.10.132.79
+  port: 443
+  password: 7e68e32f-8015-4f37-9082-70e8b0b58043
+  skip-cert-verify: true
+  sni: www.bing.com
+  tls: false
+- name: '🇺🇸 美国 | USA #2'
+  type: vless
+  server: 199.232.249.131
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: cdn.akamai.steamstatic.com
+  tls: true
+  udp: true
+  uuid: 33751cb1-43ea-458c-8dc5-0b8993746bce
+  ws-opts:
+    headers:
+      Host: copy_az_channel_NUFiLTER_17i.global.ssl.fastly.net.
+    path: /
