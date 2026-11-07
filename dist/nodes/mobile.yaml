@@ -1,12 +1,13 @@
-# clash-source 自动生成 —— 移动端精简池，共 120 节点
+# clash-source 自动生成 —— 移动端精简池，共 113 节点
 # 源间轮询取样 + 按 server:port 去重；只挂 mobile.yaml 一个 provider
 proxies:
-- name: zhuhaiuk_RO - zhuhai.uk
+- name: zhuhaiuk_US - zhuhai.uk
   type: http
-  server: 193.176.84.22
-  port: 9002
+  server: mmgr.club
+  port: 443
+  username: bnVsbDpudWxs
   tls: true
-  skip-cert-verify: true
+  sni: mmgr.club
 - name: ssrsub_🇮🇩 机场推荐:dafei.de 印尼 01
   type: http
   server: sr2-id.freeconnect.link
@@ -27,35 +28,36 @@ proxies:
   port: 443
   tls: true
   skip-cert-verify: true
-- name: nomorewalls_🇱🇻hysteria
+- name: nomorewalls_🇯🇵 日本 | JPN
   type: hysteria2
-  server: pro2.riziro.ir
-  port: 44100
-  alpn:
-  - h3
-  client-fingerprint: chrome
-  obfs: salamander
-  obfs-password: 2gg0tx9d2etug8n9
-  password: rjj39jg8iphgd06h
-  sni: pro2.riziro.ir
-  tls: false
-- name: automerge_برای اتصال دائمی جوین شو🍥 Tele...
-  type: hysteria2
-  server: 13.143.189.149
-  port: 4444
-  password: a35c508f-4d5d-4531-842e-6e9d43c762c0
-  skip-cert-verify: false
-  sni: pl2.nexfile.net
-  tls: false
-- name: zhuhaiuk_FR - zhuhai.uk
-  type: http
-  server: fan.132031.xyz
+  server: edge.hankli1214.xyz
   port: 443
-  username: 'null'
-  password: None
-  tls: true
-  sni: fan.132031.xyz
+  obfs: salamander
+  obfs-password: MeJA9qgoYMH4UMunHowisrbd
+  password: 02df03e3-3029-4c95-bffe-8f211b480672
   skip-cert-verify: true
+  sni: hank.hankli1214.xyz
+  tls: false
+- name: automerge_🇪🇸 西班牙 | ESP
+  type: vless
+  server: 213.182.201.18
+  port: 3090
+  network: grpc
+  tls: true
+  udp: true
+  uuid: 8bac7917-b4d2-4338-bbfc-5d47bda8c5ab
+- name: zhuhaiuk_CH - zhuhai.uk
+  type: vless
+  server: prvtch.titun.su
+  port: 443
+  uuid: 90157e25-cee1-4217-921e-91f300bc1a24
+  flow: xtls-rprx-vision
+  tls: true
+  servername: perevodchiki.su
+  client-fingerprint: chrome
+  reality-opts:
+    public-key: 1vSZjvhZO01oAEH3b7eebR1qF5dLU1Dq2E7xu8pwGSs
+    short-id: 428ef87fd47a3a32
 - name: ssrsub_🇮🇩 机场推荐:dafei.de 印尼 02
   type: http
   server: 178.248.73.58
@@ -78,46 +80,28 @@ proxies:
   port: 443
   tls: true
   skip-cert-verify: true
-- name: 'nomorewalls_🇹🇼 🇨🇳 台湾 | TWN #1'
-  type: vless
-  server: 60.248.219.53
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: ty986gfazs.cainiaohub.xyz
-  tls: true
-  udp: true
-  uuid: c1c04450-bf71-4049-ad0c-9cf6d94d9f1f
-  ws-opts:
-    headers:
-      Host: ty986gfazs.cainiaohub.xyz
-    path: /81574b6b-c9d7-44a0-b83d-dad56e8cb530
-- name: 'automerge_🇭🇰 香港 | HKG #1'
-  type: vless
-  server: 152.175.6.229
-  port: 31884
-  client-fingerprint: chrome
-  encryption: none
-  network: tcp
-  servername: hk010.zestapp778.com
+- name: nomorewalls_برای اتصال دائمی جوین شو🍥 Tele...
+  type: hysteria2
+  server: 13.143.188.143
+  port: 4444
+  password: a35c508f-4d5d-4531-842e-6e9d43c762c0
   skip-cert-verify: false
-  tls: true
-  udp: true
-  uuid: e9a8144e-5237-488a-afb1-9ca3d8d54c80
-  ws-opts:
-    path: /
-- name: zhuhaiuk_US - zhuhai.uk
-  type: http
-  server: 138.199.35.204
-  port: 9002
-  username: 'null'
-  password: 'null'
-  tls: true
-  skip-cert-verify: true
-- name: ssrsub_🇮🇩 机场推荐:dafei.de 印尼 03
+  sni: bl1.nexfile.net
+  tls: false
+- name: zhuhaiuk_ID - zhuhai.uk
   type: http
   server: 103.86.117.202
   port: 443
+  username: 'null'
+  password: 'null'
+  tls: true
+  sni: 103.86.117.202
+  skip-cert-verify: true
+- name: ssrsub_🇭🇰 机场推荐:dafei.de 香港 01
+  type: http
+  server: 120.232.204.58
+  port: 31343
+  password: None
   skip-cert-verify: true
   tls: true
 - name: ruk1ng001_A🟢🇹🇼res[🎬🤖📺🎭]_dokng.com_5b7e0db0
@@ -145,43 +129,29 @@ proxies:
   port: 443
   tls: true
   skip-cert-verify: true
-- name: 'nomorewalls_🇮🇹 意大利 | ITA #2'
-  type: ss
-  server: 202.50.253.18
-  port: 19999
-  cipher: aes-256-gcm
-  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
-  udp: true
-- name: 'automerge_🇱🇰 LK_30 #1'
-  type: vless
-  server: free.vkehi.store
-  port: 443
+- name: nomorewalls_🇱🇻hysteria
+  type: hysteria2
+  server: pro2.riziro.ir
+  port: 44100
   alpn:
-  - h2
-  - http/1.1
+  - h3
   client-fingerprint: chrome
-  network: tcp
-  servername: zoom.com
-  tls: true
-  udp: true
-  uuid: e4d1298a-1f21-42e2-a53e-1b22c0645c48
-  ws-opts:
-    headers:
-      Host: free.vkehi.store
-    path: /
-- name: zhuhaiuk_NL - zhuhai.uk
+  obfs: salamander
+  obfs-password: 2gg0tx9d2etug8n9
+  password: rjj39jg8iphgd06h
+  sni: pro2.riziro.ir
+  tls: false
+- name: zhuhaiuk_RO - zhuhai.uk
   type: http
-  server: 84.17.47.148
+  server: 193.176.84.23
   port: 9002
   tls: true
+  sni: www.bing.com
   skip-cert-verify: true
-- name: ssrsub_🇭🇰 机场推荐:dafei.de 香港 01
+- name: ssrsub_🇭🇰 机场推荐:dafei.de 香港 02
   type: http
-  server: 120.232.204.58
-  port: 31343
-  password: None
-  skip-cert-verify: true
-  tls: true
+  server: 43.155.62.157
+  port: 443
 - name: ruk1ng001_A🟢🇨🇳res_dokng.com_76d41979
   type: vmess
   server: 120.48.133.162
@@ -205,14 +175,7 @@ proxies:
   port: 443
   tls: true
   skip-cert-verify: true
-- name: 'nomorewalls_🇮🇹 意大利 | ITA #4'
-  type: ss
-  server: 202.50.253.45
-  port: 19999
-  cipher: aes-256-gcm
-  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
-  udp: true
-- name: 'automerge_🇺🇸 美国 | USA #3'
+- name: 'nomorewalls_🇺🇸 美国 | USA #4'
   type: vless
   server: 199.232.249.131
   port: 443
@@ -226,16 +189,21 @@ proxies:
     headers:
       Host: copy_az_channel_NUFiLTER_17i.global.ssl.fastly.net.
     path: /
-- name: zhuhaiuk_NL - zhuhai.uk 02
+- name: zhuhaiuk_RO - zhuhai.uk 02
   type: http
-  server: 84.17.47.149
+  server: 193.176.84.32
   port: 9002
+  username: 'null'
+  password: 'null'
   tls: true
   skip-cert-verify: true
-- name: ssrsub_🇭🇰 机场推荐:dafei.de 香港 02
-  type: http
-  server: 43.155.62.157
-  port: 443
+- name: ssrsub_🇭🇰 机场推荐:dafei.de 香港 03
+  type: socks5
+  server: 47.243.173.50
+  port: 11211
+  password: '111'
+  skip-cert-verify: true
+  username: '111'
 - name: ruk1ng001_U⚪🏳️ukn_dokng.com_c79587f6
   type: socks5
   server: 58.32.16.138
@@ -260,34 +228,32 @@ proxies:
     path: /ws
     headers:
       Host: itunes.apple.com
-- name: 'nomorewalls_🇺🇸 美国 | USA #1'
-  type: ss
-  server: 88.216.254.18
-  port: 1080
-  cipher: chacha20-ietf-poly1305
-  password: V7WLaYdujkwnj6xxXq-2BSxGWEcSJtTA
-  udp: true
-- name: 'automerge_🇮🇹 意大利 | ITA #10'
+- name: 'nomorewalls_🇮🇹 意大利 | ITA #5'
   type: ss
   server: 202.50.253.99
   port: 19999
   cipher: aes-256-gcm
   password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
   udp: true
-- name: zhuhaiuk_RO - zhuhai.uk 02
+- name: zhuhaiuk_US - zhuhai.uk 02
   type: http
-  server: 193.176.84.21
+  server: 138.199.35.216
   port: 9002
   tls: true
-  sni: www.bing.com
+  sni: 138.199.35.216
   skip-cert-verify: true
-- name: ssrsub_🇭🇰 机场推荐:dafei.de 香港 03
-  type: socks5
-  server: 47.243.173.50
-  port: 11211
-  password: '111'
-  skip-cert-verify: true
-  username: '111'
+- name: ssrsub_🇭🇰 机场推荐:dafei.de 香港 04
+  type: vless
+  server: 152.175.6.229
+  port: 31884
+  client-fingerprint: chrome
+  encryption: none
+  network: tcp
+  tls: true
+  udp: true
+  uuid: e9a8144e-5237-488a-afb1-9ca3d8d54c80
+  xudp: true
+  servername: hk010.zestapp778.com
 - name: ruk1ng001_D🔴🇸🇬hos[🎬🤖📺🎭]_dokng.com_52724db1
   type: socks5
   server: 47.236.168.243
@@ -301,27 +267,18 @@ proxies:
   port: 443
   tls: true
   skip-cert-verify: true
-- name: nomorewalls_🇹🇼 台湾｜02｜HiNet
-  type: anytls
-  server: tw.ccwink.cc
-  port: 6549
-  password: 2f4c3fc5-8fa2-4576-a583-8f98a6026887
-  skip-cert-verify: true
-  sni: baidu.com
-  udp: true
-- name: 'automerge_🇮🇹 意大利 | ITA #3'
+- name: 'nomorewalls_🇮🇹 意大利 | ITA #3'
   type: ss
-  server: 202.50.253.36
+  server: 202.50.253.81
   port: 19999
   cipher: aes-256-gcm
   password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
   udp: true
 - name: zhuhaiuk_RO - zhuhai.uk 03
   type: http
-  server: 193.176.84.35
+  server: 193.176.84.18
   port: 9002
   tls: true
-  sni: www.bing.com
   skip-cert-verify: true
 - name: ssrsub_🇭🇰 机场推荐:dafei.de 香港 05
   type: http
@@ -353,26 +310,19 @@ proxies:
     path: /ws-tesla
     headers:
       Host: fast.145779.xyz
-- name: nomorewalls_🇩🇪DE_2|1.6MB/s
-  type: http
-  server: 87.249.132.97
-  port: 443
-  password: None
-  skip-cert-verify: true
-  tls: true
-- name: 'automerge_🇮🇹 意大利 | ITA #8'
+- name: 'nomorewalls_🇺🇸 美国 | USA #1'
   type: ss
-  server: 202.50.253.81
+  server: 88.216.254.18
+  port: 1080
+  cipher: chacha20-ietf-poly1305
+  password: V7WLaYdujkwnj6xxXq-2BSxGWEcSJtTA
+  udp: true
+- name: zhuhaiuk_IT - zhuhai.uk
+  type: ss
+  server: 202.50.253.27
   port: 19999
   cipher: aes-256-gcm
   password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
-  udp: true
-- name: zhuhaiuk_EE - zhuhai.uk
-  type: http
-  server: 95.153.31.66
-  port: 9443
-  tls: true
-  skip-cert-verify: true
 - name: ssrsub_🇭🇰 机场推荐:dafei.de 香港 06
   type: http
   server: 183.179.162.50
@@ -401,36 +351,22 @@ proxies:
   cipher: aes-256-gcm
   password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
   udp: true
-- name: 'nomorewalls_🇨🇦 加拿大 | CAN #1'
-  type: vless
-  server: 23.227.60.30
-  port: 8880
-  network: ws
-  tls: false
-  udp: true
-  uuid: 6202b230-417c-4d8e-b624-0f71afa9c75d
-  ws-opts:
-    headers:
-      Host: vms.lifetime18.workers.dev
-    path: /
-- name: 'automerge_🇵🇱 波兰 | POL #2'
-  type: vless
-  server: cdn-ya.shamanapp.online
-  port: 443
-  alpn:
-  - h2
-  - http/1.1
-  client-fingerprint: firefox
-  network: xhttp
-  servername: cdn-ya.shamanapp.online
-  tls: true
-  uuid: 40c8a202-4b7f-45a6-b0aa-37db0fac4df8
-- name: zhuhaiuk_SG - zhuhai.uk
-  type: http
-  server: 154.26.139.24
-  port: 443
-  tls: true
+- name: nomorewalls_🇹🇼 台湾｜02｜HiNet
+  type: anytls
+  server: tw.ccwink.cc
+  port: 6549
+  password: 2f4c3fc5-8fa2-4576-a583-8f98a6026887
   skip-cert-verify: true
+  sni: baidu.com
+  udp: true
+- name: zhuhaiuk_US - zhuhai.uk 03
+  type: http
+  server: 0cd5cc27-t9zts0-tazlv3-11p9g.se.oshuawei.com
+  port: 443
+  username: 384d1b42-655f-11ed-a8bf-f23c91cfbbc9
+  password: 384d1b42-655f-11ed-a8bf-f23c91cfbbc9
+  tls: true
+  sni: 0cd5cc27-t9zts0-tazlv3-11p9g.se.oshuawei.com
 - name: ssrsub_🇭🇰 机场推荐:dafei.de 香港 07
   type: http
   server: 119.28.24.235
@@ -449,34 +385,19 @@ proxies:
   port: 8443
   tls: true
   skip-cert-verify: true
-- name: 'nomorewalls_🇩🇪 德国 | DEU #1'
-  type: vless
-  server: cdn.kavosiprotocol.shop
-  port: 443
-  alpn:
-  - http/1.1
-  client-fingerprint: chrome
-  network: ws
-  servername: cdn.kavosiprotocol.shop
-  tls: true
-  udp: true
-  uuid: 5bb1fda3-0b8a-41d5-a803-b48e180ad718
-  ws-opts:
-    headers:
-      Host: cdn.kavosiprotocol.shop
-    path: /@KVPROTOCOlVPN--@KVPROTOCOlVPN--@KVPROTOCOlVPN--@KVPROTOCOlVPN--ws/s_48738e13cc
-- name: automerge_🇬🇧GB_1|1.2MB/s
+- name: nomorewalls_DK_speednode_0005
   type: http
-  server: 185.164.138.156
-  port: 443
-  password: None
+  server: 158.173.154.5
+  port: 9002
   skip-cert-verify: true
   tls: true
-- name: zhuhaiuk_US - zhuhai.uk 02
+  udp: true
+- name: zhuhaiuk_RO - zhuhai.uk 04
   type: http
-  server: 138.199.35.196
+  server: 193.176.84.17
   port: 9002
   tls: true
+  sni: www.bing.com
   skip-cert-verify: true
 - name: ssrsub_🇩🇪 机场推荐:dafei.de 德国 01
   type: http
@@ -498,31 +419,21 @@ proxies:
   cipher: aes-256-gcm
   password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
   udp: true
-- name: 'nomorewalls_🇩🇪 德国 | DEU #3'
-  type: vless
-  server: 104.26.6.109
-  port: 2053
-  client-fingerprint: chrome
-  network: ws
-  tls: true
-  udp: true
-  uuid: 51a0af77-a60c-4d9b-81a4-f50e1b38d90b
-  ws-opts:
-    headers:
-      Host: pilot4f8f.pages.dev
-    path: /
-- name: automerge_🇧🇪BE_1|1.5MB/s|R002-260618
+- name: nomorewalls_FR_speednode_0010
   type: http
-  server: 146.70.176.242
-  port: 443
-  password: None
+  server: 51.159.225.196
+  port: 23856
+  password: 'null'
   skip-cert-verify: true
   tls: true
   udp: true
-- name: zhuhaiuk_RO - zhuhai.uk 04
+  username: 'null'
+- name: zhuhaiuk_US - zhuhai.uk 04
   type: http
-  server: 193.176.84.32
+  server: 138.199.35.211
   port: 9002
+  username: 'null'
+  password: 'null'
   tls: true
   skip-cert-verify: true
 - name: ssrsub_🇩🇪 机场推荐:dafei.de 德国 02
@@ -546,29 +457,18 @@ proxies:
   cipher: aes-256-gcm
   password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
   udp: true
-- name: 'nomorewalls_🇩🇪 德国 | DEU #6'
-  type: vless
-  server: 104.26.13.31
-  port: 8080
-  network: ws
-  servername: ip.sb
-  tls: false
-  udp: true
-  uuid: 3e06b1db-2efb-446e-ba2d-68850dfd2f9d
-  ws-opts:
-    headers:
-      Host: bdfba-cool-tree-b580.v8fz4kbv.workers.dev
-    path: /
-- name: 'automerge_🇩🇪 德国 | DEU #1'
-  type: ss
-  server: 51.102.203.129
-  port: 443
-  cipher: aes-256-cfb
-  password: amazonskr05
-  udp: true
-- name: zhuhaiuk_US - zhuhai.uk 03
+- name: nomorewalls_NL_speednode_0022
   type: http
-  server: 138.199.35.220
+  server: 103.97.88.154
+  port: 443
+  password: 'null'
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: 'null'
+- name: zhuhaiuk_RO - zhuhai.uk 05
+  type: http
+  server: 193.176.84.35
   port: 9002
   tls: true
   skip-cert-verify: true
@@ -579,67 +479,12 @@ proxies:
   password: None
   skip-cert-verify: true
   tls: true
-- name: ruk1ng001_D🔴🇸🇬hos[✈️🔍]_dokng.com_47c8e9b3
+- name: ruk1ng001_D🔴🇩🇪hos[🎬🤖📺🎭]_dokng.com_bd282816
   type: http
-  server: 159.223.41.216
-  port: 9090
-  password: ''
-  skip-cert-verify: true
-  udp: true
-  username: ''
-- name: leilaomi_🇮🇹 [573.8ms +/-25ms] shadowsocks-1875023009
-  type: ss
-  server: 202.50.253.27
-  port: 19999
-  cipher: aes-256-gcm
-  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
-  udp: true
-- name: 'nomorewalls_🇩🇪 德国 | DEU #12'
-  type: vless
-  server: 213.176.17.26
-  port: 80
-  encryption: mlkem768x25519plus.native.0rtt.uwPGIH6MtgtCC_jw9LAU2Dz0EFw0MQWMVOYiC4KBnBI
-  network: tcp
-  tls: false
-  udp: true
-  uuid: 2cbf569e-c8f6-4ffb-bf17-495c8d7f1ea2
-  ws-opts:
-    path: /
-- name: 'automerge_🇩🇪 德国 | DEU #7'
-  type: vless
-  server: freev2.cloudflare.182682.xyz
+  server: 116.202.172.99
   port: 443
-  client-fingerprint: random
-  network: ws
-  servername: eu-central.862400.xyz
-  tls: true
-  udp: true
-  uuid: fc486b2b-8a22-4c93-8a8b-f40e1522ba78
-  ws-opts:
-    headers:
-      Host: eu-central.862400.xyz
-    path: /announcement?ed=2048
-- name: zhuhaiuk_CZ - zhuhai.uk
-  type: http
-  server: 152.233.16.174
-  port: 9443
-  tls: true
-  skip-cert-verify: true
-- name: ssrsub_🇩🇪 机场推荐:dafei.de 德国 04
-  type: http
-  server: 158.173.154.2
-  port: 9002
-  password: None
   skip-cert-verify: true
   tls: true
-- name: ruk1ng001_A🟢🇰🇷res[🤖]_dokng.com_4c08b86d
-  type: trojan
-  server: ddrr2.tube-cat.com
-  port: 56165
-  password: d9064589-74af-432a-9390-5d8a9da281bf
-  skip-cert-verify: true
-  sni: r.KR1.cat.bilibili.com
-  udp: true
 - name: leilaomi_[325.7ms +/-1ms] vless-1946224541
   type: vless
   server: 172.67.199.126
@@ -655,50 +500,33 @@ proxies:
     path: /ws-tesla
     headers:
       Host: fast.145779.xyz
-- name: 'nomorewalls_🇩🇪 德国 | DEU #14'
-  type: vless
-  server: 172.67.75.172
-  port: 8080
-  network: ws
-  tls: false
-  udp: true
-  uuid: 3e06b1db-2efb-446e-ba2d-68850dfd2f9d
-  ws-opts:
-    headers:
-      Host: bdfba-cool-tree-b580.v8fz4kbv.workers.dev
-    path: /
-- name: automerge_🇩🇪 德国 | DEU 10
-  type: vmess
-  server: 109.70.74.218
-  port: 54673
-  alpn:
-  - ''
-  alterId: 0
-  cipher: auto
-  skip-cert-verify: true
-  tls: false
-  udp: true
-  uuid: b66d05c6-5c70-44a5-bb27-f672cabdb1c3
-- name: zhuhaiuk_US - zhuhai.uk 04
+- name: nomorewalls_NL_speednode_0024
   type: http
-  server: 137.175.22.116
-  port: 443
-  tls: true
-  skip-cert-verify: true
-- name: ssrsub_🇩🇪 机场推荐:dafei.de 德国 06
-  type: http
-  server: 149.36.50.157
-  port: 443
+  server: 84.17.47.148
+  port: 9002
+  password: None
   skip-cert-verify: true
   tls: true
-- name: ruk1ng001_D🔴🇺🇸hos[🎬🤖📺🎭]_dokng.com_823268ff
-  type: http
-  server: mmgr.club
+  udp: true
+- name: zhuhaiuk_KR - zhuhai.uk
+  type: hysteria2
+  server: 2401:c080:1c01:4ad:5400:7ff:fe03:a588
   port: 443
+  password: 30e52776-55ac-3cb4-8d36-e2910f07e2c3
+  sni: u695098u04af05e4s2473.xxti.top
+- name: ssrsub_🇩🇪 机场推荐:dafei.de 德国 04
+  type: http
+  server: 158.173.154.2
+  port: 9002
+  password: None
+  skip-cert-verify: true
+  tls: true
+- name: ruk1ng001_D🔴🇸🇬hos[✈️🔍]_dokng.com_47c8e9b3
+  type: http
+  server: 159.223.41.216
+  port: 9090
   password: ''
   skip-cert-verify: true
-  sni: mmgr.club
-  tls: true
   udp: true
   username: ''
 - name: leilaomi_[327.9ms +/-34ms] 4Jadi-d7ac565b63
@@ -716,41 +544,61 @@ proxies:
     path: /ws-tesla
     headers:
       Host: fast.145779.xyz
-- name: 'nomorewalls_🇭🇰 香港 | HKG #1'
-  type: vmess
-  server: 47.244.120.197
-  port: 36703
-  alterId: 0
-  cipher: auto
-  network: ws
+- name: nomorewalls_NL_speednode_0025
+  type: http
+  server: 84.17.47.149
+  port: 9002
+  password: None
   skip-cert-verify: true
-  tls: false
+  tls: true
   udp: true
-  uuid: 45b83519-9c4f-4052-a11b-02e017b636d4
-  ws-opts:
-    path: /arki
-- name: 'automerge_🇪🇸 西班牙 | ESP #1'
-  type: vless
-  server: api.ferrin.uk
+- name: zhuhaiuk_US - zhuhai.uk 05
+  type: http
+  server: fan.226278.xyz
   port: 443
-  alpn:
-  - h2
-  client-fingerprint: chrome
-  network: xhttp
-  servername: 7d1a74fd.ferrin.uk
+  tls: true
+- name: ssrsub_🇩🇪 机场推荐:dafei.de 德国 05
+  type: http
+  server: 87.249.132.97
+  port: 443
+  password: None
+  skip-cert-verify: true
   tls: true
   udp: true
-  uuid: 7d1a74fd-8a38-4a29-863f-5da53a9e557e
-- name: zhuhaiuk_FR - zhuhai.uk 02
-  type: http
-  server: 83.206.1.225
-  port: 8090
-  tls: true
-  sni: 83.206.1.225
+- name: ruk1ng001_A🟢🇰🇷res[🤖]_dokng.com_4c08b86d
+  type: trojan
+  server: ddrr2.tube-cat.com
+  port: 56165
+  password: d9064589-74af-432a-9390-5d8a9da281bf
   skip-cert-verify: true
-- name: ssrsub_🇩🇪 机场推荐:dafei.de 德国 08
+  sni: r.KR1.cat.bilibili.com
+  udp: true
+- name: leilaomi_[574.1ms +/-10ms] http-206.223.161.47
   type: http
-  server: 185.44.107.166
+  server: 206.223.161.47
+  port: 443
+  tls: true
+  skip-cert-verify: true
+- name: nomorewalls_NL_speednode_0027
+  type: http
+  server: 84.17.47.123
+  port: 9002
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: zhuhaiuk_US - zhuhai.uk 06
+  type: http
+  server: 50.76.211.251
+  port: 8090
+  username: 'null'
+  password: 'null'
+  tls: true
+  sni: 50.76.211.251
+  skip-cert-verify: true
+- name: ssrsub_🇩🇪 机场推荐:dafei.de 德国 06
+  type: http
+  server: 149.36.50.157
   port: 443
   skip-cert-verify: true
   tls: true
@@ -762,43 +610,59 @@ proxies:
   skip-cert-verify: true
   sni: d.hkh2.cat.bilibili.com
   udp: true
-- name: leilaomi_[574.1ms +/-10ms] http-206.223.161.47
+- name: leilaomi_🇮🇹 [568.0ms +/-0ms] shadowsocks-1875022929
+  type: ss
+  server: 202.50.253.90
+  port: 19999
+  cipher: aes-256-gcm
+  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
+  udp: true
+- name: nomorewalls_🇱🇺LU_1|2.9MB/s
   type: http
-  server: 206.223.161.47
+  server: 185.221.132.226
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+- name: zhuhaiuk_US - zhuhai.uk 07
+  type: http
+  server: fan.365747.xyz
+  port: 443
+  username: 'null'
+  password: 'null'
+  tls: true
+  skip-cert-verify: true
+- name: ssrsub_🇩🇪 机场推荐:dafei.de 德国 08
+  type: http
+  server: 185.44.107.166
+  port: 443
+  skip-cert-verify: true
+  tls: true
+- name: ruk1ng001_D🔴🇺🇸hos[🎬🤖📺🎭]_dokng.com_483f6707
+  type: http
+  server: 138.199.35.214
+  port: 9002
+  password: null
+  skip-cert-verify: true
+  tls: true
+  username: null
+- name: leilaomi_[543.8ms +/-1ms] http-82.65.162.76
+  type: http
+  server: 82.65.162.76
   port: 443
   tls: true
   skip-cert-verify: true
-- name: nomorewalls_🇮🇹 意大利 | ITA 3
-  type: hysteria2
-  server: 47.128.155.217
-  port: 50000
-  alpn:
-  - h3
-  down: 200
-  password: eTr5Jag4dMyzx7KdYfVgra78
-  skip-cert-verify: true
-  sni: sg-transit-1.nebulacloud.win
-  udp: true
-  up: 100
-- name: 'automerge_🇭🇰 香港 | HKG #2'
-  type: vmess
-  server: 47.244.120.197
-  port: 23026
-  alterId: 0
-  cipher: auto
-  network: ws
-  skip-cert-verify: true
-  tls: false
-  udp: true
-  uuid: b9de1bc9-baa7-41ac-86f7-ccd59695cb21
-  ws-opts:
-    headers:
-      Host: 47.244.120.197
-    path: /arki
-- name: zhuhaiuk_IT - zhuhai.uk
+- name: nomorewalls_🇺🇸US_1|2.0MB/s
   type: http
-  server: 93.42.177.250
-  port: 443
+  server: 138.199.35.195
+  port: 9002
+  password: None
+  skip-cert-verify: true
+  tls: true
+- name: zhuhaiuk_IE - zhuhai.uk
+  type: http
+  server: 149.88.96.12
+  port: 9443
   tls: true
   skip-cert-verify: true
 - name: ssrsub_🇩🇪 机场推荐:dafei.de 德国 09
@@ -814,37 +678,23 @@ proxies:
   port: 443
   sni: kimberlymilano.icu
   tls: true
-- name: leilaomi_🇮🇹 [568.0ms +/-0ms] shadowsocks-1875022929
-  type: ss
-  server: 202.50.253.90
-  port: 19999
-  cipher: aes-256-gcm
-  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
-  udp: true
-- name: nomorewalls_🇯🇵 日本 | JPN
-  type: hysteria2
-  server: 154.85.19.50
-  port: 443
-  alpn:
-  - h3
-  down: 200
-  password: d8cf80f7-e24b-4961-91f6-77d494bcbdab
-  skip-cert-verify: true
-  sni: www.bing.com
-  udp: true
-  up: 100
-- name: 'automerge_🇰🇷 韩国 | KOR #1'
-  type: hysteria2
-  server: 3.35.140.85
-  port: 443
-  password: 7e68e32f-8015-4f37-9082-70e8b0b58043
-  skip-cert-verify: true
-  sni: www.bing.com
-  tls: false
-- name: zhuhaiuk_US - zhuhai.uk 05
+- name: leilaomi_[532.1ms +/-2ms] http-68.235.56.51
   type: http
-  server: 138.199.35.217
+  server: 68.235.56.51
+  port: 443
+  tls: true
+  skip-cert-verify: true
+- name: nomorewalls_🇺🇸US_2|2.3MB/s
+  type: http
+  server: 138.199.35.205
   port: 9002
+  password: None
+  skip-cert-verify: true
+  tls: true
+- name: zhuhaiuk_CZ - zhuhai.uk
+  type: http
+  server: 185.216.35.66
+  port: 443
   tls: true
   skip-cert-verify: true
 - name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 01
@@ -861,42 +711,26 @@ proxies:
   skip-cert-verify: false
   tls: true
   username: null
-- name: leilaomi_[517.4ms +/-0ms] http-51.159.225.196
+- name: leilaomi_[567.8ms +/-1ms] http-185.164.138.156
   type: http
-  server: 51.159.225.196
-  port: 23856
-  username: 'null'
-  password: 'null'
+  server: 185.164.138.156
+  port: 443
   tls: true
   skip-cert-verify: true
-- name: nomorewalls_🇯🇵 日本 | JPN 2
-  type: hysteria2
-  server: x-rb5.xueshan168.cc
-  port: 20601
-  down: 1000
-  obfs: salamander
-  obfs-password: fmW0oAsJz1qFJ0Ez
-  password: 9b7dc1a8-1977-4174-a82d-39ce4081b8eb
-  skip-cert-verify: true
-  sni: x-rb5.xueshan168.cc
-  up: 1000
-- name: automerge_🇲🇴 澳门 | MAC
-  type: anytls
-  server: aws.v4.us.ci
-  port: 44698
-  password: d1f9c551-d043-4f4b-b8c6-d828b60f2e92
-  skip-cert-verify: true
-  sni: updates.cdn-apple.com
-  udp: true
-- name: zhuhaiuk_RO - zhuhai.uk 05
+- name: nomorewalls_🇺🇸US_3|3.0MB/s
   type: http
-  server: 193.176.84.19
+  server: 138.199.35.219
   port: 9002
-  username: 'null'
   password: None
-  tls: true
-  sni: 193.176.84.19
   skip-cert-verify: true
+  tls: true
+- name: zhuhaiuk_AE - zhuhai.uk
+  type: trojan
+  server: sclass-00.catcat321.com
+  port: 20123
+  password: d9064589-74af-432a-9390-5d8a9da281bf
+  tls: true
+  sni: hk.catxstar.com
 - name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 02
   type: http
   server: 149.34.248.65
@@ -914,36 +748,24 @@ proxies:
   skip-cert-verify: false
   tls: true
   username: null
-- name: leilaomi_[543.8ms +/-1ms] http-82.65.162.76
+- name: leilaomi_[566.2ms +/-1ms] http-34.249.214.108
   type: http
-  server: 82.65.162.76
+  server: 34.249.214.108
   port: 443
   tls: true
   skip-cert-verify: true
-- name: 'nomorewalls_🇯🇵 日本 | JPN #3'
-  type: hysteria2
-  server: x-rb2.xueshan168.cc
-  port: 20601
-  down: 1000
-  password: 9b7dc1a8-1977-4174-a82d-39ce4081b8eb
+- name: nomorewalls_🇲🇾MY_1|2.1MB/s|K001-260618
+  type: http
+  server: 152.233.3.14
+  port: 9443
+  password: None
   skip-cert-verify: true
-  sni: x-rb2.xueshan168.cc
-  tls: false
-  up: 1000
-- name: 'automerge_🇳🇱 荷兰 | NLD #1'
-  type: vless
-  server: 201.34.142.108
-  port: 443
-  client-fingerprint: firefox
-  network: xhttp
-  servername: 201.34.142.108
   tls: true
   udp: true
-  uuid: 4777d90d-265b-4927-a0d1-63f36ed1421c
-- name: zhuhaiuk_US - zhuhai.uk 06
+- name: zhuhaiuk_SG - zhuhai.uk
   type: http
-  server: 137.175.22.120
-  port: 443
+  server: 149.88.99.209
+  port: 9443
   tls: true
   skip-cert-verify: true
 - name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 03
@@ -958,43 +780,101 @@ proxies:
   port: 443
   skip-cert-verify: true
   tls: true
-- name: leilaomi_[532.1ms +/-2ms] http-68.235.56.51
+- name: leilaomi_[543.5ms +/-1ms] http-149.36.51.161
   type: http
-  server: 68.235.56.51
-  port: 443
+  server: 149.36.51.161
+  port: 9443
   tls: true
   skip-cert-verify: true
-- name: 'nomorewalls_🇳🇱 荷兰 | NLD #3'
-  type: vless
-  server: 104.21.0.1
-  port: 8080
-  network: ws
-  servername: ip.sb
-  tls: false
-  udp: true
-  uuid: 3e06b1db-2efb-446e-ba2d-68850dfd2f9d
-  ws-opts:
-    headers:
-      Host: bdfba-cool-tree-b580.v8fz4kbv.workers.dev
-    path: /
-- name: 'automerge_🇸🇬 新加坡 | SGP #1'
-  type: hysteria2
-  server: 56.10.68.204
+- name: nomorewalls_🇷🇸RS_2|3.3MB/s
+  type: http
+  server: 146.70.221.18
   port: 443
-  password: 7e68e32f-8015-4f37-9082-70e8b0b58043
   skip-cert-verify: true
-  sni: www.bing.com
-  tls: false
-- name: zhuhaiuk_HK - zhuhai.uk
+  tls: true
+- name: zhuhaiuk_KR - zhuhai.uk 02
   type: socks5
-  server: 218.77.50.79
-  port: 6666
+  server: 121.169.46.116
+  port: 1090
+  username: Og%3D%3D
 - name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 04
+  type: http
+  server: crosscards.site
+  port: 443
+  skip-cert-verify: false
+  tls: true
+  sni: crosscards.site
+- name: ruk1ng001_D🔴🇺🇸hos[🎬🤖📺🎭]_dokng.com_bf297661
+  type: http
+  server: 138.199.35.217
+  port: 9002
+  password: null
+  skip-cert-verify: true
+  tls: true
+  username: null
+- name: leilaomi_[545.2ms +/-9ms] http-84.17.47.147
+  type: http
+  server: 84.17.47.147
+  port: 9002
+  tls: true
+  skip-cert-verify: true
+- name: nomorewalls_🇩🇪DE_4|1.3MB/s
+  type: http
+  server: 149.36.50.1
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+- name: zhuhaiuk_JP - zhuhai.uk
+  type: http
+  server: 120.232.204.58
+  port: 40583
+  tls: true
+  sni: 120.232.204.58
+  skip-cert-verify: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 05
   type: http
   server: 198.44.135.27
   port: 443
   skip-cert-verify: true
   tls: true
+- name: ruk1ng001_D🔴🇩🇪hos[🎬🤖📺🎭]_dokng.com_a741a422
+  type: vless
+  server: 193.23.218.107
+  port: 443
+  client-fingerprint: chrome
+  encryption: none
+  flow: xtls-rprx-vision
+  network: tcp
+  reality-opts:
+    public-key: cBTZdCBwrYTTarw6B_lu2TN1M6_Lku68FfWCQT9svhc
+    short-id: cb620aa2f04bce33
+  servername: yandex.ru
+  tls: true
+  udp: true
+  uuid: 6f433cf6-4221-48b2-ad29-01121952ef8a
+  xudp: true
+- name: zhuhaiuk_HK - zhuhai.uk
+  type: socks5
+  server: 61.142.113.42
+  port: 6666
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 07
+  type: http
+  server: 138.199.35.196
+  port: 9002
+  password: 'null'
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: 'null'
+- name: ruk1ng001_D🔴🇺🇸hos[🎬🤖📺🎭]_dokng.com_63e28654
+  type: http
+  server: purecambogiasl.live
+  port: 443
+  password: null
+  skip-cert-verify: true
+  tls: true
+  username: null
 - name: ruk1ng001_A🟢🇳🇱res[🎬🤖📺🎭]_dokng.com_74ce3d18
   type: http
   server: 149.36.51.157
@@ -1002,30 +882,3 @@ proxies:
   password: None
   skip-cert-verify: true
   tls: true
-- name: leilaomi_[566.2ms +/-1ms] http-34.249.214.108
-  type: http
-  server: 34.249.214.108
-  port: 443
-  tls: true
-  skip-cert-verify: true
-- name: 'nomorewalls_🇷🇺 俄罗斯 | RUS #1'
-  type: vless
-  server: xsru2.freeddns.org
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: xsru2.freeddns.org
-  tls: true
-  udp: true
-  uuid: c90395e6-2140-47ad-a54d-9b166729d3ef
-  ws-opts:
-    headers:
-      Host: xsru2.freeddns.org
-    path: /wsru
-- name: automerge_🇸🇬 新加坡 | SGP 3
-  type: anytls
-  server: site.ddddd.site
-  port: 36033
-  password: 1eb7f03a-59a4-4184-ae6d-7cb0e3b8e77a
-  skip-cert-verify: true
-  sni: virtual.ubuntu24.com
