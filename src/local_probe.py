@@ -224,6 +224,11 @@ def _rebase_abort():
 # 成功后再把真实工作区 reset --hard 到远端：内容已全部进入远端树。
 RESCUE_TRIES = 2        # 整条「克隆-合并-补推」链的尝试轮数（远端中途又动了就再来一轮）
 STASH_DIR = os.path.join(tempfile.gettempdir(), "clash_source_rescue")
+# 克隆目录默认放仓外的工作区，而不是系统 %TEMP%：
+# 2026-11-07 实踩——%TEMP% 下 git 建 .git 报 Permission denied，救援两轮全灭。
+# 用仓外同级目录既避开该限制，也避免把整份克隆塞进用户临时目录。
+RESCUE_CLONE_BASE = (os.environ.get("CLASH_RESCUE_BASE")
+                     or os.path.join(os.path.dirname(ROOT), "_clash_rescue"))
 
 
 def _run_health(cwd):
@@ -353,7 +358,12 @@ def rescue_push():
         IDENT = ["-c", "user.name=local-probe-bot",
                  "-c", "user.email=local-probe-bot@users.noreply.github.com"]
         for attempt in range(1, RESCUE_TRIES + 1):
-            clone_dir = tempfile.mkdtemp(prefix="clash_rescue_%d_" % attempt)
+            base = RESCUE_CLONE_BASE
+            try:
+                os.makedirs(base, exist_ok=True)
+            except OSError:
+                base = None      # 工作区不可写时退回系统临时目录
+            clone_dir = tempfile.mkdtemp(prefix="clash_rescue_%d_" % attempt, dir=base)
             cp = subprocess.run(
                 [GIT, "-c", "http.proxy=" + PROXY, "-c", "https.proxy=" + PROXY,
                  "clone", "--depth", "1", "-b", "main", url, clone_dir],

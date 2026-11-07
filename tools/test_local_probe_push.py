@@ -37,6 +37,11 @@ import tempfile                   # noqa: E402
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "src"))
+# 与 local_probe.RESCUE_CLONE_BASE 同理：部分环境禁止 git 在 %TEMP% 下建 .git，
+# 测试仓也放仓外工作区，保证门禁本身跑得起来。
+TEST_TMP = (os.environ.get("CLASH_TEST_TMP")
+            or os.path.join(os.path.dirname(ROOT), "_clash_test_tmp"))
+os.makedirs(TEST_TMP, exist_ok=True)
 
 import local_probe                # noqa: E402
 
@@ -79,7 +84,7 @@ def commit(repo, msg):
 
 def setup(tag):
     """建 裸仓 + work 克隆（main 分支）+ other 克隆（扮演 CI）。每例一个，互不干扰。"""
-    d = tempfile.mkdtemp(prefix="lpush_%s_" % tag)
+    d = tempfile.mkdtemp(prefix="lpush_%s_" % tag, dir=TEST_TMP)
     remote = os.path.join(d, "remote.git")
     work, other = os.path.join(d, "work"), os.path.join(d, "other")
     g(["init", "--bare", remote], d)

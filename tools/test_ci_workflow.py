@@ -53,6 +53,10 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 WF_DIR = os.path.join(ROOT, ".github", "workflows")
 PUSH_SH = os.path.join(ROOT, "tools", "ci_git_push.sh")
 PUSH_REL = "tools/ci_git_push.sh"
+# 部分环境禁止 git 在 %TEMP% 下建 .git（2026-11-07 实踩），测试仓放仓外工作区。
+TEST_TMP = (os.environ.get("CLASH_TEST_TMP")
+            or os.path.join(os.path.dirname(ROOT), "_clash_test_tmp"))
+os.makedirs(TEST_TMP, exist_ok=True)
 
 sys.path.insert(0, os.path.join(ROOT, ".tools", "yaml_vendor"))
 try:
@@ -208,7 +212,7 @@ print("=" * 72)
 if not (GIT and SHELL):
     print("  （跳过：本机没找到 git 或 sh —— 但这条路径在 CI 上每 6 小时真跑一次）")
 else:
-    tmp = tempfile.mkdtemp(prefix="ci_push_test_")
+    tmp = tempfile.mkdtemp(prefix="ci_push_test_", dir=TEST_TMP)
     try:
         origin = os.path.join(tmp, "origin.git")
         a = os.path.join(tmp, "ci")          # 扮演 CI
