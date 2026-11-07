@@ -101,9 +101,10 @@ sources:
   # 注意：均为单轮结果，照常走 AI 审核 + 降级机制兜底。
   - name: clashdaily
     url: https://cnb.cool/StriveGlory/clash-daily/-/git/raw/main/dist/clash.yaml
-    enabled: true
+    enabled: false
     max_nodes: 900
     note: 🏆 2026-10-28 实测 40% 通过(60 抽样 24 活)最快 334ms，全场最强；cnb.cool 直连（无镜像回退链）
+    relegated: '2026-11-07'
   - name: leilaomi
     url: https://raw.githubusercontent.com/LeilaoMi/AutoMergePublicNodes-Optimized/main/output/verified.yaml
     enabled: true
@@ -113,6 +114,14 @@ sources:
     url: https://raw.githubusercontent.com/wzmwayne/proxy-node/main/output/freesub/clash.yaml
     enabled: false
     note: 2026-10-28 实测 23% 通过(14 活)1159ms；与 anaer/passcro 同仓的新产物（镜像链按 raw 走）
+
+  # ── 自动补员 2026-11-07T04:38:21Z（src/refill.py cap 内补位；excluded 段不动）──
+  - name: free-nodes
+    url: https://raw.githubusercontent.com/wz-node/free-nodes/main/clash.yaml
+    enabled: true
+    max_nodes: 500
+    auto_added: true
+    note: 补员(单轮结果,照常走降级机制) rate=28.6% alive=8 best=779ms @2026-10-31T04:38:07Z
 
 # 已评估但未纳入（改 enabled: true 即恢复）
 excluded:
