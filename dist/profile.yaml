@@ -106,15 +106,6 @@ proxy-groups:
   interval: 300
   timeout: 5000
   tolerance: 200
-- name: SRC-nomorewalls
-  type: url-test
-  use:
-  - nomorewalls
-  url: https://www.youtube.com/generate_204
-  expected-status: 204
-  interval: 300
-  timeout: 5000
-  tolerance: 200
 - name: SRC-leilaomi
   type: url-test
   use:
@@ -161,7 +152,6 @@ proxy-groups:
   type: select
   proxies:
   - SRC-automerge
-  - SRC-nomorewalls
   - 不稳定
 - name: 观察
   type: select
@@ -175,7 +165,6 @@ proxy-groups:
   - SRC-zhuhaiuk
   - SRC-ssrsub
   - SRC-ruk1ng001
-  - SRC-nomorewalls
   - SRC-leilaomi
   - SRC-free-nodes
   url: https://www.youtube.com/generate_204
@@ -194,7 +183,6 @@ proxy-groups:
   - SRC-zhuhaiuk
   - SRC-ssrsub
   - SRC-ruk1ng001
-  - SRC-nomorewalls
   - SRC-leilaomi
   - SRC-free-nodes
 - name: Claude
@@ -204,7 +192,6 @@ proxy-groups:
   - zhuhaiuk
   - ssrsub
   - ruk1ng001
-  - nomorewalls
   - leilaomi
   - free-nodes
   proxies:
@@ -216,7 +203,6 @@ proxy-groups:
   - zhuhaiuk
   - ssrsub
   - ruk1ng001
-  - nomorewalls
   - leilaomi
   - free-nodes
   proxies:
@@ -560,18 +546,6 @@ proxy-providers:
     type: http
     url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/ruk1ng001.yaml
     path: ./providers/ruk1ng001.yaml
-    interval: 3600
-    exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
-    health-check:
-      enable: true
-      url: https://www.youtube.com/generate_204
-      interval: 300
-      timeout: 5000
-      expected-status: 204
-  nomorewalls:
-    type: http
-    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/nomorewalls.yaml
-    path: ./providers/nomorewalls.yaml
     interval: 3600
     exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
     health-check:

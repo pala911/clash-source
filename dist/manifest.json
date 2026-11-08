@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-08T13:38:03Z",
+  "generated_at": "2026-11-08T22:16:50Z",
   "owner": "pala911",
   "repo": "clash-source",
   "pages_base": "https://pala911.github.io/clash-source",
@@ -12,8 +12,7 @@
       "ruk1ng001"
     ],
     "备用": [
-      "automerge",
-      "nomorewalls"
+      "automerge"
     ],
     "观察": [
       "free-nodes"
@@ -42,10 +41,6 @@
         "rate": 43.978571428571435,
         "why": "本机 44.0%"
       },
-      "nomorewalls": {
-        "rate": 32.15571428571429,
-        "why": "本机 32.2%（达标，但 AUTO 只取前 4）"
-      },
       "leilaomi": {
         "rate": 52.22428571428571,
         "why": "本机 52.2%"
@@ -59,31 +54,31 @@
   "sources": [
     {
       "name": "automerge",
-      "raw": 343,
-      "kept": 71,
-      "bytes": 495810,
+      "raw": 305,
+      "kept": 59,
+      "bytes": 489395,
       "mirror": false,
-      "ai_dropped": 12,
-      "ai_dropped_clusters": 2,
-      "dup_removed": 32,
+      "ai_dropped": 14,
+      "ai_dropped_clusters": 3,
+      "dup_removed": 11,
       "error": null
     },
     {
       "name": "zhuhaiuk",
-      "raw": 33,
-      "kept": 27,
-      "bytes": 5985,
+      "raw": 34,
+      "kept": 32,
+      "bytes": 6095,
       "mirror": false,
       "ai_dropped": 0,
       "ai_dropped_clusters": 0,
-      "dup_removed": 5,
+      "dup_removed": 1,
       "error": null
     },
     {
       "name": "ssrsub",
-      "raw": 148,
+      "raw": 147,
       "kept": 138,
-      "bytes": 48063,
+      "bytes": 47866,
       "mirror": false,
       "ai_dropped": 0,
       "ai_dropped_clusters": 0,
@@ -93,33 +88,33 @@
     {
       "name": "ruk1ng001",
       "raw": 500,
-      "kept": 363,
+      "kept": 331,
       "bytes": 227914,
       "mirror": false,
-      "ai_dropped": 37,
-      "ai_dropped_clusters": 36,
-      "dup_removed": 66,
+      "ai_dropped": 77,
+      "ai_dropped_clusters": 31,
+      "dup_removed": 58,
       "error": null
     },
     {
       "name": "nomorewalls",
-      "raw": 314,
-      "kept": 31,
-      "bytes": 492585,
+      "raw": 305,
+      "kept": 0,
+      "bytes": 489395,
       "mirror": false,
       "ai_dropped": 14,
       "ai_dropped_clusters": 3,
-      "dup_removed": 45,
+      "dup_removed": 70,
       "error": null
     },
     {
       "name": "leilaomi",
-      "raw": 59,
-      "kept": 58,
-      "bytes": 18191,
+      "raw": 68,
+      "kept": 64,
+      "bytes": 21461,
       "mirror": false,
-      "ai_dropped": 1,
-      "ai_dropped_clusters": 1,
+      "ai_dropped": 0,
+      "ai_dropped_clusters": 0,
       "dup_removed": 0,
       "error": null
     },
@@ -136,59 +131,59 @@
     }
   ],
   "totals": {
-    "kept": 688,
-    "merged": 688,
-    "dup_removed": 155,
-    "ai_reviewed": 651
+    "kept": 624,
+    "merged": 624,
+    "dup_removed": 147,
+    "ai_reviewed": 620
   },
   "ai_scope": "mixed",
   "ai_usage": {
-    "prompt": 49798,
-    "completion": 59865,
-    "calls": 31,
-    "timeouts": 7,
+    "prompt": 42162,
+    "completion": 58163,
+    "calls": 28,
+    "timeouts": 6,
     "by_backend": {
       "siliconflow_xing": {
-        "calls": 23,
-        "prompt": 42241,
-        "completion": 49410
+        "calls": 21,
+        "prompt": 35553,
+        "completion": 54299
       },
       "siliconflow_glm4": {
+        "calls": 2,
+        "prompt": 2023,
+        "completion": 28
+      },
+      "siliconflow_qwen25": {
         "calls": 3,
-        "prompt": 2749,
-        "completion": 46
+        "prompt": 2607,
+        "completion": 251
       },
       "siliconflow_qwen3": {
-        "calls": 2,
-        "prompt": 1965,
-        "completion": 8143
+        "calls": 1,
+        "prompt": 978,
+        "completion": 1519
       },
       "siliconflow_deepseek_r1": {
         "calls": 1,
         "prompt": 1001,
-        "completion": 2006
-      },
-      "siliconflow_qwen25": {
-        "calls": 2,
-        "prompt": 1842,
-        "completion": 260
+        "completion": 2066
       }
     }
   },
   "mobile": {
     "provider": "mobile",
-    "nodes": 120,
+    "nodes": 119,
     "cap": 120,
     "sources": [
       "zhuhaiuk",
       "ssrsub",
       "ruk1ng001",
       "leilaomi",
-      "nomorewalls",
       "automerge"
     ]
   },
   "warnings": [
-    "free-nodes 抓取失败：全部 URL 尝试均失败（本轮产出空文件，不影响其他源）"
+    "free-nodes 抓取失败：全部 URL 尝试均失败（本轮产出空文件，不影响其他源）",
+    "nomorewalls 全部 70 个节点与更优源内容重复，本轮不挂载该源（sources.yaml 未改；是否换源由联赛/补员决定）"
   ]
 }
