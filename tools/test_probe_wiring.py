@@ -23,18 +23,38 @@ os.chdir(ROOT)
 
 import node_stability as ns      # noqa: E402
 import probe                     # noqa: E402
+import yaml                      # noqa: E402
 
 NODES = os.path.join(ROOT, "dist", "nodes")
 files = []
+skipped = []
 for n in sorted(glob.glob(os.path.join(NODES, "*.yaml"))):
     nm = os.path.splitext(os.path.basename(n))[0]
-    if nm != "all":
-        files.append((nm, n))
+    if nm == "all":
+        continue
+    # 0 节点文件（上游 404 / 抓取失败 / 100% 重复未挂载）在 dist 里是合法的空池，
+    # 探针不可能返回这些源的节点，指纹映射为空是预期行为 —— 跳过而不是判失败
+    # （2026-11-09 free-nodes 上游 404 实踩，这里曾把整条门禁卡死）。
+    px = (yaml.safe_load(open(n, encoding="utf-8")) or {}).get("proxies") or []
+    if not px:
+        skipped.append(nm)
+        continue
+    files.append((nm, n))
 
 ok = True
 print("=" * 66)
-print("接线测试：dist/nodes/ 的 %d 个源文件" % len(files))
+print("接线测试：dist/nodes/ 的 %d 个非空源文件（跳过 %d 个 0 节点文件）"
+      % (len(files), len(skipped)))
 print("=" * 66)
+if skipped:
+    print("  跳过 0 节点源文件：%s（空池是合法产物，探针不会返回其节点）"
+          % "、".join(skipped))
+if not files:
+    print("  ✗ 没有任何非空源文件可测 —— dist/nodes 全是空池")
+    print("")
+    print("=" * 66)
+    print("结果：接线有问题")
+    sys.exit(1)
 
 # 1. 指纹映射不能是空的
 fp = probe.node_fingerprints(files)
@@ -47,7 +67,6 @@ else:
     print("  ✓ 全部源都算出了指纹")
 
 # 2. 指纹必须真的对得上节点名（mihomo 返回的 name 就是这里的 key）
-import yaml                     # noqa: E402
 src = files[0][0]
 raw = (yaml.safe_load(open(dict(files)[src], encoding="utf-8")) or {}).get("proxies") or []
 names = [p.get("name") for p in raw if p.get("name")]

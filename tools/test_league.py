@@ -290,5 +290,41 @@ finally:
      league.VERDICTS, league.PROBE_LATEST) = _old
 
 print("")
+print("=" * 68)
+print("场景 H：0 节点未 settled 源按 0 分参与排名（死源不冻结联赛）")
+print("=" * 68)
+old_probe = league.PROBE_LATEST
+tmp_probe_dir = tempfile.mkdtemp(prefix="league_probe_")
+tmp_probe = os.path.join(tmp_probe_dir, "probe_latest.json")
+with io.open(tmp_probe, "w", encoding="utf-8") as f:
+    json.dump({"scope": "local", "sources": {
+        "dead": {"nodes": 0, "tested": 0, "alive": 0, "rate": 0.0,
+                 "settled": False},
+        "timeout": {"nodes": 100, "tested": 10, "alive": 2, "rate": 2.0,
+                    "settled": False},
+        "mid": {"nodes": 50, "tested": 50, "alive": 10, "rate": 20.0,
+                "settled": True},
+        "good": {"nodes": 50, "tested": 50, "alive": 20, "rate": 40.0,
+                 "settled": True},
+        "good--flaky": {"nodes": 3, "tested": 3, "alive": 1, "rate": 33.0,
+                        "settled": True},
+    }}, f)
+league.PROBE_LATEST = tmp_probe
+try:
+    rates = league.load_local_rates()
+finally:
+    league.PROBE_LATEST = old_probe
+check("0 节点未 settled 源按 (0,0) 入榜",
+      rates is not None and rates.get("dead") == (0.0, 0.0))
+check("nodes>0 未 settled 源仍按缺速率排除",
+      rates is not None and "timeout" not in rates)
+check("settled 源正常入榜",
+      rates is not None and rates.get("good") == (40.0, 20.0))
+check("--flaky 不入榜", rates is not None and "good--flaky" not in rates)
+act, out_n, in_n, why = league.decide(rates, {"ch": (21.4, 6)}, 3)
+check("死源可被挑战者换掉（不再整轮 hold）",
+      act == "swap" and out_n == "dead" and in_n == "ch", why)
+
+print("")
 print("结果：%s" % ("全部通过" if ok else "有失败项"))
 sys.exit(0 if ok else 1)

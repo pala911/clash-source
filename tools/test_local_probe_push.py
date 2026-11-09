@@ -140,6 +140,19 @@ def run_push(work):
     return rc, buf.getvalue()
 
 
+def run_sync(work):
+    """跑被测的探针前同步（只替换 ROOT；ENSURE_PROXY 关掉，不碰真网络）。"""
+    old_root, old_ep = local_probe.ROOT, local_probe.ENSURE_PROXY
+    local_probe.ROOT, local_probe.ENSURE_PROXY = work, False
+    buf = io.StringIO()
+    try:
+        with contextlib.redirect_stdout(buf):
+            local_probe.sync_from_remote()
+    finally:
+        local_probe.ROOT, local_probe.ENSURE_PROXY = old_root, old_ep
+    return buf.getvalue()
+
+
 def mid_state(repo):
     gd = os.path.join(repo, ".git")
     return (os.path.exists(os.path.join(gd, "rebase-merge"))
@@ -355,6 +368,73 @@ try:
 finally:
     local_probe.ENSURE_PROXY = old_ep
 
+# ---------------------------------------------------------------- 探针前同步
+print("")
+print("=" * 72)
+print("用例 F：探针前同步 —— 落后远端时 fast-forward（新 dist 必须被探到）")
+print("=" * 72)
+dF, remoteF, workF, otherF = setup("f")
+write(otherF, "dist/nodes/new-source.yaml", "proxies: []\n")
+commit(otherF, "chore: 源更新（模拟 CI 新 dist）")
+pF = g(["push", "origin", "main"], otherF)
+check(pF.returncode == 0, "「CI」的新 dist 提交真的推上去了（前提条件）",
+      (pF.stdout + pF.stderr).strip().splitlines()[-1][:80])
+headF_before = g(["rev-parse", "HEAD"], workF).stdout.strip()
+outF = run_sync(workF)
+headF_after = g(["rev-parse", "HEAD"], workF).stdout.strip()
+headF_remote = g(["rev-parse", "HEAD"], otherF).stdout.strip()
+check(headF_after == headF_remote and headF_before != headF_after,
+      "工作区真的快进到了远端新提交",
+      "before=%s after=%s" % (headF_before[:7], headF_after[:7]))
+check(os.path.exists(os.path.join(workF, "dist", "nodes", "new-source.yaml")),
+      "新 dist 文件已落到本机（probe.py 下一轮能探到）")
+check("快进" in outF, "同步动作被说出来",
+      outF.strip().splitlines()[-1][:80] if outF.strip() else "")
+
+print("")
+print("=" * 72)
+print("用例 G：本地有未推送提交 -> 不同步（不丢积压）")
+print("=" * 72)
+dG, remoteG, workG, otherG = setup("g")
+write(workG, "state/local_only.txt", "x")
+commit(workG, "chore: 本机未推送提交")
+headG = g(["rev-parse", "HEAD"], workG).stdout.strip()
+outG = run_sync(workG)
+check(g(["rev-parse", "HEAD"], workG).stdout.strip() == headG,
+      "HEAD 纹丝不动")
+check("未推送提交" in outG, "跳过原因被说出来",
+      outG.strip().splitlines()[-1][:80] if outG.strip() else "")
+
+print("")
+print("=" * 72)
+print("用例 H：工作区有未提交改动 -> 不同步（不碰上一轮数据）")
+print("=" * 72)
+dH, remoteH, workH, otherH = setup("h")
+write(otherH, "dist/nodes/ci.yaml", "proxies: []\n")
+commit(otherH, "chore: 源更新（模拟 CI）")
+pH = g(["push", "origin", "main"], otherH)
+check(pH.returncode == 0, "「CI」提交真的推上去了（前提条件）",
+      (pH.stdout + pH.stderr).strip().splitlines()[-1][:80])
+write(workH, "state/probe_latest.json", '{"dirty": true}')
+headH = g(["rev-parse", "HEAD"], workH).stdout.strip()
+outH = run_sync(workH)
+check(g(["rev-parse", "HEAD"], workH).stdout.strip() == headH,
+      "HEAD 纹丝不动")
+check("未提交改动" in outH, "跳过原因被说出来",
+      outH.strip().splitlines()[-1][:80] if outH.strip() else "")
+
+print("")
+print("=" * 72)
+print("用例 I：已是最新 -> 不产生提交")
+print("=" * 72)
+dI, remoteI, workI, otherI = setup("i")
+headI = g(["rev-parse", "HEAD"], workI).stdout.strip()
+outI = run_sync(workI)
+check(g(["rev-parse", "HEAD"], workI).stdout.strip() == headI,
+      "HEAD 不变")
+check("已是最新" in outI, "明确说已是最新",
+      outI.strip().splitlines()[-1][:80] if outI.strip() else "")
+
 # ---------------------------------------------------------------- 静默化扫描
 print("")
 print("=" * 72)
@@ -380,4 +460,4 @@ print("=" * 72)
 if FAILS:
     print("结果：失败 %d 项 —— %s" % (len(FAILS), "；".join(FAILS)))
     sys.exit(1)
-print("结果：全部通过（正常 / 真竞态自愈 / 冲突干净 / 救援成功 / 救援失败不伤仓库 / 代理自愈开关 / 静默扫描）")
+print("结果：全部通过（正常 / 真竞态自愈 / 冲突干净 / 救援成功 / 救援失败不伤仓库 / 代理自愈开关 / 探针前同步 / 静默扫描）")

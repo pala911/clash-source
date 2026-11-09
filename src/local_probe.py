@@ -459,6 +459,59 @@ def rescue_push():
         return None
 
 
+def sync_from_remote():
+    """探针前把工作区快进到 origin/main（只 fast-forward，绝不 reset/rebase）。
+
+    为什么需要：probe.py 探的是 dist/nodes（CI 构建产物），本机工作区若长期
+    不拉取，会一直探旧 dist —— 2026-11-08 实踩：11-07 换位后仍探 clashdaily，
+    free-nodes 不在 probe_latest 里，联赛整轮 hold。这里只在「无已跟踪改动 +
+    本地无未推送提交」时快进；其余情况交给推送链的 rebase/rescue。
+    """
+    if not os.path.exists(GIT):
+        return
+    # 只挡已跟踪文件的改动；未跟踪的辅助脚本不影响 dist，别因此跳过同步。
+    for args in (["diff", "--quiet"], ["diff", "--cached", "--quiet"]):
+        p = subprocess.run([GIT] + args, cwd=ROOT, capture_output=True,
+                           text=True, timeout=60, creationflags=NOWIN)
+        if p.returncode != 0:
+            print("[local] 工作区有未提交改动，跳过探针前同步")
+            return
+    if not ensure_proxy(60):
+        print("[local] 代理不可用，跳过探针前同步（继续用本地 dist）")
+        return
+    fetch = [GIT, "-c", "http.proxy=" + PROXY, "-c", "https.proxy=" + PROXY,
+             "fetch", "origin", "main"]
+    p = subprocess.run(fetch, cwd=ROOT, capture_output=True, text=True,
+                       timeout=120, creationflags=NOWIN)
+    if p.returncode != 0:
+        print("[local] 探针前 fetch 失败，继续用本地 dist")
+        return
+    p = subprocess.run([GIT, "rev-list", "--left-right", "--count",
+                        "origin/main...HEAD"], cwd=ROOT, capture_output=True,
+                       text=True, timeout=60, creationflags=NOWIN)
+    parts = (p.stdout or "").split()
+    if p.returncode != 0 or len(parts) != 2:
+        print("[local] 探针前无法比较远端基点，跳过同步")
+        return
+    behind, ahead = int(parts[0]), int(parts[1])
+    if ahead > 0:
+        print("[local] 本地有 %d 个未推送提交，跳过探针前同步（推送链会处理）"
+              % ahead)
+        return
+    if behind == 0:
+        print("[local] 工作区已是最新（origin/main）")
+        return
+    m = subprocess.run([GIT, "merge", "--ff-only", "origin/main"], cwd=ROOT,
+                       capture_output=True, text=True, timeout=120,
+                       creationflags=NOWIN)
+    if m.returncode == 0:
+        print("[local] 探针前已快进 %d 个提交到 origin/main" % behind)
+    else:
+        out = (m.stdout + m.stderr).strip()
+        print("[local] 探针前快进失败，继续用本地 dist：%s"
+              % (out.splitlines()[-1][:120] if out else "?"))
+
+
 def push_to_github(paths=None, msg=None):
     """把数据推回 main。CI 也会推 dist，两边并发时 push 会失败 -> rebase 重试。
 
@@ -674,6 +727,9 @@ def main():
     _oplog("start local probe (scope=local)%s"
            % ((" " + " ".join(sys.argv[1:])) if sys.argv[1:] else ""))
     if not args.scope_only:
+        # 先把工作区快进到远端：probe.py 探的是 dist/nodes（CI 构建产物），
+        # 不拉取就会反复探旧 dist（2026-11-08 free-nodes/clashdaily 实踩）。
+        sync_from_remote()
         print("[local] 本机真探针（scope=local，国内口径）…")
         if run_probe(args) != 0:
             print("[local] 探针失败，退出（不改动健康档案）")

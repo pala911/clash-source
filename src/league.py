@@ -148,7 +148,16 @@ def load_local_rates():
         return None
     out = {}
     for name, row in (d.get("sources") or {}).items():
-        if name.endswith("--flaky") or not row.get("settled"):
+        if name.endswith("--flaky"):
+            continue
+        if not row.get("settled"):
+            # 0 节点 = 源本轮确实产出空（上游 404 / 抓取失败 / 100% 重复未挂载），
+            # 按 0 分参与排名：否则一个死源会让「缺速率 -> 整轮 hold」永久冻结
+            # 联赛（2026-11-09 free-nodes 上游 404 实踩）。
+            # nodes>0 但未 settled 是探针时间盒没测完，仍按「缺速率」处理，
+            # 不能把好源误判成末位（原纪律不变）。
+            if int(row.get("nodes") or 0) == 0:
+                out[name] = (0.0, 0.0)
             continue
         out[name] = (fnum(row.get("rate")), fnum(row.get("alive") or 0))
     return out or None
