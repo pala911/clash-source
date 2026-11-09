@@ -1,83 +1,337 @@
-# clash-source 自动生成 —— 源 automerge，共 8 节点（稳定性加权后留在竞速池内的部分）
+# clash-source 自动生成 —— 源 automerge，共 31 节点（稳定性加权后留在竞速池内的部分）
 # 不要手改；改动会在下次定时任务被覆盖（上游 https://pala911.github.io/clash-source/nodes/automerge.yaml）
 proxies:
-- name: برای اتصال دائمی جوین شو☄️ Tel...
-  type: hysteria2
-  server: 13.143.189.106
-  port: 4444
-  password: a35c508f-4d5d-4531-842e-6e9d43c762c0
-  skip-cert-verify: false
-  sni: pl2.nexfile.net
-  tls: false
-- name: 'برای اتصال دائمی جوین شو☄️ Tel... #1'
-  type: hysteria2
-  server: 13.143.189.142
-  port: 4444
-  password: a35c508f-4d5d-4531-842e-6e9d43c762c0
-  skip-cert-verify: false
-  sni: pl3.nexfile.net
-  tls: false
-- name: 'برای اتصال دائمی جوین شو☄️ Tel... #2'
-  type: hysteria2
-  server: 13.143.189.149
-  port: 4444
-  password: a35c508f-4d5d-4531-842e-6e9d43c762c0
-  skip-cert-verify: false
-  sni: pl2.nexfile.net
-  tls: false
-- name: '🇯🇵 日本 | JPN #3'
+- name: '🇹🇼 🇨🇳 台湾 | TWN #2'
+  type: vless
+  server: 60.248.219.53
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: ty986gfazs.cainiaohub.xyz
+  tls: true
+  udp: true
+  uuid: c1c04450-bf71-4049-ad0c-9cf6d94d9f1f
+  ws-opts:
+    headers:
+      Host: ty986gfazs.cainiaohub.xyz
+    path: /81574b6b-c9d7-44a0-b83d-dad56e8cb530
+- name: '🇺🇸 美国 | USA #2'
+  type: vless
+  server: 199.232.78.160
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: cdn.akamai.steamstatic.com
+  tls: true
+  udp: true
+  uuid: 8fdeb819-df0c-456d-9a1d-e3a9950ece4d
+  ws-opts:
+    headers:
+      Host: copy_az_channel_NUFiLTER_ss.global.ssl.fastly.net.
+    path: /
+- name: '🇮🇹 意大利 | ITA #8'
+  type: ss
+  server: 202.50.253.36
+  port: 19999
+  cipher: aes-256-gcm
+  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
+  udp: true
+- name: '🇮🇹 意大利 | ITA #10'
+  type: ss
+  server: 202.50.253.81
+  port: 19999
+  cipher: aes-256-gcm
+  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
+  udp: true
+- name: '🇯🇵 日本 | JPN #1'
   type: ss
   server: 154.36.158.197
   port: 8388
   cipher: aes-256-gcm
   password: BeaUf9c0AEWH40Pu
   udp: true
-- name: '🇯🇵 日本 | JPN #2'
-  type: ss
-  server: 45.12.89.202
+- name: '🇩🇪 德国 | DEU #3'
+  type: trojan
+  server: jp1.8b1c7c70-ecf1-6891-9fa7-68a86662f902.cheathub.net
   port: 443
-  cipher: chacha20-ietf-poly1305
-  password: 1f24d145bf7c877f7e3140b7918eb9cd804b1576a96596f9
-- name: 🇹🇼 台湾｜06｜BGP
+  password: 6cddea99-9b18-4d42-8638-131bd9f5374f
+  skip-cert-verify: true
+  sni: 8b1c7c70-ecf1-6891-9fa7-68a86662f902.cheathub.net
+  udp: true
+- name: '🇩🇪 德国 | DEU #1'
   type: vless
-  server: cf02.564895.xyz
-  port: 2096
+  server: 78.17.39.129
+  port: 443
+  alpn:
+  - h2
+  - http/1.1
+  client-fingerprint: safari
+  network: xhttp
+  servername: 78.17.39.129
+  tls: true
+  udp: true
+  uuid: ead9f716-0131-4c16-a107-6b9b16090961
+- name: '🇬🇧 英国 | GBR #2'
+  type: vless
+  server: upload.onecloudtraining.com
+  port: 443
+  alpn:
+  - h2
+  - http/1.1
+  client-fingerprint: firefox
+  network: xhttp
+  servername: upload.onecloudtraining.com
+  tls: true
+  udp: true
+  uuid: 0ad875ef-b751-46e3-aa89-e1ae20e43bcc
+- name: 🇬🇧 英国 | GBR 4
+  type: vless
+  server: 80.47.13.182
+  port: 443
+  client-fingerprint: firefox
+  network: grpc
+  servername: dl.megadrishto.com
+  tls: true
+  udp: true
+  uuid: 95f85937-7b95-45c4-8d69-95da6a978569
+- name: '🇬🇧 英国 | GBR #5'
+  type: vless
+  server: download.onecloudtraining.com
+  port: 443
+  alpn:
+  - h2
+  - http/1.1
+  client-fingerprint: firefox
+  network: xhttp
+  servername: download.onecloudtraining.com
+  tls: true
+  udp: true
+  uuid: 0ad875ef-b751-46e3-aa89-e1ae20e43bcc
+- name: '🇬🇧 英国 | GBR #7'
+  type: vless
+  server: link.onecloudtraining.com
+  port: 443
+  alpn:
+  - h2
+  - http/1.1
+  client-fingerprint: firefox
+  network: xhttp
+  servername: link.onecloudtraining.com
+  tls: true
+  udp: true
+  uuid: 0ad875ef-b751-46e3-aa89-e1ae20e43bcc
+- name: '🇰🇷 韩国 | KOR #1'
+  type: hysteria2
+  server: 150-230-252-217.liao.kdns.fr
+  port: 50160
+  password: 9cfc9458e48c028ec03ff86ebc71c744
+  skip-cert-verify: true
+  tls: false
+- name: '🇰🇷 韩国 | KOR #2'
+  type: hysteria2
+  server: 152.69.231.175
+  port: 50160
+  password: 1beb216e3f60aea9555dae60d219a5ca
+  skip-cert-verify: true
+  tls: false
+- name: '🇰🇷 韩国 | KOR #3'
+  type: hysteria2
+  server: 15.165.235.190
+  port: 443
+  password: 7e68e32f-8015-4f37-9082-70e8b0b58043
+  skip-cert-verify: true
+  sni: www.bing.com
+  tls: false
+- name: 🇳🇱 荷兰 | NLD
+  type: vless
+  server: fetch.mediacorphub.org
+  port: 443
+  alpn:
+  - h2
+  client-fingerprint: ios
+  network: grpc
+  servername: fetch.mediacorphub.org
+  tls: true
+  udp: true
+  uuid: 1653818d-532e-46be-b825-384107fb7c3a
+- name: 🇳🇱 荷兰 | NLD 3
+  type: vless
+  server: relay.mediacorphub.org
+  port: 443
+  alpn:
+  - h2
+  client-fingerprint: edge
+  network: grpc
+  servername: relay.mediacorphub.org
+  tls: true
+  udp: true
+  uuid: 1653818d-532e-46be-b825-384107fb7c3a
+- name: 🇳🇱 荷兰 | NLD 7
+  type: vless
+  server: images.mediacorphub.org
+  port: 443
+  alpn:
+  - h2
+  client-fingerprint: ios
+  network: grpc
+  servername: images.mediacorphub.org
+  tls: true
+  udp: true
+  uuid: 1653818d-532e-46be-b825-384107fb7c3a
+- name: 🇳🇱 荷兰 | NLD 8
+  type: vless
+  server: edge.mediacorphub.org
+  port: 443
+  client-fingerprint: firefox
+  network: grpc
+  servername: edge.mediacorphub.org
+  tls: true
+  udp: true
+  uuid: 1653818d-532e-46be-b825-384107fb7c3a
+- name: 🇳🇱 荷兰 | NLD 9
+  type: vless
+  server: 89.105.195.151
+  port: 443
+  client-fingerprint: firefox
+  network: grpc
+  servername: assets.mediacorphub.org
+  tls: true
+  udp: true
+  uuid: 1653818d-532e-46be-b825-384107fb7c3a
+- name: '🇳🇱 荷兰 | NLD #11'
+  type: vless
+  server: kimiadollarkimia-production.up.railway.app
+  port: 443
+  alpn:
+  - http/1.1
   client-fingerprint: firefox
   network: ws
-  servername: tw01.564895.xyz
-  skip-cert-verify: true
+  servername: kimiadollarkimia-production.up.railway.app
   tls: true
   udp: true
-  uuid: 2f4c3fc5-8fa2-4576-a583-8f98a6026887
+  uuid: 416b7c4e-bc33-4a4c-a1e1-e0ab5b2f5f4c
   ws-opts:
     headers:
-      Host: tw01.564895.xyz
-    path: /asdasd
-- name: 🇸🇬 新加坡｜07｜BGP
+      Host: kimiadollarkimia-production.up.railway.app
+    path: /stream/effb9149-8dd4-40dc-b530-1c1927cee436?ed=2560
+- name: 🇳🇱 荷兰 | NLD 12
   type: vless
-  server: cf01.564895.xyz
-  port: 2053
-  client-fingerprint: firefox
-  network: ws
-  servername: sg01.564895.xyz
-  skip-cert-verify: true
-  tls: true
-  udp: true
-  uuid: 2f4c3fc5-8fa2-4576-a583-8f98a6026887
-  ws-opts:
-    headers:
-      Host: sg01.564895.xyz
-    path: /asdasd
-- name: '🇯🇵 日本 | JPN #1'
-  type: vless
-  server: 3.113.213.171
+  server: cdn.mediacorphub.org
   port: 443
-  network: ws
-  servername: jp3.yohototo.top
+  client-fingerprint: firefox
+  network: grpc
+  servername: cdn.mediacorphub.org
   tls: true
   udp: true
-  uuid: 4e4f1f70-5e56-4a76-bb9d-db087f4690c4
+  uuid: 1653818d-532e-46be-b825-384107fb7c3a
+- name: '🇳🇱 荷兰 | NLD #13'
+  type: vless
+  server: 151.101.36.128
+  port: 443
+  alpn:
+  - h3
+  client-fingerprint: edge
+  network: xhttp
+  servername: accounts.fastly.com
+  tls: true
+  udp: true
+  uuid: 67cd3349-f789-4cbb-8b91-4b6b1654ce7c
+- name: 🇳🇱 荷兰 | NLD 14
+  type: vless
+  server: 89.105.195.149
+  port: 443
+  client-fingerprint: firefox
+  network: grpc
+  servername: data.mediacorphub.org
+  tls: true
+  udp: true
+  uuid: 1653818d-532e-46be-b825-384107fb7c3a
+- name: 🇳🇱 荷兰 | NLD 16
+  type: vless
+  server: assets.mediacorphub.org
+  port: 443
+  alpn:
+  - h2
+  client-fingerprint: edge
+  network: grpc
+  servername: assets.mediacorphub.org
+  tls: true
+  udp: true
+  uuid: 1653818d-532e-46be-b825-384107fb7c3a
+- name: 🇳🇱 荷兰 | NLD 18
+  type: vless
+  server: 89.105.195.148
+  port: 443
+  client-fingerprint: firefox
+  network: grpc
+  servername: api.mediacorphub.org
+  tls: true
+  udp: true
+  uuid: 1653818d-532e-46be-b825-384107fb7c3a
+- name: '🇵🇱 波兰 | POL #1'
+  type: hysteria2
+  server: pl3.nexfile.net
+  port: 4444
+  password: a35c508f-4d5d-4531-842e-6e9d43c762c0
+  skip-cert-verify: true
+  sni: pl3.nexfile.net
+  tls: false
+- name: '🇵🇱 波兰 | POL #2'
+  type: vless
+  server: 151.101.36.227
+  port: 443
+  alpn:
+  - h3
+  client-fingerprint: edge
+  network: xhttp
+  servername: accounts.fastly.com
+  tls: true
+  udp: true
+  uuid: 67cd3349-f789-4cbb-8b91-4b6b1654ce7c
+- name: 🇷🇺 俄罗斯 | RUS 3
+  type: vless
+  server: xssite.webredirect.org
+  port: 443
+  client-fingerprint: chrome
+  network: grpc
+  servername: xssite.webredirect.org
+  tls: true
+  udp: true
+  uuid: c90395e6-2140-47ad-a54d-9b166729d3ef
+- name: '🇷🇺 俄罗斯 | RUS #4'
+  type: vless
+  server: xsru2.freeddns.org
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: xsru2.freeddns.org
+  tls: true
+  udp: true
+  uuid: c90395e6-2140-47ad-a54d-9b166729d3ef
   ws-opts:
     headers:
-      Host: jp3.yohototo.top
-    path: /tyxyws
+      Host: xsru2.freeddns.org
+    path: /wsru
+- name: '🇹🇼 🇨🇳 台湾 | TWN #1'
+  type: vless
+  server: hc35000.leyali.kdns.fr
+  port: 443
+  client-fingerprint: chrome
+  encryption: mlkem768x25519plus.native.0rtt.lp5ecFTuEhpfyb3UpX4PV7X8OzGdI6l2DHcMcRpndVg
+  network: ws
+  servername: hc35000.leyali.kdns.fr
+  tls: true
+  udp: true
+  uuid: 369f76a6-77d1-4998-80bc-be485ce363bd
+  ws-opts:
+    headers:
+      Host: hc35000.leyali.kdns.fr
+    path: /hc35000
+- name: 🇺🇸 美国 | USA
+  type: anytls
+  server: sdf65h46wr.df6h451rh.xin
+  port: 443
+  password: 0324fbc29561
+  skip-cert-verify: true
+  sni: images.ctfassets.net
+  udp: true
