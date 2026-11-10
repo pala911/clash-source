@@ -17,6 +17,7 @@ dist/manifest.json     本次运行统计（手机排障 / 后续 diff 用）
   jsdelivr 分支引用缓存 ~12h 太慢；同理禁用 raw 直链——蜂窝网络
   github.io/raw 都拉不动，中转必须带 gh-proxy.com 前缀）
 """
+import datetime
 import json
 import os
 
@@ -78,6 +79,20 @@ MOBILE_PER_SRC = 25
 MOBILE_PREFERRED = ("zhuhaiuk", "clashdaily", "ssrsub", "ruk1ng001",
                     "leilaomi", "nomorewalls", "automerge")
 MOBILE_PROVIDER = "mobile"
+
+# ---- 带宽测速 / 视频组（2026-11-10）----
+# 健康检查只证明「连得上」，不证明「跑得动」。本机实测同一源内
+# 0.21 ~ 4.61 MB/s 差 20 倍，30/56 个「存活」节点真实下载直接失败。
+# 因此视频组只收**本机真实下载**达标的节点：
+#   720p ≈ 0.3 MB/s，1080p ≈ 0.6 MB/s，4K ≈ 2.5 MB/s。
+# 门槛取 1080p；数据超过 48h 视为过期（构建侧跳过，不拿旧速度骗人）。
+SPEED = os.path.join(ROOT, "state", "speed_latest.json")
+SPEED_MAX_AGE_H = 48
+VIDEO_PROVIDER = "video"
+VIDEO_MBPS = 0.6
+VIDEO_MAX = 40
+VIDEO_PER_SRC = 12
+VIDEO_MIN = 4
 
 
 def split_by_stability(per_source):
@@ -222,6 +237,95 @@ def load_health():
         return {}, ("健康档案损坏（%s: %s）—— 本轮按「无历史」排序、AUTO 用上一轮名单；"
                     "损坏文件**没有**被重建或删除，修复见 health.py 的提示"
                     % (type(e).__name__, str(e)[:100]))
+
+
+def load_speed(path=None, now=None):
+    """读本机带宽测速档案；坏了/过期都**不抛**，返回 `(data, note)`。
+
+    口径与 load_health 一致：辅助档案坏了不能带崩构建，但必须能看见。
+    `scope != local` 一律不认 —— CI 美国 runner 的测速结果不能拿来给国内
+    手机挑视频节点（跨洋带宽和落地线路完全是两回事）。
+    """
+    path = path or SPEED
+    try:
+        with open(path, encoding="utf-8") as f:
+            d = json.load(f)
+    except FileNotFoundError:
+        return None, "测速档案不存在（首次运行？）：%s" % path
+    except Exception as e:               # noqa: BLE001
+        return None, ("测速档案损坏（%s: %s）—— 本轮不生成视频组；"
+                      "损坏文件没有被重建或删除" % (type(e).__name__, str(e)[:100]))
+    if not isinstance(d, dict) or not isinstance(d.get("results"), list):
+        return None, "测速档案结构不对（缺 results 列表）—— 本轮不生成视频组"
+    if d.get("scope") != "local":
+        return None, ("测速档案不是本机口径（scope=%r）—— 本轮不生成视频组"
+                      % d.get("scope"))
+    try:
+        tested = datetime.datetime.strptime(str(d.get("tested_at") or ""),
+                                            "%Y-%m-%dT%H:%M:%SZ")
+    except ValueError:
+        return None, "测速档案缺少可解析的 tested_at —— 本轮不生成视频组"
+    age = (now or datetime.datetime.utcnow()) - tested
+    if age > datetime.timedelta(hours=SPEED_MAX_AGE_H):
+        return None, ("测速档案已过期（%.1f 小时前 > %d 小时）—— "
+                      "本轮不生成视频组，等下一次本机测速"
+                      % (age.total_seconds() / 3600.0, SPEED_MAX_AGE_H))
+    return d, ""
+
+
+def pick_video_nodes(speed_doc, stable_nodes, per_src=VIDEO_PER_SRC,
+                     cap=VIDEO_MAX, min_nodes=VIDEO_MIN):
+    """把本机实测达标的节点挑进「视频」组。
+
+    关联方式是**节点指纹**（node_stability.fingerprint，忽略 name）：CI 每轮
+    重新抓源，节点名可能带时间戳/序号漂移，但配置内容不变时指纹不变。
+    指纹对不上 = 节点配置变了，旧速度不适用，直接跳过（绝不按名字硬套）。
+
+    返回 (nodes, note)。note 非空 = 没生成视频组，原因要进日志/告警。
+    """
+    if not speed_doc:
+        return [], "无可用测速档案"
+    import node_stability as ns
+    rows = [r for r in (speed_doc.get("results") or [])
+            if isinstance(r, dict) and not r.get("error")
+            and (r.get("mbps") or 0) >= VIDEO_MBPS]
+    if not rows:
+        return [], ("测速结果里没有 >= %.1f MB/s 的节点" % VIDEO_MBPS)
+
+    index = {}
+    for src, nodes in (stable_nodes or {}).items():
+        for p in nodes:
+            if isinstance(p, dict) and p.get("name"):
+                index.setdefault(ns.fingerprint(p), (src, p))
+
+    rows.sort(key=lambda r: (-(r.get("mbps") or 0),
+                             r.get("median_ms") or 99999))
+    picked, seen, used = [], set(), {}
+    for r in rows:
+        fp = r.get("fp")
+        if not fp or fp in seen:
+            continue
+        hit = index.get(fp)
+        if not hit:
+            continue                     # 配置已变/本轮没进稳定池，旧速度不复用
+        src, p = hit
+        if used.get(src, 0) >= per_src:
+            continue
+        name = "%s_%s" % (src, p.get("name"))
+        if any(n.get("name") == name for n in picked):
+            continue
+        seen.add(fp)
+        used[src] = used.get(src, 0) + 1
+        node = dict(p)
+        node["name"] = name
+        picked.append(node)
+        if len(picked) >= cap:
+            break
+
+    if len(picked) < min_nodes:
+        return [], ("达标且能在本轮稳定池里对上的节点只有 %d 个（< %d）"
+                    % (len(picked), min_nodes))
+    return picked, ""
 
 
 def _last_manifest_auto(enabled_names):
@@ -421,7 +525,8 @@ def provider_block(name, url, exclude_filter):
     }
 
 
-def build_profile(enabled_sources, exclude_map, owner, repo, flaky_sources=()):
+def build_profile(enabled_sources, exclude_map, owner, repo, flaky_sources=(),
+                  video_nodes=None):
     with open(TEMPLATE, encoding="utf-8") as f:
         tpl = yaml.safe_load(f)
 
@@ -438,12 +543,25 @@ def build_profile(enabled_sources, exclude_map, owner, repo, flaky_sources=()):
         providers["SRCFL-" + n] = provider_block(
             "SRCFL-" + n, mbase + "/nodes/%s--flaky.yaml" % n,
             exclude_map.get(n, ""))
+    # 视频组：只挂本机实测高带宽节点（nodes/video.yaml）。没有达标节点时
+    # 连 provider 都不建 —— 空 provider 会让手机上的组变成空壳。
+    video_nodes = list(video_nodes or ())
+    if video_nodes:
+        providers[VIDEO_PROVIDER] = provider_block(
+            VIDEO_PROVIDER, mbase + "/nodes/video.yaml", "")
 
     names = [s["name"] for s in enabled_sources]
     ranked, degrade_note = rank_sources(names)
     flaky_names = ["SRCFL-" + n for n in (flaky_sources or ())]
     groups, picked, spare, watch, dropped = build_groups(
         names, ranked, flaky_names, degraded_note=degrade_note)
+    if video_nodes:
+        # 视频组只做 url-test：看视频时手动切到它，内核按 youtube 延迟自动
+        # 选当前最快；真正的高带宽候选已经在 nodes/video.yaml 里筛过一遍。
+        groups.append({"name": "视频", "type": "url-test",
+                       "use": [VIDEO_PROVIDER], "url": YOUTUBE,
+                       "expected-status": 204, "interval": 300,
+                       "timeout": 5000, "tolerance": 200})
     # 模板里的 proxy-groups 整块丢弃：SRC-*/AUTO/FAILOVER/PROXY 全部改由
     # build_groups 按实测质量动态生成。规则/ dns / 其他键仍保留模板的。
     tpl["proxy-groups"] = groups
@@ -461,6 +579,9 @@ def build_profile(enabled_sources, exclude_map, owner, repo, flaky_sources=()):
             if HOME_PROXY_NAME not in members:
                 pos = 1 if members[:1] == ["FAILOVER"] else 0
                 members.insert(pos, HOME_PROXY_NAME)
+            if video_nodes and "视频" not in members:
+                pos = members.index("备用") if "备用" in members else len(members)
+                members.insert(pos, "视频")
         elif g["name"] in ("Claude", "Gemini"):
             members = g.setdefault("proxies", [])
             if "PROXY" not in members:
@@ -475,8 +596,9 @@ def build_profile(enabled_sources, exclude_map, owner, repo, flaky_sources=()):
         if g["name"].startswith("SRC-"):
             assert g["use"], "%s 没有 use 字段" % g["name"]
     for n in providers:
-        # 不稳定 provider（SRCFL-*）挂在「不稳定」组里，不是 SRC-* 组
-        if n.startswith("SRCFL-"):
+        # 不稳定 provider（SRCFL-*）挂在「不稳定」组里，不是 SRC-* 组；
+        # 视频 provider 挂在「视频」组里，同理不要求 SRC-* 组。
+        if n.startswith("SRCFL-") or n == VIDEO_PROVIDER:
             continue
         assert any(g["name"] == "SRC-%s" % n for g in tpl["proxy-groups"]), \
             "provider %s 没有对应的 SRC- 组" % n
@@ -543,16 +665,31 @@ def build_profile(enabled_sources, exclude_map, owner, repo, flaky_sources=()):
 
 
 def pick_mobile_nodes(per_source_nodes, cap=MOBILE_NODE_CAP, per_src=MOBILE_PER_SRC,
-                      preferred=MOBILE_PREFERRED):
+                      preferred=MOBILE_PREFERRED, speed_doc=None):
     """源间轮询取节点（保证多样性），按 (type, server, port) 去重。
 
     不用「按源顺序取满」——那样前几个源就把名额吃光，等于单源订阅。
     轮询后即使某个源节点全重复，也能从其他源补满。
+
+    `speed_doc` 非空时，每个源的桶内把**实测高带宽节点排前面**：iOS 精简版
+    不新增 provider/组（内存不够），只能在现有 120 个名额里优先装快节点。
+    没有测速数据的节点保持原顺序，不会被排到已知慢节点后面。
     """
     sources = [s for s in preferred if per_source_nodes.get(s)]
     if not sources:                       # 首选源一个都不在（极端情况）就退回全部
         sources = [s for s, v in per_source_nodes.items() if v]
     buckets = {s: list(per_source_nodes[s]) for s in sources}
+    if speed_doc:
+        import node_stability as ns
+        mbps = {}
+        for r in (speed_doc.get("results") or []):
+            if isinstance(r, dict) and r.get("fp") and not r.get("error"):
+                mbps[r["fp"]] = r.get("mbps") or 0.0
+        if mbps:
+            for s in sources:
+                buckets[s].sort(key=lambda n: (
+                    ns.fingerprint(n) not in mbps,
+                    -(mbps.get(ns.fingerprint(n)) or 0.0)))
     used = {s: 0 for s in sources}
     picked, seen = [], set()
     while len(picked) < cap:
@@ -576,7 +713,7 @@ def pick_mobile_nodes(per_source_nodes, cap=MOBILE_NODE_CAP, per_src=MOBILE_PER_
     return picked, [s for s in sources if used[s] > 0]
 
 
-def build_mobile_profile(per_source_nodes, owner, repo):
+def build_mobile_profile(per_source_nodes, owner, repo, speed_doc=None):
     """iOS 精简版：单 provider + select/url-test 两种组 + 全 lazy 规则集。
 
     为什么单 provider：iOS 网络扩展内存上限约 50MB，节点数是最主要的变量
@@ -590,7 +727,7 @@ def build_mobile_profile(per_source_nodes, owner, repo):
     with open(TEMPLATE, encoding="utf-8") as f:
         tpl = yaml.safe_load(f)
 
-    nodes, used_sources = pick_mobile_nodes(per_source_nodes)
+    nodes, used_sources = pick_mobile_nodes(per_source_nodes, speed_doc=speed_doc)
     assert nodes, "移动端精简版没有任何节点（per_source_nodes 为空？）"
 
     provider = provider_block(MOBILE_PROVIDER,
@@ -673,7 +810,7 @@ def write_nodes(dist_dir, per_source_nodes, all_nodes, base=""):
 
 
 def write_dist(dist_dir, per_source_nodes, all_nodes, profile, manifest, base,
-               flaky_nodes=None, mobile=None):
+               flaky_nodes=None, mobile=None, video=None):
     nodes_dir = os.path.join(dist_dir, "nodes")
     os.makedirs(nodes_dir, exist_ok=True)
     owner = manifest.get("owner") or "YOUR_GITHUB_ID"
@@ -695,6 +832,13 @@ def write_dist(dist_dir, per_source_nodes, all_nodes, profile, manifest, base,
               "# clash-source 自动生成 —— 全源合并，共 %d 节点（名字带源前缀）\n"
               "# 供多源合并场景使用；profile.yaml 默认按源分文件挂载" % len(all_nodes),
               os.path.join(nodes_dir, "all.yaml"))
+    if video:
+        dump_yaml({"proxies": video},
+                  "# clash-source 自动生成 —— 视频组节点池，共 %d 节点\n"
+                  "# 只收本机真实下载 >= %.1f MB/s（约 1080p）的节点；\n"
+                  "# 健康检查存活 ≠ 能看视频，不要手工往这里加没测过的节点。"
+                  % (len(video), VIDEO_MBPS),
+                  os.path.join(nodes_dir, "video.yaml"))
     if mobile:
         mobile_nodes, mobile_profile, mobile_sources = mobile
         dump_yaml({"proxies": mobile_nodes},

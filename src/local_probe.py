@@ -703,6 +703,41 @@ def run_league_chain(push_it=True):
     return prc
 
 
+SPEED_SCRIPT = os.path.join(ROOT, "tools", "speed_test.py")
+SPEED_TIMEOUT = 900       # 测速时间盒：预算 300s + mihomo 启停/配置校验余量
+
+
+def run_speed_chain(mihomo=None):
+    """本机带宽实测（2026-11-10）：排在健康档案之后、主链推送之前。
+
+    只测 `dist/nodes` 里每源抽样的节点，结果写 `state/speed_latest.json`，
+    由同一轮主链 push 一起带走（不单独推送）。任何失败只打印，不返回
+    非零给主链 —— 测速是增强项，不能带崩 L2。
+    """
+    script = SPEED_SCRIPT
+    if not os.path.isfile(script):
+        print("[speed] ⚠ 找不到 %s，跳过带宽测速（主链不受影响）" % script)
+        return None
+    cmd = [sys.executable, script, "--per-source", "8",
+           "--budget", "480", "--timeout", "10"]
+    if mihomo:
+        cmd += ["--mihomo", mihomo]
+    print("[speed] 带宽实测开跑（每源 8 个，预算 480s，单节点 10s）…")
+    try:
+        p = subprocess.run(cmd, cwd=ROOT, stdout=sys.stdout,
+                           stderr=subprocess.STDOUT, timeout=SPEED_TIMEOUT,
+                           creationflags=NOWIN)
+        rc = p.returncode
+    except subprocess.TimeoutExpired:
+        print("[speed] ⚠ 时间盒 %ds 到点被掐断（结果文件是末尾原子写，无半成品）"
+              % SPEED_TIMEOUT)
+        rc = 124
+    if rc != 0:
+        print("[speed] exit=%d：本轮测速失败，视频组沿用上一次的 state/speed_latest.json"
+              "（过期 >48h 时构建侧会自动跳过）" % rc)
+    return rc
+
+
 def main():
     ap = argparse.ArgumentParser(description="本机（国内口径）真探针，计划任务每天 12:30 跑")
     ap.add_argument("--no-push", action="store_true", help="只探针，不推回 GitHub")
@@ -710,6 +745,8 @@ def main():
                     help="跳过探针，只跑健康档案并推送（用已有的 probe_latest.json）")
     ap.add_argument("--mihomo", default=r"C:\Program Files\Clash Verge\verge-mihomo.exe")
     ap.add_argument("--budget", type=int, default=3600, help="探针墙钟预算（秒）")
+    ap.add_argument("--no-speed", action="store_true",
+                    help="跳过带宽测速（视频组数据不更新，构建侧 >48h 会自动跳过）")
     # ⚠ 3600 的由来：2026-10-17 中午轮实测，3549 节点在中午网络下
     #   1800 秒不够（autojiedian 744/868、yypool 741/900 未测完），
     #   而机器中午闲着 —— 宁可多给一小时，也别让大源掉出当日判定。
@@ -756,6 +793,17 @@ def main():
         print("[local] ⚠ health.py 失败（exit=%d）：健康档案本轮**未更新**。"
               "探针结果仍在 state/probe_latest.json，下轮探针会重跑。"
               % health_rc)
+
+    if args.scope_only:
+        print("[local] --scope-only：跳过带宽测速（复用现有 state/speed_latest.json）")
+    elif args.no_speed:
+        print("[local] --no-speed：跳过带宽测速")
+    else:
+        # 测速只写 state/speed_latest.json，跟着下面的主链 push 一起走。
+        # 失败不回传错误码 —— 视频组是增强项，不能带崩 L2 主链。
+        src = run_speed_chain(mihomo=args.mihomo)
+        if src is not None:
+            _oplog("speed exit=%d" % src)
 
     rc = 0
     if args.no_push:

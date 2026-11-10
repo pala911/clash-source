@@ -28,7 +28,11 @@ NAMES = ["anaer", "autojiedian", "automerge", "ermaozi", "nomorewalls",
          "yypool", "zhuhaiuk"]
 
 enabled = [{"name": n, "url": "https://example/%s" % n} for n in NAMES]
-profile, base, ranking = build.build_profile(enabled, {}, "pala911", "clash-source")
+# 带一个视频节点：让内核也校验「视频」组/provider 的引用形态。
+video = [{"name": "video_test", "type": "ss", "server": "1.2.3.4",
+          "port": 443, "cipher": "aes-128-gcm", "password": "x"}]
+profile, base, ranking = build.build_profile(
+    enabled, {}, "pala911", "clash-source", video_nodes=video)
 
 out = os.path.join(tempfile.gettempdir(), "profile_build_test.yaml")
 with open(out, "w", encoding="utf-8") as f:
@@ -54,6 +58,7 @@ print("")
 print("  AUTO   = %s" % "、".join(ranking["auto"]))
 print("  备用   = %s" % "、".join(ranking["备用"]))
 print("  观察   = %s" % "、".join(ranking["观察"]))
+print("  视频   = %d 个节点" % len(video))
 print("")
 print("  分桶依据：")
 for n in NAMES:

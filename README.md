@@ -26,13 +26,18 @@
 | `PROXY` | select | 默认选 `FAILOVER` | 平时不用动 |
 | `FAILOVER` | fallback | 全部启用源，逐个兜底 | 不用动 |
 | **`AUTO`** | url-test | **只有「达标源 × 稳节点」**，每 120 秒重测取最快 | **这是你用的那个** |
+| `视频` | url-test | **本机实测 ≥0.6 MB/s（约 1080p）的节点**，最多 40 个 | 看高清视频时手动切过去 |
 | `备用` | select | 达标但未进 AUTO 的源 + T2 位置敏感源 + `不稳定` 组 | 想换源时手动切 |
 | `观察` | select | 本机实测通过率 < 8% / 无探针数据的源 | 基本不用管 |
 | `不稳定` | url-test | 历史可用率偏低的节点 | 路由变了才需要 |
 | `SRC-<源名>` | url-test | 单源的节点 | 排查单源时用 |
 | `Claude` / `Gemini` | select | 全部启用源 | 不用动 |
 
-**只有 `AUTO` 会自动竞速。** 差源和历史不稳的节点被排除在竞速之外 —— 不是删掉，仍然能从 `备用` 组手工切到。
+**只有 `AUTO` 和 `视频` 会自动竞速**（视频组只在你手动切过去时参与）。差源和历史不稳的节点被排除在竞速之外 —— 不是删掉，仍然能从 `备用` 组手工切到。
+
+> `视频` 组来自本机 12:30 链的真实下载测速（`state/speed_latest.json`），
+> 不是健康检查延迟。实测「存活」节点里有一半真实下载直接失败，
+> 所以这个组**只收跑得动的节点**；测速数据超过 48 小时构建侧会跳过该组。
 
 profile 含两层，节点更新不必等 profile 刷新：
 
@@ -240,6 +245,7 @@ provider、约 1060~1150 个节点；按 120 节点 46.5 MB / 5700 节点 95 MB 
 | `cnci_status.py` | 本机读上面那份留痕，直接给结论：回传通没通、为什么没通 |
 | `cnci_trigger.py` | 用云效 OpenAPI 触发/查看 L3 流水线（**接入点别弄错**，见 §9） |
 | `check_ci_scripts.py` | **Python 3.6 静态门禁**（28 个文件，交付前必跑） |
+| `speed_test.py` | **节点带宽实测**（本机口径；起独立 mihomo 逐个切节点真下载，结果写 `state/speed_latest.json`，供「视频」组消费） |
 | `test_stability.py` / `test_build_groups.py` / `test_health_tiering.py` | 三组回归测试 |
 | `verify_profile.py` | **用真 mihomo 内核校验生成的 profile**（见 §9） |
 | `restore_codeup.py` / `CI_RECOVERY.md` | 云效组织被删后的灾难恢复 |
@@ -441,7 +447,7 @@ python tools\cnci_trigger.py --status   # 只看云效最近几次运行，不�
 ok=0; for i in $(seq 1 8); do git fetch origin && git reset --hard origin/master && { ok=1; break; }; sleep 20; done; [ "$ok" = "1" ] && bash tools/sync_and_probe.sh || { echo "同步失败"; exit 1; }
 ```
 
-### 交付前必跑（全部二十道）
+### 交付前必跑（全部二十二道）
 
 ```powershell
 python tools\check_ci_scripts.py      # Python 3.6 静态门禁
@@ -463,6 +469,8 @@ python tools\test_hardening.py        # 硬化回归：dist 残留清理 / raw �
 python tools\test_refill.py           # 自动补员：cap/节流/排重/选优/命名/损坏/停用/dry-run + append-only 子序列断言
 python tools\test_league.py           # 末位淘汰：决策/防抖/alive 门槛/通道样本门槛/通道与回归两条写入路径/换位对账/cap 守恒
 python tools\test_mobile_profile.py   # 移动端精简版：单 provider / 120 节点上限 / 源间去重 / 只含 select+url-test（Karing 兼容）/ 规则集全 lazy
+python tools\test_speed_test.py       # 带宽测速抽样：每源一半快+一半随机 / 跨源指纹去重 / 排除 mobile 与 --flaky / 按源轮转 / 分档统计
+python tools\test_video_group.py      # 视频组：测速档案缺失/损坏/过期/非本机口径都跳过 / 阈值与上限 / 指纹关联 / provider+组+PROXY / video.yaml 生命周期 / iOS 不新增组
 python tools\verify_profile.py        # 真 mihomo 内核校验
 python tools\probe_field_types.py     # mihomo 接受哪些字段类型
 ```

@@ -33,7 +33,7 @@ def log(msg):
     print(msg, flush=True)
 
 
-def _prune_dist_stale(dist_dir, keep_names):
+def _prune_dist_stale(dist_dir, keep_names, extra_keep=()):
     """把 dist/nodes、dist/raw 里「本轮已不存在的源」的快照删掉（2026-10-19 微项）。
 
     源被停用/改名后，上一轮的 per-source 文件会一直留在 main 的 dist/ 里：
@@ -45,8 +45,11 @@ def _prune_dist_stale(dist_dir, keep_names):
       会写 dist/nodes/mobile.yaml（非源名），白名单不含它时刚写完就被这里
       当残留删掉 —— gh-pages 404、轻量版订阅 0 节点，而 dist/mobile.yaml
       在根目录幸存，极难察觉。防护放在函数内部：任何调用方都无法漏传。
+
+    `extra_keep` 给视频池这类「条件生成」的合成 provider 用：只有本轮真的
+    生成了才传进来，否则旧的 video.yaml 应该被清掉，避免留下没人引用的快照。
     """
-    keep = set(keep_names) | {build.MOBILE_PROVIDER}
+    keep = set(keep_names) | {build.MOBILE_PROVIDER} | set(extra_keep)
     for sub in ("nodes", "raw"):
         d = os.path.join(dist_dir, sub)
         if not os.path.isdir(d):
@@ -361,11 +364,27 @@ def main():
     stable_nodes, flaky_nodes, stab_note = build.split_by_stability(per_source)
     log("稳定性加权：%s" % stab_note)
 
+    # 带宽测速（本机 12:30 链产出）：过期/缺失/损坏都只跳过视频组，绝不让
+    # 构建失败。视频组是增强项，不能变成新的单点故障。
+    speed_doc, speed_note = build.load_speed()
+    video_nodes, video_note = build.pick_video_nodes(speed_doc, stable_nodes)
+    if speed_note:
+        log("视频组跳过：%s" % speed_note)
+        warnings.append("视频组未生成：%s" % speed_note)
+    elif video_note:
+        log("视频组跳过：%s" % video_note)
+        warnings.append("视频组未生成：%s" % video_note)
+    else:
+        log("视频组：%d 节点（本机实测 >= %.1f MB/s，数据 %s）"
+            % (len(video_nodes), build.VIDEO_MBPS,
+               speed_doc.get("tested_at")))
+
     profile, _, ranking = build.build_profile(enabled, excl_map, owner, repo,
-                                              flaky_sources=sorted(flaky_nodes))
+                                              flaky_sources=sorted(flaky_nodes),
+                                              video_nodes=video_nodes)
     # 移动端精简版（iOS 内存优化）：从同一批稳定节点里取样，不额外抓源/探测/AI。
     mobile_nodes, mobile_profile, mobile_sources = build.build_mobile_profile(
-        stable_nodes, owner, repo)
+        stable_nodes, owner, repo, speed_doc=speed_doc)
     log("移动端精简版：%d 节点（源 %s）"
         % (len(mobile_nodes), "、".join(mobile_sources) or "无"))
     log("质量分桶（国内口径）：AUTO=%s" % ("、".join(ranking["auto"]) or "无"))
@@ -424,13 +443,22 @@ def main():
                    "nodes": len(mobile_nodes),
                    "cap": build.MOBILE_NODE_CAP,
                    "sources": mobile_sources},
+        "video": {"provider": build.VIDEO_PROVIDER,
+                  "nodes": len(video_nodes),
+                  "threshold_mbps": build.VIDEO_MBPS,
+                  "cap": build.VIDEO_MAX,
+                  "per_source": build.VIDEO_PER_SRC,
+                  "tested_at": (speed_doc or {}).get("tested_at"),
+                  "partial": bool((speed_doc or {}).get("partial")),
+                  "note": speed_note or video_note or ""},
         "warnings": warnings,
     }
 
     dist = os.path.join(ROOT, "dist")
     build.write_dist(dist, stable_nodes, all_nodes, profile, manifest, base,
                      flaky_nodes=flaky_nodes,
-                     mobile=(mobile_nodes, mobile_profile, mobile_sources))
+                     mobile=(mobile_nodes, mobile_profile, mobile_sources),
+                     video=video_nodes)
     u = manifest["ai_usage"]
     log("AI 用量：送审 %d 条 / %d 次调用 / prompt %d + completion %d = %d token（超时记账 %d 次）"
         % (manifest["totals"]["ai_reviewed"], u.get("calls", 0), u.get("prompt", 0),
@@ -456,7 +484,8 @@ def main():
                          "# 未过滤原始快照（对比用，勿订阅）—— 源 %s" % name,
                          os.path.join(dist, "raw", "%s.yaml" % name))
     if not args.sources:
-        _prune_dist_stale(dist, set(per_source.keys()))
+        _prune_dist_stale(dist, set(per_source.keys()),
+                          extra_keep={build.VIDEO_PROVIDER} if video_nodes else ())
     report.write_report(os.path.join(ROOT, "reports", "latest.md"),
                         manifest, metas, warnings, per_source)
 

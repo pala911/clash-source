@@ -95,6 +95,14 @@ def write_report(path, manifest, metas, warnings, per_source):
                  % ("、".join(rank.get("备用") or []) or "-"))
         L.append("| 观察 | 本机实测不达标 | %s |"
                  % ("、".join(rank.get("观察") or []) or "-"))
+        video = manifest.get("video") or {}
+        if video:
+            if video.get("nodes"):
+                L.append("| 视频 | 本机实测高带宽（手动切） | %d 节点（≥ %.1f MB/s） |"
+                         % (video["nodes"], video.get("threshold_mbps") or 0.6))
+            else:
+                L.append("| 视频 | 本机实测高带宽（手动切） | 未生成：%s |"
+                         % (video.get("note") or "无测速数据"))
         L.append("")
         L.append("排序依据是**国内口径**（本机全量探针的多轮均值）。"
                  "美国 CI 口径不用来排序 —— 实测 Spearman rho 仅 0.48，排名不可信。")
