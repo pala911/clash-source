@@ -149,12 +149,32 @@ try:
         check("不要求 video 有 SRC- 组",
               not any(g["name"] == "SRC-video" for g in prof["proxy-groups"]))
 
+        def rule_target(rules, set_name):
+            prefix = "RULE-SET,%s," % set_name
+            for r in rules or ():
+                if r.startswith(prefix):
+                    return r.split(",")[2]
+            return None
+
+        for name in build.VIDEO_RULE_SETS:
+            check("视频规则 %s -> 视频" % name,
+                  rule_target(prof["rules"], name) == "视频")
+        check("大陆 Bilibili 仍 DIRECT",
+              rule_target(prof["rules"], "Bilibili") == "DIRECT")
+        check("ChinaMedia 仍 DIRECT",
+              rule_target(prof["rules"], "ChinaMedia") == "DIRECT")
+
         prof2, _, _ = build.build_profile(
             enabled, {}, "pala911", "clash-source", video_nodes=[])
         gp2 = {g["name"]: g for g in prof2["proxy-groups"]}
         check("没有视频节点 -> 无 provider", "video" not in prof2["proxy-providers"])
         check("没有视频节点 -> 无「视频」组", "视频" not in gp2)
         check("没有视频节点 -> PROXY 不引用", "视频" not in gp2["PROXY"]["proxies"])
+        for name in build.VIDEO_RULE_SETS:
+            check("无视频时 %s 仍走 PROXY" % name,
+                  rule_target(prof2["rules"], name) == "PROXY")
+        check("无视频组时规则完全不提「视频」",
+              not any("视频" in r for r in prof2["rules"]))
     finally:
         build.rank_sources = _rank
 
@@ -215,6 +235,10 @@ try:
     check("移动端没有视频 provider", "video" not in mp["proxy-providers"])
     check("移动端没有「视频」组",
           not any(g["name"] == "视频" for g in mp["proxy-groups"]))
+    check("移动端规则不引用「视频」",
+          not any("视频" in r for r in mp["rules"]))
+    check("移动端 YouTube 规则仍走 PROXY",
+          any(r.startswith("RULE-SET,YouTube,PROXY") for r in mp["rules"]))
 finally:
     shutil.rmtree(tmp, ignore_errors=True)
 

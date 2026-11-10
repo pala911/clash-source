@@ -93,6 +93,9 @@ VIDEO_MBPS = 0.6
 VIDEO_MAX = 40
 VIDEO_PER_SRC = 12
 VIDEO_MIN = 4
+# 模板里这些 RULE-SET 是视频流量；有「视频」组时把目标从 PROXY 改到视频组。
+# 大陆 Bilibili / ChinaMedia 仍是 DIRECT（国内 CDN 直连更快，也不该烧代理流量）。
+VIDEO_RULE_SETS = ("YouTube", "Netflix", "ProxyMedia", "Bahamut", "BilibiliHMT")
 
 
 def split_by_stability(per_source):
@@ -525,6 +528,26 @@ def provider_block(name, url, exclude_filter):
     }
 
 
+def route_video_rules(rules, enabled=True):
+    """把模板里视频类 RULE-SET 的目标改成「视频」组（2026-11-10）。
+
+    只在视频组**真的生成**时调用：规则指向不存在的组会让整个订阅加载失败，
+    所以没有视频节点时必须原样保留 PROXY（load_speed 过期/测速失败的那天）。
+    大陆 Bilibili/ChinaMedia 规则在模板里本来就是 DIRECT，不在改写名单内。
+    """
+    if not enabled:
+        return list(rules or ())
+    out = []
+    for r in rules or ():
+        parts = [x.strip() for x in str(r).split(",")]
+        if (len(parts) >= 3 and parts[0].upper() == "RULE-SET"
+                and parts[1] in VIDEO_RULE_SETS):
+            parts[2] = "视频"
+            r = ",".join(parts)
+        out.append(r)
+    return out
+
+
 def build_profile(enabled_sources, exclude_map, owner, repo, flaky_sources=(),
                   video_nodes=None):
     with open(TEMPLATE, encoding="utf-8") as f:
@@ -586,6 +609,11 @@ def build_profile(enabled_sources, exclude_map, owner, repo, flaky_sources=(),
             members = g.setdefault("proxies", [])
             if "PROXY" not in members:
                 members.insert(0, "PROXY")
+
+    # 视频流量自动走「视频」组：YouTube / Netflix / ProxyMedia / 巴哈姆特 /
+    # Bilibili 港澳台。改订阅即生效，不需要在手机上手动切组；没有视频组时
+    # 这些规则保持原样指向 PROXY（规则目标不存在会让订阅直接加载失败）。
+    tpl["rules"] = route_video_rules(tpl.get("rules"), enabled=bool(video_nodes))
 
     # ---- 校验链（失败即中止，不产出坏 profile）----
     used = {n for g in tpl["proxy-groups"] for n in (g.get("use") or [])}

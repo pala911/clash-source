@@ -375,9 +375,11 @@ def main():
         log("视频组跳过：%s" % video_note)
         warnings.append("视频组未生成：%s" % video_note)
     else:
-        log("视频组：%d 节点（本机实测 >= %.1f MB/s，数据 %s）"
+        log("视频组：%d 节点（本机实测 >= %.1f MB/s，数据 %s）；"
+            "视频类规则自动指向它：%s"
             % (len(video_nodes), build.VIDEO_MBPS,
-               speed_doc.get("tested_at")))
+               speed_doc.get("tested_at"),
+               "、".join(build.VIDEO_RULE_SETS)))
 
     profile, _, ranking = build.build_profile(enabled, excl_map, owner, repo,
                                               flaky_sources=sorted(flaky_nodes),
@@ -448,6 +450,7 @@ def main():
                   "threshold_mbps": build.VIDEO_MBPS,
                   "cap": build.VIDEO_MAX,
                   "per_source": build.VIDEO_PER_SRC,
+                  "rules": list(build.VIDEO_RULE_SETS) if video_nodes else [],
                   "tested_at": (speed_doc or {}).get("tested_at"),
                   "partial": bool((speed_doc or {}).get("partial")),
                   "note": speed_note or video_note or ""},
