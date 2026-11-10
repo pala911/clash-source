@@ -148,10 +148,10 @@ proxy-groups:
 - name: 不稳定
   type: url-test
   use:
+  - SRCFL-Free-Nodes
   - SRCFL-leilaomi
   - SRCFL-ruk1ng001
   - SRCFL-ssrsub
-  - SRCFL-zhuhaiuk
   url: https://www.youtube.com/generate_204
   expected-status: 204
   interval: 300
@@ -188,6 +188,7 @@ proxy-groups:
   - FAILOVER
   - 家里路由
   - AUTO
+  - 视频
   - 备用
   - 观察
   - SRC-automerge
@@ -221,6 +222,15 @@ proxy-groups:
   - Free-Nodes
   proxies:
   - PROXY
+- name: 视频
+  type: url-test
+  use:
+  - video
+  url: https://www.youtube.com/generate_204
+  expected-status: 204
+  interval: 300
+  timeout: 5000
+  tolerance: 200
 rule-providers:
   LocalAreaNetwork:
     type: http
@@ -604,6 +614,18 @@ proxy-providers:
       interval: 300
       timeout: 5000
       expected-status: 204
+  SRCFL-Free-Nodes:
+    type: http
+    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/Free-Nodes--flaky.yaml
+    path: ./providers/SRCFL-Free-Nodes.yaml
+    interval: 3600
+    exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
+    health-check:
+      enable: true
+      url: https://www.youtube.com/generate_204
+      interval: 300
+      timeout: 5000
+      expected-status: 204
   SRCFL-leilaomi:
     type: http
     url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/leilaomi--flaky.yaml
@@ -640,12 +662,12 @@ proxy-providers:
       interval: 300
       timeout: 5000
       expected-status: 204
-  SRCFL-zhuhaiuk:
+  video:
     type: http
-    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/zhuhaiuk--flaky.yaml
-    path: ./providers/SRCFL-zhuhaiuk.yaml
+    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/video.yaml
+    path: ./providers/video.yaml
     interval: 3600
-    exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
+    exclude-filter: ''
     health-check:
       enable: true
       url: https://www.youtube.com/generate_204
