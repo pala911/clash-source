@@ -124,10 +124,10 @@ proxy-groups:
   interval: 300
   timeout: 5000
   tolerance: 200
-- name: SRC-free-nodes
+- name: SRC-Free-Nodes
   type: url-test
   use:
-  - free-nodes
+  - Free-Nodes
   url: https://www.youtube.com/generate_204
   expected-status: 204
   interval: 300
@@ -136,8 +136,8 @@ proxy-groups:
 - name: AUTO
   type: url-test
   proxies:
-  - SRC-leilaomi
   - SRC-ssrsub
+  - SRC-leilaomi
   - SRC-zhuhaiuk
   - SRC-ruk1ng001
   url: https://www.youtube.com/generate_204
@@ -166,7 +166,7 @@ proxy-groups:
 - name: 观察
   type: select
   proxies:
-  - SRC-free-nodes
+  - SRC-Free-Nodes
 - name: FAILOVER
   type: fallback
   proxies:
@@ -177,7 +177,7 @@ proxy-groups:
   - SRC-ruk1ng001
   - SRC-nomorewalls
   - SRC-leilaomi
-  - SRC-free-nodes
+  - SRC-Free-Nodes
   url: https://www.youtube.com/generate_204
   expected-status: 204
   interval: 60
@@ -196,7 +196,7 @@ proxy-groups:
   - SRC-ruk1ng001
   - SRC-nomorewalls
   - SRC-leilaomi
-  - SRC-free-nodes
+  - SRC-Free-Nodes
 - name: Claude
   type: select
   use:
@@ -206,7 +206,7 @@ proxy-groups:
   - ruk1ng001
   - nomorewalls
   - leilaomi
-  - free-nodes
+  - Free-Nodes
   proxies:
   - PROXY
 - name: Gemini
@@ -218,7 +218,7 @@ proxy-groups:
   - ruk1ng001
   - nomorewalls
   - leilaomi
-  - free-nodes
+  - Free-Nodes
   proxies:
   - PROXY
 rule-providers:
@@ -592,10 +592,10 @@ proxy-providers:
       interval: 300
       timeout: 5000
       expected-status: 204
-  free-nodes:
+  Free-Nodes:
     type: http
-    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/free-nodes.yaml
-    path: ./providers/free-nodes.yaml
+    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/Free-Nodes.yaml
+    path: ./providers/Free-Nodes.yaml
     interval: 3600
     exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
     health-check:
