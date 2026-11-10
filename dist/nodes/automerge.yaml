@@ -1,77 +1,146 @@
-# clash-source 自动生成 —— 源 automerge，共 7 节点（稳定性加权后留在竞速池内的部分）
+# clash-source 自动生成 —— 源 automerge，共 14 节点（稳定性加权后留在竞速池内的部分）
 # 不要手改；改动会在下次定时任务被覆盖（上游 https://pala911.github.io/clash-source/nodes/automerge.yaml）
 proxies:
-- name: برای اتصال دائمی جوین شو🍥 Tele...
-  type: hysteria2
-  server: 13.143.188.143
-  port: 4444
-  password: a35c508f-4d5d-4531-842e-6e9d43c762c0
-  skip-cert-verify: false
-  sni: bl1.nexfile.net
-  tls: false
-- name: برای اتصال دائمی جوین شو🫟 Tele...
-  type: hysteria2
-  server: 13.143.189.101
-  port: 4444
-  password: a35c508f-4d5d-4531-842e-6e9d43c762c0
-  skip-cert-verify: false
-  sni: pl1.nexfile.net
-  tls: false
-- name: 🇷🇺RU_1|1.7MB/s
+- name: '🇯🇵 日本 | JPN #4'
+  type: ss
+  server: 154.36.158.197
+  port: 8388
+  cipher: aes-256-gcm
+  password: BeaUf9c0AEWH40Pu
+  udp: true
+- name: 🇵🇱PL_1|2.6MB/s
   type: vless
-  server: www.codex2api.com
+  server: 3.169.9.125
   port: 443
-  alpn:
-  - h2
-  - http/1.1
   client-fingerprint: chrome
-  encryption: none
-  network: xhttp
-  servername: 88a79b35s394.kuback.top
+  network: ws
+  servername: d2ex4nxd2e01ub.cloudfront.net
+  skip-cert-verify: false
   tls: true
   udp: true
-  uuid: 30e52776-55ac-3cb4-8d36-e2910f07e2c3
-  xudp: true
-- name: 🇺🇸US_5|1.6MB/s
+  uuid: 67cd3349-f789-4cbb-8b91-4b6b1654ce7c
+  ws-opts:
+    headers:
+      Host: d2ex4nxd2e01ub.cloudfront.net
+    path: /
+- name: 🇺🇸US_2|1.1MB/s
   type: http
-  server: 68.235.56.59
+  server: 12.202.180.10
   port: 443
   password: None
   skip-cert-verify: true
   tls: true
-- name: 🇷🇺RU_2|3.1MB/s
-  type: vless
-  server: cf.090227.xyz
+- name: 🇨🇿CZ_1|3.0MB/s
+  type: http
+  server: 185.216.35.66
   port: 443
-  alpn:
-  - h2
-  - http/1.1
-  client-fingerprint: chrome
-  encryption: none
-  network: xhttp
-  servername: 88a79b35s394.kuback.top
-  tls: true
-  udp: true
-  uuid: 30e52776-55ac-3cb4-8d36-e2910f07e2c3
-  xudp: true
-- name: 🇩🇪DE_7|2.0MB/s
-  type: hysteria2
-  server: 194.48.250.233
-  port: 443
-  down: ''
-  obfs: ''
-  obfs-password: ''
-  password: a2c74ce7-5daa-4bee-a1eb-52863873b3c3
   skip-cert-verify: true
-  sni: mol.ultimagamest.com
-  up: ''
-- name: 🇱🇹 立陶宛 | LTU
-  type: vless
-  server: 84.32.209.103
-  port: 443
-  client-fingerprint: edge
-  network: grpc
-  servername: edge-lt.lindenpixel.com
   tls: true
   udp: true
-  uuid: 3f25b15b-1777-4c08-9ade-60336ac92a82
+- name: 🇬🇧GB_1|2.4MB/s
+  type: http
+  server: 37.120.233.34
+  port: 9443
+  password: None
+  skip-cert-verify: true
+  tls: true
+- name: 🇺🇸US_4|1001KB/s
+  type: http
+  server: 149.88.21.129
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+- name: 🇩🇰DK_1|1.7MB/s
+  type: http
+  server: 185.245.84.50
+  port: 9443
+  password: None
+  skip-cert-verify: true
+  tls: true
+- name: '🇯🇵 日本 | JPN #1'
+  type: vless
+  server: 200.180.163.38
+  port: 443
+  client-fingerprint: random
+  network: ws
+  servername: eu-central.862400.xyz
+  tls: true
+  udp: true
+  uuid: 5b28a0c9-eda3-4c78-b07b-48cbd1670771
+  ws-opts:
+    headers:
+      Host: eu-central.862400.xyz
+    path: /announcement?ed=2048
+- name: '🇯🇵 日本 | JPN #2'
+  type: trojan
+  server: hwzl.fastfly.qzz.io
+  port: 47040
+  password: 66dff097-fa47-4ae1-8ed8-5e147e564f1c
+  skip-cert-verify: true
+  sni: jp1.fastfly.uk
+  udp: true
+- name: '🇯🇵 日本 | JPN #3'
+  type: vless
+  server: 13.114.101.22
+  port: 443
+  client-fingerprint: random
+  network: ws
+  servername: eu-central.862400.xyz
+  tls: true
+  udp: true
+  uuid: 5b28a0c9-eda3-4c78-b07b-48cbd1670771
+  ws-opts:
+    headers:
+      Host: eu-central.862400.xyz
+    path: /announcement?ed=2048
+- name: '🇸🇬 新加坡 | SGP #1'
+  type: hysteria2
+  server: 18.143.131.177
+  port: 443
+  password: 7e68e32f-8015-4f37-9082-70e8b0b58043
+  skip-cert-verify: true
+  sni: www.bing.com
+  tls: false
+- name: '🇸🇬 新加坡 | SGP #2'
+  type: vless
+  server: sg003.zestapp778.com
+  port: 443
+  client-fingerprint: chrome
+  network: tcp
+  servername: sg003.zestapp778.com
+  tls: true
+  udp: true
+  uuid: e9a8144e-5237-488a-afb1-9ca3d8d54c80
+  ws-opts:
+    headers:
+      Host: sg003.zestapp778.com
+    path: /
+- name: '🇸🇬 新加坡 | SGP #4'
+  type: vless
+  server: 139.162.33.165
+  port: 443
+  client-fingerprint: random
+  network: ws
+  servername: eu-central.862400.xyz
+  tls: true
+  udp: true
+  uuid: 5b28a0c9-eda3-4c78-b07b-48cbd1670771
+  ws-opts:
+    headers:
+      Host: eu-central.862400.xyz
+    path: /announcement?ed=2048
+- name: '🇸🇬 新加坡 | SGP #5'
+  type: vless
+  server: 139.162.46.201
+  port: 443
+  client-fingerprint: random
+  network: ws
+  servername: us-lax.862400.xyz
+  tls: true
+  udp: true
+  uuid: 5b28a0c9-eda3-4c78-b07b-48cbd1670771
+  ws-opts:
+    headers:
+      Host: us-lax.862400.xyz
+    path: /announcement?ed=2048
