@@ -1,37 +1,52 @@
-# AI 审核逐条留痕（生成于 2026-11-10T12:16:55Z，模型 `http`）
+# AI 审核逐条留痕（生成于 2026-11-10T13:05:53Z，模型 `http`）
 
-共剔除 40 簇 / 64 节点（下表每簇列一条代表节点 + 理由，「节点数」列是该簇实际覆盖的节点数）。若发现误杀，把节点名与理由贴回来即可针对性收窄 prompt。
+共剔除 54 簇 / 127 节点（下表每簇列一条代表节点 + 理由，「节点数」列是该簇实际覆盖的节点数）。若发现误杀，把节点名与理由贴回来即可针对性收窄 prompt。
 
 
 ## automerge
 
 | 节点名 | 类型 | server | 节点数 | 模型理由 |
 |---|---|---|---|---|
-| 防范境外势力渗透 | vmess | 127.0.0.53 | 10 | 引流广告位 |
+| 防范境外势力渗透 | vmess | 127.0.0.53 | 10 | 引流广告占位符 |
 | برای اتصال دائمی جوین شو☄️ Tel... | hysteria2 | 13.143.189.106 | 4 | 群组引流广告 |
 | DK_speednode_0005 | http | 158.173.154.5 | 2 | 引流广告 |
-| kurdconfig | hysteria2 | edge.hankli1214.xyz | 1 | 疑似营销/广告节点 |
 
 ## ruk1ng001
 
 | 节点名 | 类型 | server | 节点数 | 模型理由 |
 |---|---|---|---|---|
+| D🔴🇺🇸hos[🎬🤖📺🎭]_dokng.com_63e28654 | http | purecambogiasl.live | 8 | 引流 |
+| D🔴🇮🇪hos[🎬🤖📺🎭]_dokng.com_83697167 | http | 149.88.96.1 | 6 | 引流 |
+| D🔴🇺🇸hos[🎬🤖📺🎭]_dokng.com_1a62785b | http | fullmanfirm.icu | 5 | 引流 |
+| D🔴🇺🇸hos[🎬🤖📺🎭]_dokng.com_4433500a | http | 138.199.35.213 | 4 | 引流 |
+| D🔴🇵🇱hos[🎬🤖📺🎭]_dokng.com_1b548315 | http | 151.115.54.133 | 4 | 引流 |
+| D🔴🇳🇱hos[🎬🤖📺🎭]_dokng.com_090c2263 | http | 84.17.47.126 | 4 | 引流 |
+| D🔴🇸🇬hos[🎬🤖📺🎭]_dokng.com_d2853196 | http | 167.99.74.174 | 4 | 引流 |
+| D🔴🇺🇸hos[🎬🤖📺🎭]_dokng.com_3094d52f | http | carolinafreigh.fun | 4 | 引流 |
+| D🔴🇧🇪hos[🎬🤖📺🎭]_dokng.com_4f224227 | http | 146.70.176.242 | 4 | 引流 |
+| D🔴🇺🇸hos[🎬🤖📺🎭]_dokng.com_51f1276e | http | 138.199.35.199 | 4 | 引流 |
+| C🟠🇷🇴hos[🎬🤖📺🎭]_dokng.com_5088397e | http | 135.136.1.2 | 3 | 占位符 |
+| D🔴🇩🇪hos[🎬🤖📺🎭]_dokng.com_a741a422 | vless | 193.23.218.107 | 3 | 占位符 |
+| D🔴🇩🇪hos[🎬🤖📺🎭]_dokng.com_bd282816 | http | 116.202.172.99 | 3 | 占位符 |
+| D🔴🇳🇱hos[🎬🤖📺🎭]_dokng.com_c745045d | http | 185.246.153.28 | 3 | 占位符 |
+| D🔴🇫🇷hos_dokng.com_c2769156 | http | 84.235.228.156 | 2 | 占位符 |
 | D🔴🇸🇬hos_dokng.com_049361e7 | http | 167.172.76.176 | 2 | 引流广告 |
 | A🟢🇪🇨res_dokng.com_714b1721 | http | 181.188.203.40 | 1 | 引流广告 |
-| C🟠🇯🇵hos[🎬📺🎭🎪]_dokng.com_55d2834c | http | 120.232.204.58 | 1 | 伪装:外国名但境内IP |
-| C🟠🇬🇧hos[🤖📺🎭🎪]_dokng.com_d981cb15 | http | 37.120.233.34 | 1 | 伪装:外国名但境内IP |
-| C🟠🇦🇱hos[🎬🤖📺🎭]_dokng.com_002d4e13 | http | 87.120.103.226 | 1 | 伪装:外国名但境内IP |
-| C🟠🇨🇭hos[🎬🤖📺🎭]_dokng.com_d10161f0 | http | 31.7.62.50 | 1 | 伪装:外国名但境内IP |
-| C🟠🇪🇪hos[🎬🤖📺🎭]_dokng.com_6da4940f | http | 95.153.32.2 | 1 | 伪装:外国名但境内IP |
-| C🟠🇵🇹hos[🤖📺🎭🎪]_dokng.com_1db5bd58 | http | 149.22.86.14 | 1 | 伪装:外国名但境内IP |
-| C🟠🇫🇷hos[🎬🤖📺🎪]_dokng.com_789dbb5c | http | 213.139.9.142 | 1 | 伪装:外国名但境内IP |
-| C🟠🇱🇺hos[🎬🤖📺🎭]_dokng.com_8dff432f | http | 185.221.132.242 | 1 | 伪装:外国名但境内IP |
-| C🟠🇸🇪hos[🎬🤖📺🎪]_dokng.com_0e98105a | http | 149.50.216.65 | 1 | 伪装:外国名但境内IP |
-| C🟠🇨🇦hos[🎬🤖📺🎭]_dokng.com_e70669c4 | http | 142.44.210.129 | 1 | 伪装:外国名但境内IP |
-| C🟠🇨🇿hos[🎬🤖📺🎭]_dokng.com_e11c0c19 | http | 152.233.16.174 | 1 | 伪装:外国名但境内IP |
-| C🟠🇳🇱hos[🎬🤖📺🎭]_dokng.com_587e1d6a | http | 149.36.51.161 | 1 | 伪装:外国名但境内IP |
-| C🟠🇳🇱hos[🎬🤖📺🎭]_dokng.com_6e3da7ec | http | 161.129.60.66 | 1 | 伪装:外国名但境内IP |
-| C🟠🇩🇪hos[🤖📺🎭🎪]_dokng.com_5ed03181 | http | 149.36.50.1 | 1 | 伪装:外国名但境内IP |
+| C🟠🇬🇧hos[📺🎪✨📦]_dokng.com_ed080c73 | http | 84.17.50.129 | 1 | 引流 |
+| C🟠🇸🇪hos[🎬🤖📺🎭]_dokng.com_edc2d4d2 | http | 46.161.49.174 | 1 | 引流 |
+| C🟠🇸🇪hos[🤖📺🎭🎪]_dokng.com_9ee75ab8 | http | 149.50.216.65 | 1 | 引流 |
+| C🟠🇬🇪hos[🎬🤖📺🎪]_dokng.com_7129f6a8 | http | 195.54.178.210 | 1 | 引流 |
+| C🟠🇯🇵hos[🤖📺🎭🎪]_dokng.com_16f5ab4e | socks5 | 8.209.236.192 | 1 | 引流 |
+| C🟠🇦🇱hos[🎬🤖📺🎭]_dokng.com_35f9b19f | http | 87.120.103.226 | 1 | 引流 |
+| C🟠🇭🇰hos[🎬🤖📺🎭]_dokng.com_f18bf3fe | trojan | ddrr2.tube-cat.com | 1 | 引流 |
+| C🟠🇳🇱hos[🎬🤖📺🎭]_dokng.com_93f6101c | http | 149.36.51.161 | 1 | 引流 |
+| C🟠🇺🇸hos[🎬🤖📺🎭]_dokng.com_f7924ec8 | http | 68.235.56.51 | 1 | 引流 |
+| C🟠🇱🇻hos[🎬🤖📺🎭]_dokng.com_fbede378 | http | 109.248.147.66 | 1 | 引流 |
+| C🟠🇨🇦hos[🎬🤖📺🎭]_dokng.com_ff0913fd | http | 198.44.157.27 | 1 | 引流 |
+| D🔴🇯🇵hos_dokng.com_04207412 | trojan | ddrr2.tube-cat.com | 1 | 广告 |
+| D🔴🇸🇬hos_dokng.com_8a7c10fa | http | 104.248.151.93 | 1 | 广告 |
+| D🔴🇳🇱hos_dokng.com_a31e7c48 | vless | 186.246.9.29 | 1 | 广告 |
+| D🔴🇮🇩hos_dokng.com_67ab34a0 | socks5 | 8.215.25.3 | 1 | 广告 |
 | D🔴🇵🇰hos_dokng.com_36662abe | socks5 | 110.38.233.122 | 1 | 广告 |
 | D🔴🇯🇵hos_dokng.com_9ae35bdb | trojan | ddrr2.tube-cat.com | 1 | 广告 |
 | D🔴🇬🇧hos_dokng.com_b10ae198 | http | 206.189.118.214 | 1 | 广告 |
@@ -52,15 +67,9 @@
 
 | 节点名 | 类型 | server | 节点数 | 模型理由 |
 |---|---|---|---|---|
-| 防范境外势力渗透 | vmess | 127.0.0.53 | 10 | 引流/广告 |
-| برای اتصال دائمی جوین شو🍥 Tele... | hysteria2 | 13.143.188.143 | 2 | 引流广告 |
-
-## leilaomi
-
-| 节点名 | 类型 | server | 节点数 | 模型理由 |
-|---|---|---|---|---|
-| [292.1ms +/-7ms] 🇺🇸[openproxylist.com] | vless | 23.227.38.99 | 1 | 明显伪装 |
-| 🇮🇹 [626.4ms +/-5ms] 4FreeIran-10ac640c12 | ss | 202.50.253.99 | 1 | 明显伪装 |
+| 防范境外势力渗透 | vmess | 127.0.0.53 | 10 | 引流广告位 |
+| برای اتصال دائمی جوین شو☄️ Tel... | hysteria2 | 13.143.189.106 | 4 | 群组引流 |
+| برای اتصال دائمی جوین شو🍥 Tele... | hysteria2 | 13.143.188.143 | 2 | 引流 |
 
 ## Free-Nodes
 
