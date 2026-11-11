@@ -1,4 +1,4 @@
-# clash-source 自动生成 —— 源 ssrsub，共 330 节点（稳定性加权后留在竞速池内的部分）
+# clash-source 自动生成 —— 源 ssrsub，共 331 节点（稳定性加权后留在竞速池内的部分）
 # 不要手改；改动会在下次定时任务被覆盖（上游 https://pala911.github.io/clash-source/nodes/ssrsub.yaml）
 proxies:
 - name: 🇮🇩 机场推荐:dafei.de 印尼 01
@@ -403,8 +403,6 @@ proxies:
   type: vmess
   server: guanwang.awsno.com
   port: 443
-  alpn:
-  - ''
   alterId: '0'
   cipher: auto
   network: ws
@@ -798,20 +796,17 @@ proxies:
   username: test123
 - name: 🇺🇸 机场推荐:dafei.de 美国 72
   type: vmess
-  server: 104.18.42.163
+  server: 172.64.145.93
   port: 443
   alterId: 0
   cipher: auto
   network: ws
-  skip-cert-verify: false
   tls: true
-  udp: true
   uuid: 6a89a215-22bf-4bd7-9642-b95b2e09583a
   ws-opts:
     headers:
       Host: guanwang.awsno.com
     path: /hls/cctv5phd.m3u8
-  xudp: true
   client-fingerprint: chrome
   servername: guanwang.awsno.com
 - name: 🇺🇸 机场推荐:dafei.de 美国 73
@@ -856,17 +851,20 @@ proxies:
   username: ''
 - name: 🇺🇸 机场推荐:dafei.de 美国 80
   type: vmess
-  server: 172.64.145.93
+  server: 104.18.42.163
   port: 443
   alterId: 0
   cipher: auto
   network: ws
+  skip-cert-verify: false
   tls: true
+  udp: true
   uuid: 6a89a215-22bf-4bd7-9642-b95b2e09583a
   ws-opts:
     headers:
       Host: guanwang.awsno.com
     path: /hls/cctv5phd.m3u8
+  xudp: true
   client-fingerprint: chrome
   servername: guanwang.awsno.com
 - name: 🇺🇸 机场推荐:dafei.de 美国 81
@@ -1634,7 +1632,7 @@ proxies:
   username: freeuser1
 - name: 🇫🇷 机场推荐:dafei.de 法国 05
   type: vless
-  server: 163.245.42.5
+  server: edge.bookmai.com
   port: 443
   client-fingerprint: chrome
   encryption: none
@@ -1757,6 +1755,22 @@ proxies:
   server: 157.90.113.23
   port: 9052
   skip-cert-verify: true
+- name: 🇫🇷 机场推荐:dafei.de 法国 23
+  type: vless
+  server: 163.245.42.5
+  port: 443
+  client-fingerprint: chrome
+  encryption: none
+  flow: xtls-rprx-vision
+  network: tcp
+  reality-opts:
+    public-key: SbVKOEMjK0sIlbwg4akyBg5mL5KZwwB-ed4eEE7YnRc
+    short-id: ''
+  tls: true
+  udp: true
+  uuid: b9bfa54d-bc44-4592-a6d6-89a9665d286f
+  xudp: true
+  servername: mother-earth.fyi
 - name: 🇱🇻 机场推荐:dafei.de 拉脱维亚 01
   type: http
   server: 185.219.159.16
