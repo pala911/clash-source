@@ -70,6 +70,15 @@ proxies:
   port: 7890
   udp: false
 proxy-groups:
+- name: SRC-yypool
+  type: url-test
+  use:
+  - yypool
+  url: https://www.youtube.com/generate_204
+  expected-status: 204
+  interval: 300
+  timeout: 5000
+  tolerance: 200
 - name: SRC-automerge
   type: url-test
   use:
@@ -124,21 +133,12 @@ proxy-groups:
   interval: 300
   timeout: 5000
   tolerance: 200
-- name: SRC-Free-Nodes
-  type: url-test
-  use:
-  - Free-Nodes
-  url: https://www.youtube.com/generate_204
-  expected-status: 204
-  interval: 300
-  timeout: 5000
-  tolerance: 200
 - name: AUTO
   type: url-test
   proxies:
   - SRC-ssrsub
-  - SRC-leilaomi
   - SRC-zhuhaiuk
+  - SRC-leilaomi
   - SRC-ruk1ng001
   url: https://www.youtube.com/generate_204
   expected-status: 204
@@ -151,6 +151,7 @@ proxy-groups:
   - SRCFL-leilaomi
   - SRCFL-ruk1ng001
   - SRCFL-ssrsub
+  - SRCFL-yypool
   url: https://www.youtube.com/generate_204
   expected-status: 204
   interval: 300
@@ -158,25 +159,25 @@ proxy-groups:
   tolerance: 200
 - name: 备用
   type: select
-  proxies:
+  proxies: &id001
   - SRC-nomorewalls
   - SRC-automerge
+  - SRC-yypool
   - 不稳定
 - name: 观察
   type: select
-  proxies:
-  - SRC-Free-Nodes
+  proxies: *id001
 - name: FAILOVER
   type: fallback
   proxies:
   - AUTO
+  - SRC-yypool
   - SRC-automerge
   - SRC-zhuhaiuk
   - SRC-ssrsub
   - SRC-ruk1ng001
   - SRC-nomorewalls
   - SRC-leilaomi
-  - SRC-Free-Nodes
   url: https://www.youtube.com/generate_204
   expected-status: 204
   interval: 60
@@ -190,35 +191,35 @@ proxy-groups:
   - 视频
   - 备用
   - 观察
+  - SRC-yypool
   - SRC-automerge
   - SRC-zhuhaiuk
   - SRC-ssrsub
   - SRC-ruk1ng001
   - SRC-nomorewalls
   - SRC-leilaomi
-  - SRC-Free-Nodes
 - name: Claude
   type: select
   use:
+  - yypool
   - automerge
   - zhuhaiuk
   - ssrsub
   - ruk1ng001
   - nomorewalls
   - leilaomi
-  - Free-Nodes
   proxies:
   - PROXY
 - name: Gemini
   type: select
   use:
+  - yypool
   - automerge
   - zhuhaiuk
   - ssrsub
   - ruk1ng001
   - nomorewalls
   - leilaomi
-  - Free-Nodes
   proxies:
   - PROXY
 - name: 视频
@@ -529,6 +530,18 @@ rules:
 - GEOIP,CN,DIRECT
 - MATCH,PROXY
 proxy-providers:
+  yypool:
+    type: http
+    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/yypool.yaml
+    path: ./providers/yypool.yaml
+    interval: 3600
+    exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
+    health-check:
+      enable: true
+      url: https://www.youtube.com/generate_204
+      interval: 300
+      timeout: 5000
+      expected-status: 204
   automerge:
     type: http
     url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/automerge.yaml
@@ -601,18 +614,6 @@ proxy-providers:
       interval: 300
       timeout: 5000
       expected-status: 204
-  Free-Nodes:
-    type: http
-    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/Free-Nodes.yaml
-    path: ./providers/Free-Nodes.yaml
-    interval: 3600
-    exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
-    health-check:
-      enable: true
-      url: https://www.youtube.com/generate_204
-      interval: 300
-      timeout: 5000
-      expected-status: 204
   SRCFL-leilaomi:
     type: http
     url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/leilaomi--flaky.yaml
@@ -643,6 +644,18 @@ proxy-providers:
     path: ./providers/SRCFL-ssrsub.yaml
     interval: 3600
     exclude-filter: 机场推荐:dafei\.de 德国 07|🇨🇳CN_[0-9]
+    health-check:
+      enable: true
+      url: https://www.youtube.com/generate_204
+      interval: 300
+      timeout: 5000
+      expected-status: 204
+  SRCFL-yypool:
+    type: http
+    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/yypool--flaky.yaml
+    path: ./providers/SRCFL-yypool.yaml
+    interval: 3600
+    exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
     health-check:
       enable: true
       url: https://www.youtube.com/generate_204

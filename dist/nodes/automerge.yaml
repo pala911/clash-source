@@ -1,6 +1,79 @@
-# clash-source 自动生成 —— 源 automerge，共 14 节点（稳定性加权后留在竞速池内的部分）
+# clash-source 自动生成 —— 源 automerge，共 78 节点（稳定性加权后留在竞速池内的部分）
 # 不要手改；改动会在下次定时任务被覆盖（上游 https://pala911.github.io/clash-source/nodes/automerge.yaml）
 proxies:
+- name: kurdconfig
+  type: hysteria2
+  server: edge.hankli1214.xyz
+  port: 443
+  obfs: salamander
+  obfs-password: MeJA9qgoYMH4UMunHowisrbd
+  password: 02df03e3-3029-4c95-bffe-8f211b480672
+  skip-cert-verify: false
+  sni: hank.hankli1214.xyz
+  tls: false
+- name: '🇺🇸 美国 | USA #7'
+  type: vless
+  server: 188.114.99.157
+  port: 8443
+  client-fingerprint: firefox
+  network: ws
+  servername: moz.ar-marz.fun
+  tls: true
+  udp: true
+  uuid: 9443badf-414f-4b12-b19a-7cc2c7431163
+  ws-opts:
+    headers:
+      Host: moz.ar-marz.fun
+    path: /man
+- name: '🇮🇱 以色列 | ISR #1'
+  type: vless
+  server: 192.71.27.237
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: fs.qicai99.com
+  tls: true
+  udp: true
+  uuid: 99c5b713-dedf-4a10-8070-916ff3f49b0e
+  ws-opts:
+    headers:
+      Host: fs.qicai99.com
+    path: /
+- name: '🇷🇴 罗马尼亚 | ROU #1'
+  type: vless
+  server: 82.152.132.74
+  port: 443
+  client-fingerprint: firefox
+  network: ws
+  servername: 82.152.132.74
+  tls: true
+  udp: true
+  uuid: 010be6fa-ab5f-404a-9edf-ab2db1f09f0c
+  ws-opts:
+    headers:
+      Host: 82.152.132.74
+    path: /assets/sync-8f3a71
+- name: '🇹🇼 🇨🇳 台湾 | TWN #1'
+  type: vless
+  server: 60.248.219.53
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: ty986gfazs.cainiaohub.xyz
+  tls: true
+  udp: true
+  uuid: c1c04450-bf71-4049-ad0c-9cf6d94d9f1f
+  ws-opts:
+    headers:
+      Host: ty986gfazs.cainiaohub.xyz
+    path: /81574b6b-c9d7-44a0-b83d-dad56e8cb530
+- name: '🇮🇪 爱尔兰 | IRL #1'
+  type: ss
+  server: 146.70.90.198
+  port: 17456
+  cipher: aes-128-gcm
+  password: 881cf39affc5286799a585f1acd24d11
+  udp: true
 - name: '🇯🇵 日本 | JPN #4'
   type: ss
   server: 154.36.158.197
@@ -8,56 +81,452 @@ proxies:
   cipher: aes-256-gcm
   password: BeaUf9c0AEWH40Pu
   udp: true
-- name: 🇵🇱PL_1|2.6MB/s
+- name: 🇹🇼 台湾｜02｜HiNet
+  type: anytls
+  server: tw.ccwink.cc
+  port: 6549
+  password: 2f4c3fc5-8fa2-4576-a583-8f98a6026887
+  skip-cert-verify: true
+  sni: baidu.com
+  udp: true
+- name: 🇹🇼 台湾｜06｜BGP
   type: vless
-  server: 3.169.9.125
+  server: cf02.564895.xyz
+  port: 2096
+  client-fingerprint: firefox
+  network: ws
+  servername: tw01.564895.xyz
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  uuid: 2f4c3fc5-8fa2-4576-a583-8f98a6026887
+  ws-opts:
+    headers:
+      Host: tw01.564895.xyz
+    path: /asdasd
+- name: 🇸🇬 新加坡｜07｜BGP
+  type: vless
+  server: cf01.564895.xyz
+  port: 2053
+  client-fingerprint: firefox
+  network: ws
+  servername: sg01.564895.xyz
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  uuid: 2f4c3fc5-8fa2-4576-a583-8f98a6026887
+  ws-opts:
+    headers:
+      Host: sg01.564895.xyz
+    path: /asdasd
+- name: '🇩🇪 德国 | DEU #14'
+  type: vless
+  server: 188.72.103.4
+  port: 443
+  alpn:
+  - h2
+  - http/1.1
+  client-fingerprint: edge
+  network: xhttp
+  servername: cdnapi.tronglob5.net
+  tls: true
+  udp: true
+  uuid: 0000be2c-fb3a-5bce-a7d7-2105d461915b
+- name: 🇫🇮FI_1|4.3MB/s
+  type: vless
+  server: 185.22.172.249
   port: 443
   client-fingerprint: chrome
+  encryption: none
+  network: xhttp
+  servername: fortuna.golden-dragon.de5.net
+  tls: true
+  udp: true
+  uuid: b7374077-9fdc-4d28-9fb1-5cbc262fb53d
+  xudp: true
+- name: 🇬🇧GB_5|2.8MB/s
+  type: http
+  server: 212.102.63.61
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+- name: 🇺🇸US_4|3.5MB/s
+  type: http
+  server: 138.199.35.214
+  port: 9002
+  password: None
+  skip-cert-verify: true
+  tls: true
+- name: 🇱🇺LU_1|3.0MB/s
+  type: http
+  server: 185.221.132.226
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+- name: 🇺🇸US_5|3.8MB/s
+  type: http
+  server: 138.199.35.212
+  port: 9002
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇳🇱NL_5|1.3MB/s|K001-260618
+  type: http
+  server: 149.36.51.161
+  port: 9443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇺🇸US_6|1.2MB/s
+  type: http
+  server: 138.199.35.216
+  port: 9002
+  password: None
+  skip-cert-verify: true
+  tls: true
+- name: 🇺🇸US_7|1.5MB/s
+  type: http
+  server: 138.199.35.195
+  port: 9002
+  password: None
+  skip-cert-verify: true
+  tls: true
+- name: 🇺🇸US_11|1.7MB/s
+  type: http
+  server: 138.199.35.202
+  port: 9002
+  password: None
+  skip-cert-verify: true
+  tls: true
+- name: 🇩🇪DE_7|1.6MB/s
+  type: http
+  server: 87.249.132.97
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+- name: 🇷🇴RO_1|1.0MB/s
+  type: http
+  server: 193.176.84.30
+  port: 9002
+  password: None
+  skip-cert-verify: true
+  tls: true
+- name: 🇱🇻LV_2|2.3MB/s
+  type: http
+  server: 109.248.149.34
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+- name: 🇧🇪BE_1|2.7MB/s|R002-260618
+  type: http
+  server: 146.70.176.242
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇬🇧GB_6|1.6MB/s
+  type: http
+  server: 84.17.50.129
+  port: 9443
+  skip-cert-verify: true
+  tls: true
+- name: 🇮🇱IL_1|1.5MB/s|K001-260618
+  type: http
+  server: 169.150.248.17
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇮🇹IT_6|3.1MB/s
+  type: socks5
+  server: 212.77.75.25
+  port: 1088
+  password: None
+  udp: true
+- name: 🇺🇸US_14|1.3MB/s|K001-260618
+  type: http
+  server: 149.34.248.65
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇺🇸US_15|3.3MB/s
+  type: http
+  server: 18.206.28.143
+  port: 8443
+  password: None
+  skip-cert-verify: true
+  tls: true
+- name: 🇺🇦UA_1|2.2MB/s
+  type: vless
+  server: www.codex2api.com
+  port: 443
+  alpn:
+  - h2
+  - http/1.1
+  client-fingerprint: chrome
+  encryption: none
+  network: xhttp
+  servername: b5cb4fa7s274.kuback.top
+  tls: true
+  udp: true
+  uuid: 30e52776-55ac-3cb4-8d36-e2910f07e2c3
+  xudp: true
+- name: 🇷🇺RU_2|1.1MB/s
+  type: vless
+  server: cf.090227.xyz
+  port: 443
+  alpn:
+  - h2
+  - http/1.1
+  client-fingerprint: chrome
+  encryption: none
+  network: xhttp
+  servername: 88a79b35s394.kuback.top
+  tls: true
+  udp: true
+  uuid: 30e52776-55ac-3cb4-8d36-e2910f07e2c3
+  xudp: true
+- name: 🇷🇴RO_3|2.5MB/s
+  type: http
+  server: 193.176.84.31
+  port: 9002
+  skip-cert-verify: true
+  sni: www.bing.com
+  tls: true
+- name: 🇨🇭CH_2|4.2MB/s
+  type: http
+  server: 147.161.246.39
+  port: 10230
+  skip-cert-verify: true
+- name: 🇺🇸US_18|3.1MB/s
+  type: socks5
+  server: 4.157.29.42
+  port: 3001
+  skip-cert-verify: true
+- name: 🇸🇬SG_4|1.8MB/s
+  type: http
+  server: 167.99.74.174
+  port: 9090
+  password: None
+  skip-cert-verify: true
+- name: 🇨🇦CA_3|3.9MB/s
+  type: vless
+  server: 5.53.124.191
+  port: 8008
+  encryption: none
+  network: xhttp
+  servername: 5.53.124.191
+  udp: true
+  uuid: b48e1596-e835-4547-bdae-31daadf9ea17
+  xudp: true
+- name: 🇷🇴RO_5|2.0MB/s
+  type: http
+  server: 193.176.84.33
+  port: 9002
+  skip-cert-verify: true
+  sni: www.bing.com
+  tls: true
+- name: 🇹🇼TW_1|3.5MB/s
+  type: http
+  server: twmoon1-cdn-route.couldflare-cdn.com
+  port: 1443
+  password: exaxgqkKkd0TAMrCxeonWg==
+  tls: true
+  udp: true
+  username: mrwdfNTD8M79LCukCieldrqZWqs=
+- name: '🇧🇪 比利时 | BEL #1'
+  type: vless
+  server: 152.53.100.50
+  port: 443
+  client-fingerprint: random
   network: ws
-  servername: d2ex4nxd2e01ub.cloudfront.net
-  skip-cert-verify: false
+  servername: eu-central.862400.xyz
+  tls: true
+  udp: true
+  uuid: 5b28a0c9-eda3-4c78-b07b-48cbd1670771
+  ws-opts:
+    headers:
+      Host: eu-central.862400.xyz
+    path: /announcement?ed=2048
+- name: '🇨🇦 加拿大 | CAN #1'
+  type: ss
+  server: 35.182.250.103
+  port: 443
+  cipher: aes-256-cfb
+  password: amazonskr05
+  udp: true
+- name: '🇩🇪 德国 | DEU #1'
+  type: vless
+  server: 195.201.31.167
+  port: 443
+  client-fingerprint: random
+  network: ws
+  servername: eu-central.862400.xyz
+  tls: true
+  udp: true
+  uuid: 5b28a0c9-eda3-4c78-b07b-48cbd1670771
+  ws-opts:
+    headers:
+      Host: eu-central.862400.xyz
+    path: /announcement?ed=2048
+- name: '🇩🇪 德国 | DEU #2'
+  type: vless
+  server: 172.104.120.92
+  port: 443
+  client-fingerprint: random
+  network: ws
+  servername: eu-central.862400.xyz
+  tls: true
+  udp: true
+  uuid: 5b28a0c9-eda3-4c78-b07b-48cbd1670771
+  ws-opts:
+    headers:
+      Host: eu-central.862400.xyz
+    path: /announcement?ed=2048
+- name: '🇩🇪 德国 | DEU #3'
+  type: vless
+  server: 188.164.248.143
+  port: 443
+  client-fingerprint: random
+  network: ws
+  servername: eu-central.862400.xyz
+  tls: true
+  udp: true
+  uuid: 5b28a0c9-eda3-4c78-b07b-48cbd1670771
+  ws-opts:
+    headers:
+      Host: eu-central.862400.xyz
+    path: /announcement?ed=2048
+- name: '🇩🇪 德国 | DEU #4'
+  type: vless
+  server: 43.174.195.1
+  port: 443
+  client-fingerprint: random
+  network: ws
+  servername: eu-central.862400.xyz
+  tls: true
+  udp: true
+  uuid: 5b28a0c9-eda3-4c78-b07b-48cbd1670771
+  ws-opts:
+    headers:
+      Host: eu-central.862400.xyz
+    path: /announcement?ed=2048
+- name: '🇩🇪 德国 | DEU #5'
+  type: vless
+  server: 193.160.208.240
+  port: 443
+  client-fingerprint: firefox
+  network: xhttp
+  servername: 193.160.208.240
+  tls: true
+  udp: true
+  uuid: 4777d90d-265b-4927-a0d1-63f36ed1421c
+- name: '🇩🇪 德国 | DEU #6'
+  type: ss
+  server: oztq9osla2ad.dop15.com
+  port: 26412
+  cipher: 2022-blake3-aes-256-gcm
+  password: L9F2GjYbyk6gICuLp2LFmHC0lKaEW7HOA32XTf29C6Y=:OvfxPVBCAsZFpN0pIx9AwgxwxV+U3A7XtRagdUwio+U=
+  udp: true
+- name: '🇩🇪 德国 | DEU #7'
+  type: vless
+  server: 139.162.26.8
+  port: 443
+  client-fingerprint: random
+  network: ws
+  servername: eu-central.862400.xyz
+  tls: true
+  udp: true
+  uuid: 5b28a0c9-eda3-4c78-b07b-48cbd1670771
+  ws-opts:
+    headers:
+      Host: eu-central.862400.xyz
+    path: /announcement?ed=2048
+- name: '🇩🇪 德国 | DEU #8'
+  type: vless
+  server: 139.162.61.198
+  port: 443
+  client-fingerprint: random
+  network: ws
+  servername: eu-central.862400.xyz
+  tls: true
+  udp: true
+  uuid: 5b28a0c9-eda3-4c78-b07b-48cbd1670771
+  ws-opts:
+    headers:
+      Host: eu-central.862400.xyz
+    path: /announcement?ed=2048
+- name: 🇩🇪 德国 | DEU 9
+  type: vless
+  server: 104.143.223.236
+  port: 2085
+  network: grpc
+  tls: true
+  udp: true
+  uuid: 6538f5c3-5b01-4956-a8e6-47688c01c42e
+- name: '🇩🇪 德国 | DEU #10'
+  type: vless
+  server: 188.255.156.209
+  port: 443
+  client-fingerprint: random
+  network: ws
+  servername: eu-central.862400.xyz
+  tls: true
+  udp: true
+  uuid: 5b28a0c9-eda3-4c78-b07b-48cbd1670771
+  ws-opts:
+    headers:
+      Host: eu-central.862400.xyz
+    path: /announcement?ed=2048
+- name: '🇩🇪 德国 | DEU #13'
+  type: vless
+  server: 193.23.211.139
+  port: 443
+  client-fingerprint: random
+  network: ws
+  servername: eu-central.862400.xyz
+  tls: true
+  udp: true
+  uuid: 5b28a0c9-eda3-4c78-b07b-48cbd1670771
+  ws-opts:
+    headers:
+      Host: eu-central.862400.xyz
+    path: /announcement?ed=2048
+- name: '🇫🇷 法国 | FRA #1'
+  type: ss
+  server: 13.36.165.6
+  port: 443
+  cipher: aes-256-cfb
+  password: amazonskr05
+  udp: true
+- name: '🇫🇷 法国 | FRA #2'
+  type: vless
+  server: 151.101.36.2
+  port: 443
+  alpn:
+  - h3
+  client-fingerprint: edge
+  network: xhttp
+  servername: accounts.fastly.com
   tls: true
   udp: true
   uuid: 67cd3349-f789-4cbb-8b91-4b6b1654ce7c
-  ws-opts:
-    headers:
-      Host: d2ex4nxd2e01ub.cloudfront.net
-    path: /
-- name: 🇺🇸US_2|1.1MB/s
-  type: http
-  server: 12.202.180.10
-  port: 443
-  password: None
+- name: 🇬🇧 英国 | GBR
+  type: anytls
+  server: uk1.fastfly.qzz.io
+  port: 30000
+  password: 66dff097-fa47-4ae1-8ed8-5e147e564f1c
   skip-cert-verify: true
-  tls: true
-- name: 🇨🇿CZ_1|3.0MB/s
-  type: http
-  server: 185.216.35.66
-  port: 443
-  skip-cert-verify: true
-  tls: true
+  sni: uk1.fastfly.qzz.io
   udp: true
-- name: 🇬🇧GB_1|2.4MB/s
-  type: http
-  server: 37.120.233.34
-  port: 9443
-  password: None
-  skip-cert-verify: true
-  tls: true
-- name: 🇺🇸US_4|1001KB/s
-  type: http
-  server: 149.88.21.129
-  port: 443
-  password: None
-  skip-cert-verify: true
-  tls: true
-- name: 🇩🇰DK_1|1.7MB/s
-  type: http
-  server: 185.245.84.50
-  port: 9443
-  password: None
-  skip-cert-verify: true
-  tls: true
 - name: '🇯🇵 日本 | JPN #1'
   type: vless
   server: 200.180.163.38
@@ -94,6 +563,67 @@ proxies:
     headers:
       Host: eu-central.862400.xyz
     path: /announcement?ed=2048
+- name: '🇰🇷 韩国 | KOR #1'
+  type: hysteria2
+  server: 3.36.58.98
+  port: 443
+  password: 7e68e32f-8015-4f37-9082-70e8b0b58043
+  skip-cert-verify: true
+  sni: www.bing.com
+  tls: false
+- name: '🇲🇾 马来西亚 | MYS #1'
+  type: trojan
+  server: hwzl.fastfly.qzz.io
+  port: 30323
+  password: 66dff097-fa47-4ae1-8ed8-5e147e564f1c
+  skip-cert-verify: true
+  sni: my1.fastfly.uk
+  udp: true
+- name: '🇳🇱 荷兰 | NLD #2'
+  type: vless
+  server: 151.101.36.61
+  port: 443
+  alpn:
+  - h3
+  client-fingerprint: edge
+  network: xhttp
+  servername: accounts.fastly.com
+  tls: true
+  udp: true
+  uuid: 67cd3349-f789-4cbb-8b91-4b6b1654ce7c
+- name: '🇵🇭 菲律宾 | PHL #1'
+  type: trojan
+  server: hwzl.fastfly.qzz.io
+  port: 17430
+  password: 66dff097-fa47-4ae1-8ed8-5e147e564f1c
+  skip-cert-verify: true
+  sni: flb1.fastfly.uk
+  udp: true
+- name: '🇵🇱 波兰 | POL #1'
+  type: vless
+  server: cdn-ya.shamanapp.online
+  port: 443
+  alpn:
+  - h2
+  - http/1.1
+  client-fingerprint: firefox
+  network: xhttp
+  servername: cdn-ya.shamanapp.online
+  tls: true
+  udp: true
+  uuid: 40c8a202-4b7f-45a6-b0aa-37db0fac4df8
+- name: 🇷🇺 俄罗斯 | RUS
+  type: vless
+  server: vps3.nemnogogo.com
+  port: 443
+  alpn:
+  - h2
+  client-fingerprint: firefox
+  network: grpc
+  servername: vps3.nemnogogo.com
+  tls: true
+  udp: true
+  uuid: 38308ff1-5aa9-494f-a25a-0f2870d56b3e
 - name: '🇸🇬 新加坡 | SGP #1'
   type: hysteria2
   server: 18.143.131.177
@@ -144,3 +674,130 @@ proxies:
     headers:
       Host: us-lax.862400.xyz
     path: /announcement?ed=2048
+- name: '🇺🇸 美国 | USA #1'
+  type: vless
+  server: 45.32.230.60
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: fs.qicai99.com
+  tls: true
+  udp: true
+  uuid: 99c5b713-dedf-4a10-8070-916ff3f49b0e
+  ws-opts:
+    headers:
+      Host: fs.qicai99.com
+    path: /
+- name: '🇺🇸 美国 | USA #2'
+  type: hysteria2
+  server: 104.168.6.236
+  port: 44443
+  password: 64c05afc-ce81-4ba0-b697-afa04da1427e
+  skip-cert-verify: true
+  sni: bing.com
+  tls: false
+- name: '🇺🇸 美国 | USA #3'
+  type: vless
+  server: 179.255.132.76
+  port: 443
+  client-fingerprint: random
+  network: ws
+  servername: us-lax.862400.xyz
+  tls: true
+  udp: true
+  uuid: 5b28a0c9-eda3-4c78-b07b-48cbd1670771
+  ws-opts:
+    headers:
+      Host: us-lax.862400.xyz
+    path: /announcement?ed=2048
+- name: '🇺🇸 美国 | USA #4'
+  type: ss
+  server: 18.226.88.63
+  port: 443
+  cipher: aes-256-cfb
+  password: amazonskr05
+  udp: true
+- name: '🇺🇸 美国 | USA #5'
+  type: vless
+  server: saas.sin.fan
+  port: 443
+  client-fingerprint: random
+  network: ws
+  servername: eu-central.862400.xyz
+  tls: true
+  udp: true
+  uuid: 5b28a0c9-eda3-4c78-b07b-48cbd1670771
+  ws-opts:
+    headers:
+      Host: eu-central.862400.xyz
+    path: /announcement?ed=2048
+- name: '🇺🇸 美国 | USA #6'
+  type: vless
+  server: 38.58.108.84
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: fs.qicai99.com
+  tls: true
+  udp: true
+  uuid: 99c5b713-dedf-4a10-8070-916ff3f49b0e
+  ws-opts:
+    headers:
+      Host: fs.qicai99.com
+    path: /
+- name: '🇺🇸 美国 | USA #8'
+  type: vless
+  server: 179.255.140.28
+  port: 443
+  client-fingerprint: random
+  network: ws
+  servername: eu-central.862400.xyz
+  tls: true
+  udp: true
+  uuid: 5b28a0c9-eda3-4c78-b07b-48cbd1670771
+  ws-opts:
+    headers:
+      Host: eu-central.862400.xyz
+    path: /announcement?ed=2048
+- name: '🇺🇸 美国 | USA #10'
+  type: vless
+  server: 179.255.132.123
+  port: 443
+  client-fingerprint: random
+  network: ws
+  servername: eu-central.862400.xyz
+  tls: true
+  udp: true
+  uuid: 5b28a0c9-eda3-4c78-b07b-48cbd1670771
+  ws-opts:
+    headers:
+      Host: eu-central.862400.xyz
+    path: /announcement?ed=2048
+- name: '🇺🇸 美国 | USA #11'
+  type: vless
+  server: uuss2.qik-server.uk
+  port: 443
+  alpn:
+  - h2
+  client-fingerprint: qq
+  network: xhttp
+  servername: uuss2.qik-server.uk
+  tls: true
+  udp: true
+  uuid: 38de3363-7945-402e-9a9b-6f2f9015a44e
+- name: 🇻🇳 越南 | VNM
+  type: anytls
+  server: yn1.fastfly.uk
+  port: 12291
+  password: 66dff097-fa47-4ae1-8ed8-5e147e564f1c
+  skip-cert-verify: true
+  sni: yn1.fastfly.uk
+  udp: true
+- name: '🇻🇳 越南 | VNM #1'
+  type: trojan
+  server: hwzl.fastfly.qzz.io
+  port: 29470
+  password: 66dff097-fa47-4ae1-8ed8-5e147e564f1c
+  skip-cert-verify: true
+  sni: yn1.fastfly.uk
+  udp: true
