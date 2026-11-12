@@ -1,278 +1,186 @@
-# clash-source 自动生成 —— 源 ruk1ng001，共 56 节点（稳定性加权后留在竞速池内的部分）
+# clash-source 自动生成 —— 源 ruk1ng001，共 164 节点（稳定性加权后留在竞速池内的部分）
 # 不要手改；改动会在下次定时任务被覆盖（上游 https://pala911.github.io/clash-source/nodes/ruk1ng001.yaml）
 proxies:
-- name: 🇯🇵 日本 - 东京2号直连 [9343617ffd71]
-  type: hysteria2
-  server: 141.147.160.26
-  port: 443
-  down: 100 Mbps
-  password: 30f5e94a-3e13-4270-9f90-60827bef6671
-  skip-cert-verify: true
-  sni: bing.com
-  udp: false
-  up: 30 Mbps
-- name: 🇯🇵 日本 - 东京1号直连 [7b6f365dd125]
-  type: hysteria2
-  server: 161.33.152.237
-  port: 443
-  down: 100 Mbps
-  password: 30f5e94a-3e13-4270-9f90-60827bef6671
-  skip-cert-verify: true
-  sni: bing.com
-  udp: false
-  up: 30 Mbps
-- name: jgw.xjp2|zjl [3a2428a7b5eb]
+- name: 🇸🇬 【亚洲】新加坡01丨Vless [ac083e63d8cb]
   type: vless
-  server: xjpp.zjlo.top
-  port: 36442
+  server: 47.129.1.175
+  port: 443
   client-fingerprint: chrome
   flow: xtls-rprx-vision
-  network: tcp
-  servername: xjpp.zjlo.top
+  servername: www.shopify.com
+  skip-cert-verify: true
   tls: true
   udp: true
-  uuid: c6624b96-e346-490b-9145-74c2543a9483
-  xudp: true
-- name: JP-Reality [6c77c8c11628]
+  uuid: e0379de1-6712-4644-b41b-afde5fa30ad7
+- name: 4FreeIran-5be82b36db [bbb625e201cc]
   type: vless
-  server: 168.110.45.41
-  port: 23444
-  client-fingerprint: chrome
+  server: zfapi.zalolink.com
+  port: 46957
+  client-fingerprint: safari
   flow: xtls-rprx-vision
   network: tcp
   reality-opts:
-    public-key: zfxKuH7gDFZ2EMjdt8zMfnsZFpeckMhM5q5XZ3ATe2c
-    short-id: 119c9e68498f5900
-  servername: www.microsoft.com
+    public-key: 1SefqLQXrqkiUdf7cTMF53hrMZyo684_uneRC8-qTxI
+    short-id: 8f6683a234d3
+  servername: psstatic.cdn.bcebos.com
   tls: true
-  uuid: ee2112e4-1e58-4f77-b162-5ef869358df9
-- name: 🇳🇱 NL-Amsterdam-174714-ufey [33ffe908c168]
-  type: http
-  server: 84.17.47.146
-  port: 9002
-  password: 'null'
-  skip-cert-verify: true
-  tls: true
-  username: 'null'
-- name: 🇳🇱NL_34|2.9MB/s|R002-260618 [0dc67707ea09]
-  type: http
-  server: 84.17.47.147
-  port: 9002
-  password: 'null'
-  skip-cert-verify: true
-  sni: 84.17.47.147
-  tls: true
-  udp: true
-  username: 'null'
-- name: jgw.xjp2|byds [a5e009b988f9]
+  uuid: 57beeeb0-03fc-4fc9-94da-7604488a7134
+- name: 4Jadi-4794f67529 [17908eda609e]
   type: vless
-  server: xjpp.zjlo.top
-  port: 36442
-  client-fingerprint: chrome
-  flow: xtls-rprx-vision
-  network: tcp
-  servername: xjpp.zjlo.top
-  tls: true
-  udp: true
-  uuid: 2633cbab-e901-4f5a-9a0f-18ff319d0d70
-  xudp: true
-- name: JP-Hysteria2 [84cad1f68004]
-  type: hysteria2
-  server: 168.110.45.41
-  port: 21443
-  alpn:
-  - h3
-  down: 200 Mbps
-  password: pnKhsG5E1hH1VglAXmT9cq1
-  skip-cert-verify: true
-  sni: www.bing.com
-  up: 30 Mbps
-- name: 🇬🇷GR_1|2.3MB/s [4cc1e630f5fc]
-  type: http
-  server: 149.22.85.78
+  server: 199.232.78.120
   port: 443
-  password: ''
-  skip-cert-verify: true
-  tls: true
-  udp: true
-  username: ''
-- name: jgw.xjp2|yj [91c09d018ac4]
-  type: vless
-  server: xjpp.zjlo.top
-  port: 36442
-  client-fingerprint: chrome
-  flow: xtls-rprx-vision
-  network: tcp
-  servername: xjpp.zjlo.top
-  tls: true
-  udp: true
-  uuid: b743c868-b35c-4d91-b88b-d9efd7060b5c
-  xudp: true
-- name: 🇺🇸US_8|1.3MB/s [a5f015b5ae603b87] [c4a931939ffa]
-  type: http
-  server: 138.199.35.209
-  port: 9002
-  skip-cert-verify: true
-  tls: true
-  udp: true
-- name: 🇬🇧GB_3|1.8MB/s|P002-260618 [8160cb3bcb47]
-  type: http
-  server: 212.102.63.31
-  port: 443
-  password: None
-  skip-cert-verify: true
-  tls: true
-  udp: true
-- name: US - zhuhai.uk 06 [739e0a8f514270b6] [ffebf4869150]
-  type: http
-  server: fan.365747.xyz
-  port: 443
-  password: 'null'
-  sni: fan.365747.xyz
-  tls: true
-  username: 'null'
-- name: 🇺🇸US_10|3.0MB/s [c98893273be5dc41] [3c315f0adb9b]
-  type: http
-  server: 138.199.35.220
-  port: 9002
-  skip-cert-verify: true
-  tls: true
-  udp: true
-- name: 🇮🇹|意大利-IEPL 02 [9bec713ba84d]
-  type: trojan
-  server: sclass-00.catcat321.com
-  port: 20117
-  password: d7563108-615c-4338-a7bd-77f359869a4a
-  skip-cert-verify: true
-  sni: hk.catxstar.com
-  udp: true
-- name: 🇦🇹AT_1|2.4MB/s [82d61a814f86]
-  type: http
-  server: 146.70.244.2
-  port: 443
-  skip-cert-verify: true
-  tls: true
-- name: 🇵🇱PL_39|244KB/s|M003-260806 [44d821dc7f54]
-  type: vless
-  server: 3.169.9.125
-  port: 443
-  alpn:
-  - http/1.1
   client-fingerprint: chrome
   network: ws
-  servername: d2ex4nxd2e01ub.cloudfront.net
-  tls: true
-  uuid: 67cd3349-f789-4cbb-8b91-4b6b1654ce7c
-  ws-opts:
-    headers:
-      Host: d2ex4nxd2e01ub.cloudfront.net
-    path: /
-- name: 🇺🇸US_20|2.4MB/s [4cc7e4544b90]
-  type: http
-  server: 38.95.111.226
-  port: 9443
-  password: ''
+  servername: cdn.akamai.steamstatic.com
   skip-cert-verify: true
   tls: true
-  udp: true
-  username: ''
-- name: 🇷🇺RU_1|1.1MB/s [53e4c48d230a]
+  uuid: 8d2cbffd-43d0-458d-906b-7c54b7b51f38
+  ws-opts:
+    headers:
+      Host: finalnsdger.global.ssl.fastly.net.
+    path: /
+- name: 🇩🇪DE_64|1.0MB/s|R002-260618 [c6a7d6bb2cb1]
   type: http
-  server: 46.29.166.134
-  port: 1446
+  server: 87.249.132.97
+  port: 443
   password: None
   skip-cert-verify: true
   tls: true
-- name: 🇷🇸RS_2|1.2MB/s [8cd189883c14]
+  udp: true
+- name: 🇩🇪DE_182|1.2MB/s|S001-260618 [9a63840cd58a]
+  type: vless
+  server: 212.113.116.181
+  port: 443
+  alpn:
+  - h2
+  client-fingerprint: chrome
+  encryption: none
+  network: grpc
+  servername: de.oncloudvpn.com
+  tls: true
+  udp: true
+  uuid: 1d46250c-f015-439d-a7fd-c4d9e2a4c63d
+  xudp: true
+- name: 🇫🇷FR_9|1.5MB/s|R002-260618 [52e4b2be20ad]
+  type: http
+  server: 103.82.101.43
+  port: 443
+  skip-cert-verify: true
+  sni: 76d1d3ecadca44efa2339867d7dfc9a1-8e928736d0f8dbdc.apache-iv.com
+  tls: true
+  udp: true
+- name: 4FreeIran-4102188c73 [43400abea954]
+  type: vless
+  server: 143.246.62.191
+  port: 8443
+  client-fingerprint: chrome
+  network: tcp
+  reality-opts:
+    public-key: 4g6gX0ueJap7pY_iTDx23h6bzo3KIOTcFzP1Uacn0QA
+    short-id: 4ad2e4e660550e43
+  servername: github.githubassets.com
+  tls: true
+  uuid: eb8c97f7-a154-4442-91b0-54c0d055ad0b
+- name: 🇹🇼_TW_台湾->🇺🇸_US_美国_IPV4 [2dbece9fe4a58266] [041783ac3b13]
+  type: anytls
+  server: sdf65h46wr.df6h451rh.xin
+  port: 443
+  password: 0324fbc29561
+  servername: images.ctfassets.net
+  skip-cert-verify: true
+  sni: images.ctfassets.net
+  tls: true
+- name: 🇩🇪DE_80|4.3MB/s|R002-260618 [270f10d1ed7e]
+  type: http
+  server: 116.202.172.99
+  port: 443
+  password: 'null'
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: 'null'
+- name: twmoon1-cdn-route.couldflare-cdn.com [842d17517f87]
+  type: http
+  server: twmoon1-cdn-route.couldflare-cdn.com
+  port: 1443
+  password: exaxgqkKkd0TAMrCxeonWg==
+  tls: true
+  username: mrwdfNTD8M79LCukCieldrqZWqs=
+- name: 🇷🇸RS_1|641KB/s|R002-260618 [16e141fc55f7]
   type: http
   server: 146.70.221.18
   port: 443
   skip-cert-verify: true
   tls: true
-- name: 🇹🇷|土耳其-IEPL 01 [e3ba77a91d06]
-  type: trojan
-  server: sclass-b1.catcat321.com
-  port: 20027
-  password: d7563108-615c-4338-a7bd-77f359869a4a
-  skip-cert-verify: true
-  sni: hk.catxstar.com
   udp: true
-- name: VIP3-🇹🇷土耳其|TR|直连 [2bc30532c8b9]
-  type: vless
-  server: 185.255.95.131
-  port: 11738
-  client-fingerprint: chrome
-  flow: xtls-rprx-vision
-  reality-opts:
-    public-key: DqPCXKIPN4NDurylwyVdPsaW9V1uYktHSon4n2Kb1y8
-    short-id: 7815104c
-  servername: www.asus.com
-  tls: true
-  uuid: e38111aa-f62a-46ad-a538-6f3003f2f43d
-- name: 🇳🇱NL_9|1.0MB/s [3744e5a8bca3]
+- name: 🇷🇺RU_2|1.4MB/s|R002-260618 [98457ae63628]
   type: http
-  server: 149.36.51.129
-  port: 443
-  password: ''
+  server: 87.242.85.187
+  port: 8443
   skip-cert-verify: true
   tls: true
   udp: true
-  username: ''
-- name: 🇩🇪DE_5|4.9MB/s|R002-260618 [853cbfea7588]
+- name: 🇳🇱NL_84|1.4MB/s|R002-260618 [cdf1dfaec06e]
   type: http
-  server: 159.69.94.125
+  server: 185.246.153.28
   port: 443
   skip-cert-verify: true
+  sni: 4a8c2906c96058315dffbc2b0e7ff19b-0c66a58858a795df.apache-iv.com
   tls: true
   udp: true
-- name: 🇮🇹|意大利-IEPL 02 [0e562b525f4e]
-  type: trojan
-  server: sclass-00.catcat321.com
-  port: 20117
-  password: d9064589-74af-432a-9390-5d8a9da281bf
-  skip-cert-verify: true
-  sni: hk.catxstar.com
-  udp: true
-- name: US - zhuhai.uk 03 [f98af79e621bfb95] [ead159c58ec0]
+- name: 🇳🇱NL_194|5.6MB/s|R002-260618 [5fce3aa04aef]
   type: http
-  server: 138.199.35.200
+  server: 84.17.47.126
   port: 9002
   skip-cert-verify: true
   tls: true
-- name: 🇺🇸 美国 | USA 9 [fac35ed425c5e1cf] [62c5f7511a31]
-  type: anytls
-  server: sdf65h46wr.df6h451rh.xin
-  port: 443
-  password: 0324fbc29561
-  skip-cert-verify: true
-  sni: images.ctfassets.net
-- name: 🇺🇸US_33|395KB/s [4a2e8ac2a0a1]
+  udp: true
+- name: 🇩🇪DE_9|2.9MB/s|R002-260618 [7e33ca9d37ba]
   type: http
-  server: 138.199.35.199
+  server: 158.173.154.4
   port: 9002
-  password: ''
   skip-cert-verify: true
   tls: true
   udp: true
-  username: ''
-- name: 4FreeIran-d37f40b402 [641a38ed61e1]
-  type: ss
-  server: 202.50.253.27
-  port: 19999
-  cipher: aes-256-gcm
-  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
-- name: 🇩🇪DE-191.44.112.170-0416 [06839255a299]
-  type: trojan
-  server: 191.44.112.170.sslip.io
-  port: 443
-  network: ws
-  password: 46d221fa-e9b4-748c-4eae-019a88e42991
-  sni: orbylume.my.to
+- name: NL_speednode_0027 [5a16ef58e735]
+  type: http
+  server: 84.17.47.123
+  port: 9002
+  password: None
+  skip-cert-verify: true
   tls: true
-  ws-opts:
-    headers:
-      host: orbylume.my.to
-    path: /tvpn-trojan/bg
+  udp: true
+- name: 🇫🇷FR_40|7.7MB/s|P002-260618 [8b2e468494ca]
+  type: http
+  server: 87.98.174.157
+  port: 6103
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇷🇴RO_70|1.0MB/s|R002-260618 [053b7adc5779]
+  type: http
+  server: 193.176.84.19
+  port: 9002
+  password: 'null'
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: 'null'
+- name: 🇳🇱NL_85|6.2MB/s|R002-260618 [c2e77b5c06d1]
+  type: http
+  server: 51.158.243.91
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇷🇴RO_90|767KB/s|Z001-260618 [d5e2c2adf6e6]
+  type: http
+  server: 193.176.84.40
+  port: 9002
+  skip-cert-verify: true
+  tls: true
+  udp: true
 - name: 🇺🇸 US-Los Angeles-81993522-ssqn [847f2db108c7]
   type: http
   server: 138.199.35.220
@@ -281,148 +189,188 @@ proxies:
   skip-cert-verify: true
   tls: true
   username: 'null'
-- name: 🇸🇬 新加坡 | SGP 2 [e1c8cf8fd806]
-  type: hysteria2
-  server: 165.154.193.165
-  port: 443
-  alpn:
-  - h3
-  down: 200
-  obfs: salamander
-  obfs-password: d7897b996af77eeecb7ac010361d74fb
-  password: qtMKhrFAMrVZUfupkc5CFHmRKYtNPSjt
-  skip-cert-verify: true
-  sni: 165.154.193.165
-  udp: true
-  up: 100
-- name: vmess|美国哥伦布|3.18.102.2:57998|Amazon.com, Inc. [6c0253e0374a]
-  type: vmess
-  server: 3.18.102.2
-  port: 57998
-  alterId: 0
-  cipher: auto
-  uuid: 1a8c4fce-7b08-458e-b9a4-94c0a23572d9
-- name: 🇺🇸US_37|3.1MB/s [016d9dc73a87]
+- name: 🇷🇺RU_1|1.1MB/s [36beb8f3a9fd0640] [53e4c48d230a]
   type: http
-  server: 149.88.21.129
-  port: 443
+  server: 46.29.166.134
+  port: 1446
+  password: None
+  skip-cert-verify: true
+  tls: true
+- name: 🇺🇸US_16|1.2MB/s [e00ef38c4155]
+  type: http
+  server: 138.199.35.207
+  port: 9002
   password: ''
   skip-cert-verify: true
   tls: true
   udp: true
   username: ''
-- name: 🇺🇸US_14|1.3MB/s|K001-260618 [5c0fa09d7f7db073] [39bae84f8bfb
+- name: NL_speednode_0025 [461db3e89d9a]
   type: http
-  server: 149.34.248.65
-  port: 443
+  server: 84.17.47.149
+  port: 9002
+  password: None
   skip-cert-verify: true
   tls: true
   udp: true
-- name: 🇺🇸US_6|2.4MB/s [93256b066833]
+- name: NL_speednode_0022 [9786e1ec9296]
+  type: http
+  server: 103.97.88.154
+  port: 443
+  password: 'null'
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: 'null'
+- name: 🇺🇸US_5|2.2MB/s [3955add388a9b62c] [cac0b72a8bd7]
+  type: http
+  server: 138.199.35.204
+  port: 9002
+  password: None
+  skip-cert-verify: true
+  tls: true
+- name: 🇺🇸US_97|809KB/s|R002-260618 [2151e44c1e0d]
   type: http
   server: 138.199.35.215
   port: 9002
   skip-cert-verify: true
   tls: true
   udp: true
-- name: HK - zhuhai.uk [838376171c7a673a] [72f6cc3a695c]
+- name: 🇺🇸US_40|762KB/s|P002-260618 [878cf3bf5441]
   type: http
-  server: fan.240104.xyz
-  port: 443
-  password: 'null'
-  tls: true
-  username: 'null'
-- name: jgw.dj2|yj [2ca61fa91213]
-  type: vless
-  server: djj.zjlo.top
-  port: 23169
-  client-fingerprint: chrome
-  flow: xtls-rprx-vision
-  network: tcp
-  servername: djj.zjlo.top
-  tls: true
-  udp: true
-  uuid: 7318caa1-93d1-4a9d-c481-504599902700
-  xudp: true
-- name: 🇹🇷|土耳其-IEPL 02 [d2f8390c0aef]
-  type: trojan
-  server: sclass-b1.catcat321.com
-  port: 20028
-  password: d7563108-615c-4338-a7bd-77f359869a4a
-  skip-cert-verify: true
-  sni: hk.catxstar.com
-  udp: true
-- name: jgw.dj2|zjl [9986b452c2a2]
-  type: vless
-  server: djj.zjlo.top
-  port: 23169
-  client-fingerprint: chrome
-  flow: xtls-rprx-vision
-  network: tcp
-  servername: djj.zjlo.top
-  tls: true
-  udp: true
-  uuid: f67b1159-a61f-4ae4-9844-0701b716a290
-  xudp: true
-- name: jgw.dj2|hxr [85c0a17a6112]
-  type: vless
-  server: djj.zjlo.top
-  port: 23169
-  client-fingerprint: chrome
-  flow: xtls-rprx-vision
-  network: tcp
-  servername: djj.zjlo.top
-  tls: true
-  udp: true
-  uuid: 9da605d3-f5f7-4135-f806-450f036f9351
-  xudp: true
-- name: 🇺🇸US_11|1.7MB/s [f105ad400081833b] [f821500144b0]
-  type: http
-  server: 138.199.35.202
+  server: 138.199.35.213
   port: 9002
   password: None
   skip-cert-verify: true
   tls: true
-- name: jgw.dj2|byds [61da19f654dd]
-  type: vless
-  server: djj.zjlo.top
-  port: 23169
-  client-fingerprint: chrome
-  flow: xtls-rprx-vision
-  network: tcp
-  servername: djj.zjlo.top
+  udp: true
+- name: 🇳🇱NL_50|1.9MB/s|P002-260618 [84115914fa34]
+  type: http
+  server: 84.17.47.146
+  port: 9002
+  password: ''
+  skip-cert-verify: true
   tls: true
   udp: true
-  uuid: 3eb053cb-d6f8-4b31-8180-222e1cc6f8ff
-  xudp: true
-- name: 4Kian-a7fdf66a3d [04808d3a56bc]
-  type: ss
-  server: 202.50.253.18
-  port: 19999
-  cipher: aes-256-gcm
-  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
-- name: 🇩🇪DE_10|2.2MB/s [8954e053b3ae4d55] [aff0968e0afe]
+  username: ''
+- name: RO-Bucharest-3176843-vkhp [c2a232611f73]
   type: http
-  server: 172.64.68.89
+  server: 193.176.84.33
+  port: 9002
+  password: 'null'
+  skip-cert-verify: true
+  sni: 193.176.84.33
+  tls: true
+  username: 'null'
+- name: 🇺🇸US_255|792KB/s|P002-260618 [2f507ac80f4d]
+  type: http
+  server: 138.199.35.209
+  port: 9002
+  password: 'null'
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: 'null'
+- name: 🇷🇺RU_11|1.5MB/s|P002-260618 [487ddf8ab8ec]
+  type: http
+  server: 46.29.166.134
+  port: 1446
+  password: 'null'
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: 'null'
+- name: 4FreeIran-4658a2d085 [fbf78d0b8386]
+  type: vless
+  server: 146.75.59.186
   port: 443
+  network: ws
+  servername: cdn.akamai.steamstatic.com
+  skip-cert-verify: true
+  tls: true
+  uuid: 97e0ea78-67ae-4984-8a14-a7d1a51e58de
+  ws-opts:
+    headers:
+      host: copy_az_channel_NUFiLTER_6i.global.ssl.fastly.net.
+    path: /?TELEGRAM--BYA--CHANEL---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN--@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN---@GHOFLSHCAN
+- name: 4Sarina-302b1624fe [e8381b4a7373]
+  type: vless
+  server: wwww.qarvian.ir
+  port: 443
+  network: ws
+  servername: cdn.akamai.steamstatic.com
+  skip-cert-verify: true
+  tls: true
+  uuid: 97e0ea78-67ae-4984-8a14-a7d1a51e58de
+  ws-opts:
+    headers:
+      host: copy_az_channel_NUFiLTER_17i.global.ssl.fastly.net.
+    path: /?------Configvibes------Configvibes------Configvibes------Configvibes------Configvibes------Configvibes------Configvibes------Configvibes------&
+- name: 🇷🇴RO_30|1.3MB/s|R002-260618 [5e3b8e02da0d]
+  type: http
+  server: 193.176.84.37
+  port: 9002
+  password: 'null'
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: 'null'
+- name: 🇺🇸US_20|4.1MB/s [7b64c9723464]
+  type: http
+  server: 138.199.35.212
+  port: 9002
+  password: ''
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: ''
+- name: 🇷🇴RO_64|1.6MB/s|R002-260618 [a970fd3379f6]
+  type: http
+  server: 193.176.84.22
+  port: 9002
   password: None
   skip-cert-verify: true
   tls: true
-- name: 🇳🇬|尼日利亚-IEPL 01 [1145805a678e]
-  type: trojan
-  server: sclass-c1.catcat321.com
-  port: 20051
-  password: d9064589-74af-432a-9390-5d8a9da281bf
-  skip-cert-verify: true
-  sni: hk.catxstar.com
   udp: true
-- name: 🔰 流速标准为油管1080P及以下 [08d7e43e6fa8]
-  type: hysteria2
-  server: starlink-ft.251313.xyz
-  port: 443
-  password: https://xship.best
+- name: 🇺🇸US_252|572KB/s|P002-260618 [1f04858a3534]
+  type: http
+  server: 138.199.35.202
+  port: 9002
+  password: 'null'
   skip-cert-verify: true
-  sni: xship.top
+  tls: true
+  udp: true
+  username: 'null'
+- name: 🇩🇪DE_12|3.5MB/s|R002-260618 [d879bd5657a9]
+  type: http
+  server: 87.106.223.158
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇷🇴RO_1|1.3MB/s|R002-260618 [a2b16dd523e3]
+  type: http
+  server: 193.176.84.23
+  port: 9002
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇺🇸US_89|788KB/s|R002-260618 [a773897f9e28]
+  type: http
+  server: 138.199.35.219
+  port: 9002
+  password: 'null'
+  skip-cert-verify: true
+  sni: 138.199.35.219
+  tls: true
+  udp: true
+  username: 'null'
+- name: 🇩🇰DK_2|1.1MB/s|R002-260618 [b39e85018bb8]
+  type: http
+  server: 185.245.84.50
+  port: 9443
+  skip-cert-verify: true
+  tls: true
   udp: true
 - name: 🇺🇸US_19|1.8MB/s [df2b9dfe7cec]
   type: http
@@ -433,64 +381,1005 @@ proxies:
   tls: true
   udp: true
   username: ''
-- name: 🇺🇸 US-Los Angeles-81993519-dcem [4e5e3974d830]
+- name: 🇺🇸US_235|697KB/s|P002-260618 [555e78e1dd84]
   type: http
-  server: 138.199.35.198
+  server: 138.199.35.206
+  port: 9002
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇹🇷TR_2|1.8MB/s [e3ba77a91d06]
+  type: trojan
+  server: sclass-b1.catcat321.com
+  port: 20027
+  password: d7563108-615c-4338-a7bd-77f359869a4a
+  skip-cert-verify: true
+  sni: hk.catxstar.com
+  udp: true
+- name: FR_speednode_0011 [eaf068c92f1f]
+  type: http
+  server: 51.159.225.196
+  port: 23856
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: RO-Bucharest-3176843-tqzq [c52f2f9bbaff]
+  type: http
+  server: 193.176.84.31
   port: 9002
   password: 'null'
   skip-cert-verify: true
-  sni: 138.199.35.198
   tls: true
   username: 'null'
-- name: VIP1-SE-Stockholm-1251938-hohf [e39388f12d00]
-  type: socks5
-  server: 45.61.129.165
-  port: 9050
-  username: bnVsbDpudWxs
-- name: 🇺🇸US_5|3.8MB/s [314576c8ea38680d] [e6054b5afb5d]
+- name: 🇮🇪IE_6|3.1MB/s|K001-260618 [42d7ca444ffb]
   type: http
-  server: 138.199.35.212
+  server: 34.249.214.108
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: ''
+- name: 🇷🇴RO_93|927KB/s|R002-260618 [895f1e471f2b]
+  type: http
+  server: 193.176.84.35
+  port: 9002
+  password: 'null'
+  skip-cert-verify: true
+  sni: 193.176.84.35
+  tls: true
+  udp: true
+  username: 'null'
+- name: 4Jadi-f9c6c2557c [4effd5ed74c8]
+  type: vless
+  server: 156.229.167.109
+  port: 8443
+  client-fingerprint: chrome
+  network: tcp
+  reality-opts:
+    public-key: 4g6gX0ueJap7pY_iTDx23h6bzo3KIOTcFzP1Uacn0QA
+    short-id: 4ad2e4e660550e43
+  servername: github.githubassets.com
+  tls: true
+  uuid: eb8c97f7-a154-4442-91b0-54c0d055ad0b
+- name: 🇳🇱NL_105|2.6MB/s|R002-260618 [91edde60f3c3]
+  type: http
+  server: 84.17.47.146
+  port: 9002
+  password: 'null'
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: 'null'
+- name: 🇩🇪DE_132|4.3MB/s|K001-260618 [c22c6176e8e0]
+  type: http
+  server: 213.109.163.119
+  port: 443
+  password: 'null'
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: 'null'
+- name: NL_speednode_0026 [86fd6822b11a]
+  type: http
+  server: 84.17.47.125
   port: 9002
   skip-cert-verify: true
   tls: true
   udp: true
-- name: 🇺🇸US_34|1.6MB/s [6572aef900a7]
+- name: 4FreeIran-71151c3c1d [53def67b44b4]
+  type: vless
+  server: 146.75.59.186
+  port: 443
+  client-fingerprint: ios
+  network: ws
+  servername: cdn.akamai.steamstatic.com
+  skip-cert-verify: true
+  tls: true
+  uuid: 8d2cbffd-43d0-458d-906b-7c54b7b51f38
+  ws-opts:
+    headers:
+      Host: looabomrhesamijji.global.ssl.fastly.net.
+    path: /
+- name: 🇺🇸US_50|759KB/s [ee98ba87e968]
   type: http
-  server: 138.199.35.197
+  server: 138.199.35.208
   port: 9002
   password: ''
   skip-cert-verify: true
   tls: true
   udp: true
   username: ''
-- name: 🇳🇱NL_11|1.1MB/s [a0e6c84551e8]
+- name: 🇨🇭CH_29|838KB/s|K001-260618 [8d22fc5fb5dd]
+  type: http
+  server: 149.88.27.33
+  port: 9443
+  password: ''
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: ''
+- name: 🇨🇭CH_27|551KB/s|K001-260618 [540e8f638a67]
+  type: http
+  server: 149.88.27.46
+  port: 9443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: ''
+- name: 🇺🇸US_13|3.1MB/s [cc9cfe69e0e6]
+  type: http
+  server: 138.199.35.200
+  port: 9002
+  password: ''
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: ''
+- name: 🇩🇪DE_23|1.6MB/s|R002-260618 [9e1fea1b92ef]
+  type: http
+  server: 116.202.172.99
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇺🇸US_86|786KB/s|P002-260618 [87e5f13b7f8e]
+  type: http
+  server: 138.199.35.216
+  port: 9002
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: US - zhuhai.uk 08 [64e69799f1f1e578] [562ca4382193]
+  type: http
+  server: 138.199.35.218
+  port: 9002
+  skip-cert-verify: true
+  sni: 138.199.35.218
+  tls: true
+- name: 🇷🇴RO_7|1.3MB/s [803396a730d6]
+  type: http
+  server: 193.176.84.21
+  port: 9002
+  skip-cert-verify: true
+  sni: www.bing.com
+  tls: true
+  udp: true
+- name: 🇳🇱NL_24|4.4MB/s|R002-260618 [d6a1d9c0507d]
+  type: http
+  server: 84.17.47.150
+  port: 9002
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇨🇿CZ_8|904KB/s|P002-260618 [c09077eae3d7]
+  type: http
+  server: 185.216.35.130
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇺🇸US_67|696KB/s [4a2e8ac2a0a1]
+  type: http
+  server: 138.199.35.199
+  port: 9002
+  password: ''
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: ''
+- name: 🇺🇸US_138|746KB/s|R002-260618 [652faeadb26b]
+  type: http
+  server: 138.199.35.206
+  port: 9002
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇩🇪DE_105|4.1MB/s|P002-260618 [e1dacb4207c8]
+  type: http
+  server: 87.106.223.158
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇮🇪IE_2|3.1MB/s|R002-260618 [ccdfe7c35f3d]
+  type: http
+  server: 18.200.158.139
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇷🇴RO_57|1.2MB/s [c3a4db1baea6]
+  type: http
+  server: 193.176.84.20
+  port: 9002
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 4FreeIran-dbdc25b871 [0f4c16c13db5]
+  type: vless
+  server: zfapi.zalolink.com
+  port: 35460
+  client-fingerprint: ios
+  flow: xtls-rprx-vision
+  network: tcp
+  reality-opts:
+    public-key: mkVsbEvwaiSo9QwnrVN65YZ92QntQQyYs2iDxN6yTlw
+    short-id: 30d976db3eab32
+  servername: psstatic.cdn.bcebos.com
+  tls: true
+  uuid: 57beeeb0-03fc-4fc9-94da-7604488a7134
+- name: 🇦🇱AL_4|605KB/s|K001-260618 [b1efb572cb22]
+  type: http
+  server: 31.171.155.210
+  port: 9443
+  password: ''
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: ''
+- name: FR_speednode_0010 [e6da0f6df43c]
+  type: http
+  server: 51.159.225.196
+  port: 23856
+  password: 'null'
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: 'null'
+- name: canfingV2rayNG-381 [5ec0e7e36b26]
+  type: vless
+  server: 79.182.39.131
+  port: 443
+  client-fingerprint: firefox
+  network: grpc
+  reality-opts:
+    public-key: PD8Jdlg3xB9QY--jwQjp8PFPzCS8-Oryw6-HWBcHMFU
+    short-id: d3bd772514c87d28
+  servername: 717252g.nl8.h1clayd.click
+  tls: true
+  uuid: cda0862a-0f87-4be9-8ed8-1d0c9e382839
+- name: 🇷🇴 RO-Bucharest-3176842-ytqb [cf95381b7672]
+  type: http
+  server: 193.176.84.27
+  port: 9002
+  password: 'null'
+  skip-cert-verify: true
+  tls: true
+  username: 'null'
+- name: 🇷🇴RO_5|1012KB/s|P002-260618 [0da3137e4041]
+  type: http
+  server: 193.176.84.34
+  port: 9002
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇧🇦BA_2|1.0MB/s|R002-260618 [9bb95b13ab3d]
+  type: http
+  server: 185.164.35.16
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇷🇴RO_79|704KB/s [4e23915cab3d]
+  type: http
+  server: 193.176.84.39
+  port: 9002
+  skip-cert-verify: true
+  sni: www.bing.com
+  tls: true
+  udp: true
+- name: 🇩🇪DE_22|1.7MB/s|R002-260618 [ce5222b25c0f]
+  type: http
+  server: 217.92.132.233
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇷🇴 RO-Bucharest-3176842-vivi [caa834972008]
+  type: http
+  server: 193.176.84.23
+  port: 9002
+  password: 'null'
+  skip-cert-verify: true
+  tls: true
+  username: 'null'
+- name: 🇨🇦CA_13|810KB/s|R002-260618 [0718e9a83f9f]
+  type: http
+  server: 206.223.183.21
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇷🇴RO_89|913KB/s|Z001-260618 [cc83e436a3ed]
+  type: http
+  server: 193.176.84.33
+  port: 9002
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: IE_speednode_0013 [37e4a848bf1f]
+  type: http
+  server: 34.249.214.108
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇷🇴 RO-Bucharest-3176842-znsz [5e718bf22a48]
+  type: http
+  server: 193.176.84.26
+  port: 9002
+  password: 'null'
+  skip-cert-verify: true
+  tls: true
+  username: 'null'
+- name: 🇸🇪SE_11|1.3MB/s|R002-260618 [0903bb7d23dc]
+  type: http
+  server: 146.70.242.146
+  port: 9443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇺🇸 US-San Jose-82214-ttjq [d37c74156e45]
+  type: http
+  server: fan.365747.xyz
+  port: 443
+  password: 'null'
+  skip-cert-verify: true
+  sni: fan.365747.xyz
+  tls: true
+  username: 'null'
+- name: 🇱🇻LV_12|860KB/s|R002-260618 [1f31728dcdb5]
+  type: http
+  server: 85.203.39.130
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇷🇴RO_28|1.2MB/s|P002-260618 [1f2c7631affa]
+  type: http
+  server: 193.176.84.26
+  port: 9002
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇯🇵JP_16|221KB/s|R002-260618 [0dcfe37b3009]
+  type: http
+  server: fan.571589.xyz
+  port: 443
+  sni: fan.571589.xyz
+  tls: true
+  udp: true
+- name: 🇮🇹|意大利-IEPL 02 [0e562b525f4e]
+  type: trojan
+  server: sclass-00.catcat321.com
+  port: 20117
+  password: d9064589-74af-432a-9390-5d8a9da281bf
+  skip-cert-verify: true
+  sni: hk.catxstar.com
+  udp: true
+- name: 🇮🇹IT_3|1.8MB/s|R002-260618 [c2997d8fb09c]
+  type: http
+  server: 95.229.15.89
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇷🇴RO_3|1.0MB/s [76cb9d7b2584]
+  type: http
+  server: 193.176.84.35
+  port: 9002
+  skip-cert-verify: true
+  sni: www.bing.com
+  tls: true
+  udp: true
+- name: 🇺🇸US_78|413KB/s|R002-260618 [fd84cd8528ed]
+  type: http
+  server: 162.243.146.243
+  port: 443
+  password: e4b72b531a2d10900519
+  sni: a2f392f3.acsnet.co
+  tls: true
+  udp: true
+  username: testuser1
+- name: 🇷🇴RO_35|1.2MB/s|P002-260618 [736bef3beed2]
+  type: http
+  server: 193.176.84.16
+  port: 9002
+  password: ''
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: ''
+- name: 🇺🇸US_10|141KB/s|R002-260618 [fb6ab23cbfa0]
+  type: http
+  server: fan.365747.xyz
+  port: 443
+  skip-cert-verify: true
+  sni: fan.365747.xyz
+  tls: true
+  udp: true
+- name: 🇺🇸US_37|3.1MB/s [016d9dc73a87]
+  type: http
+  server: 149.88.21.129
+  port: 443
+  password: ''
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: ''
+- name: 🇬🇧GB_14|1.4MB/s|P002-260618 [8160cb3bcb47]
+  type: http
+  server: 212.102.63.31
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇺🇸US_210|206KB/s|R002-260618 [0c82ded83ee7]
+  type: http
+  server: 137.175.22.52
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇷🇺RU_6|777KB/s|R002-260618 [991270c1ef26]
+  type: http
+  server: 178.219.43.226
+  port: 443
+  password: 'null'
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: 'null'
+- name: 🇵🇱PL_4|1.7MB/s|R002-260618 [2e410e6190d1]
+  type: http
+  server: 91.92.250.33
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇺🇸US_179|260KB/s|R002-260618 [b332bf462ada]
+  type: http
+  server: fan.596189.xyz
+  port: 443
+  password: 'null'
+  sni: fan.596189.xyz
+  tls: true
+  udp: true
+  username: 'null'
+- name: 🇮🇸IS_1|946KB/s|R002-260618 [5b4be6a66266]
+  type: http
+  server: 185.165.170.1
+  port: 9443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇦🇱AL_3|590KB/s|P002-260618 [687295eda033]
+  type: http
+  server: 87.120.103.226
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇳🇱NL_138|3.7MB/s|R002-260618 [2be510be4df2]
   type: http
   server: 5.255.118.82
   port: 443
   skip-cert-verify: true
   tls: true
-- name: 🇺🇸 US-Los Angeles-81993521-nnrs [c6a884b69d38]
-  type: http
-  server: 138.199.35.219
-  port: 9002
-  password: 'null'
-  skip-cert-verify: true
-  sni: 138.199.35.219
-  tls: true
-  username: 'null'
-- name: 🇳🇬|尼日利亚-IEPL 01 [919ade677791]
-  type: trojan
-  server: sclass-c2.catcat321.com
-  port: 20051
-  password: d9064589-74af-432a-9390-5d8a9da281bf
-  skip-cert-verify: true
-  sni: hk.catxstar.com
   udp: true
-- name: US - zhuhai.uk 04 [7afc7ee5a861a2ed] [8266399813a5]
+- name: 🇺🇸US_251|259KB/s|R002-260618 [fa48c427c867]
   type: http
-  server: 138.199.35.219
+  server: 137.175.22.40
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇩🇪DE_6|4.8MB/s|R002-260618 [853cbfea7588]
+  type: http
+  server: 159.69.94.125
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇮🇹IT_38|396KB/s|C002-260622 [6e44ce9f8186]
+  type: trojan
+  server: sclass-00.catcat321.com
+  port: 20117
+  client-fingerprint: chrome
+  network: tcp
+  password: d7563108-615c-4338-a7bd-77f359869a4a
+  servername: hk.catxstar.com
+  skip-cert-verify: true
+- name: 🇺🇸US_201|347KB/s|R002-260618 [4d2a6a08e9aa]
+  type: http
+  server: 137.175.22.89
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇳🇱NL_264|3.2MB/s|K001-260618 [66eb4f6956b3]
+  type: http
+  server: 5.2.73.112
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: ''
+- name: 🇷🇴RO_16|1.5MB/s|P002-260618 [fa2a85d8b301]
+  type: http
+  server: 193.176.84.20
   port: 9002
   password: None
   skip-cert-verify: true
   tls: true
+  udp: true
+- name: 🇬🇧GB_22|742KB/s|P002-260618 [13d215abf4ed]
+  type: http
+  server: 84.17.50.214
+  port: 9443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇺🇸US_597|642KB/s|R002-260618 [60350da1ad73]
+  type: http
+  server: 149.34.248.65
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇩🇪DE_3|573KB/s|P002-260618 [9425f5a13d8f]
+  type: http
+  server: 167.172.172.190
+  port: 443
+  password: e4b72b531a2d10900519
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: testuser1
+- name: 4Nika-892ef8890f [6f03627ccfe2]
+  type: vless
+  server: 83.147.13.74
+  port: 8443
+  client-fingerprint: chrome
+  reality-opts:
+    public-key: 4g6gX0ueJap7pY_iTDx23h6bzo3KIOTcFzP1Uacn0QA
+    short-id: 4ad2e4e660550e43
+  servername: github.githubassets.com
+  tls: true
+  uuid: eb8c97f7-a154-4442-91b0-54c0d055ad0b
+- name: US_speednode_0040 [853162e17c25]
+  type: http
+  server: 38.247.141.135
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇨🇦CA_37|559KB/s|P002-260618 [a085336e318e]
+  type: http
+  server: 206.223.183.16
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇺🇸US_77|321KB/s|Z001-260618 [28e9acde0de0]
+  type: http
+  server: fan.226278.xyz
+  port: 443
+  sni: fan.226278.xyz
+  tls: true
+  udp: true
+- name: 🇺🇸US_173|308KB/s|R002-260618 [af1f3857761c]
+  type: http
+  server: 137.175.22.84
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇺🇸US_570|420KB/s|R002-260618 [a0283fd82a2a]
+  type: http
+  server: 68.235.56.51
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 4Nika-81d0f507d7 [48d202d9c29c]
+  type: ss
+  server: 202.50.253.63
+  port: 19999
+  cipher: aes-256-gcm
+  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
+- name: 🇷🇴RO_47|806KB/s [87adfdd05303]
+  type: http
+  server: 193.176.84.38
+  port: 9002
+  skip-cert-verify: true
+  sni: www.bing.com
+  tls: true
+  udp: true
+- name: 🇹🇷TR_1|1.1MB/s [aab31336e95c]
+  type: trojan
+  server: sclass-b1.catcat321.com
+  port: 20028
+  password: d7563108-615c-4338-a7bd-77f359869a4a
+  skip-cert-verify: true
+  sni: hk.catxstar.com
+  tls: true
+- name: 🇬🇷GR_1|2.3MB/s [4cc1e630f5fc]
+  type: http
+  server: 149.22.85.78
+  port: 443
+  password: ''
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: ''
+- name: 4Kian-6230c58433 [328fd1658781]
+  type: vless
+  server: 3.169.9.125
+  port: 443
+  alpn:
+  - http/1.1
+  client-fingerprint: chrome
+  network: ws
+  servername: d2im3v6ipzlavc.cloudfront.net
+  tls: true
+  uuid: 67cd3349-f789-4cbb-8b91-4b6b1654ce7c
+  ws-opts:
+    headers:
+      Host: d2im3v6ipzlavc.cloudfront.net
+    path: /
+- name: 🇮🇹|意大利-IEPL 02 [7b44fa072404]
+  type: trojan
+  server: sclass-01.catcat321.com
+  port: 20117
+  password: d7563108-615c-4338-a7bd-77f359869a4a
+  skip-cert-verify: true
+  sni: hk.catxstar.com
+  udp: true
+- name: 🇳🇱NL_100|3.7MB/s|R002-260618 [3499c45c1db8]
+  type: http
+  server: 82.196.9.7
+  port: 443
+  password: e4b72b531a2d10900519
+  sni: 52c40907.acsnet.co
+  tls: true
+  udp: true
+  username: testuser1
+- name: 🇷🇴RO_27|1.3MB/s|P002-260618 [dfd60e192c98]
+  type: http
+  server: 193.176.84.37
+  port: 9002
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇺🇸 US-Miami-9342487-vsra [568f056a4077]
+  type: http
+  server: 149.34.248.65
+  port: 443
+  skip-cert-verify: true
+  sni: 149.34.248.65
+  tls: true
+- name: 4Kian-3ca10dee5c [7abde24d55f2]
+  type: vless
+  server: 196.199.122.2
+  port: 443
+  client-fingerprint: firefox
+  flow: xtls-rprx-vision
+  network: tcp
+  reality-opts:
+    public-key: ZSmetD4e9QG5CiXhniHg5HJB68L4kwbgAkJmMHtVwEE
+    short-id: 42426c882c5fcd41
+  servername: 7aa271t.es1.h1clayd.click
+  tls: true
+  uuid: 4201786b-d99b-4147-a5f0-20d47acddb81
+- name: 🇳🇱NL_126|746KB/s|R002-260618 [3a2f60b0f8e9]
+  type: http
+  server: 161.129.60.66
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇩🇪DE_170|409KB/s|M003-260806 [98fab60b8a80]
+  type: vless
+  server: 95.85.234.66
+  port: 443
+  client-fingerprint: firefox
+  flow: xtls-rprx-vision
+  network: tcp
+  reality-opts:
+    public-key: MuQH546CBdgYVBzNU_F5fimkbQ0srHxgLKDjl1Wz2Rw
+    short-id: '00000000'
+  servername: fl-modx.webedg.net
+  tls: true
+  uuid: 3659f248-1797-4d6e-9982-a308565fec79
+- name: 🇪🇨EC_1|369KB/s|P002-260618 [416434520316]
+  type: http
+  server: 38.165.231.71
+  port: 9443
+  password: ''
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: ''
+- name: 🇷🇴RO_98|1.0MB/s|R002-260618 [e561e88209e4]
+  type: http
+  server: 135.136.1.2
+  port: 9443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇦🇪_阿拉伯联合酋长国 (2) [ce5bf4e822ad8c71] [64952e21d921]
+  type: vless
+  server: msk10.gacvpn.site
+  port: 443
+  client-fingerprint: edge
+  flow: xtls-rprx-vision
+  reality-opts:
+    public-key: Caj4X3VjnHfdRQzWLmjFCiG_CGw0scYYni6UxVfBs38
+    short-id: db6a4219fb
+  servername: nl3-edge.gacvpn.site
+  skip-cert-verify: true
+  sni: nl3-edge.gacvpn.site
+  tls: true
+  udp: true
+  uuid: 3f5e89d5-591f-4ac9-b071-b05680b573c3
+- name: 美国 洛杉矶 - US03 [d01ac4c7ddb9]
+  type: ss
+  server: 104.18.6.131
+  port: 80
+  cipher: 2022-blake3-aes-128-gcm
+  password: YTE1ZWU4ZTEyZjc3YmEzZA==:NjRjZGI3OTgtZWUyMS00OA==
+  udp: true
+- name: 🇵🇹PT_1|751KB/s|P002-260618 [cebb66dedc8f]
+  type: http
+  server: 149.22.86.1
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇺🇸US_557|213KB/s|R002-260618 [cf4353d767f9]
+  type: http
+  server: 137.175.22.98
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇮🇹 意大利 | SS | 005 [9f940a28db48]
+  type: ss
+  server: 202.50.253.99
+  port: 19999
+  cipher: aes-256-gcm
+  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
+  skip-cert-verify: false
+  tls: false
+  udp: true
+- name: 🇵🇹PT_2|985KB/s|P002-260618 [158734cfe430]
+  type: http
+  server: 149.22.86.14
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 4Kian-74c8620a30 [e7fda757ab59]
+  type: ss
+  server: 202.50.253.81
+  port: 19999
+  cipher: aes-256-gcm
+  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
+- name: 🇨🇦CA_29|699KB/s|P002-260618 [106191a33389]
+  type: http
+  server: 4.172.245.121
+  port: 443
+  password: 'null'
+  skip-cert-verify: true
+  tls: true
+  udp: true
   username: 'null'
+- name: 🇪🇪EE_5|1009KB/s|R002-260618 [ac78dec43e12]
+  type: http
+  server: 95.153.32.2
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇺🇸US_271|635KB/s|R002-260618 [ba053fffbf11]
+  type: http
+  server: 216.107.139.82
+  port: 443
+  skip-cert-verify: true
+  sni: 991cc80f13caf81d3426ddebb2da7f49-92ff472ddc24e5b7.apache-iv.com
+  tls: true
+  udp: true
+- name: 4Sarina-1027ad08d6 [25decbaaa10a]
+  type: ss
+  server: 202.50.253.36
+  port: 19999
+  cipher: aes-256-gcm
+  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
+- name: 4Sarina-f029b66473 [2e294afda7be]
+  type: ss
+  server: 202.50.253.54
+  port: 19999
+  cipher: aes-256-gcm
+  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
+- name: 🇺🇸US_409|343KB/s|R002-260618 [f9ee278038cc]
+  type: http
+  server: 98.101.229.212
+  port: 8090
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇭🇰HK_70|134KB/s|R002-260618 [dabbadb69986]
+  type: http
+  server: fan.240104.xyz
+  port: 443
+  password: 'null'
+  sni: fan.240104.xyz
+  tls: true
+  udp: true
+  username: 'null'
+- name: VIP1-SE-Stockholm-1251938-hohf [e39388f12d00]
+  type: socks5
+  server: 45.61.129.165
+  port: 9050
+  username: bnVsbDpudWxs
+- name: 🇿🇦ZA_2|457KB/s|R002-260618 [cae81acbd27d]
+  type: http
+  server: 197.242.159.23
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇭🇰【亚洲】香港01丨直连 [1307741c2443]
+  type: hysteria2
+  server: 209.9.200.122
+  port: 20000
+  password: e0379de1-6712-4644-b41b-afde5fa30ad7
+  skip-cert-verify: true
+  sni: www.shopify.com
+  udp: true
+- name: 🇩🇪DE_6|3.9MB/s [aff0968e0afe]
+  type: http
+  server: 172.64.68.89
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+- name: 🇱🇹LT_8|2.2MB/s|K001-260618 [4f2dcb921fd1]
+  type: http
+  server: 89.124.11.9
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: ''
+- name: 🇸🇬 SG-Singapore-h-4261392-jdjb [185196af213b]
+  type: http
+  server: 154.26.139.24
+  port: 443
+  skip-cert-verify: true
+  tls: true
+- name: 🇩🇪DE_14|291KB/s|R002-260618 [4194c42ef8e9]
+  type: http
+  server: fan.973511.xyz
+  port: 443
+  password: 'null'
+  sni: fan.973511.xyz
+  tls: true
+  udp: true
+  username: 'null'
+- name: 4Sarina-dcff49d8de [5f83c952c59b]
+  type: vless
+  server: 9.247.54.226
+  port: 443
+  client-fingerprint: firefox
+  network: tcp
+  reality-opts:
+    public-key: UoS8qZ74hP_ECcncCz55lzvlcVss3R7VA0WYZE0YQCY
+    short-id: ba2a3dce62b99092
+  servername: 04535dt.us8.h1clayd.click
+  tls: true
+  uuid: cda0862a-0f87-4be9-8ed8-1d0c9e382839
+- name: 4Mohsen-7a4980ab68 [300e6159a177]
+  type: vless
+  server: 89.125.48.218
+  port: 443
+  client-fingerprint: chrome
+  flow: xtls-rprx-vision
+  network: tcp
+  reality-opts:
+    public-key: Caj4X3VjnHfdRQzWLmjFCiG_CGw0scYYni6UxVfBs38
+    short-id: db6a4219fb
+  servername: nl3-edge.gacvpn.site
+  tls: true
+  uuid: 3f5e89d5-591f-4ac9-b071-b05680b573c3
+- name: 4Mohsen-35c7718182 [5adea4149997]
+  type: trojan
+  server: 191.44.112.170
+  port: 443
+  network: ws
+  password: 46d221fa-e9b4-748c-4eae-019a88e42991
+  sni: orbylume.my.to
+  tls: true
+  ws-opts:
+    headers:
+      host: orbylume.my.to
+    path: /tvpn-trojan/bg
+- name: 🇺🇸US_168|1.2MB/s|R002-260618 [1ea9cca17cf2]
+  type: http
+  server: 44.217.145.28
+  port: 8443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 4Kian-a7fdf66a3d [04808d3a56bc]
+  type: ss
+  server: 202.50.253.18
+  port: 19999
+  cipher: aes-256-gcm
+  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
+- name: 4Nika-23b3240f15 [99f53987abb6]
+  type: trojan
+  server: 191.44.112.170.sslip.io
+  port: 443
+  network: ws
+  password: 46d221fa-e9b4-748c-4eae-019a88e42991
+  skip-cert-verify: true
+  sni: orbylume.my.to
+  tls: true
+  ws-opts:
+    headers:
+      host: orbylume.my.to
+    path: /tvpn-trojan/bg
+- name: 🇩🇪DE_7|1.6MB/s|R002-260618 [380d6623cb02]
+  type: http
+  server: 185.44.107.166
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 47.236.168.243 [731ac5ffdf3c]
+  type: socks5
+  server: 47.236.168.243
+  port: 1080
+  password: '8888'
+  username: '8888'
+- name: 江江韩国 IEPL｜公益 01 [f7be86c822fc]
+  type: socks5
+  server: 121.169.46.116
+  port: 1090
+  password: ''
+  skip-cert-verify: true
+  username: ''
+- name: 🇺🇸US_219|178KB/s|R002-260618 [ca5e6e62e5da]
+  type: http
+  server: 38.28.185.222
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇳🇬|尼日利亚-IEPL 02 [0d39a05a2fe3]
+  type: trojan
+  server: sclass-01.catcat321.com
+  port: 20103
+  password: d7563108-615c-4338-a7bd-77f359869a4a
+  skip-cert-verify: true
+  sni: hk.catxstar.com
+  udp: true

@@ -79,15 +79,6 @@ proxy-groups:
   interval: 300
   timeout: 5000
   tolerance: 200
-- name: SRC-automerge
-  type: url-test
-  use:
-  - automerge
-  url: https://www.youtube.com/generate_204
-  expected-status: 204
-  interval: 300
-  timeout: 5000
-  tolerance: 200
 - name: SRC-zhuhaiuk
   type: url-test
   use:
@@ -115,6 +106,15 @@ proxy-groups:
   interval: 300
   timeout: 5000
   tolerance: 200
+- name: SRC-snakem982
+  type: url-test
+  use:
+  - snakem982
+  url: https://www.youtube.com/generate_204
+  expected-status: 204
+  interval: 300
+  timeout: 5000
+  tolerance: 200
 - name: SRC-nomorewalls
   type: url-test
   use:
@@ -136,8 +136,8 @@ proxy-groups:
 - name: AUTO
   type: url-test
   proxies:
-  - SRC-ssrsub
   - SRC-zhuhaiuk
+  - SRC-ssrsub
   - SRC-leilaomi
   - SRC-ruk1ng001
   url: https://www.youtube.com/generate_204
@@ -159,23 +159,23 @@ proxy-groups:
   tolerance: 200
 - name: 备用
   type: select
-  proxies: &id001
+  proxies:
   - SRC-nomorewalls
-  - SRC-automerge
   - SRC-yypool
   - 不稳定
 - name: 观察
   type: select
-  proxies: *id001
+  proxies:
+  - SRC-snakem982
 - name: FAILOVER
   type: fallback
   proxies:
   - AUTO
   - SRC-yypool
-  - SRC-automerge
   - SRC-zhuhaiuk
   - SRC-ssrsub
   - SRC-ruk1ng001
+  - SRC-snakem982
   - SRC-nomorewalls
   - SRC-leilaomi
   url: https://www.youtube.com/generate_204
@@ -192,20 +192,20 @@ proxy-groups:
   - 备用
   - 观察
   - SRC-yypool
-  - SRC-automerge
   - SRC-zhuhaiuk
   - SRC-ssrsub
   - SRC-ruk1ng001
+  - SRC-snakem982
   - SRC-nomorewalls
   - SRC-leilaomi
 - name: Claude
   type: select
   use:
   - yypool
-  - automerge
   - zhuhaiuk
   - ssrsub
   - ruk1ng001
+  - snakem982
   - nomorewalls
   - leilaomi
   proxies:
@@ -214,10 +214,10 @@ proxy-groups:
   type: select
   use:
   - yypool
-  - automerge
   - zhuhaiuk
   - ssrsub
   - ruk1ng001
+  - snakem982
   - nomorewalls
   - leilaomi
   proxies:
@@ -542,18 +542,6 @@ proxy-providers:
       interval: 300
       timeout: 5000
       expected-status: 204
-  automerge:
-    type: http
-    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/automerge.yaml
-    path: ./providers/automerge.yaml
-    interval: 3600
-    exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
-    health-check:
-      enable: true
-      url: https://www.youtube.com/generate_204
-      interval: 300
-      timeout: 5000
-      expected-status: 204
   zhuhaiuk:
     type: http
     url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/zhuhaiuk.yaml
@@ -582,6 +570,18 @@ proxy-providers:
     type: http
     url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/ruk1ng001.yaml
     path: ./providers/ruk1ng001.yaml
+    interval: 3600
+    exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
+    health-check:
+      enable: true
+      url: https://www.youtube.com/generate_204
+      interval: 300
+      timeout: 5000
+      expected-status: 204
+  snakem982:
+    type: http
+    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/snakem982.yaml
+    path: ./providers/snakem982.yaml
     interval: 3600
     exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
     health-check:
