@@ -1,4 +1,4 @@
-# clash-source 自动生成 —— 源 nomorewalls，共 53 节点（稳定性加权后留在竞速池内的部分）
+# clash-source 自动生成 —— 源 nomorewalls，共 48 节点（稳定性加权后留在竞速池内的部分）
 # 不要手改；改动会在下次定时任务被覆盖（上游 https://pala911.github.io/clash-source/nodes/nomorewalls.yaml）
 proxies:
 - name: برای اتصال دائمی جوین شو🫟 Tele...
@@ -9,25 +9,35 @@ proxies:
   skip-cert-verify: false
   sni: pl2.nexfile.net
   tls: false
-- name: برای اتصال دائمی جوین شو☄️ Tel...
-  type: hysteria2
-  server: 13.143.189.147
-  port: 4444
-  password: a35c508f-4d5d-4531-842e-6e9d43c762c0
-  skip-cert-verify: false
-  sni: pl2.nexfile.net
-  tls: false
-- name: 'برای اتصال دائمی جوین شو☄️ Tel... #1'
-  type: hysteria2
-  server: 152.32.254.68
-  port: 5010
-  obfs: salamander
-  obfs-password: 7M4RXPFcQyQEGbkxBPfXo4bilMhCW2U9
-  password: eBTe6Ax2pUts8oMEWoYVDfnSlHfkLffQ
-  skip-cert-verify: false
-  sni: nas.aizhzo.com
-  tls: false
-- name: '🇬🇧 英国 | GBR #2'
+- name: '🇩🇪 德国 | DEU #4'
+  type: vless
+  server: 188.225.37.43
+  port: 443
+  client-fingerprint: firefox
+  network: ws
+  servername: torvani.cyou
+  tls: true
+  udp: true
+  uuid: 4cabcd59-a405-4c00-96f5-03507e1e28fa
+  ws-opts:
+    headers:
+      Host: torvani.cyou
+    path: /api/boards/live
+- name: '🇫🇷 法国 | FRA #1'
+  type: vless
+  server: 199.232.78.120
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: cdn.akamai.steamstatic.com
+  tls: true
+  udp: true
+  uuid: 8d2cbffd-43d0-458d-906b-7c54b7b51f38
+  ws-opts:
+    headers:
+      Host: fraboijji.global.ssl.fastly.net.
+    path: /
+- name: '🇬🇧 英国 | GBR #1'
   type: vless
   server: 146.75.59.186
   port: 443
@@ -41,259 +51,30 @@ proxies:
     headers:
       Host: ukoijji.global.ssl.fastly.net
     path: /
-- name: '🇺🇸 美国 | USA #18'
+- name: 🇷🇺 俄罗斯 | RUS 2
   type: vless
-  server: 199.232.78.160
+  server: 201.24.116.192
   port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: cdn.akamai.steamstatic.com
-  tls: true
-  udp: true
-  uuid: 97e0ea78-67ae-4984-8a14-a7d1a51e58de
-  ws-opts:
-    headers:
-      Host: copy_az_channel_NUFiLTER_10i.global.ssl.fastly.net.
-    path: /
-- name: 🇧🇬 保加利亚 | BGR 2
-  type: vless
-  server: 88.80.150.15
-  port: 443
-  alpn:
-  - h2
-  client-fingerprint: edge
-  network: grpc
-  servername: bg2.oncloudvpn.com
-  tls: true
-  udp: true
-  uuid: 1d46250c-f015-439d-a7fd-c4d9e2a4c63d
-- name: 🇮🇩ID_1|4.9MB/s
-  type: vmess
-  server: 13.249.231.85
-  port: 443
-  alterId: 0
-  cipher: auto
-  network: ws
-  skip-cert-verify: false
-  tls: true
-  udp: true
-  uuid: a84c132a-3151-40fe-947b-4dd9a7d2122c
-  ws-opts:
-    headers:
-      Host: d7pu5mzr9c4b0.cloudfront.net
-    path: /vmess
-  xudp: true
-- name: 🇬🇷GR_1|1.8MB/s
-  type: http
-  server: 149.22.85.65
-  port: 443
-  skip-cert-verify: true
-  tls: true
-  udp: true
-- name: 🇭🇺HU_1|1.7MB/s
-  type: http
-  server: 146.70.203.18
-  port: 443
-  skip-cert-verify: true
-  tls: true
-- name: 🇬🇪GE_1|1.3MB/s
-  type: http
-  server: 195.54.178.210
-  port: 443
-  skip-cert-verify: true
-  tls: true
-- name: 🇬🇷GR_2|1.9MB/s
-  type: http
-  server: 149.22.85.78
-  port: 443
-  skip-cert-verify: true
-  tls: true
-  udp: true
-- name: 🇳🇱NL_3|3.2MB/s
-  type: http
-  server: 149.36.51.129
-  port: 443
-  skip-cert-verify: true
-  tls: true
-  udp: true
-- name: 🇨🇿CZ_2|1.3MB/s
-  type: http
-  server: 185.216.35.66
-  port: 443
-  skip-cert-verify: true
-  tls: true
-  udp: true
-- name: 🇺🇸US_8|1.2MB/s
-  type: http
-  server: 138.199.35.201
-  port: 9002
-  skip-cert-verify: true
-  tls: true
-  udp: true
-- name: '🇺🇸 美国 | USA #3'
-  type: vless
-  server: 104.18.1.1
-  port: 2087
-  alpn:
-  - h3
-  - h2
-  - http/1.1
-  client-fingerprint: ios
-  encryption: none
-  network: ws
-  servername: 1.proxy2.us.ci.
-  tls: true
-  udp: true
-  uuid: 4859c235-2530-4062-9a0b-ea859cbbf861
-  ws-opts:
-    headers:
-      Host: 1.proxy2.us.ci.
-    path: /
-  xudp: true
-- name: '🇩🇪 德国 | DEU #3'
-  type: ss
-  server: 18.171.57.116
-  port: 443
-  cipher: 2022-blake3-chacha20-poly1305
-  password: Cg2Dw4OhdBZhqbeO9ZTA3g/Gk/AvsrYZGhAJeGnQIx4=
-  udp: true
-- name: 🇺🇸US_11|1008KB/s
-  type: http
-  server: 107.175.69.137
-  port: 8080
-  skip-cert-verify: true
-- name: 🇩🇪DE_7|1.3MB/s
-  type: vless
-  server: tally.so
-  port: 2082
-  encryption: none
-  network: ws
-  udp: true
-  uuid: 975955b1-0521-49d9-97ad-eed2e626a30f
-  ws-opts:
-    headers:
-      Host: roOz-ryo1kZgj-v1.rOoz-67c.woRKers.deV
-      User-Agent: Mozilla/5.0 (Linux; Android 7.0; TRT-LX3 Build/HUAWEITRT-LX3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Mobile Safari/537.36
-    path: /?ed=2560
-  xudp: true
-- name: 🇭🇰HK_1|1.2MB/s
-  type: http
-  server: 38.76.140.254
-  port: 8443
-  skip-cert-verify: true
-  tls: true
-- name: 🇫🇷FR_2|3.0MB/s
-  type: http
-  server: 82.66.235.221
-  port: 443
-  skip-cert-verify: true
-  tls: true
-- name: 🇩🇪DE_9|3.4MB/s
-  type: http
-  server: 158.173.154.1
-  port: 9002
-  password: 'null'
-  skip-cert-verify: true
-  tls: true
-  username: 'null'
-- name: '🇩🇪 德国 | DEU #1'
-  type: vmess
-  server: 23.165.200.150
-  port: 52080
-  alterId: 0
-  cipher: auto
-  network: http
-  skip-cert-verify: true
-  tls: false
-  udp: true
-  uuid: 672cdade-bb05-4c86-b578-e5d09b79524a
-- name: '🇩🇪 德国 | DEU #2'
-  type: vless
-  server: visa.com.sg
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: node.plutocore.vip
-  tls: true
-  udp: true
-  uuid: 8fa3f00f-f499-4705-9aa7-2ec6f91c6fa2
-  ws-opts:
-    headers:
-      Host: node.plutocore.vip
-    path: /f/210/5dffe1d758f42a4ef48f733c
-- name: '🇩🇪 德国 | DEU #4'
-  type: vless
-  server: 199.232.239.239
-  port: 443
-  alpn:
-  - h2
   client-fingerprint: firefox
-  network: xhttp
-  servername: community.fastly.steamstatic.com
+  network: grpc
+  servername: vps3.nemnogogo.com
   tls: true
   udp: true
-  uuid: 5a4db896-caab-4b9c-f747-52ce95b0f9ad
-- name: '🇫🇷 法国 | FRA #1'
+  uuid: 38308ff1-5aa9-494f-a25a-0f2870d56b3e
+- name: '🇺🇸 美国 | USA #1'
   type: vless
-  server: 151.101.36.2
+  server: yx.l110.us.ci
   port: 443
-  alpn:
-  - h3
-  client-fingerprint: edge
-  network: xhttp
-  servername: accounts.fastly.com
+  client-fingerprint: chrome
+  network: ws
+  servername: fs.qicai99.com
   tls: true
   udp: true
-  uuid: 67cd3349-f789-4cbb-8b91-4b6b1654ce7c
-- name: '🇭🇰 香港 | HKG #1'
-  type: vmess
-  server: 47.244.120.197
-  port: 36703
-  alterId: 0
-  cipher: auto
-  network: ws
-  skip-cert-verify: true
-  tls: false
-  udp: true
-  uuid: 45b83519-9c4f-4052-a11b-02e017b636d4
+  uuid: 99c5b713-dedf-4a10-8070-916ff3f49b0e
   ws-opts:
-    path: /arki
-- name: '🇰🇷 韩国 | KOR #1'
-  type: hysteria2
-  server: 3.34.49.234
-  port: 443
-  password: 7e68e32f-8015-4f37-9082-70e8b0b58043
-  skip-cert-verify: true
-  sni: www.bing.com
-  tls: false
-- name: '🇸🇪 瑞典 | SWE #1'
-  type: ss
-  server: 16.171.159.75
-  port: 8080
-  cipher: 2022-blake3-aes-256-gcm
-  password: SWePBmNSadMUzbm7GigoCTrCXr1vG/zUfYbBDaxk/VU=:jXzFNqqClbUWdzc1f4DSolu9VfjohvSJ+vP/Sj5eK0U=
-  udp: true
-- name: '🇸🇪 瑞典 | SWE #2'
-  type: vmess
-  server: 16.171.159.75
-  port: 16751
-  alterId: 0
-  cipher: auto
-  network: ws
-  skip-cert-verify: true
-  tls: false
-  udp: true
-  uuid: 5b2e2e5f-1302-4d65-ab39-27f6f0ca5562
-  ws-opts:
+    headers:
+      Host: fs.qicai99.com
     path: /
-- name: '🇸🇬 新加坡 | SGP #2'
-  type: hysteria2
-  server: 52.77.214.112
-  port: 443
-  password: 7e68e32f-8015-4f37-9082-70e8b0b58043
-  skip-cert-verify: true
-  sni: www.bing.com
-  tls: false
 - name: '🇹🇼 🇨🇳 台湾 | TWN #1'
   type: vless
   server: 60.248.219.53
@@ -307,203 +88,358 @@ proxies:
     headers:
       Host: ty986gfazs.cainiaohub.xyz
     path: /81574b6b-c9d7-44a0-b83d-dad56e8cb530
-- name: '🇺🇸 美国 | USA #1'
-  type: vless
-  server: 104.18.151.172
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: node.plutocore.vip
-  tls: true
-  udp: true
-  uuid: 8fa3f00f-f499-4705-9aa7-2ec6f91c6fa2
-  ws-opts:
-    headers:
-      Host: node.plutocore.vip
-    path: /f/210/5dffe1d758f42a4ef48f733c
-- name: '🇺🇸 美国 | USA #2'
-  type: vless
-  server: 104.17.139.37
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: node.plutocore.vip
-  tls: true
-  udp: true
-  uuid: 8fa3f00f-f499-4705-9aa7-2ec6f91c6fa2
-  ws-opts:
-    headers:
-      Host: node.plutocore.vip
-    path: /f/210/5dffe1d758f42a4ef48f733c
-- name: '🇺🇸 美国 | USA #4'
-  type: vless
-  server: 8.35.211.188
-  port: 8443
-  client-fingerprint: chrome
-  network: ws
-  servername: vpn-1fj.pages.dev
-  tls: true
-  udp: true
-  uuid: 2b181a3a-c001-4145-845a-5d43a43837d5
-  ws-opts:
-    headers:
-      Host: vpn-1fj.pages.dev
-    path: /
-- name: '🇺🇸 美国 | USA #7'
-  type: vless
-  server: 104.16.12.16
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: node.plutocore.vip
-  tls: true
-  udp: true
-  uuid: 8fa3f00f-f499-4705-9aa7-2ec6f91c6fa2
-  ws-opts:
-    headers:
-      Host: node.plutocore.vip
-    path: /f/210/5dffe1d758f42a4ef48f733c
-- name: '🇺🇸 美国 | USA #8'
-  type: vless
-  server: 104.17.162.3
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: node.plutocore.vip
-  tls: true
-  udp: true
-  uuid: 8fa3f00f-f499-4705-9aa7-2ec6f91c6fa2
-  ws-opts:
-    headers:
-      Host: node.plutocore.vip
-    path: /f/210/5dffe1d758f42a4ef48f733c
-- name: '🇺🇸 美国 | USA #10'
-  type: vless
-  server: 104.16.92.202
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: node.plutocore.vip
-  tls: true
-  udp: true
-  uuid: 8fa3f00f-f499-4705-9aa7-2ec6f91c6fa2
-  ws-opts:
-    headers:
-      Host: node.plutocore.vip
-    path: /f/210/5dffe1d758f42a4ef48f733c
-- name: '🇺🇸 美国 | USA #11'
-  type: vless
-  server: 104.18.255.167
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: node.plutocore.vip
-  tls: true
-  udp: true
-  uuid: 8fa3f00f-f499-4705-9aa7-2ec6f91c6fa2
-  ws-opts:
-    headers:
-      Host: node.plutocore.vip
-    path: /f/210/5dffe1d758f42a4ef48f733c
 - name: '🇺🇸 美国 | USA #12'
   type: vless
-  server: 104.17.140.83
+  server: 146.75.59.186
   port: 443
   client-fingerprint: chrome
   network: ws
-  servername: node.plutocore.vip
+  servername: cdn.akamai.steamstatic.com
   tls: true
   udp: true
-  uuid: 8fa3f00f-f499-4705-9aa7-2ec6f91c6fa2
+  uuid: 97e0ea78-67ae-4984-8a14-a7d1a51e58de
   ws-opts:
     headers:
-      Host: node.plutocore.vip
-    path: /f/210/5dffe1d758f42a4ef48f733c
+      Host: copy_az_channel_NUFiLTER_6i.global.ssl.fastly.net.
+    path: /
 - name: '🇺🇸 美国 | USA #13'
   type: vless
-  server: 104.17.193.40
+  server: 199.232.78.160
   port: 443
   client-fingerprint: chrome
   network: ws
-  servername: node.plutocore.vip
+  servername: cdn.akamai.steamstatic.com
   tls: true
   udp: true
-  uuid: 8fa3f00f-f499-4705-9aa7-2ec6f91c6fa2
+  uuid: 97e0ea78-67ae-4984-8a14-a7d1a51e58de
   ws-opts:
     headers:
-      Host: node.plutocore.vip
-    path: /f/210/5dffe1d758f42a4ef48f733c
-- name: '🇺🇸 美国 | USA #14'
-  type: vless
-  server: 104.16.105.166
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: node.plutocore.vip
-  tls: true
-  udp: true
-  uuid: 8fa3f00f-f499-4705-9aa7-2ec6f91c6fa2
-  ws-opts:
-    headers:
-      Host: node.plutocore.vip
-    path: /f/210/5dffe1d758f42a4ef48f733c
-- name: '🇺🇸 美国 | USA #15'
-  type: vless
-  server: 104.19.219.230
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: cfnode-11ivy8.pages.dev
-  tls: true
-  udp: true
-  uuid: 2ea2719c-23e1-4cde-b192-c8652d55d9e5
-  ws-opts:
-    headers:
-      Host: cfnode-11ivy8.pages.dev
-    path: /ws
-- name: '🇺🇸 美国 | USA #16'
-  type: vless
-  server: cfnode-11ivy8.pages.dev
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: cfnode-11ivy8.pages.dev
-  tls: true
-  udp: true
-  uuid: 2ea2719c-23e1-4cde-b192-c8652d55d9e5
-  ws-opts:
-    headers:
-      Host: cfnode-11ivy8.pages.dev
+      Host: copy_az_channel_NUFiLTER_10i.global.ssl.fastly.net.
     path: /
-- name: '🇺🇸 美国 | USA #17'
+- name: '🇺🇸 美国 | USA #8'
   type: vless
-  server: 104.16.253.99
+  server: wwww.qarvian.ir
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: cdn.akamai.steamstatic.com
+  tls: true
+  udp: true
+  uuid: 97e0ea78-67ae-4984-8a14-a7d1a51e58de
+  ws-opts:
+    headers:
+      Host: copy_az_channel_NUFiLTER_7i.global.ssl.fastly.net.
+    path: /
+- name: '🇯🇵 日本 | JPN #1'
+  type: ss
+  server: 154.36.158.197
+  port: 8388
+  cipher: aes-256-gcm
+  password: BeaUf9c0AEWH40Pu
+  udp: true
+- name: 🇩🇪DE_1|1.0MB/s
+  type: vless
+  server: static.nlomasterpanel.ru
+  port: 443
+  alpn:
+  - h2
+  - http/1.1
+  client-fingerprint: chrome
+  encryption: none
+  network: xhttp
+  servername: static.nlomasterpanel.ru
+  tls: true
+  udp: true
+  uuid: 981e728f-d403-4fef-a1ff-6ba9ebe0e702
+  xudp: true
+- name: 🇯🇵JP_2|1.5MB/s
+  type: socks5
+  server: 43.133.21.24
+  port: 3001
+  skip-cert-verify: true
+- name: 🇺🇸US_1|3.3MB/s
+  type: http
+  server: 118.184.140.90
+  port: 58764
+  skip-cert-verify: true
+  tls: true
+- name: '🇨🇦 加拿大 | CAN #1'
+  type: vless
+  server: 23.227.38.221
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: eeeccc.ttttlefjljl.xyz
+  tls: true
+  udp: true
+  uuid: b7795ce8-3863-4292-adfc-9c0a7b847774
+  ws-opts:
+    headers:
+      Host: eeeccc.ttttlefjljl.xyz
+    path: /images
+- name: '🇩🇪 德国 | DEU #1'
+  type: vless
+  server: 199.232.239.239
+  port: 443
+  alpn:
+  - h2
+  client-fingerprint: firefox
+  network: xhttp
+  servername: community.fastly.steamstatic.com
+  tls: true
+  udp: true
+  uuid: 5a4db896-caab-4b9c-f747-52ce95b0f9ad
+- name: '🇩🇪 德国 | DEU #2'
+  type: ss
+  server: 18.196.82.94
+  port: 443
+  cipher: 2022-blake3-chacha20-poly1305
+  password: 8yO3ANWefuuGs1lRKXECQA1FEhxlWFV2ppQMcBaZo5Y=
+  udp: true
+- name: '🇩🇪 德国 | DEU #3'
+  type: vless
+  server: www.hyby.ir
+  port: 2087
+  alpn:
+  - h3
+  - h2
+  - http/1.1
+  client-fingerprint: chrome
+  encryption: mlkem768x25519plus.native.0rtt.Fy1WuRvH1VNIEda4AC61jAhcBFLzuYHcwbUO7mNjxwY
+  network: xhttp
+  servername: www.hyby.ir
+  tls: true
+  udp: true
+  uuid: b6da1396-cfa7-421c-92b6-8bc947f0d308
+- name: '🇩🇪 德国 | DEU #5'
+  type: vmess
+  server: 23.165.200.150
+  port: 52080
+  alterId: 0
+  cipher: auto
+  network: http
+  skip-cert-verify: true
+  tls: false
+  udp: true
+  uuid: 672cdade-bb05-4c86-b578-e5d09b79524a
+- name: 🇩🇪 德国 | DEU 8
+  type: vless
+  server: 188.225.56.133
+  port: 443
+  client-fingerprint: firefox
+  network: grpc
+  servername: astronovalis.wtf
+  tls: true
+  udp: true
+  uuid: 820fa845-a1eb-4a83-b613-e6714cea8a1a
+- name: 🇯🇵 日本 | JPN 2
+  type: anytls
+  server: forwarded.frnhk.xyz
+  port: 2052
+  password: 9922ea3a-7314-4af5-a4cb-eb68a9b94fca
+  skip-cert-verify: true
+  sni: jp2.gosthk.site
+  udp: true
+- name: 🇲🇾 马来西亚 | MYS
+  type: trojan
+  server: 3456f1.cloudflare.182682.xyz
+  port: 443
+  network: ws
+  password: b7795ce8-3863-4292-adfc-9c0a7b847774
+  skip-cert-verify: true
+  sni: 44-ml-1.ccc4vortex.top
+  udp: true
+  ws-opts:
+    headers:
+      Host: 44-ml-1.ccc4vortex.top
+    path: /images
+- name: 🇲🇾 马来西亚 | MYS 2
+  type: trojan
+  server: 23.227.38.61
+  port: 443
+  network: ws
+  password: b7795ce8-3863-4292-adfc-9c0a7b847774
+  skip-cert-verify: true
+  sni: 44-ml-1.ccc4vortex.top
+  udp: true
+  ws-opts:
+    headers:
+      Host: 44-ml-1.ccc4vortex.top
+    path: /images
+- name: '🇳🇱 荷兰 | NLD #2'
+  type: vless
+  server: 94.241.172.107
+  port: 443
+  alpn:
+  - h2
+  - http/1.1
+  client-fingerprint: chrome
+  network: xhttp
+  servername: 94.241.172.107
+  tls: true
+  udp: true
+  uuid: 4777d90d-265b-4927-a0d1-63f36ed1421c
+- name: '🇳🇱 荷兰 | NLD #3'
+  type: vless
+  server: 201.34.142.108
+  port: 443
+  client-fingerprint: firefox
+  network: xhttp
+  servername: 201.34.142.108
+  tls: true
+  udp: true
+  uuid: 4777d90d-265b-4927-a0d1-63f36ed1421c
+- name: '🇷🇺 俄罗斯 | RUS #1'
+  type: vless
+  server: 188.72.112.1
+  port: 443
+  alpn:
+  - h2
+  - http/1.1
+  client-fingerprint: firefox
+  network: xhttp
+  servername: shop07.gruzit.my
+  tls: true
+  udp: true
+  uuid: d8d9d99e-6622-4620-92dc-23ac2b6d30f6
+- name: 🇷🇺 俄罗斯 | RUS 3
+  type: vless
+  server: 201.51.12.98
+  port: 443
+  alpn:
+  - h2
+  client-fingerprint: firefox
+  network: grpc
+  servername: vps3.nemnogogo.com
+  tls: true
+  udp: true
+  uuid: 38308ff1-5aa9-494f-a25a-0f2870d56b3e
+- name: 🇷🇺 俄罗斯 | RUS 4
+  type: vless
+  server: vps3.nemnogogo.com
+  port: 443
+  alpn:
+  - h2
+  client-fingerprint: firefox
+  network: grpc
+  servername: vps3.nemnogogo.com
+  tls: true
+  udp: true
+  uuid: 38308ff1-5aa9-494f-a25a-0f2870d56b3e
+- name: '🇸🇬 新加坡 | SGP #2'
+  type: ss
+  server: 54.255.60.49
+  port: 8443
+  cipher: chacha20-ietf-poly1305
+  password: 7e68e32f-8015-4f37-9082-70e8b0b58043
+  udp: true
+- name: 🇹🇼 🇨🇳 台湾 | TWN 2
+  type: trojan
+  server: t2w2t2w2.bpca2026.top
+  port: 443
+  network: ws
+  password: b7795ce8-3863-4292-adfc-9c0a7b847774
+  skip-cert-verify: true
+  sni: t2w2t2w2.bpca2026.top
+  udp: true
+  ws-opts:
+    headers:
+      Host: t2w2t2w2.bpca2026.top
+    path: /images
+- name: '🇺🇸 美国 | USA #2'
+  type: vless
+  server: 104.19.22.220
   port: 443
   client-fingerprint: chrome
   network: ws
   servername: node.plutocore.vip
   tls: true
   udp: true
-  uuid: 8fa3f00f-f499-4705-9aa7-2ec6f91c6fa2
+  uuid: 8f55ee2b-99c1-45ea-8e03-258f132701db
   ws-opts:
     headers:
       Host: node.plutocore.vip
-    path: /f/210/5dffe1d758f42a4ef48f733c
-- name: '🇺🇸 美国 | USA #19'
+    path: /f/211/060dbce57a8b878dee7a67fd
+- name: '🇺🇸 美国 | USA #3'
   type: vless
-  server: 104.17.70.171
+  server: xray-piox09gf-calm-maple-6.cloady.io
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: xray-piox09gf-calm-maple-6.cloady.io
+  tls: true
+  udp: true
+  uuid: 5633d1c3-fa8e-cd74-5b6b-6c464f36472a
+  ws-opts:
+    headers:
+      Host: xray-piox09gf-calm-maple-6.cloady.io
+    path: /0f6186ec3c6d8474
+- name: '🇺🇸 美国 | USA #4'
+  type: vless
+  server: 200.102.179.69
+  port: 443
+  client-fingerprint: chrome
+  network: xhttp
+  servername: dmbdnpctq8hjxx.hat.onl
+  tls: true
+  udp: true
+  uuid: 7592ca5c-b352-4562-8856-a9c936a3331b
+- name: '🇺🇸 美国 | USA #5'
+  type: vless
+  server: 104.17.142.212
   port: 443
   client-fingerprint: chrome
   network: ws
   servername: node.plutocore.vip
   tls: true
   udp: true
-  uuid: 8fa3f00f-f499-4705-9aa7-2ec6f91c6fa2
+  uuid: 8f55ee2b-99c1-45ea-8e03-258f132701db
   ws-opts:
     headers:
       Host: node.plutocore.vip
-    path: /f/210/5dffe1d758f42a4ef48f733c
-- name: '🇺🇸 美国 | USA #20'
+    path: /f/211/060dbce57a8b878dee7a67fd
+- name: '🇺🇸 美国 | USA #6'
+  type: vless
+  server: 104.18.21.69
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: fs.qicai99.com
+  tls: true
+  udp: true
+  uuid: 99c5b713-dedf-4a10-8070-916ff3f49b0e
+  ws-opts:
+    headers:
+      Host: fs.qicai99.com
+    path: /fp=chrome
+- name: 🇺🇸 美国 | USA 8
+  type: trojan
+  server: 104.18.35.86
+  port: 2096
+  network: ws
+  password: '123456'
+  skip-cert-verify: true
+  sni: 321dfbc6.uir-9i6.pages.dev
+  udp: true
+  ws-opts:
+    headers:
+      Host: 321dfbc6.uir-9i6.pages.dev
+    path: /
+- name: '🇺🇸 美国 | USA #9'
+  type: vless
+  server: 172.64.152.33
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: fs.qicai99.com
+  tls: true
+  udp: true
+  uuid: 99c5b713-dedf-4a10-8070-916ff3f49b0e
+  ws-opts:
+    headers:
+      Host: fs.qicai99.com
+    path: /
+- name: '🇺🇸 美国 | USA #10'
   type: vless
   server: 146.75.57.111
   port: 443
@@ -517,22 +453,58 @@ proxies:
     headers:
       Host: copy_az_channel_NUFiLTER_17i.global.ssl.fastly.net.
     path: /?Telegram---PLANB_NET---PLANB_NET---PLANB_NET---PLANB_NET
-- name: '🇺🇸 美国 | USA #21'
-  type: vless
-  server: 104.17.147.208
+- name: 🇺🇸 美国 | USA 13
+  type: trojan
+  server: 23.227.38.99
   port: 443
-  alpn:
-  - h3
-  client-fingerprint: chrome
   network: ws
-  servername: b.rack.sxsc.dpdns.org
-  tls: true
+  password: b7795ce8-3863-4292-adfc-9c0a7b847774
+  skip-cert-verify: true
+  sni: uuu-3-8uuu.ccc3cosmo.top
   udp: true
-  uuid: 258ca28a-d982-4a40-b620-7c1c81108060
   ws-opts:
     headers:
-      Host: b.rack.sxsc.dpdns.org
-    path: /?ed=2048
+      Host: uuu-3-8uuu.ccc3cosmo.top
+    path: /images
+- name: '🇺🇸 美国 | USA #14'
+  type: vless
+  server: 104.19.22.220
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: node.plutocore.vip
+  tls: true
+  udp: true
+  uuid: 8fa3f00f-f499-4705-9aa7-2ec6f91c6fa2
+  ws-opts:
+    headers:
+      Host: node.plutocore.vip
+    path: /f/210/7b9f4948fa4ad781bf30be9f
+- name: 🇺🇸 美国 | USA 19
+  type: trojan
+  server: 44tgt5.cloudflare.182682.xyz
+  port: 443
+  network: ws
+  password: b7795ce8-3863-4292-adfc-9c0a7b847774
+  skip-cert-verify: true
+  sni: uuu-3-8uuu.ccc3cosmo.top
+  udp: true
+  ws-opts:
+    headers:
+      Host: uuu-3-8uuu.ccc3cosmo.top
+    path: /images
+- name: 🇺🇿 UZ_56
+  type: vless
+  server: 95.143.188.113
+  port: 443
+  alpn:
+  - h2
+  client-fingerprint: safari
+  network: grpc
+  servername: ar5v3uc2o9.j.cloudfront.hls.hlsnode.net
+  tls: true
+  udp: true
+  uuid: 367d74e7-0204-4b92-ba57-ae31344dce7f
 - name: AT_speednode_0001
   type: vless
   server: au2.pad-sservice.lat
