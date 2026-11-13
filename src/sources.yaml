@@ -31,9 +31,10 @@ sources:
   # ===== 2026-10-13 真探针新测出的高价值源 =====
   - name: yypool
     url: https://raw.githubusercontent.com/yy1588133/proxy-pool/main/clash.yaml
-    enabled: true
+    enabled: false
     max_nodes: 900
     note: 🏆 800 产出→200 通过(25%)，最快 75ms；上游就是现有源的聚合去重版（freeSub/NoMoreWalls/AutoMergePublicNodes/zhuhaiuk/get_subscribe/clashfree/Free-servers），补宽度+质量都最划算；2026-11-02 7源末位淘汰——与保留源高度重叠（上游本就是它们的聚合），宽度价值被 automerge 覆盖
+    relegated: '2026-11-13'
   - name: anaer
     url: https://raw.githubusercontent.com/wzmwayne/proxy-node/main/output/anaer/clash.yaml
     enabled: false
@@ -51,9 +52,8 @@ sources:
   # ===== 原有 8 源（2026-10-13 实测见下）=====
   - name: ermaozi
     url: https://raw.githubusercontent.com/ermaozi/get_subscribe/main/subscribe/clash.yml
-    enabled: false
+    enabled: true
     max_nodes: 800
-    relegated: '2026-11-02'
     exclude_filter: '(?i)(过期|剩余|流量|官网|订阅|加群|电报|telegram|t\.me|https?://)'
     note: 352 测/69 活(20%)→当日复测 500 产出/34 活(6.8%，上游 12h 换池+晚高峰)；价值主要在 http 段；2026-11-02 7源末位淘汰——晚高峰波动最大（上游 12h 换池）
 
