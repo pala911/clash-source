@@ -1,0 +1,578 @@
+# clash-source 自动生成 —— 源 automerge，共 53 节点（稳定性加权后留在竞速池内的部分）
+# 不要手改；改动会在下次定时任务被覆盖（上游 https://pala911.github.io/clash-source/nodes/automerge.yaml）
+proxies:
+- name: 🇫🇮FI_2|4.1MB/s
+  type: hysteria2
+  server: 48.102.214.167
+  port: 4444
+  alpn:
+  - h3
+  down: ''
+  obfs: ''
+  obfs-password: ''
+  password: a35c508f-4d5d-4531-842e-6e9d43c762c0
+  skip-cert-verify: false
+  sni: fl5.edgeport.cloud
+  tls: false
+  up: ''
+- name: '🇫🇷 法国 | FRA #1'
+  type: vless
+  server: 199.232.78.120
+  port: 443
+  client-fingerprint: chrome
+  encryption: none
+  network: ws
+  servername: cdn.akamai.steamstatic.com
+  skip-cert-verify: false
+  tls: true
+  udp: true
+  uuid: 8d2cbffd-43d0-458d-906b-7c54b7b51f38
+  ws-opts:
+    headers:
+      Host: fraboijji.global.ssl.fastly.net.
+    path: /
+- name: '🇹🇷 土耳其 | TUR #2'
+  type: trojan
+  server: sclass-b1.catcat321.com
+  port: 20027
+  password: d7563108-615c-4338-a7bd-77f359869a4a
+  skip-cert-verify: true
+  sni: hk.catxstar.com
+  udp: true
+- name: '🇹🇷 土耳其 | TUR #1'
+  type: trojan
+  server: sclass-b1.catcat321.com
+  port: 20028
+  password: d7563108-615c-4338-a7bd-77f359869a4a
+  skip-cert-verify: true
+  sni: hk.catxstar.com
+  udp: true
+- name: '🇩🇪 德国 | DEU #3'
+  type: vless
+  server: 199.232.239.239
+  port: 443
+  alpn:
+  - h2
+  client-fingerprint: firefox
+  encryption: none
+  network: xhttp
+  servername: community.fastly.steamstatic.com
+  tls: true
+  udp: true
+  uuid: 79cbf934-bc53-4a3a-9b8e-85b8ebc665f0
+  xudp: true
+- name: 🇩🇪DE_2|3.2MB/s
+  type: vless
+  server: silk.filnex.baby
+  port: 443
+  alpn:
+  - http/1.1
+  client-fingerprint: chrome
+  encryption: none
+  network: ws
+  servername: silk.filnex.baby
+  tls: true
+  udp: true
+  uuid: 820fa845-a1eb-4a83-b613-e6714cea8a1a
+  ws-opts:
+    headers:
+      Host: silk.filnex.baby
+      User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36
+    path: /api/de5/stream
+  xudp: true
+- name: 🇬🇷GR_1|2.6MB/s
+  type: http
+  server: 149.22.85.65
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇳🇱NL_1|2.3MB/s
+  type: http
+  server: 149.36.51.129
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇺🇸US_6|3.4MB/s
+  type: http
+  server: 138.199.35.201
+  port: 9002
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇷🇴RO_1|2.9MB/s
+  type: http
+  server: 193.176.84.34
+  port: 9002
+  skip-cert-verify: true
+  tls: true
+- name: 🇺🇸US_9|2.9MB/s
+  type: http
+  server: 138.199.35.207
+  port: 9002
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇷🇴RO_2|1.3MB/s
+  type: http
+  server: 193.176.84.31
+  port: 9002
+  skip-cert-verify: true
+  sni: www.bing.com
+  tls: true
+- name: 🇺🇸US_12|3.9MB/s
+  type: http
+  server: 138.199.35.197
+  port: 9002
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇺🇸US_13|1.9MB/s
+  type: http
+  server: 138.199.35.200
+  port: 9002
+  password: 'null'
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: 'null'
+- name: 🇫🇷FR_2|3.0MB/s|K001-260618
+  type: http
+  server: 82.66.235.221
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇮🇪IE_1|1.8MB/s|P002-260618
+  type: http
+  server: 149.88.96.1
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇺🇸US_21|3.5MB/s|K001-260618
+  type: http
+  server: 138.199.35.203
+  port: 9002
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇫🇷FR_4|2.3MB/s|R002-260618
+  type: http
+  server: 141.94.16.4
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇺🇸US_23|1.7MB/s
+  type: socks5
+  server: 104.168.249.36
+  port: 1080
+  password: test123
+  username: test123
+- name: 🇩🇪DE_7|3.2MB/s
+  type: http
+  server: 158.173.154.4
+  port: 9002
+  password: 'null'
+  skip-cert-verify: true
+  sni: 158.173.154.4
+  tls: true
+  username: 'null'
+- name: 🇩🇪DE_8|1.0MB/s
+  type: vless
+  server: 2.26.88.140
+  port: 4443
+  client-fingerprint: chrome
+  encryption: none
+  network: xhttp
+  servername: lv3.nexfile.net
+  tls: true
+  udp: true
+  uuid: a35c508f-4d5d-4531-842e-6e9d43c762c0
+  xudp: true
+- name: 🇺🇸US_24|1.4MB/s
+  type: vless
+  server: usa.amosh.sbs
+  port: 2053
+  alpn:
+  - h2
+  - http/1.1
+  - h3
+  client-fingerprint: chrome
+  encryption: none
+  network: xhttp
+  servername: usa.amosh.sbs
+  tls: true
+  udp: true
+  uuid: 901c1ed2-be44-4c97-843e-7bcdcce28e04
+  xudp: true
+- name: 🇺🇸US_25|4.7MB/s
+  type: http
+  server: 104.129.203.85
+  port: 9480
+  skip-cert-verify: true
+- name: '🇨🇦 加拿大 | CAN #1'
+  type: vless
+  server: 15.156.199.163
+  port: 80
+  network: tcp
+  tls: false
+  udp: true
+  uuid: 6daa0b95-9210-4f29-be40-8c6db00bc5bb
+  ws-opts:
+    path: /
+  xudp: true
+- name: 🇸🇬SG_4|1.3MB/s
+  type: trojan
+  server: matrix.phonicsindia.mobi
+  port: 48994
+  client-fingerprint: chrome
+  password: Z5lvhmLqSc
+  skip-cert-verify: true
+  sni: m.microsoft.com
+  udp: true
+- name: 🇳🇱NL_12|2.0MB/s
+  type: trojan
+  server: 199.68.156.221
+  port: 2087
+  alpn:
+  - http/1.1
+  client-fingerprint: firefox
+  network: ws
+  password: QzVKeGlc2qYRxyzWb3xZFjHbqY2JmOfZ
+  skip-cert-verify: true
+  sni: nexoastra.xnetaro.ir
+  udp: true
+  ws-opts:
+    headers:
+      User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36
+    path: /wss
+- name: 🇳🇱NL_13|3.8MB/s
+  type: vless
+  server: 167.82.76.31
+  port: 443
+  client-fingerprint: chrome
+  encryption: none
+  network: xhttp
+  servername: cdn.akamai.steamstatic.com
+  tls: true
+  udp: true
+  uuid: d5a5c345-e307-45ce-abf4-2bb8131adc86
+  xudp: true
+- name: 🇺🇸US_26|3.0MB/s
+  type: http
+  server: 138.199.35.215
+  port: 9002
+  skip-cert-verify: true
+  tls: true
+- name: 🇷🇺RU_3|2.7MB/s
+  type: http
+  server: 178.219.43.226
+  port: 443
+  password: 'null'
+  skip-cert-verify: true
+  tls: true
+  username: 'null'
+- name: 🇮🇱IL_1|2.1MB/s
+  type: http
+  server: 62.90.77.30
+  port: 443
+  password: 'null'
+  skip-cert-verify: true
+  tls: true
+  username: 'null'
+- name: 🇳🇱NL_14|2.4MB/s
+  type: http
+  server: 51.158.243.91
+  port: 443
+  skip-cert-verify: true
+  tls: true
+- name: 🇷🇴RO_3|3.5MB/s
+  type: http
+  server: 193.176.84.40
+  port: 9002
+  skip-cert-verify: true
+  sni: www.bing.com
+  tls: true
+- name: 🇷🇴RO_4|2.7MB/s
+  type: http
+  server: 193.176.84.35
+  port: 9002
+  skip-cert-verify: true
+  sni: www.bing.com
+  tls: true
+- name: 🇩🇪 德国 | DEU
+  type: vless
+  server: notebook.filnex.baby
+  port: 443
+  alpn:
+  - h2
+  client-fingerprint: chrome
+  network: grpc
+  servername: notebook.filnex.baby
+  tls: true
+  udp: true
+  uuid: 820fa845-a1eb-4a83-b613-e6714cea8a1a
+- name: '🇩🇪 德国 | DEU #2'
+  type: vless
+  server: ws3.falmero.store
+  port: 443
+  alpn:
+  - http/1.1
+  client-fingerprint: edge
+  network: ws
+  servername: falmero.store
+  tls: true
+  udp: true
+  uuid: 820fa845-a1eb-4a83-b613-e6714cea8a1a
+  ws-opts:
+    headers:
+      Host: falmero.store
+    path: /api/de1/stream
+- name: '🇩🇪 德国 | DEU #5'
+  type: vless
+  server: static.nlomasterpanel.ru
+  port: 443
+  alpn:
+  - h2
+  - http/1.1
+  client-fingerprint: chrome
+  network: xhttp
+  servername: st
+  tls: true
+  udp: true
+  uuid: 981e728f-d403-4fef-a1ff-6ba9ebe0e702
+- name: '🇩🇪 德国 | DEU #6'
+  type: vmess
+  server: bmi.ir.kolman.com.de
+  port: 80
+  alpn:
+  - ''
+  alterId: 0
+  cipher: auto
+  network: ws
+  skip-cert-verify: true
+  tls: false
+  udp: true
+  uuid: cfe7a80d-34c6-46df-909d-2daa14f98136
+  ws-opts:
+    headers:
+      Host: 4n2TjrBWPojRe.6.server.marandcity.com.de.
+    path: /f9bGbG7ZNy5L0tzXKZNxSX4q
+- name: '🇩🇪 德国 | DEU #7'
+  type: vless
+  server: amber.filnex.baby
+  port: 443
+  alpn:
+  - http/1.1
+  client-fingerprint: firefox
+  network: ws
+  servername: amber.filnex.baby
+  tls: true
+  udp: true
+  uuid: 820fa845-a1eb-4a83-b613-e6714cea8a1a
+  ws-opts:
+    headers:
+      Host: amber.filnex.baby
+    path: /api/de3/stream
+- name: '🇩🇪 德国 | DEU #9'
+  type: vmess
+  server: bmi2.kolman.com.de
+  port: 80
+  alpn:
+  - ''
+  alterId: 0
+  cipher: auto
+  network: ws
+  skip-cert-verify: true
+  tls: false
+  udp: true
+  uuid: cfe7a80d-34c6-46df-909d-2daa14f98136
+  ws-opts:
+    headers:
+      Host: zeo6-lylp.uti.realoslo-norg.maniyadg7shard.ir.
+    path: /f9bGbG7ZNy5L0tzXKZNxSX4q
+- name: 🇩🇪 德国 | DEU 11
+  type: vmess
+  server: bmi.ir.kolman.com.de
+  port: 80
+  alpn:
+  - http/1.1
+  alterId: 0
+  cipher: auto
+  network: ws
+  servername: xcb265eJg9RQUlO.6.server.marandcity.com.de.
+  skip-cert-verify: true
+  tls: false
+  udp: true
+  uuid: 62b21764-52ed-47ae-a7f9-ea95e5b2a2dc
+  ws-opts:
+    headers:
+      Host: xcb265eJg9RQUlO.6.server.marandcity.com.de.
+    path: /f9bGbG7ZNy5L0tzXKZNxSX4q
+- name: 🇩🇪 德国 | DEU 13
+  type: vless
+  server: 72.56.252.245
+  port: 443
+  alpn:
+  - h2
+  client-fingerprint: firefox
+  network: grpc
+  servername: notebook.filnex.baby
+  tls: true
+  udp: true
+  uuid: 820fa845-a1eb-4a83-b613-e6714cea8a1a
+- name: '🇰🇷 韩国 | KOR #1'
+  type: hysteria2
+  server: 3.34.131.153
+  port: 443
+  password: 7e68e32f-8015-4f37-9082-70e8b0b58043
+  skip-cert-verify: true
+  sni: www.bing.com
+  tls: false
+- name: '🇳🇬 尼日利亚 | NGA #1'
+  type: trojan
+  server: sclass-b1.catcat321.com
+  port: 20051
+  password: d7563108-615c-4338-a7bd-77f359869a4a
+  skip-cert-verify: true
+  sni: hk.catxstar.com
+  udp: true
+- name: '🇳🇱 荷兰 | NLD #1'
+  type: vless
+  server: eu88.cdn77.icu
+  port: 8443
+  alpn:
+  - h2
+  - http/1.1
+  client-fingerprint: firefox
+  network: xhttp
+  servername: eu88.cdn77.icu
+  tls: true
+  udp: true
+  uuid: a6c58c10-183e-4278-bdcd-ffc07220e7e2
+- name: '🇳🇱 荷兰 | NLD #2'
+  type: vless
+  server: 201.34.142.108
+  port: 443
+  client-fingerprint: firefox
+  network: xhttp
+  servername: 201.34.142.108
+  tls: true
+  udp: true
+  uuid: 4777d90d-265b-4927-a0d1-63f36ed1421c
+- name: '🇳🇱 荷兰 | NLD #3'
+  type: vless
+  server: fastly2.dunnexa.ir
+  port: 443
+  alpn:
+  - h2
+  client-fingerprint: chrome
+  encryption: mlkem768x25519plus.native.0rtt.cCpOxgCVxgLlIS_BaB3AZQBi1AXk1K-lRr2Uef3diG8
+  network: ws
+  servername: cdn.akamai.steamstatic.com
+  tls: true
+  udp: true
+  uuid: e61bb397-dfc2-4d58-b40f-63932846976b
+  ws-opts:
+    headers:
+      Host: looaboyonesijji.global.ssl.fastly.net
+    path: /
+- name: '🇳🇱 荷兰 | NLD #4'
+  type: vless
+  server: 5.253.30.226
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: fs.qicai99.com
+  tls: true
+  udp: true
+  uuid: 99c5b713-dedf-4a10-8070-916ff3f49b0e
+  ws-opts:
+    headers:
+      Host: fs.qicai99.com
+    path: /
+- name: '🇸🇬 新加坡 | SGP #3'
+  type: hysteria2
+  server: 18.143.178.231
+  port: 443
+  password: 7e68e32f-8015-4f37-9082-70e8b0b58043
+  skip-cert-verify: true
+  sni: www.bing.com
+  tls: false
+- name: '🇺🇸 美国 | USA #2'
+  type: vless
+  server: 104.21.0.87
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: jp3.yohototo.top
+  tls: true
+  udp: true
+  uuid: 4e4f1f70-5e56-4a76-bb9d-db087f4690c4
+  ws-opts:
+    headers:
+      Host: jp3.yohototo.top
+    path: /tyxyws
+- name: '🇺🇸 美国 | USA #5'
+  type: vless
+  server: fastly.dunnexa.ir
+  port: 443
+  alpn:
+  - h2
+  client-fingerprint: chrome
+  encryption: mlkem768x25519plus.native.0rtt.cCpOxgCVxgLlIS_BaB3AZQBi1AXk1K-lRr2Uef3diG8
+  network: ws
+  servername: cdn.akamai.steamstatic.com
+  tls: true
+  udp: true
+  uuid: e61bb397-dfc2-4d58-b40f-63932846976b
+  ws-opts:
+    headers:
+      Host: looyoniiaboijji.global.ssl.fastly.net
+    path: /
+- name: '🇺🇸 美国 | USA #7'
+  type: vmess
+  server: US122201.ssgreen.org
+  port: 443
+  alterId: 0
+  cipher: auto
+  network: ws
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  uuid: 7a8f7391-1711-4fcc-b29b-562a00f357f3
+  ws-opts:
+    headers:
+      Host: US122201.ssgreen.org
+    path: /wes
+- name: '🇺🇸 美国 | USA #8'
+  type: vless
+  server: cf.amirmcir.ir
+  port: 8443
+  alpn:
+  - h3
+  - http/1.1
+  client-fingerprint: random
+  network: ws
+  servername: moz.ar-marz.fun
+  tls: true
+  udp: true
+  uuid: 9443badf-414f-4b12-b19a-7cc2c7431163
+  ws-opts:
+    headers:
+      Host: moz.ar-marz.fun
+    path: /man
+- name: 🇺🇸 美国 | USA 11
+  type: anytls
+  server: sdf65h46wr.df6h451rh.xin
+  port: 443
+  password: 0324fbc29561
+  skip-cert-verify: true
+  sni: images.ctfassets.net
+  udp: true
