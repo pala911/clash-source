@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-14T18:11:40Z",
+  "generated_at": "2026-11-14T22:33:41Z",
   "owner": "pala911",
   "repo": "clash-source",
   "pages_base": "https://pala911.github.io/clash-source",
@@ -13,21 +13,17 @@
     ],
     "备用": [
       "nomorewalls",
-      "automerge",
       "snakem982"
     ],
     "观察": [],
     "不稳定": [
       "SRCFL-leilaomi",
       "SRCFL-ruk1ng001",
-      "SRCFL-ssrsub"
+      "SRCFL-ssrsub",
+      "SRCFL-zhuhaiuk"
     ],
     "degraded": "",
     "detail": {
-      "automerge": {
-        "rate": 19.63,
-        "why": "本机 19.6%（达标，但 AUTO 只取前 4）"
-      },
       "zhuhaiuk": {
         "rate": 73.0657142857143,
         "why": "本机 73.1%"
@@ -57,20 +53,20 @@
   "sources": [
     {
       "name": "automerge",
-      "raw": 344,
-      "kept": 3,
-      "bytes": 502593,
+      "raw": 358,
+      "kept": 0,
+      "bytes": 506944,
       "mirror": false,
-      "ai_dropped": 24,
-      "ai_dropped_clusters": 7,
-      "dup_removed": 69,
+      "ai_dropped": 13,
+      "ai_dropped_clusters": 3,
+      "dup_removed": 95,
       "error": null
     },
     {
       "name": "zhuhaiuk",
-      "raw": 30,
-      "kept": 29,
-      "bytes": 5046,
+      "raw": 31,
+      "kept": 30,
+      "bytes": 5512,
       "mirror": false,
       "ai_dropped": 0,
       "ai_dropped_clusters": 0,
@@ -91,80 +87,85 @@
     {
       "name": "ruk1ng001",
       "raw": 232,
-      "kept": 89,
+      "kept": 94,
       "bytes": 78502,
       "mirror": false,
-      "ai_dropped": 14,
-      "ai_dropped_clusters": 14,
-      "dup_removed": 38,
+      "ai_dropped": 4,
+      "ai_dropped_clusters": 4,
+      "dup_removed": 43,
       "error": null
     },
     {
       "name": "snakem982",
       "raw": 64,
-      "kept": 43,
+      "kept": 27,
       "bytes": 500658,
       "mirror": false,
       "ai_dropped": 0,
       "ai_dropped_clusters": 0,
-      "dup_removed": 19,
+      "dup_removed": 35,
       "error": null
     },
     {
       "name": "nomorewalls",
-      "raw": 335,
-      "kept": 60,
-      "bytes": 500547,
+      "raw": 358,
+      "kept": 56,
+      "bytes": 506944,
       "mirror": false,
-      "ai_dropped": 1,
-      "ai_dropped_clusters": 1,
-      "dup_removed": 26,
+      "ai_dropped": 13,
+      "ai_dropped_clusters": 3,
+      "dup_removed": 39,
       "error": null
     },
     {
       "name": "leilaomi",
       "raw": 89,
-      "kept": 69,
+      "kept": 72,
       "bytes": 30259,
       "mirror": false,
       "ai_dropped": 0,
       "ai_dropped_clusters": 0,
-      "dup_removed": 9,
+      "dup_removed": 6,
       "error": null
     }
   ],
   "totals": {
-    "kept": 642,
-    "merged": 642,
-    "dup_removed": 162,
-    "ai_reviewed": 843
+    "kept": 628,
+    "merged": 628,
+    "dup_removed": 219,
+    "ai_reviewed": 877
   },
   "ai_scope": "mixed",
   "ai_usage": {
-    "prompt": 66633,
-    "completion": 47370,
+    "prompt": 66811,
+    "completion": 46620,
     "calls": 38,
     "timeouts": 11,
     "by_backend": {
       "siliconflow_xing": {
         "calls": 27,
-        "prompt": 53675,
-        "completion": 42185
+        "prompt": 53644,
+        "completion": 41683
       },
       "siliconflow_qwen25": {
-        "calls": 5,
-        "prompt": 4800,
-        "completion": 215
+        "calls": 4,
+        "prompt": 3884,
+        "completion": 159
       },
       "siliconflow_glm4": {
-        "calls": 3,
-        "prompt": 1980,
-        "completion": 264
+        "calls": 4,
+        "prompt": 3115,
+        "completion": 271
       },
       "siliconflow_qwen3": {
-        "calls": 2,
-        "prompt": 2178,
-        "completion": 4706
+        "calls": 1,
+        "prompt": 1117,
+        "completion": 1418
+      },
+      "siliconflow_deepseek_r1": {
+        "calls": 1,
+        "prompt": 1051,
+        "completion": 3089
       },
       "siliconflow_glm_z1": {
         "calls": 1,
@@ -175,15 +176,14 @@
   },
   "mobile": {
     "provider": "mobile",
-    "nodes": 114,
+    "nodes": 110,
     "cap": 120,
     "sources": [
       "zhuhaiuk",
       "ssrsub",
       "ruk1ng001",
       "leilaomi",
-      "nomorewalls",
-      "automerge"
+      "nomorewalls"
     ]
   },
   "video": {
@@ -195,10 +195,11 @@
     "rules": [],
     "tested_at": "2026-11-14T04:47:06Z",
     "partial": true,
-    "note": "达标且能在本轮稳定池里对上的节点只有 2 个（< 4）"
+    "note": "达标且能在本轮稳定池里对上的节点只有 3 个（< 4）"
   },
   "warnings": [
     "leilaomi AI 剔除超阈值，已整体回滚",
-    "视频组未生成：达标且能在本轮稳定池里对上的节点只有 2 个（< 4）"
+    "automerge 全部 95 个节点与更优源内容重复，本轮不挂载该源（sources.yaml 未改；是否换源由联赛/补员决定）",
+    "视频组未生成：达标且能在本轮稳定池里对上的节点只有 3 个（< 4）"
   ]
 }

@@ -70,15 +70,6 @@ proxies:
   port: 7890
   udp: false
 proxy-groups:
-- name: SRC-automerge
-  type: url-test
-  use:
-  - automerge
-  url: https://www.youtube.com/generate_204
-  expected-status: 204
-  interval: 300
-  timeout: 5000
-  tolerance: 200
 - name: SRC-zhuhaiuk
   type: url-test
   use:
@@ -151,6 +142,7 @@ proxy-groups:
   - SRCFL-leilaomi
   - SRCFL-ruk1ng001
   - SRCFL-ssrsub
+  - SRCFL-zhuhaiuk
   url: https://www.youtube.com/generate_204
   expected-status: 204
   interval: 300
@@ -160,7 +152,6 @@ proxy-groups:
   type: select
   proxies: &id001
   - SRC-nomorewalls
-  - SRC-automerge
   - SRC-snakem982
   - 不稳定
 - name: 观察
@@ -170,7 +161,6 @@ proxy-groups:
   type: fallback
   proxies:
   - AUTO
-  - SRC-automerge
   - SRC-zhuhaiuk
   - SRC-ssrsub
   - SRC-ruk1ng001
@@ -189,7 +179,6 @@ proxy-groups:
   - AUTO
   - 备用
   - 观察
-  - SRC-automerge
   - SRC-zhuhaiuk
   - SRC-ssrsub
   - SRC-ruk1ng001
@@ -199,7 +188,6 @@ proxy-groups:
 - name: Claude
   type: select
   use:
-  - automerge
   - zhuhaiuk
   - ssrsub
   - ruk1ng001
@@ -211,7 +199,6 @@ proxy-groups:
 - name: Gemini
   type: select
   use:
-  - automerge
   - zhuhaiuk
   - ssrsub
   - ruk1ng001
@@ -519,18 +506,6 @@ rules:
 - GEOIP,CN,DIRECT
 - MATCH,PROXY
 proxy-providers:
-  automerge:
-    type: http
-    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/automerge.yaml
-    path: ./providers/automerge.yaml
-    interval: 3600
-    exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
-    health-check:
-      enable: true
-      url: https://www.youtube.com/generate_204
-      interval: 300
-      timeout: 5000
-      expected-status: 204
   zhuhaiuk:
     type: http
     url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/zhuhaiuk.yaml
@@ -633,6 +608,18 @@ proxy-providers:
     path: ./providers/SRCFL-ssrsub.yaml
     interval: 3600
     exclude-filter: 机场推荐:dafei\.de 德国 07|🇨🇳CN_[0-9]
+    health-check:
+      enable: true
+      url: https://www.youtube.com/generate_204
+      interval: 300
+      timeout: 5000
+      expected-status: 204
+  SRCFL-zhuhaiuk:
+    type: http
+    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/zhuhaiuk--flaky.yaml
+    path: ./providers/SRCFL-zhuhaiuk.yaml
+    interval: 3600
+    exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
     health-check:
       enable: true
       url: https://www.youtube.com/generate_204
