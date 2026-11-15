@@ -704,7 +704,7 @@ def run_league_chain(push_it=True):
 
 
 SPEED_SCRIPT = os.path.join(ROOT, "tools", "speed_test.py")
-SPEED_TIMEOUT = 900       # 测速时间盒：预算 300s + mihomo 启停/配置校验余量
+SPEED_TIMEOUT = 900       # 测速时间盒：预算 480s + mihomo 启停/配置校验余量
 
 
 def run_speed_chain(mihomo=None):
@@ -719,10 +719,10 @@ def run_speed_chain(mihomo=None):
         print("[speed] ⚠ 找不到 %s，跳过带宽测速（主链不受影响）" % script)
         return None
     cmd = [sys.executable, script, "--per-source", "8",
-           "--budget", "480", "--timeout", "10"]
+           "--budget", "480", "--timeout", "10", "--node-deadline", "20"]
     if mihomo:
         cmd += ["--mihomo", mihomo]
-    print("[speed] 带宽实测开跑（每源 8 个，预算 480s，单节点 10s）…")
+    print("[speed] 带宽实测开跑（每源 8 个，预算 480s，socket 10s / 单节点硬截止 20s）…")
     try:
         p = subprocess.run(cmd, cwd=ROOT, stdout=sys.stdout,
                            stderr=subprocess.STDOUT, timeout=SPEED_TIMEOUT,

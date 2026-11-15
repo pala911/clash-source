@@ -473,7 +473,7 @@ python tools\test_hardening.py        # 硬化回归：dist 残留清理 / raw �
 python tools\test_refill.py           # 自动补员：cap/节流/排重/选优/命名/损坏/停用/dry-run + append-only 子序列断言
 python tools\test_league.py           # 末位淘汰：决策/防抖/alive 门槛/通道样本门槛/通道与回归两条写入路径/换位对账/cap 守恒
 python tools\test_mobile_profile.py   # 移动端精简版：单 provider / 120 节点上限 / 源间去重 / 只含 select+url-test（Karing 兼容）/ 规则集全 lazy
-python tools\test_speed_test.py       # 带宽测速抽样：每源一半快+一半随机 / 跨源指纹去重 / 排除 mobile 与 --flaky / 按源轮转 / 分档统计
+python tools\test_speed_test.py       # 带宽测速抽样：每源一半快+一半随机 / 跨源指纹去重 / 排除 mobile 与 --flaky / 按源轮转 / 分档统计 / 单节点硬截止
 python tools\test_video_group.py      # 视频组：测速档案缺失/损坏/过期/非本机口径都跳过 / 阈值与上限 / 指纹关联 / provider+组+PROXY / video.yaml 生命周期 / iOS 不新增组
 python tools\verify_profile.py        # 真 mihomo 内核校验
 python tools\probe_field_types.py     # mihomo 接受哪些字段类型

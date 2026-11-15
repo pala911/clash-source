@@ -166,6 +166,19 @@ check(len(calls) == 4, "产物 / 健康档案 / 候选池 / 自动补员 四处�
 for kw in ("源更新", "源健康档案", "新源候选池", "自动补员"):
     check(any(kw in c for c in calls), "提交信息里保留了「%s」" % kw)
 
+# ------------------------------------------------- 3b) gh-pages 发布重试
+print()
+print("=" * 72)
+print("3b) gh-pages 发布：3 次重试 + 失败降级 warning（不染红）")
+print("=" * 72)
+check("for i in 1 2 3; do" in text
+      and "git push -f origin gh-pages-new:gh-pages" in text,
+      "发布步骤有 3 次重试")
+check("::warning::gh-pages" in text, "发布失败降级 warning")
+check(not re.search(r"git push -f origin gh-pages-new:gh-pages"
+                    r"[\s\S]{0,400}?exit 1", text),
+      "发布失败不 exit 1（不 skip 下游 9 步）")
+
 # ---------------------------------------------------------------- 4) 脚本不变量
 print()
 print("=" * 72)

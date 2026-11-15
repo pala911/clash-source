@@ -84,7 +84,19 @@ jobs:
           touch .nojekyll
           git add -A
           git commit -m "pages: $(date -u +%FT%TZ)"
-          git push -f origin gh-pages-new:gh-pages
+          # gh-pages 是每轮全量重建的孤儿分支，force 安全；GitHub 偶发 500
+          # （2026-11-12 实踩：remote rejected Internal Server Error）会让整步
+          # 失败并 skip 后面 9 步。重试 3 次；仍失败只告警不染红 —— 失败方向
+          # 是「订阅晚一轮」，不是「整层探针/健康档案/补员全缺失」。
+          ok=0
+          for i in 1 2 3; do
+            if git push -f origin gh-pages-new:gh-pages; then ok=1; break; fi
+            echo "::warning::gh-pages push 第 ${i} 次失败，5 秒后重试"
+            sleep 5
+          done
+          if [ "$ok" != "1" ]; then
+            echo "::warning::gh-pages 连续 3 次推送失败，本轮订阅不更新（下一轮会重建）"
+          fi
           echo "订阅入口: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/profile.yaml"
 
       # ========== 源健康体检（只读，不影响上面已发布的产物） ==========

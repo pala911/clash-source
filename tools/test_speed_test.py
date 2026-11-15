@@ -7,6 +7,7 @@
   C 按源轮转：预算被掐断时每个源都先测到，不会前几个源吃满
   D 工作目录：节点统一改名 spdNNN（跨源重名不会切错），配置可解析
   E 统计口径：720p/1080p/4K 分档计数
+  F 单节点硬截止：20s 墙钟到点即停 / deadline<=0 读完全部 / 失败行不进分档
 """
 import io
 import os
@@ -121,6 +122,36 @@ try:
     check("4K 档 >=2.5", summary["4K (>=2.5 MB/s)"] == 2)
     check("1080p 档 >=0.6", summary["1080p (>=0.6 MB/s)"] == 4)
     check("720p 档 >=0.3", summary["720p (>=0.3 MB/s)"] == 5)
+
+    print("")
+    print("=" * 68)
+    print("场景 E：单节点硬截止 + 失败行不进分档")
+    print("=" * 68)
+
+    class FakeResp:
+        def __init__(self, chunks, step):
+            self.chunks = list(chunks)
+            self.step = step
+            self.now = 0.0
+
+        def read(self, n):
+            self.now += self.step
+            return self.chunks.pop(0) if self.chunks else b""
+
+    resp = FakeResp([b"x" * st.CHUNK] * 10, 5.0)
+    n, secs, timed = st.read_with_deadline(resp, 0.0, 20.0,
+                                           clock=lambda: resp.now)
+    check("20s 硬截止在 4 块后停", timed and n == 4 * st.CHUNK and secs == 20.0,
+          "n=%d secs=%.1f" % (n, secs))
+    resp2 = FakeResp([b"x" * st.CHUNK] * 10, 5.0)
+    n2, secs2, timed2 = st.read_with_deadline(resp2, 0.0, 0,
+                                              clock=lambda: resp2.now)
+    check("deadline<=0 读完全部", not timed2 and n2 == 10 * st.CHUNK,
+          "n=%d secs=%.1f" % (n2, secs2))
+    s = st.summarize([{"mbps": 1.0, "error": "单节点硬截止 20s"},
+                      {"mbps": 0.7}, {"mbps": 0.2}])
+    check("带 error 的行不计入 1080p", s["1080p (>=0.6 MB/s)"] == 1,
+          "%d" % s["1080p (>=0.6 MB/s)"])
 finally:
     import shutil
     shutil.rmtree(tmp, ignore_errors=True)

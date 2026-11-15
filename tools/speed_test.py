@@ -20,9 +20,14 @@
     python tools/speed_test.py                    # 每源 8 个，2 MB，写 state/speed_latest.json
     python tools/speed_test.py --per-source 12 --bytes 3000000
     python tools/speed_test.py --sources ssrsub,leilaomi
-    python tools/speed_test.py --budget 480 --timeout 10   # 每日 12:30 链用的口径
+    python tools/speed_test.py --budget 480 --timeout 10 --node-deadline 20  # 每日 12:30 链口径
     python tools/speed_test.py --dry-run          # 只看候选，不启动 mihomo
     python tools/speed_test.py --include-flaky    # 把 --flaky 池也纳入抽样
+
+单节点还有 `--node-deadline` **硬截止**（默认 20s）：`--timeout` 只是 socket
+单次操作超时，慢节点靠小包滴流可以把一次 2 MB 下载拖到 100s；硬截止按墙钟
+掐断，避免几个长尾节点吃光整轮预算（2026-11-14 实测 4 个节点各 94~106s，
+480s 预算只测了 12 个）。2 MB 在 0.6 MB/s 下只需 3.3s，20s 有 6 倍余量。
 
 ⚠ 这是**诊断工具**，不参与 22 道门禁，也不自动改订阅；结果文件
 `state/speed_latest.json` 供后续「视频组」消费。测速会消耗真实流量
@@ -50,6 +55,7 @@ NOWIN = getattr(subprocess, "CREATE_NO_WINDOW", 0)
 DEFAULT_MIHOMO = os.environ.get(
     "MIHOMO_BIN", r"C:\Program Files\Clash Verge\verge-mihomo.exe")
 DEFAULT_TARGET = "https://speed.cloudflare.com/__down?bytes=%d"
+CHUNK = 32 * 1024          # 硬截止检查粒度：32 KB，20 KB/s 的滴流也能 1.6s 内发现
 API_PORT = int(os.environ.get("SPEED_API_PORT", "19100"))
 MIXED_PORT = int(os.environ.get("SPEED_MIXED_PORT", "17900"))
 SECRET = "speedtest-secret"
@@ -226,7 +232,25 @@ def wait_api(seconds=20):
     return False
 
 
-def measure_one(test_name, target_url, timeout=12):
+def read_with_deadline(resp, t0, deadline, clock=time.perf_counter):
+    """按块读取响应，墙钟超过 deadline 就停。
+
+    返回 (bytes, seconds, timed_out)。deadline<=0 表示不设硬截止。
+    检查粒度是 CHUNK（32 KB）：正常滴流会在 1~2s 内被发现；完全卡死的
+    连接仍受 `--timeout`（socket 单次操作）约束。
+    """
+    total = 0
+    while True:
+        now = clock()
+        if deadline and now - t0 >= deadline:
+            return total, now - t0, True
+        chunk = resp.read(CHUNK)
+        if not chunk:
+            return total, clock() - t0, False
+        total += len(chunk)
+
+
+def measure_one(test_name, target_url, timeout=12, deadline=20.0):
     """切到指定节点，下载一次，返回 (bytes, seconds, error)。"""
     try:
         _api("PUT", "/proxies/SPD", {"name": test_name})
@@ -241,15 +265,20 @@ def measure_one(test_name, target_url, timeout=12):
     t0 = time.perf_counter()
     try:
         with opener.open(req, timeout=timeout) as resp:
-            data = resp.read()
-        return len(data), time.perf_counter() - t0, None
+            nbytes, secs, timed_out = read_with_deadline(resp, t0, deadline)
+        if timed_out:
+            return nbytes, secs, ("单节点硬截止 %.1fs（已下载 %.2f MB）"
+                                  % (deadline, nbytes / 1e6))
+        return nbytes, secs, None
     except Exception as e:           # noqa: BLE001
         return 0, time.perf_counter() - t0, "%s: %s" % (type(e).__name__,
                                                        str(e)[:120])
 
 
 def summarize(results):
-    ok = [r for r in results if r.get("mbps")]
+    # 失败行不是 0 MB/s，是「没测出来」；硬截止行即使有部分字节也不能计入
+    # 分档（2026-11-14 的长尾教训）。
+    ok = [r for r in results if not r.get("error") and r.get("mbps")]
     tiers = [
         ("4K (>=2.5 MB/s)", 2.5),
         ("1080p (>=0.6 MB/s)", 0.6),
@@ -289,7 +318,10 @@ def main():
     ap.add_argument("--bytes", type=int, default=2_000_000,
                     help="每个节点下载字节数（默认 2 MB）")
     ap.add_argument("--timeout", type=float, default=12.0,
-                    help="单节点下载超时秒数")
+                    help="单节点 socket 单次操作超时秒数")
+    ap.add_argument("--node-deadline", type=float, default=20.0,
+                    help="单节点墙钟硬截止秒数（默认 20；<=0 关闭）。"
+                         "防止小包滴流把一次 2 MB 下载拖到 100s")
     ap.add_argument("--seed", type=int, default=20261110)
     ap.add_argument("--budget", type=float, default=420.0,
                     help="整轮墙钟预算（秒，默认 420）；超预算后剩余候选标记 skipped")
@@ -356,7 +388,8 @@ def main():
                   (i + 1, len(renamed), item["source"],
                    str(item["name"])[:44]), end="")
             nbytes, secs, err = measure_one(item["test_name"], target,
-                                            timeout=args.timeout)
+                                            timeout=args.timeout,
+                                            deadline=args.node_deadline)
             mbps = (nbytes / secs / 1e6) if (secs > 0 and nbytes) else 0.0
             row = dict(item)
             row.pop("idx", None)
@@ -383,6 +416,7 @@ def main():
         "target": target,
         "bytes": args.bytes,
         "timeout_s": args.timeout,
+        "node_deadline_s": args.node_deadline,
         "per_source": args.per_source,
         "budget_s": args.budget,
         "sources": sorted(by_src),
