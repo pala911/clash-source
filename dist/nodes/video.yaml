@@ -1,4 +1,4 @@
-# clash-source 自动生成 —— 视频组节点池，共 4 节点
+# clash-source 自动生成 —— 视频组节点池，共 8 节点
 # 只收本机真实下载 >= 0.6 MB/s（约 1080p）的节点；
 # 健康检查存活 ≠ 能看视频，不要手工往这里加没测过的节点。
 proxies:
@@ -10,24 +10,67 @@ proxies:
   skip-cert-verify: true
   tls: true
   udp: true
-- name: ruk1ng001_🇺🇸US_2|2.4MB/s [13bf47ac81cf]
+- name: ssrsub_🇯🇵 机场推荐:dafei.de 日本 05
   type: http
-  server: 118.184.140.90
-  port: 58764
-  skip-cert-verify: true
-  tls: true
-- name: ssrsub_🇭🇰 机场推荐:dafei.de 香港 05
-  type: http
-  server: 119.28.24.235
-  port: 3128
-  skip-cert-verify: true
+  server: jpgmo102-cdn-route.couldflare-cdn.com
+  port: 443
+  password: exaxgqkKkd0TAMrCxeonWg==
+  sni: jpgmo102-cdn-route.couldflare-cdn.com
   tls: true
   udp: true
-- name: 'nomorewalls_🇧🇾 BY_01 #1'
-  type: hysteria2
-  server: bl1.nexfile.net
-  port: 4444
-  password: a35c508f-4d5d-4531-842e-6e9d43c762c0
+  username: mrwdfNTD8M79LCukCieldrqZWqs=
+- name: ruk1ng001_伊朗 001 [26c5c2b06bd0]
+  type: vless
+  server: 194.60.228.97
+  port: 443
+  client-fingerprint: chrome
+  network: tcp
+  servername: base.hosamobenl.co.uk
+  tls: true
+  uuid: 667016ca-f02e-4b5f-bfc3-3d8ed81e9bec
+  ws-opts:
+    path: /
+- name: leilaomi_[466.5ms +/-1ms] http-34.249.214.108
+  type: http
+  server: 34.249.214.108
+  port: 443
+  tls: true
   skip-cert-verify: true
-  sni: bl1.nexfile.net
-  tls: false
+- name: leilaomi_[628.5ms +/-1ms] http-185.219.159.15
+  type: http
+  server: 185.219.159.15
+  port: 443
+  tls: true
+  skip-cert-verify: true
+- name: snakem982_🇳🇱 荷兰 | NLD 8
+  type: vless
+  server: 104.171.135.229
+  port: 443
+  uuid: Fluffy_VPN-Oth8rOq3
+  tls: true
+  flow: xtls-rprx-vision
+  reality-opts:
+    public-key: mpo4BIcoWiMXAQGt5a8IJ4MFkPJQyLC50dO_bXzC7z0
+  servername: absolute-disaster.org
+  client-fingerprint: chrome
+  network: tcp
+  udp: true
+- name: snakem982_🇳🇱 荷兰 | NLD
+  type: vless
+  server: 201.51.11.65
+  port: 443
+  uuid: Fluffy_VPN-zKZUa4Ie
+  tls: true
+  flow: xtls-rprx-vision
+  reality-opts:
+    public-key: GiDgVRVYrTkv1mZJeFVWkr736Iey2kqLM6L0eUbffV8
+  servername: absolute-disaster.org
+  client-fingerprint: firefox
+  network: tcp
+  udp: true
+- name: leilaomi_[695.9ms +/-6ms] http-84.17.47.148
+  type: http
+  server: 84.17.47.148
+  port: 9002
+  tls: true
+  skip-cert-verify: true
