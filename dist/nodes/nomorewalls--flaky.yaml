@@ -1,20 +1,33 @@
 # clash-source 自动生成 —— 源 nomorewalls，被稳定性加权移出的 2 个节点
 # 历史可用率偏低，不参与 AUTO 自动竞速；需要时可从「备用」组手工切。
 proxies:
-- name: '🇳🇱 荷兰 | NLD #6'
+- name: AT_speednode_0001
   type: vless
-  server: 201.34.142.108
-  port: 443
+  server: au2.pad-sservice.lat
+  port: 8443
+  client-fingerprint: chrome
+  network: ws
+  servername: au2.pad-sservice.lat
+  skip-cert-verify: false
+  tls: true
+  udp: true
+  uuid: 2b0e5676-fb62-4bf0-9607-6e7818421e8e
+  ws-opts:
+    headers:
+      Host: au2.pad-service.com
+    path: /A11U
+- name: AT_speednode_0002
+  type: vless
+  server: 152.53.31.46
+  port: 8443
   client-fingerprint: firefox
-  network: xhttp
-  servername: 201.34.142.108
+  network: ws
+  servername: usa3.pad-sservice.lat
+  skip-cert-verify: false
   tls: true
   udp: true
-  uuid: 4777d90d-265b-4927-a0d1-63f36ed1421c
-- name: PL_speednode_0028
-  type: http
-  server: 31.186.220.204
-  port: 443
-  skip-cert-verify: true
-  tls: true
-  udp: true
+  uuid: 2b0e5676-fb62-4bf0-9607-6e7818421e8e
+  ws-opts:
+    headers:
+      Host: usa3.pad-service.com
+    path: /U1SA
