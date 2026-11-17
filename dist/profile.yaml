@@ -106,15 +106,6 @@ proxy-groups:
   interval: 300
   timeout: 5000
   tolerance: 200
-- name: SRC-shaoyouvip
-  type: url-test
-  use:
-  - shaoyouvip
-  url: https://www.youtube.com/generate_204
-  expected-status: 204
-  interval: 300
-  timeout: 5000
-  tolerance: 200
 - name: SRC-leilaomi
   type: url-test
   use:
@@ -148,9 +139,11 @@ proxy-groups:
 - name: 不稳定
   type: url-test
   use:
+  - SRCFL-leilaomi
   - SRCFL-nomorewalls
   - SRCFL-ruk1ng001
   - SRCFL-ssrsub
+  - SRCFL-zhuhaiuk
   url: https://www.youtube.com/generate_204
   expected-status: 204
   interval: 300
@@ -159,7 +152,6 @@ proxy-groups:
 - name: 备用
   type: select
   proxies: &id001
-  - SRC-shaoyouvip
   - SRC-nomorewalls
   - SRC-Free-Nodes
   - 不稳定
@@ -174,7 +166,6 @@ proxy-groups:
   - SRC-ssrsub
   - SRC-ruk1ng001
   - SRC-nomorewalls
-  - SRC-shaoyouvip
   - SRC-leilaomi
   - SRC-Free-Nodes
   url: https://www.youtube.com/generate_204
@@ -193,7 +184,6 @@ proxy-groups:
   - SRC-ssrsub
   - SRC-ruk1ng001
   - SRC-nomorewalls
-  - SRC-shaoyouvip
   - SRC-leilaomi
   - SRC-Free-Nodes
 - name: Claude
@@ -203,7 +193,6 @@ proxy-groups:
   - ssrsub
   - ruk1ng001
   - nomorewalls
-  - shaoyouvip
   - leilaomi
   - Free-Nodes
   proxies:
@@ -215,7 +204,6 @@ proxy-groups:
   - ssrsub
   - ruk1ng001
   - nomorewalls
-  - shaoyouvip
   - leilaomi
   - Free-Nodes
   proxies:
@@ -567,18 +555,6 @@ proxy-providers:
       interval: 300
       timeout: 5000
       expected-status: 204
-  shaoyouvip:
-    type: http
-    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/shaoyouvip.yaml
-    path: ./providers/shaoyouvip.yaml
-    interval: 3600
-    exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
-    health-check:
-      enable: true
-      url: https://www.youtube.com/generate_204
-      interval: 300
-      timeout: 5000
-      expected-status: 204
   leilaomi:
     type: http
     url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/leilaomi.yaml
@@ -595,6 +571,18 @@ proxy-providers:
     type: http
     url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/Free-Nodes.yaml
     path: ./providers/Free-Nodes.yaml
+    interval: 3600
+    exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
+    health-check:
+      enable: true
+      url: https://www.youtube.com/generate_204
+      interval: 300
+      timeout: 5000
+      expected-status: 204
+  SRCFL-leilaomi:
+    type: http
+    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/leilaomi--flaky.yaml
+    path: ./providers/SRCFL-leilaomi.yaml
     interval: 3600
     exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
     health-check:
@@ -633,6 +621,18 @@ proxy-providers:
     path: ./providers/SRCFL-ssrsub.yaml
     interval: 3600
     exclude-filter: 机场推荐:dafei\.de 德国 07|🇨🇳CN_[0-9]
+    health-check:
+      enable: true
+      url: https://www.youtube.com/generate_204
+      interval: 300
+      timeout: 5000
+      expected-status: 204
+  SRCFL-zhuhaiuk:
+    type: http
+    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/zhuhaiuk--flaky.yaml
+    path: ./providers/SRCFL-zhuhaiuk.yaml
+    interval: 3600
+    exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
     health-check:
       enable: true
       url: https://www.youtube.com/generate_204
