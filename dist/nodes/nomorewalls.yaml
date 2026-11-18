@@ -1,63 +1,195 @@
-# clash-source 自动生成 —— 源 nomorewalls，共 61 节点（稳定性加权后留在竞速池内的部分）
+# clash-source 自动生成 —— 源 nomorewalls，共 39 节点（稳定性加权后留在竞速池内的部分）
 # 不要手改；改动会在下次定时任务被覆盖（上游 https://pala911.github.io/clash-source/nodes/nomorewalls.yaml）
 proxies:
-- name: '🇦🇲 AM_08 #1'
-  type: vless
-  server: 91.195.254.34
-  port: 443
-  client-fingerprint: random
-  network: ws
-  servername: us-lax.862400.xyz
-  tls: true
+- name: '🇳🇬 尼日利亚 | NGA #1'
+  type: trojan
+  server: sclass-01.catcat321.com
+  port: 20103
+  password: d7563108-615c-4338-a7bd-77f359869a4a
+  skip-cert-verify: true
+  sni: hk.catxstar.com
   udp: true
-  uuid: 5bbbbf2c-9031-4511-8222-b6cecd5a5291
-  ws-opts:
-    headers:
-      Host: us-lax.862400.xyz
-    path: /announcement?ed=2048
-- name: '🇦🇺 澳大利亚 | AUS #1'
-  type: vless
-  server: 117.55.235.56
-  port: 443
-  client-fingerprint: random
-  network: ws
-  servername: us-lax.862400.xyz
+- name: 🇺🇸US_1|3.5MB/s
+  type: http
+  server: 118.184.140.90
+  port: 58764
+  skip-cert-verify: true
   tls: true
-  udp: true
-  uuid: 5bbbbf2c-9031-4511-8222-b6cecd5a5291
-  ws-opts:
-    headers:
-      Host: us-lax.862400.xyz
-    path: /announcement?ed=2048
-- name: '🇪🇸 西班牙 | ESP #1'
-  type: vless
-  server: api.ferrin.uk
+- name: 🇦🇹AT_1|1.1MB/s|R002-260618
+  type: http
+  server: 146.70.244.2
   port: 443
-  alpn:
-  - h2
-  client-fingerprint: chrome
-  network: xhttp
-  servername: 7d1a74fd.ferrin.uk
-  tls: true
-  udp: true
-  uuid: 7d1a74fd-8a38-4a29-863f-5da53a9e557e
-- name: '🇭🇰 香港 | HKG #2'
-  type: vmess
-  server: prozac-celebrities-inclusion-parallel.trycloudflare.com
-  port: 443
-  alterId: 0
-  cipher: auto
-  network: ws
-  servername: prozac-celebrities-inclusion-parallel.trycloudflare.com
   skip-cert-verify: true
   tls: true
   udp: true
-  uuid: 2a4d24bf-367a-4951-bfe6-50c7a0bdb5ea
+- name: 🇺🇸US_3|1.1MB/s
+  type: vmess
+  server: 104.225.148.201
+  port: 52402
+  alterId: 0
+  cipher: auto
+  network: http
+  tls: false
+  uuid: 0542f509-4368-4ee3-be54-0557fed80f6b
+- name: 🇺🇸US_4|2.7MB/s
+  type: http
+  server: 192.220.47.85
+  port: 8000
+  password: ozbqjztv
+  username: ozbqjztv
+- name: 🇺🇸US_5|3.1MB/s
+  type: vmess
+  server: 192.220.47.85
+  port: 44441
+  alterId: 0
+  cipher: auto
+  network: http
+  tls: false
+  uuid: de4e0335-2a3b-4006-d746-c939fa85fdc3
+- name: '🇧🇬 保加利亚 | BGR #1'
+  type: vless
+  server: plaindune.com
+  port: 8443
+  client-fingerprint: firefox
+  network: xhttp
+  servername: plaindune.com
+  tls: true
+  udp: true
+  uuid: 37af0181-5598-4aad-a040-d926bcb65757
+- name: '🇧🇷 巴西 | BRA #1'
+  type: vless
+  server: platform102.golnamakcert.top
+  port: 80
+  network: ws
+  tls: false
+  udp: true
+  uuid: e13cf851-b4fd-413b-8d49-146e6eb8e5d4
   ws-opts:
     headers:
-      Host: prozac-celebrities-inclusion-parallel.trycloudflare.com
-    path: /2a4d24bf-367a-4951-bfe6-50c7a0bdb5ea-vm
+      Host: platform102.halalkhor.info
+    path: /platform102
+- name: '🇧🇷 巴西 | BRA #2'
+  type: vless
+  server: platform103.golnamakcert.top
+  port: 80
+  network: ws
+  tls: false
+  udp: true
+  uuid: e13cf851-b4fd-413b-8d49-146e6eb8e5d4
+  ws-opts:
+    headers:
+      Host: platform103.halalkhor.info
+    path: /platform103
+- name: '🇩🇪 德国 | DEU #2'
+  type: vless
+  server: 5.129.243.162
+  port: 443
+  alpn:
+  - http/1.1
+  client-fingerprint: random
+  network: ws
+  servername: reedbed.filnex.baby
+  tls: true
+  udp: true
+  uuid: 80a06811-f74b-4b82-ac99-7e66c2a98e1c
+  ws-opts:
+    headers:
+      Host: reedbed.filnex.baby
+    path: /api/de6/stream
+- name: '🇩🇪 德国 | DEU #5'
+  type: vless
+  server: 201.24.55.217
+  port: 443
+  alpn:
+  - http/1.1
+  client-fingerprint: firefox
+  network: ws
+  servername: reedbed.filnex.baby
+  tls: true
+  udp: true
+  uuid: 80a06811-f74b-4b82-ac99-7e66c2a98e1c
+  ws-opts:
+    headers:
+      Host: reedbed.filnex.baby
+    path: /api/de6/stream
+- name: '🇩🇪 德国 | DEU #6'
+  type: ss
+  server: 63.189.231.176
+  port: 443
+  cipher: 2022-blake3-chacha20-poly1305
+  password: 8yO3ANWefuuGs1lRKXECQA1FEhxlWFV2ppQMcBaZo5Y=
+  udp: true
+- name: '🇩🇪 德国 | DEU #7'
+  type: vless
+  server: 46.8.64.51
+  port: 443
+  alpn:
+  - http/1.1
+  client-fingerprint: firefox
+  network: ws
+  servername: clover.filnex.baby
+  tls: true
+  udp: true
+  uuid: 80a06811-f74b-4b82-ac99-7e66c2a98e1c
+  ws-opts:
+    headers:
+      Host: clover.filnex.baby
+    path: /api/de6/stream
+- name: '🇩🇪 德国 | DEU #9'
+  type: ss
+  server: 130.61.145.251
+  port: 59924
+  cipher: 2022-blake3-chacha20-poly1305
+  password: uou5NTq+xna9PBIG+8jtSSyQ6idxiXZgeK+Uw52qopY=
+  udp: true
+- name: '🇩🇪 德国 | DEU #10'
+  type: vless
+  server: 193.160.208.240
+  port: 443
+  client-fingerprint: firefox
+  network: xhttp
+  servername: 193.160.208.240
+  tls: true
+  udp: true
+  uuid: 4777d90d-265b-4927-a0d1-63f36ed1421c
+- name: '🇩🇪 德国 | DEU #13'
+  type: ss
+  server: 8.211.57.86
+  port: 443
+  cipher: 2022-blake3-chacha20-poly1305
+  password: 8yO3ANWefuuGs1lRKXECQA1FEhxlWFV2ppQMcBaZo5Y=
+  udp: true
+- name: '🇭🇰 香港 | HKG #2'
+  type: vmess
+  server: 47.244.120.197
+  port: 23026
+  alpn:
+  - ''
+  alterId: 0
+  cipher: auto
+  network: ws
+  skip-cert-verify: true
+  tls: false
+  udp: true
+  uuid: b9de1bc9-baa7-41ac-86f7-ccd59695cb21
+  ws-opts:
+    path: /arki
 - name: '🇭🇰 香港 | HKG #3'
+  type: vmess
+  server: 47.244.120.197
+  port: 36703
+  alpn:
+  - ''
+  alterId: 0
+  cipher: auto
+  network: ws
+  skip-cert-verify: true
+  tls: false
+  udp: true
+  uuid: 45b83519-9c4f-4052-a11b-02e017b636d4
+  ws-opts:
+    path: /arki
+- name: '🇭🇰 香港 | HKG #4'
   type: vmess
   server: 47.242.81.94
   port: 52080
@@ -70,309 +202,35 @@ proxies:
   tls: false
   udp: true
   uuid: e47b9f77-60e4-4738-8d53-772b6002e146
-- name: '🇮🇹 意大利 | ITA #2'
-  type: vless
-  server: 200.180.163.38
-  port: 443
-  client-fingerprint: random
-  network: ws
-  servername: it-mil.862400.xyz
-  tls: true
-  udp: true
-  uuid: 5bbbbf2c-9031-4511-8222-b6cecd5a5291
-  ws-opts:
-    headers:
-      Host: it-mil.862400.xyz
-    path: /announcement?ed=2048
-- name: '🇮🇹 意大利 | ITA #3'
-  type: vless
-  server: 144.31.228.110
-  port: 8443
-  client-fingerprint: random
-  network: ws
-  servername: it-mil.862400.xyz
-  tls: true
-  udp: true
-  uuid: 5bbbbf2c-9031-4511-8222-b6cecd5a5291
-  ws-opts:
-    headers:
-      Host: it-mil.862400.xyz
-    path: /announcement?ed=2048
-- name: '🇮🇹 意大利 | ITA #4'
-  type: vless
-  server: 83.228.199.3
-  port: 443
-  client-fingerprint: random
-  network: ws
-  servername: it-mil.862400.xyz
-  tls: true
-  udp: true
-  uuid: 5bbbbf2c-9031-4511-8222-b6cecd5a5291
-  ws-opts:
-    headers:
-      Host: it-mil.862400.xyz
-    path: /announcement?ed=2048
-- name: '🇮🇹 意大利 | ITA #5'
-  type: vless
-  server: 161.118.219.55
-  port: 443
-  client-fingerprint: random
-  network: ws
-  servername: it-mil.862400.xyz
-  tls: true
-  udp: true
-  uuid: 5bbbbf2c-9031-4511-8222-b6cecd5a5291
-  ws-opts:
-    headers:
-      Host: it-mil.862400.xyz
-    path: /announcement?ed=2048
-- name: '🇮🇹 意大利 | ITA #6'
-  type: vless
-  server: 5.157.30.2
-  port: 8443
-  client-fingerprint: random
-  network: ws
-  servername: it-mil.862400.xyz
-  tls: true
-  udp: true
-  uuid: 5bbbbf2c-9031-4511-8222-b6cecd5a5291
-  ws-opts:
-    headers:
-      Host: it-mil.862400.xyz
-    path: /announcement?ed=2048
-- name: '🇯🇵 日本 | JPN #1'
-  type: vless
-  server: 89.106.78.217
-  port: 443
-  client-fingerprint: random
-  network: ws
-  servername: jp-osa.862400.xyz
-  tls: true
-  udp: true
-  uuid: 5bbbbf2c-9031-4511-8222-b6cecd5a5291
-  ws-opts:
-    headers:
-      Host: jp-osa.862400.xyz
-    path: /announcement?ed=2048
-- name: '🇯🇵 日本 | JPN #2'
-  type: vless
-  server: 188.164.248.18
-  port: 443
-  client-fingerprint: random
-  network: ws
-  servername: jp-osa.862400.xyz
-  tls: true
-  udp: true
-  uuid: 5bbbbf2c-9031-4511-8222-b6cecd5a5291
-  ws-opts:
-    headers:
-      Host: jp-osa.862400.xyz
-    path: /announcement?ed=2048
-- name: '🇯🇵 日本 | JPN #3'
-  type: vless
-  server: 31.77.133.224
-  port: 443
-  client-fingerprint: random
-  network: ws
-  servername: jp-osa.862400.xyz
-  tls: true
-  udp: true
-  uuid: 5bbbbf2c-9031-4511-8222-b6cecd5a5291
-  ws-opts:
-    headers:
-      Host: jp-osa.862400.xyz
-    path: /announcement?ed=2048
-- name: '🇯🇵 日本 | JPN #4'
-  type: vless
-  server: 152.53.156.23
-  port: 443
-  client-fingerprint: random
-  network: ws
-  servername: jp-osa.862400.xyz
-  tls: true
-  udp: true
-  uuid: 5bbbbf2c-9031-4511-8222-b6cecd5a5291
-  ws-opts:
-    headers:
-      Host: jp-osa.862400.xyz
-    path: /announcement?ed=2048
-- name: '🇯🇵 日本 | JPN #5'
-  type: vless
-  server: 141.164.44.60
-  port: 443
-  client-fingerprint: random
-  network: ws
-  servername: jp-osa.862400.xyz
-  tls: true
-  udp: true
-  uuid: 5bbbbf2c-9031-4511-8222-b6cecd5a5291
-  ws-opts:
-    headers:
-      Host: jp-osa.862400.xyz
-    path: /announcement?ed=2048
-- name: '🇯🇵 日本 | JPN #6'
-  type: vless
-  server: 178.208.64.211
-  port: 2053
-  client-fingerprint: random
-  network: ws
-  servername: jp-osa.862400.xyz
-  tls: true
-  udp: true
-  uuid: 5bbbbf2c-9031-4511-8222-b6cecd5a5291
-  ws-opts:
-    headers:
-      Host: jp-osa.862400.xyz
-    path: /announcement?ed=2048
-- name: '🇯🇵 日本 | JPN #7'
-  type: vless
-  server: 202.27.229.7
-  port: 443
-  client-fingerprint: random
-  network: ws
-  servername: jp-osa.862400.xyz
-  tls: true
-  udp: true
-  uuid: 5bbbbf2c-9031-4511-8222-b6cecd5a5291
-  ws-opts:
-    headers:
-      Host: jp-osa.862400.xyz
-    path: /announcement?ed=2048
-- name: '🇯🇵 日本 | JPN #8'
-  type: vless
-  server: 138.2.41.8
-  port: 443
-  client-fingerprint: random
-  network: ws
-  servername: jp-osa.862400.xyz
-  tls: true
-  udp: true
-  uuid: 5bbbbf2c-9031-4511-8222-b6cecd5a5291
-  ws-opts:
-    headers:
-      Host: jp-osa.862400.xyz
-    path: /announcement?ed=2048
-- name: '🇯🇵 日本 | JPN #9'
-  type: vless
-  server: 43.170.8.95
-  port: 443
-  client-fingerprint: random
-  network: ws
-  servername: jp-osa.862400.xyz
-  tls: true
-  udp: true
-  uuid: 5bbbbf2c-9031-4511-8222-b6cecd5a5291
-  ws-opts:
-    headers:
-      Host: jp-osa.862400.xyz
-    path: /announcement?ed=2048
-- name: '🇯🇵 日本 | JPN #10'
-  type: vless
-  server: 172.104.120.30
-  port: 443
-  client-fingerprint: random
-  network: ws
-  servername: jp-osa.862400.xyz
-  tls: true
-  udp: true
-  uuid: 5bbbbf2c-9031-4511-8222-b6cecd5a5291
-  ws-opts:
-    headers:
-      Host: jp-osa.862400.xyz
-    path: /announcement?ed=2048
-- name: '🇯🇵 日本 | JPN #11'
-  type: vless
-  server: 104.18.33.121
-  port: 443
-  client-fingerprint: random
-  network: ws
-  servername: jp-osa.862400.xyz
-  tls: true
-  udp: true
-  uuid: 5bbbbf2c-9031-4511-8222-b6cecd5a5291
-  ws-opts:
-    headers:
-      Host: jp-osa.862400.xyz
-    path: /announcement?ed=2048
-- name: '🇯🇵 日本 | JPN #12'
-  type: vless
-  server: 141.98.41.104
-  port: 443
-  client-fingerprint: random
-  network: ws
-  servername: jp-osa.862400.xyz
-  tls: true
-  udp: true
-  uuid: 5bbbbf2c-9031-4511-8222-b6cecd5a5291
-  ws-opts:
-    headers:
-      Host: jp-osa.862400.xyz
-    path: /announcement?ed=2048
-- name: '🇰🇷 韩国 | KOR #1'
-  type: hysteria2
-  server: 3.38.149.130
-  port: 443
-  password: 7e68e32f-8015-4f37-9082-70e8b0b58043
+- name: '🇳🇬 尼日利亚 | NGA #2'
+  type: trojan
+  server: sclass-b1.catcat321.com
+  port: 20051
+  password: d7563108-615c-4338-a7bd-77f359869a4a
   skip-cert-verify: true
-  sni: www.bing.com
-  tls: false
-- name: '🇳🇱 荷兰 | NLD #1'
-  type: vless
-  server: 85.90.197.157
-  port: 443
-  client-fingerprint: random
-  network: ws
-  servername: nl-ams.862400.xyz
-  tls: true
+  sni: hk.catxstar.com
   udp: true
-  uuid: 5bbbbf2c-9031-4511-8222-b6cecd5a5291
-  ws-opts:
-    headers:
-      Host: nl-ams.862400.xyz
-    path: /announcement?ed=2048
+- name: '🇳🇱 荷兰 | NLD #1'
+  type: ss
+  server: 144.21.35.158
+  port: 45819
+  cipher: 2022-blake3-chacha20-poly1305
+  password: rx1e8SsjGM7ZKlR0tLnzSWoxhyRRJJrcTccM3uMu+Rc=
+  udp: true
 - name: '🇳🇱 荷兰 | NLD #2'
   type: vless
-  server: 198.13.59.163
-  port: 443
-  client-fingerprint: random
-  network: ws
-  servername: nl-ams.862400.xyz
+  server: 185.91.52.223
+  port: 444
+  alpn:
+  - h2
+  - http/1.1
+  client-fingerprint: firefox
+  network: xhttp
+  servername: nl-38-qu60.wave-inside.online
   tls: true
   udp: true
-  uuid: 5bbbbf2c-9031-4511-8222-b6cecd5a5291
-  ws-opts:
-    headers:
-      Host: nl-ams.862400.xyz
-    path: /announcement?ed=2048
-- name: '🇳🇱 荷兰 | NLD #3'
-  type: vless
-  server: 193.162.143.198
-  port: 443
-  client-fingerprint: random
-  network: ws
-  servername: nl-ams.862400.xyz
-  tls: true
-  udp: true
-  uuid: 5bbbbf2c-9031-4511-8222-b6cecd5a5291
-  ws-opts:
-    headers:
-      Host: nl-ams.862400.xyz
-    path: /announcement?ed=2048
-- name: '🇳🇱 荷兰 | NLD #4'
-  type: vless
-  server: 37.252.189.207
-  port: 443
-  client-fingerprint: random
-  network: ws
-  servername: nl-ams.862400.xyz
-  tls: true
-  udp: true
-  uuid: 5bbbbf2c-9031-4511-8222-b6cecd5a5291
-  ws-opts:
-    headers:
-      Host: nl-ams.862400.xyz
-    path: /announcement?ed=2048
-- name: '🇷🇺 俄罗斯 | RUS #1'
+  uuid: 4f692947-7439-4396-9234-d304618bfbcf
+- name: '🇳🇱 荷兰 | NLD #6'
   type: vless
   server: 201.34.142.108
   port: 443
@@ -381,280 +239,89 @@ proxies:
   tls: true
   udp: true
   uuid: 4777d90d-265b-4927-a0d1-63f36ed1421c
-- name: '🇸🇪 瑞典 | SWE #1'
+- name: '🇵🇱 波兰 | POL #1'
   type: vless
-  server: 213.155.119.28
+  server: r0xnfzk9ud.newwl.pro
   port: 443
-  client-fingerprint: random
+  alpn:
+  - http/1.1
+  client-fingerprint: firefox
   network: ws
-  servername: se-sto.862400.xyz
+  servername: r0xnfzk9ud.newwl.pro
   tls: true
   udp: true
-  uuid: 5bbbbf2c-9031-4511-8222-b6cecd5a5291
+  uuid: 7955bf18-35c4-412d-aabd-c0b36c793063
   ws-opts:
     headers:
-      Host: se-sto.862400.xyz
-    path: /announcement?ed=2048
-- name: '🇸🇪 瑞典 | SWE #2'
+      Host: r0xnfzk9ud.newwl.pro
+    path: /service/telemetry/045d381f1166/
+- name: 🇷🇺 俄罗斯 | RUS
   type: vless
-  server: 95.141.241.216
+  server: vps3.nemnogogo.com
   port: 443
-  client-fingerprint: random
-  network: ws
-  servername: jp-osa.862400.xyz
+  client-fingerprint: chrome
+  network: grpc
+  servername: vps3.nemnogogo.com
   tls: true
   udp: true
-  uuid: 5bbbbf2c-9031-4511-8222-b6cecd5a5291
-  ws-opts:
-    headers:
-      Host: jp-osa.862400.xyz
-    path: /announcement?ed=2048
-- name: '🇸🇪 瑞典 | SWE #3'
+  uuid: 38308ff1-5aa9-494f-a25a-0f2870d56b3e
+- name: 🇷🇺 俄罗斯 | RUS 3
   type: vless
-  server: 205.186.76.237
+  server: 201.51.12.98
   port: 443
-  client-fingerprint: random
-  network: ws
-  servername: se-sto.862400.xyz
+  alpn:
+  - h2
+  client-fingerprint: firefox
+  network: grpc
+  servername: vps3.nemnogogo.com
   tls: true
   udp: true
-  uuid: 5bbbbf2c-9031-4511-8222-b6cecd5a5291
-  ws-opts:
-    headers:
-      Host: se-sto.862400.xyz
-    path: /announcement?ed=2048
-- name: '🇸🇪 瑞典 | SWE #4'
-  type: vless
-  server: 45.139.25.72
-  port: 443
-  client-fingerprint: random
-  network: ws
-  servername: se-sto.862400.xyz
-  tls: true
-  udp: true
-  uuid: 5bbbbf2c-9031-4511-8222-b6cecd5a5291
-  ws-opts:
-    headers:
-      Host: se-sto.862400.xyz
-    path: /announcement?ed=2048
-- name: '🇸🇪 瑞典 | SWE #6'
-  type: vless
-  server: 5.157.30.28
-  port: 8443
-  client-fingerprint: random
-  network: ws
-  servername: se-sto.862400.xyz
-  tls: true
-  udp: true
-  uuid: 5bbbbf2c-9031-4511-8222-b6cecd5a5291
-  ws-opts:
-    headers:
-      Host: se-sto.862400.xyz
-    path: /announcement?ed=2048
-- name: '🇸🇪 瑞典 | SWE #7'
-  type: vless
-  server: saas.sin.fan
-  port: 443
-  client-fingerprint: random
-  network: ws
-  servername: se-sto.862400.xyz
-  tls: true
-  udp: true
-  uuid: 5bbbbf2c-9031-4511-8222-b6cecd5a5291
-  ws-opts:
-    headers:
-      Host: se-sto.862400.xyz
-    path: /announcement?ed=2048
-- name: '🇸🇪 瑞典 | SWE #8'
-  type: vless
-  server: 193.124.58.5
-  port: 443
-  client-fingerprint: random
-  network: ws
-  servername: se-sto.862400.xyz
-  tls: true
-  udp: true
-  uuid: 5bbbbf2c-9031-4511-8222-b6cecd5a5291
-  ws-opts:
-    headers:
-      Host: se-sto.862400.xyz
-    path: /announcement?ed=2048
-- name: '🇸🇪 瑞典 | SWE #9'
-  type: vless
-  server: 5.22.222.157
-  port: 443
-  client-fingerprint: random
-  network: ws
-  servername: se-sto.862400.xyz
-  tls: true
-  udp: true
-  uuid: 5bbbbf2c-9031-4511-8222-b6cecd5a5291
-  ws-opts:
-    headers:
-      Host: se-sto.862400.xyz
-    path: /announcement?ed=2048
-- name: '🇸🇬 新加坡 | SGP #2'
-  type: hysteria2
-  server: 54.151.179.216
-  port: 443
-  password: 7e68e32f-8015-4f37-9082-70e8b0b58043
-  skip-cert-verify: true
-  sni: www.bing.com
-  tls: false
-- name: '🇸🇬 新加坡 | SGP #3'
-  type: vless
-  server: 168.144.132.93
-  port: 443
-  client-fingerprint: random
-  network: ws
-  servername: us-lax.862400.xyz
-  tls: true
-  udp: true
-  uuid: 5bbbbf2c-9031-4511-8222-b6cecd5a5291
-  ws-opts:
-    headers:
-      Host: us-lax.862400.xyz
-    path: /announcement?ed=2048
-- name: '🇸🇬 新加坡 | SGP #4'
-  type: vless
-  server: 185.130.224.105
-  port: 443
-  client-fingerprint: random
-  network: ws
-  servername: ap-south.862400.xyz
-  tls: true
-  udp: true
-  uuid: 5bbbbf2c-9031-4511-8222-b6cecd5a5291
-  ws-opts:
-    headers:
-      Host: ap-south.862400.xyz
-    path: /announcement?ed=2048
-- name: '🇸🇬 新加坡 | SGP #5'
-  type: vless
-  server: 13.231.172.130
-  port: 443
-  client-fingerprint: random
-  network: ws
-  servername: ap-south.862400.xyz
-  tls: true
-  udp: true
-  uuid: 5bbbbf2c-9031-4511-8222-b6cecd5a5291
-  ws-opts:
-    headers:
-      Host: ap-south.862400.xyz
-    path: /announcement?ed=2048
-- name: '🇸🇬 新加坡 | SGP #6'
-  type: vless
-  server: 101.108.49.121
-  port: 443
-  client-fingerprint: random
-  network: ws
-  servername: ap-south.862400.xyz
-  tls: true
-  udp: true
-  uuid: 5bbbbf2c-9031-4511-8222-b6cecd5a5291
-  ws-opts:
-    headers:
-      Host: ap-south.862400.xyz
-    path: /announcement?ed=2048
-- name: '🇸🇬 新加坡 | SGP #7'
-  type: ss
-  server: 54.151.179.216
-  port: 8443
-  cipher: chacha20-ietf-poly1305
-  password: 7e68e32f-8015-4f37-9082-70e8b0b58043
-  udp: true
-- name: '🇸🇬 新加坡 | SGP #8'
-  type: vless
-  server: 82.153.135.54
-  port: 443
-  client-fingerprint: random
-  network: ws
-  servername: us-lax.862400.xyz
-  tls: true
-  udp: true
-  uuid: 5bbbbf2c-9031-4511-8222-b6cecd5a5291
-  ws-opts:
-    headers:
-      Host: us-lax.862400.xyz
-    path: /announcement?ed=2048
-- name: '🇺🇸 美国 | USA #1'
-  type: vless
-  server: 5.157.30.26
-  port: 8443
-  client-fingerprint: random
-  network: ws
-  servername: us-lax.862400.xyz
-  tls: true
-  udp: true
-  uuid: 5bbbbf2c-9031-4511-8222-b6cecd5a5291
-  ws-opts:
-    headers:
-      Host: us-lax.862400.xyz
-    path: /announcement?ed=2048
-- name: '🇺🇸 美国 | USA #2'
-  type: vless
-  server: 217.217.227.132
-  port: 443
-  client-fingerprint: random
-  network: ws
-  servername: jp-osa.862400.xyz
-  tls: true
-  udp: true
-  uuid: 5bbbbf2c-9031-4511-8222-b6cecd5a5291
-  ws-opts:
-    headers:
-      Host: jp-osa.862400.xyz
-    path: /announcement?ed=2048
-- name: '🇺🇸 美国 | USA #5'
-  type: ss
-  server: 3.22.241.58
-  port: 443
-  cipher: aes-256-cfb
-  password: amazonskr05
-  udp: true
+  uuid: 38308ff1-5aa9-494f-a25a-0f2870d56b3e
 - name: '🇺🇸 美国 | USA #6'
-  type: vless
-  server: 172.67.67.89
+  type: vmess
+  server: US122207.ssgreen.org
   port: 443
-  client-fingerprint: random
+  alterId: 0
+  cipher: auto
   network: ws
-  servername: us-lax.862400.xyz
+  skip-cert-verify: true
   tls: true
   udp: true
-  uuid: 5bbbbf2c-9031-4511-8222-b6cecd5a5291
+  uuid: 74d216a3-fdb8-4774-a9c3-35f9e5a46819
   ws-opts:
     headers:
-      Host: us-lax.862400.xyz
-    path: /announcement?ed=2048
-- name: '🇺🇸 美国 | USA #7'
+      Host: US122207.ssgreen.org
+    path: /wes
+- name: AT_speednode_0001
   type: vless
-  server: 193.163.19.232
-  port: 443
-  client-fingerprint: random
+  server: au2.pad-sservice.lat
+  port: 8443
+  client-fingerprint: chrome
   network: ws
-  servername: us-lax.862400.xyz
+  servername: au2.pad-sservice.lat
+  skip-cert-verify: false
   tls: true
   udp: true
-  uuid: 5bbbbf2c-9031-4511-8222-b6cecd5a5291
+  uuid: 2b0e5676-fb62-4bf0-9607-6e7818421e8e
   ws-opts:
     headers:
-      Host: us-lax.862400.xyz
-    path: /announcement?ed=2048
-- name: '🇺🇸 美国 | USA #8'
+      Host: au2.pad-service.com
+    path: /A11U
+- name: AT_speednode_0002
   type: vless
-  server: 109.248.18.169
-  port: 443
-  client-fingerprint: random
+  server: 152.53.31.46
+  port: 8443
+  client-fingerprint: firefox
   network: ws
-  servername: us-lax.862400.xyz
+  servername: usa3.pad-sservice.lat
+  skip-cert-verify: false
   tls: true
   udp: true
-  uuid: 5bbbbf2c-9031-4511-8222-b6cecd5a5291
+  uuid: 2b0e5676-fb62-4bf0-9607-6e7818421e8e
   ws-opts:
     headers:
-      Host: us-lax.862400.xyz
-    path: /announcement?ed=2048
+      Host: usa3.pad-service.com
+    path: /U1SA
 - name: BR_speednode_0003
   type: vless
   server: de9.pad-sservice.lat
@@ -669,13 +336,6 @@ proxies:
     headers:
       Host: de9.pad-service.com
     path: /DE9W
-- name: DK_speednode_0005
-  type: http
-  server: 158.173.154.5
-  port: 9002
-  skip-cert-verify: true
-  tls: true
-  udp: true
 - name: DK_speednode_0006
   type: http
   server: 158.173.154.1
@@ -698,22 +358,6 @@ proxies:
     headers:
       Host: au5.pad-sservice.lat
     path: /AU5W
-- name: FR_speednode_0010
-  type: http
-  server: 51.159.225.196
-  port: 23856
-  password: 'null'
-  skip-cert-verify: true
-  tls: true
-  udp: true
-  username: 'null'
-- name: FR_speednode_0011
-  type: http
-  server: 51.159.225.196
-  port: 23856
-  skip-cert-verify: true
-  tls: true
-  udp: true
 - name: FR_speednode_0012
   type: http
   server: 82.65.162.76
@@ -721,6 +365,15 @@ proxies:
   skip-cert-verify: true
   tls: true
   udp: true
+- name: NL_speednode_0022
+  type: http
+  server: 103.97.88.154
+  port: 443
+  password: 'null'
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: 'null'
 - name: NL_speednode_0025
   type: http
   server: 84.17.47.149
