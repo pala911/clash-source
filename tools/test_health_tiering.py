@@ -115,7 +115,7 @@ def cnci_doc(runs, tag):
 def seed_local_probe(extra=None):
     """把本机全量结果写成 scope=local 的探针文档，供 health.py 读取。
 
-    extra: {源名: 通过率} —— 额外塞进本轮的**合成源**（场景 D 回收要用）。
+    extra: {源名: 通过率} —— 额外塞进本轮的**合成源**（场景 D 恢复要用）。
            合成源不在 src/sources.yaml 的 LOCAL 常量里，必须显式给。
     """
     srcs = {}
@@ -260,7 +260,7 @@ try:
     check(not wrong, "四格分类与实测值一致且全覆盖", "；".join(wrong))
     print()
     print("  关键校验：")
-    print("    snakem982 本机 15.4%% / 云效 0.0%%  -> %s（位置敏感，绝不该自动回收）"
+    print("    snakem982 本机 15.4%% / 云效 0.0%%  -> %s（位置敏感，绝不该自动恢复）"
           % tier_of("snakem982"))
     print("    ermaozi    本机  2.9%% / 云效 13.3%% -> %s（机房友好，不该进主池）"
           % tier_of("ermaozi"))
@@ -277,7 +277,7 @@ print("=" * 72)
 print("""
   背景：L1 的 cron 从「每周一」提到「每 6 小时」后，只数轮数的话
         「连续 3 轮 0 活」= 18 小时就判死（原来是 3 周）。
-        而回收要 2 轮本机 + 7 轮云效，误杀的代价是「好几天才可能收回来」。
+        而恢复要本机连续 2 轮达标 + 联赛 +5pp，误杀的代价是「好几天才可能回来」。
         所以判死改成：轮数 >= 3 **且** 首末轮横跨 >= 48 小时。
 
   C1 3 轮 0 活、每轮隔 1 小时（跨度 2h）    -> 不判死（轮数够，跨度不够）
@@ -359,7 +359,7 @@ def seeded_runs(scope, n, rate, alive, day0):
     """造 n 条**历史轮次**记录（字段与 health.py 写回的一模一样）。
 
     ⚠ hc_timeout_ms 必须和探针文档里的 8000 一致：health.py 见到同一口径的
-      hc_timeout 变了就**清零 streak** —— 口径不一致这个用例永远攒不够回收条件，
+      hc_timeout 变了就**清零 streak** —— 口径不一致这个用例永远攒不够恢复条件，
       而症状会是「回收分支没进去」，看起来像另一个 bug。
     """
     return [{"ts": "2026-%02d-%02dT%02d:00:00Z"

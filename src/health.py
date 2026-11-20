@@ -25,7 +25,7 @@
     且永远只是 enabled=false 不删数据。
     （跨度这条是 2026-10-16 加的：L1 的 cron 从每周提到每 6 小时后，
      只数轮数会让判死从 3 周变成 18 小时 —— 见 DEAD_STREAK_HOURS。）
-  - **回收积极**：本机 alive ≥ 5 且通过率 ≥ 8% 连续 2 轮就把源从历史库打上
+  - **恢复积极**：本机 alive ≥ 5 且通过率 ≥ 8% 连续 2 轮就把源从历史库打上
     `relegated` 标交回联赛挑战者池（**不直接 enabled: true** —— 由 +5pp 换位
     规则决定是否入册，见 src/league.py；这样既不会超 7 源 cap，也不会绕过排名）。
   - 探针不完整（incomplete，大源没加载完）**不参与判定**，否则会把 2000 节点的
@@ -620,7 +620,7 @@ def main():
     now = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
     # 用**探针自己的时间戳**当这一轮的身份，而不是 health.py 的运行时刻。
     # 这样重复跑（CI 重试 / 手动再跑一次 / local_probe 的 --scope-only）能被识别为
-    # 「同一轮」而不重复计数 —— 否则一次真实探针就能凭空攒出 good_streak=2 触发回收。
+    # 「同一轮」而不重复计数 —— 否则一次真实探针就能凭空攒出 good_streak=2 触发恢复。
     #
     # ⚠ 回退分支必须用纳秒级唯一值：probe.probed_at 是秒级精度，若回退也用秒级，
     #   同一秒内的两次调用会被误判成同一轮而**漏计**（实测踩到：连续 3 轮 0 活
@@ -885,9 +885,9 @@ def main():
                 rec["state"] = "active"
 
         # --- 自动补员退出（2026-10-29 拍板，哨尺在 AUTO_EXIT_* 常量处）---
-        # 放在 is_new 之后：重复推送不重复判定（与判死/回收同纪律）。
+        # 放在 is_new 之后：重复推送不重复判定（与判死/恢复同纪律）。
         # ⚠ 只对「auto_added 且仍 enabled 且 active」的源生效；人工接入与
-        #   老源（包括现存 15 个）永远只走原有判死/回收路径，绝不在此误伤。
+        #   老源（包括现存 15 个）永远只走原有判死/恢复路径，绝不在此误伤。
         if (name in src_by_name and src_by_name[name].get("auto_added")
                 and src_by_name[name].get("enabled", True)
                 and rec["state"] == "active" and tier == "T4"):

@@ -171,7 +171,7 @@ ARCHIVE_TIMEOUT = 30
 
 
 def _clean_archive_nodes(out_dir, keep, log=print):
-    """删掉本轮没有 staging 的 arch 文件（源已回收/改名/删除）。
+    """删掉本轮没有 staging 的 arch 文件（源已恢复/改名/删除）。
 
     不清理的话，probe.py 会一直探这些幽灵源：它们既不在历史库、也不在
     sources.yaml，探针结果没人消费，只是白烧预算，还会在 health 里触发

@@ -388,7 +388,7 @@ def main():
         if name == "all":
             continue
         files.append((name, n))
-    # 历史库里的源也一起探（为了发现"变好了"能回收）
+    # 历史库里的源也一起探（为了发现"变好了"能恢复）
     for n in sorted(glob.glob(os.path.join(args.archive_nodes, "*.yaml"))):
         files.append(("arch__" + os.path.splitext(os.path.basename(n))[0], n))
     if not files:
@@ -456,7 +456,7 @@ def main():
               "只能判是否彻底死，不能横向比质量（Spearman rho 仅 0.48）。",
         "local": "本机（国内）口径，与业务同源，质量判据可信。",
         "cnci": "国内第三方 CI：口径介于美国 CI 与家用宽带之间（IDC 国际出口通常"
-                "更差）。**只用于交叉验证**，不足以单独触发回收或降级。",
+                "更差）。**只用于交叉验证**，不足以单独触发恢复或降级。",
     }
     # ⚠ 原子写（§75 #11）：直写时若在写一半被杀，**上一轮的好数据也一起没了**，
     #   而健康档案下一轮只能看到这个半截文件。详见 save_json_atomic 的说明。
