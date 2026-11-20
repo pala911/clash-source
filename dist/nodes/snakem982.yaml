@@ -1,4 +1,4 @@
-# clash-source 自动生成 —— 源 snakem982，共 42 节点（稳定性加权后留在竞速池内的部分）
+# clash-source 自动生成 —— 源 snakem982，共 38 节点（稳定性加权后留在竞速池内的部分）
 # 不要手改；改动会在下次定时任务被覆盖（上游 https://pala911.github.io/clash-source/nodes/snakem982.yaml）
 proxies:
 - name: 🇦🇷 阿根廷 | ARG
@@ -36,6 +36,58 @@ proxies:
   cipher: chacha20-ietf-poly1305
   password: lDe8uY-MIsa2C_PfpwUaqUHsMkf5tqPE
   udp: true
+- name: 🇩🇪 德国 | DEU 2
+  type: vless
+  server: 104.26.14.111
+  port: 443
+  uuid: 9be9e1e4-d1fc-4423-b22d-cd07a4381acb
+  tls: true
+  servername: cj1-e06.pages.dev
+  client-fingerprint: random
+  network: ws
+  ws-opts:
+    path: /
+    headers:
+      Host: cj1-e06.pages.dev
+  udp: true
+- name: 🇩🇪 德国 | DEU 3
+  type: vless
+  server: 161.35.221.240
+  port: 443
+  uuid: 9be9e1e4-d1fc-4423-b22d-cd07a4381acb
+  tls: true
+  servername: cj1-e06.pages.dev
+  client-fingerprint: random
+  network: ws
+  ws-opts:
+    path: /
+    headers:
+      Host: cj1-e06.pages.dev
+  udp: true
+- name: 🇩🇪 德国 | DEU 5
+  type: vless
+  server: 46.243.205.192
+  port: 443
+  uuid: fd90e601-a56c-42b8-aab7-aa02d26fcb04
+  tls: true
+  servername: 46.243.205.192
+  client-fingerprint: chrome
+  network: ws
+  ws-opts:
+    path: /catalog/feed/H9eui7WsW3xS
+    headers:
+      Host: 46.243.205.192
+  udp: true
+- name: 🇩🇪 德国 | DEU 6
+  type: vless
+  server: 157.228.172.4
+  port: 8443
+  uuid: aa983622-bffd-4313-b4d1-bf0e1b7b6ad8
+  tls: true
+  servername: 157.228.172.4
+  client-fingerprint: firefox
+  network: tcp
+  udp: true
 - name: 🇪🇸 西班牙 | ESP
   type: vless
   server: 89.128.206.51
@@ -50,27 +102,34 @@ proxies:
     headers:
       Host: cj1-e06.pages.dev
   udp: true
-- name: 🇬🇧 英国 | GBR
-  type: ss
-  server: 134.65.60.109
-  port: 61312
-  cipher: 2022-blake3-chacha20-poly1305
-  password: qQiY6ohAB0nZSQtGK8ScY+jaTeJgYxsdERHW0vrXxnY=
-  udp: true
-- name: 🇬🇧 英国 | GBR 2
-  type: ss
-  server: 144.24.224.112
-  port: 61312
-  cipher: 2022-blake3-chacha20-poly1305
-  password: vQW1D4AFQOA5o7ii/2LHvvIdcyab7BlOg41DOz8fHOI=
-  udp: true
-- name: 🇭🇰 香港 | HKG
-  type: hysteria2
-  server: 31.59.169.225
+- name: 🇫🇷 法国 | FRA
+  type: vless
+  server: notified-rendered-moore-consideration.trycloudflare.com
   port: 443
-  password: ca60984f-b1f0-4073-bd33-4c75168f749a
-  sni: ge-beer-1.fantoff.online
-  skip-cert-verify: true
+  uuid: 11111111-2222-3333-4444-555555555555
+  tls: true
+  servername: notified-rendered-moore-consideration.trycloudflare.com
+  client-fingerprint: chrome
+  network: ws
+  ws-opts:
+    path: /tg-jiedianxielou
+    headers:
+      Host: notified-rendered-moore-consideration.trycloudflare.com
+  udp: true
+- name: 🇫🇷 法国 | FRA 2
+  type: vless
+  server: jdxl.cf.090227.xyz
+  port: 443
+  uuid: 11111111-2222-3333-4444-555555555555
+  tls: true
+  servername: notified-rendered-moore-consideration.trycloudflare.com
+  client-fingerprint: chrome
+  network: ws
+  ws-opts:
+    path: /tg-jiedianxielou
+    headers:
+      Host: notified-rendered-moore-consideration.trycloudflare.com
+  udp: true
 - name: 🇭🇰 香港 | HKG 2
   type: vless
   server: 8.217.1.203
@@ -259,26 +318,12 @@ proxies:
   password: 6acdc33a-a25b-0001-8095-c9a252d72fd0
   sni: ohyjf-ru-65sb.my-fade.cloud
   skip-cert-verify: true
-- name: 🇳🇱 荷兰 | NLD
-  type: ss
-  server: 158.178.157.15
-  port: 45819
-  cipher: 2022-blake3-chacha20-poly1305
-  password: Lqb/eLDa4LnfF6j965FkZEXTWkH65B083ivjy0xFpiI=
-  udp: true
 - name: 🇳🇱 荷兰 | NLD 2
   type: ss
   server: 213.176.20.14
   port: 443
   cipher: 2022-blake3-aes-256-gcm
   password: 4TrKTQWv6U7U7wJsh8z8/0K4NzmGND5bM2FJX/YbecY=:H8t/2JRrENHKd2NAHhaPlT7zdlnm1bHqGTh+vkTHsKM=
-  udp: true
-- name: 🇳🇱 荷兰 | NLD 3
-  type: ss
-  server: 84.235.170.154
-  port: 45819
-  cipher: 2022-blake3-chacha20-poly1305
-  password: hZ3VbN592JZsuzZ9ou+pGOBFMSRGBiSVczJFghcRaEY=
   udp: true
 - name: 🇳🇱 荷兰 | NLD 4
   type: vless
@@ -294,28 +339,6 @@ proxies:
     headers:
       Host: cj1-e06.pages.dev
   udp: true
-- name: 🇳🇱 荷兰 | NLD 5
-  type: vless
-  server: 185.14.29.29
-  port: 443
-  uuid: 6b1607f1-3a08-4681-8abd-83663a8155e7
-  tls: true
-  reality-opts:
-    public-key: bPxKgZHO13GJGKjbHz0BVnsw8UIcOjz2yz8VCgGv5BI
-    short-id: 6fce2d08
-  servername: static.gcore.pro
-  client-fingerprint: chrome
-  network: xhttp
-  udp: true
-- name: 🇳🇱 荷兰 | NLD 6
-  type: vless
-  server: 201.34.142.108
-  port: 443
-  uuid: 4777d90d-265b-4927-a0d1-63f36ed1421c
-  tls: true
-  client-fingerprint: chrome
-  network: xhttp
-  udp: true
 - name: 🇷🇺 俄罗斯 | RUS
   type: vless
   server: 176.98.176.60
@@ -329,16 +352,6 @@ proxies:
   servername: mosaic.topp-con.xyz
   client-fingerprint: firefox
   network: tcp
-  udp: true
-- name: 🇷🇺 俄罗斯 | RUS 2
-  type: vless
-  server: 201.51.12.98
-  port: 443
-  uuid: 38308ff1-5aa9-494f-a25a-0f2870d56b3e
-  tls: true
-  servername: vps3.nemnogogo.com
-  client-fingerprint: firefox
-  network: grpc
   udp: true
 - name: 🇷🇺 俄罗斯 | RUS 3
   type: vless
@@ -362,26 +375,6 @@ proxies:
   servername: plaindune.com
   client-fingerprint: firefox
   network: xhttp
-  udp: true
-- name: 🇷🇺 俄罗斯 | RUS 5
-  type: vless
-  server: vps3.nemnogogo.com
-  port: 443
-  uuid: 38308ff1-5aa9-494f-a25a-0f2870d56b3e
-  tls: true
-  alpn:
-  - h2
-  servername: vps3.nemnogogo.com
-  client-fingerprint: firefox
-  network: grpc
-  udp: true
-- name: 🇸🇪 瑞典 | SWE
-  type: vless
-  server: swe4.mlbaz.ir
-  port: 2222
-  uuid: f4e7fdb5-9b1b-44e7-990a-40ee7da9cdc5
-  tls: false
-  network: http
   udp: true
 - name: 🇸🇬 新加坡 | SGP
   type: ss
