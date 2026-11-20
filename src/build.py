@@ -5,7 +5,7 @@ dist/profile.yaml      完整 profile：模板(组结构/规则/dns) + 注入指
 dist/mobile.yaml       iOS 精简版：单 provider（~120 节点）+ 全 lazy 规则集，给网络扩展省内存
 dist/nodes/<src>.yaml  各源过滤后的节点池（provider 格式）
 dist/nodes/all.yaml    全源合并池（provider 格式）
-dist/nodes/mobile.yaml 精简版单池（源间轮询取样、按 server:port 去重）
+dist/nodes/mobile.yaml 精简版单池（首选源先取样、其余源补满，按 server:port 去重）
 dist/manifest.json     本次运行统计（手机排障 / 后续 diff 用）
 
 产出纪律（对应 9-26 探针根治 §29）：
@@ -75,9 +75,10 @@ STABILITY_MIN_RATIO = 0.2     # 单个源最多砍掉的比例（保留比例下
 # 系统按内存杀掉（jetsam，无错误日志）。精简版把节点压到 120、规则集全 lazy。
 MOBILE_NODE_CAP = 120
 MOBILE_PER_SRC = 25
-# 近 7 天本机口径活率最高的几个源（2026-11-01 数据）；缺哪个就跳过哪个。
-MOBILE_PREFERRED = ("zhuhaiuk", "clashdaily", "ssrsub", "ruk1ng001",
-                    "leilaomi", "nomorewalls", "automerge")
+# 静态首选名单：只在调用方不传 ranking 时使用（run.py 每轮传联赛排名，
+# 首选 = AUTO 组、补位 = 备用 + 观察）。按 2026-11-20 本机口径活率排序；
+# 缺哪个就跳过哪个。首选源不够 120 时，pick_mobile_nodes 会用其余源补满。
+MOBILE_PREFERRED = ("zhuhaiuk", "ruk1ng001", "ssrsub", "leilaomi")
 MOBILE_PROVIDER = "mobile"
 
 # ---- 带宽测速 / 视频组（2026-11-10）----
@@ -693,19 +694,39 @@ def build_profile(enabled_sources, exclude_map, owner, repo, flaky_sources=(),
 
 
 def pick_mobile_nodes(per_source_nodes, cap=MOBILE_NODE_CAP, per_src=MOBILE_PER_SRC,
-                      preferred=MOBILE_PREFERRED, speed_doc=None):
-    """源间轮询取节点（保证多样性），按 (type, server, port) 去重。
+                      preferred=MOBILE_PREFERRED, fallback=None, speed_doc=None):
+    """两段式取样：先吃首选源，再用其余源补满，按 (type, server, port) 去重。
 
-    不用「按源顺序取满」——那样前几个源就把名额吃光，等于单源订阅。
-    轮询后即使某个源节点全重复，也能从其他源补满。
+    ## 为什么分两段
+
+    首选源是质量最高的那几个。如果所有源放在一起轮询，120 个名额会被
+    7 个源平均分（每源约 17 个），等于把好源的名额让给差源。分两段后，
+    首选源仍按 `per_src` 吃满（2026-11-20 实测 4 源约 95 个），其余源只补空位。
+
+    ## 为什么需要第二段
+
+    首选源会随联赛换位/隔离变化，节点数也会因抓取和去重波动。旧实现只在
+    「首选源一个都不在」时才退回全部源，首选源耗尽就提前停止 —— 2026-11-20
+    实测 mobile 只有 86/120，根因就是这里。第二段保证只要全池还有可用节点，
+    就一定补到 cap。
+
+    `fallback` 不传 = 除首选源外的全部源（调用方无感）；run.py 会传联赛排名
+    里的「备用 + 观察」，让补位顺序也跟质量走。名单不完整时，剩下有节点的源
+    一律排到最后 —— 宁可顺序差一点，也不能让池子补不满。
 
     `speed_doc` 非空时，每个源的桶内把**实测高带宽节点排前面**：iOS 精简版
     不新增 provider/组（内存不够），只能在现有 120 个名额里优先装快节点。
     没有测速数据的节点保持原顺序，不会被排到已知慢节点后面。
     """
-    sources = [s for s in preferred if per_source_nodes.get(s)]
-    if not sources:                       # 首选源一个都不在（极端情况）就退回全部
-        sources = [s for s, v in per_source_nodes.items() if v]
+    tier1 = [s for s in preferred if per_source_nodes.get(s)]
+    tier2 = [s for s in (fallback or ()) if per_source_nodes.get(s)
+             and s not in tier1]
+    for s in per_source_nodes:            # 兜底：排名名单可能因降级而不完整
+        if per_source_nodes.get(s) and s not in tier1 and s not in tier2:
+            tier2.append(s)
+    sources = tier1 + tier2
+    if not sources:
+        return [], []
     buckets = {s: list(per_source_nodes[s]) for s in sources}
     if speed_doc:
         import node_stability as ns
@@ -718,30 +739,39 @@ def pick_mobile_nodes(per_source_nodes, cap=MOBILE_NODE_CAP, per_src=MOBILE_PER_
                 buckets[s].sort(key=lambda n: (
                     ns.fingerprint(n) not in mbps,
                     -(mbps.get(ns.fingerprint(n)) or 0.0)))
-    used = {s: 0 for s in sources}
+    used = {s: 0 for s in sources}      # 桶内游标（含重复节点）
+    taken = {s: 0 for s in sources}     # 实际入选数（去重后）
     picked, seen = [], set()
-    while len(picked) < cap:
-        progressed = False
-        for s in sources:
-            if len(picked) >= cap:
-                break
-            while used[s] < len(buckets[s]) and used[s] < per_src:
-                node = buckets[s][used[s]]
-                used[s] += 1
-                key = (str(node.get("type")), str(node.get("server")),
-                       str(node.get("port")))
-                if key in seen:
-                    continue
-                seen.add(key)
-                picked.append(dict(node, name="%s_%s" % (s, node.get("name"))))
-                progressed = True
-                break
-        if not progressed:
-            break
-    return picked, [s for s in sources if used[s] > 0]
+
+    def fill(srcs):
+        """按源轮询取节点，每源最多 per_src 个（按去重后的入选数计）。"""
+        while len(picked) < cap:
+            progressed = False
+            for s in srcs:
+                if len(picked) >= cap:
+                    break
+                while used[s] < len(buckets[s]) and taken[s] < per_src:
+                    node = buckets[s][used[s]]
+                    used[s] += 1
+                    key = (str(node.get("type")), str(node.get("server")),
+                           str(node.get("port")))
+                    if key in seen:
+                        continue
+                    seen.add(key)
+                    taken[s] += 1
+                    picked.append(dict(node, name="%s_%s" % (s, node.get("name"))))
+                    progressed = True
+                    break
+            if not progressed:
+                return
+
+    fill(tier1)
+    fill(tier2)
+    return picked, [s for s in sources if taken[s] > 0]
 
 
-def build_mobile_profile(per_source_nodes, owner, repo, speed_doc=None):
+def build_mobile_profile(per_source_nodes, owner, repo, speed_doc=None,
+                         preferred=None, fallback=None):
     """iOS 精简版：单 provider + select/url-test 两种组 + 全 lazy 规则集。
 
     为什么单 provider：iOS 网络扩展内存上限约 50MB，节点数是最主要的变量
@@ -750,12 +780,18 @@ def build_mobile_profile(per_source_nodes, owner, repo, speed_doc=None):
 
     为什么没有 fallback：Karing 官方兼容表明确不支持 fallback / load-balance /
     relay，只保留 select + url-test 才能让 Karing 和 Clash Mi 都正常。
+
+    `preferred` / `fallback` 是两段式取样的源顺序（见 pick_mobile_nodes）。
+    run.py 每轮传联赛排名：首选 = AUTO 组，补位 = 备用 + 观察。
     """
     mbase = mirror_base(owner, repo)
     with open(TEMPLATE, encoding="utf-8") as f:
         tpl = yaml.safe_load(f)
 
-    nodes, used_sources = pick_mobile_nodes(per_source_nodes, speed_doc=speed_doc)
+    nodes, used_sources = pick_mobile_nodes(
+        per_source_nodes,
+        preferred=MOBILE_PREFERRED if preferred is None else preferred,
+        fallback=fallback, speed_doc=speed_doc)
     assert nodes, "移动端精简版没有任何节点（per_source_nodes 为空？）"
 
     provider = provider_block(MOBILE_PROVIDER,
@@ -871,7 +907,7 @@ def write_dist(dist_dir, per_source_nodes, all_nodes, profile, manifest, base,
         mobile_nodes, mobile_profile, mobile_sources = mobile
         dump_yaml({"proxies": mobile_nodes},
                   "# clash-source 自动生成 —— 移动端精简池，共 %d 节点\n"
-                  "# 源间轮询取样 + 按 server:port 去重；只挂 mobile.yaml 一个 provider"
+                  "# 首选源先取样、其余源补满 + 按 server:port 去重；只挂 mobile.yaml 一个 provider"
                   % len(mobile_nodes),
                   os.path.join(nodes_dir, "mobile.yaml"))
         dump_yaml(mobile_profile,

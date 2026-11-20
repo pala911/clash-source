@@ -385,8 +385,14 @@ def main():
                                               flaky_sources=sorted(flaky_nodes),
                                               video_nodes=video_nodes)
     # 移动端精简版（iOS 内存优化）：从同一批稳定节点里取样，不额外抓源/探测/AI。
+    # 首选源 = 本轮 AUTO 组（本机口径前 4），补位源 = 备用 + 观察（按活率降序）；
+    # 首选源不够 120 时由补位源补满，不再像旧实现那样提前停在 86 个。
+    mobile_fallback = sorted(
+        ranking["备用"] + ranking["观察"],
+        key=lambda n: -(ranking["detail"].get(n, {}).get("rate") or 0.0))
     mobile_nodes, mobile_profile, mobile_sources = build.build_mobile_profile(
-        stable_nodes, owner, repo, speed_doc=speed_doc)
+        stable_nodes, owner, repo, speed_doc=speed_doc,
+        preferred=ranking["auto"], fallback=mobile_fallback)
     log("移动端精简版：%d 节点（源 %s）"
         % (len(mobile_nodes), "、".join(mobile_sources) or "无"))
     log("质量分桶（国内口径）：AUTO=%s" % ("、".join(ranking["auto"]) or "无"))

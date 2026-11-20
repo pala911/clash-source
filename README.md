@@ -68,11 +68,15 @@ provider、约 1060~1150 个节点；按 120 节点 46.5 MB / 5700 节点 95 MB 
 | 项 | 完整版 | 精简版 |
 |---|---|---|
 | provider 数 | 13~14 个（7 稳定池 + 6~7 不稳定池） | **1 个**（`nodes/mobile.yaml` 单池） |
-| 节点数 | ~1060~1150 | **≤120**（源间轮询 + `server:port` 去重） |
+| 节点数 | ~1060~1150 | **≤120**（首选源先吃满、其余源补位 + `server:port` 去重） |
 | 组类型 | select / url-test / fallback | **只有 select + url-test**（Karing 官方不支持 fallback/load-balance/relay） |
 | rule-provider | 33 个 | 33 个，但**全部 `lazy: true`**（命中才加载） |
 | 静态代理「家里路由」 | 有 | 无（手机用不到） |
 | 实测峰值 | 95 MB（5700 节点旧版） | **46.5 MB**（同内核、同机器） |
+
+取样不是「按源顺序取满」，而是**两段式**：先按联赛排名从 AUTO 组源里每源取
+最多 25 个，再用备用/观察源补到 120。这样首选源因隔离/换位减少时池子不会缩水
+（2026-11-20 修：旧实现只取首选源，首选源耗尽就停，实测只有 86/120）。
 
 订阅地址同样只写在 `dist/mobile.yaml` 文件头注释里。iOS 上（Clash Mi / Karing）
 优先用这一条；桌面/安卓继续用完整版 `profile.yaml`。
@@ -484,7 +488,7 @@ python tools\test_ci_workflow.py      # CI 推送必须带重试、失败不许�
 python tools\test_hardening.py        # 硬化回归：dist 残留清理 / raw 快照原貌 / TPM 闸门不死循环 / review_source 源级合同
 python tools\test_refill.py           # 自动补员：cap/节流/排重/选优/命名/损坏/停用/dry-run + append-only 子序列断言
 python tools\test_league.py           # 末位淘汰：决策/防抖/alive 门槛/通道样本门槛/通道与回归两条写入路径/换位对账/cap 守恒
-python tools\test_mobile_profile.py   # 移动端精简版：单 provider / 120 节点上限 / 源间去重 / 只含 select+url-test（Karing 兼容）/ 规则集全 lazy
+python tools\test_mobile_profile.py   # 移动端精简版：单 provider / 120 节点上限 / 首选源不足时其余源补满 / 源间去重 / 只含 select+url-test（Karing 兼容）/ 规则集全 lazy
 python tools\test_speed_test.py       # 带宽测速抽样：每源一半快+一半随机 / 跨源指纹去重 / 排除 mobile 与 --flaky / 按源轮转 / 分档统计 / 单节点硬截止
 python tools\test_video_group.py      # 视频组：测速档案缺失/损坏/过期/非本机口径都跳过 / 阈值与上限 / 指纹关联 / provider+组+PROXY / video.yaml 生命周期 / iOS 不新增组
 python tools\verify_profile.py        # 真 mihomo 内核校验

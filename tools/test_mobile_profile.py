@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""移动端精简版门禁：单 provider、120 上限、去重、Karing 兼容组类型、全 lazy。"""
+"""移动端精简版门禁：单 provider、120 上限、两段式补满、去重、Karing 兼容组类型、全 lazy。"""
 import io
 import os
 import sys
@@ -29,20 +29,21 @@ def mk_nodes(src, n, port_base):
 
 
 print("=" * 68)
-print("场景 A：7 个首选源各 40 节点 -> 轮询取样 + 120 上限 + 去重")
+print("场景 A：4 个首选源 + 3 个补位源各 40 节点 -> 两段取样 + 120 上限 + 去重")
 print("=" * 68)
-per_source = {s: mk_nodes(s, 40, i + 1)
-              for i, s in enumerate(build.MOBILE_PREFERRED)}
-# 人为制造跨源重复：让 clashdaily 前 10 个与 zhuhaiuk 前 10 个 server:port 相同
+pref = ["p1", "p2", "p3", "p4"]
+fb = ["b1", "b2", "b3"]
+per_source = {s: mk_nodes(s, 40, i + 1) for i, s in enumerate(pref + fb)}
+# 人为制造跨源重复：p2 前 10 个与 p1 前 10 个 server:port 相同
 for i in range(10):
-    per_source["clashdaily"][i]["server"] = per_source["zhuhaiuk"][i]["server"]
-    per_source["clashdaily"][i]["port"] = per_source["zhuhaiuk"][i]["port"]
+    per_source["p2"][i]["server"] = per_source["p1"][i]["server"]
+    per_source["p2"][i]["port"] = per_source["p1"][i]["port"]
 
-nodes, prof, used = build.build_mobile_profile(per_source, "pala911", "clash-source")
+nodes, prof, used = build.build_mobile_profile(
+    per_source, "pala911", "clash-source", preferred=pref, fallback=fb)
 check("节点数 <= 上限", len(nodes) <= build.MOBILE_NODE_CAP, "%d 个" % len(nodes))
 check("达到上限（去重后仍能补满）", len(nodes) == build.MOBILE_NODE_CAP, "%d 个" % len(nodes))
-check("覆盖全部首选源", len(used) == len(build.MOBILE_PREFERRED),
-      "、".join(used))
+check("覆盖全部首选源 + 补位源", used == pref + fb, "、".join(used))
 keys = [(n["type"], n["server"], n["port"]) for n in nodes]
 check("server:port 无重复", len(keys) == len(set(keys)))
 check("节点名唯一", len({n["name"] for n in nodes}) == len(nodes))
@@ -93,7 +94,7 @@ import tempfile  # noqa: E402
 
 tmp = tempfile.mkdtemp(prefix="mobile_dist_")
 manifest = {"owner": "pala911", "repo": "clash-source"}
-build.write_dist(tmp, {"zhuhaiuk": per_source["zhuhaiuk"]},
+build.write_dist(tmp, {"p1": per_source["p1"]},
                  [dict(n) for n in nodes], {"proxy-groups": []}, manifest,
                  "https://pala911.github.io/clash-source",
                  mobile=(nodes, prof, used))
@@ -120,10 +121,37 @@ import run as run_mod  # noqa: E402
 # 造一个「本轮已不存在的源」快照，验证 prune 的本职还在
 stale = os.path.join(tmp, "nodes", "deadsrc.yaml")
 io.open(stale, "w", encoding="utf-8").write("proxies: []\n")
-run_mod._prune_dist_stale(tmp, {"zhuhaiuk"})
+run_mod._prune_dist_stale(tmp, {"p1"})
 check("prune 后 nodes/mobile.yaml 幸存", os.path.isfile(np_))
 check("prune 后 mobile.yaml 幸存", os.path.isfile(mp))
 check("prune 本职仍在：已消失的源快照被清", not os.path.isfile(stale))
+
+print("")
+print("=" * 68)
+print("场景 F：首选源不够 120 -> 其余源补满（2026-11-20 mobile 只有 86 的回归）")
+print("=" * 68)
+t1 = {s: mk_nodes(s, 20, i + 1) for i, s in enumerate(["p1", "p2", "p3", "p4"])}
+t2 = {s: mk_nodes(s, 40, i + 11) for i, s in enumerate(["b1", "b2", "b3"])}
+mixed = dict(t1, **t2)
+nodes3, prof3, used3 = build.build_mobile_profile(
+    mixed, "pala911", "clash-source",
+    preferred=["p1", "p2", "p3", "p4"], fallback=["b1", "b2", "b3"])
+cnt = {s: sum(1 for n in nodes3 if n["name"].startswith(s + "_")) for s in mixed}
+check("补满到上限", len(nodes3) == build.MOBILE_NODE_CAP, "%d 个" % len(nodes3))
+check("首选源先吃满（每源 20）", all(cnt[s] == 20 for s in t1),
+      str({s: cnt[s] for s in t1}))
+check("补位源按轮询分摊（各 13~14）", all(13 <= cnt[s] <= 14 for s in t2),
+      str({s: cnt[s] for s in t2}))
+check("跨段去重后仍无重复",
+      len({(n["type"], n["server"], n["port"]) for n in nodes3}) == len(nodes3))
+check("源清单按两段顺序", used3 == ["p1", "p2", "p3", "p4", "b1", "b2", "b3"],
+      str(used3))
+nodes4, _, used4 = build.build_mobile_profile(
+    mixed, "pala911", "clash-source", preferred=["p1", "p2", "p3", "p4"])
+check("fallback 不传时其余源自动补满",
+      len(nodes4) == build.MOBILE_NODE_CAP, "%d 个" % len(nodes4))
+check("自动补位顺序 = per_source_nodes 顺序",
+      used4 == ["p1", "p2", "p3", "p4", "b1", "b2", "b3"], str(used4))
 
 print("")
 print("结果：%s" % ("全部通过" if ok else "有失败项"))
