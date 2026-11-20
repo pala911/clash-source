@@ -61,7 +61,7 @@ bash tools/sync_and_probe.sh
 ## 定位
 
 `scope=cnci` 只做交叉验证，永不触发任何源的升降级。
-有权判死的是美国 GitHub Actions，有权回收的是本机探针。
+有权判死的是美国 GitHub Actions，有权恢复（判优）的是本机探针。
 
 环境约束：云效公共构建集群实测 Python 3.6.8 —— `capture_output=`/`text=`
 是 3.7+，改动后在主仓跑 `python tools/check_ci_scripts.py`。

@@ -165,6 +165,126 @@ def ensure_proxy(wait=90):
     return False
 
 
+ARCHIVE_NODES = os.path.join(ROOT, "state", "archive_nodes")
+ARCHIVE_SAMPLE = 30       # 历史库隔离源每轮分层抽样数（够判「变好」，又不拖长主链）
+ARCHIVE_TIMEOUT = 30
+
+
+def _clean_archive_nodes(out_dir, keep, log=print):
+    """删掉本轮没有 staging 的 arch 文件（源已回收/改名/删除）。
+
+    不清理的话，probe.py 会一直探这些幽灵源：它们既不在历史库、也不在
+    sources.yaml，探针结果没人消费，只是白烧预算，还会在 health 里触发
+    「忽略过期的历史库探针」的噪声。
+    """
+    try:
+        names = os.listdir(out_dir)
+    except OSError:
+        return
+    for fn in names:
+        stem, ext = os.path.splitext(fn)
+        if ext not in (".yaml", ".yml") or stem in keep:
+            continue
+        try:
+            os.remove(os.path.join(out_dir, fn))
+            log("[archive] 清理过期 staging：%s" % fn)
+        except OSError as e:
+            log("[archive] ⚠ 清理 %s 失败：%s" % (fn, e))
+
+
+def stage_archive_nodes(arch_path=None, out_dir=None, sample=None, log=print):
+    """把历史库里的隔离源抓下来、清洗、分层抽样，供 probe.py 以 arch__<name> 重探。
+
+    为什么需要这一步（2026-11-20，B 方案）：
+      · probe.py 早就有 --archive-nodes / arch__ 前缀，但 state/archive_nodes/
+        从来没有人生成 —— 一条死接线；
+      · run.py 只把 enabled 源放进 dist/nodes，隔离源因此永远不再被探；
+      · 结果 health 的恢复分支永远攒不到本机轮次，隔离 = 永久消失。
+
+    抽样而不是全量：历史库源只用于「是否变好」的判定，30 个分层样本足够，
+    也不会把 2000 节点的 autojiedian 重新拖进每轮 20 分钟。
+
+    逐源 fail-soft：抓取/解析/清洗失败只跳过该源，下一轮再试。
+    返回本轮成功 staging 的源名列表。
+    """
+    import yaml
+    import fetch as fetch_mod
+    import filters as filters_mod
+    import probe as probe_mod
+
+    arch_path = arch_path or os.path.join(ROOT, "archive", "sources.yaml")
+    out_dir = out_dir or ARCHIVE_NODES
+    n = ARCHIVE_SAMPLE if sample is None else int(sample)
+    try:
+        doc = yaml.safe_load(open(arch_path, encoding="utf-8")) or {}
+    except Exception as e:
+        log("[archive] ⚠ 历史库读不了（%r）：本轮不重探隔离源" % e)
+        return []
+    srcs = [s for s in (doc.get("sources") or [])
+            if isinstance(s, dict) and s.get("name") and s.get("url")]
+    if not srcs:
+        _clean_archive_nodes(out_dir, set(), log)
+        return []
+    try:
+        cfg = yaml.safe_load(open(os.path.join(HERE, "sources.yaml"),
+                                  encoding="utf-8")) or {}
+        exclude_default = cfg.get("exclude_filter_default") or ""
+    except Exception:
+        exclude_default = ""
+    try:
+        os.makedirs(out_dir, exist_ok=True)
+    except OSError as e:
+        log("[archive] ⚠ 无法创建 %s（%s）：本轮不重探隔离源" % (out_dir, e))
+        return []
+    staged, keep = [], set()
+    for s in srcs:
+        name = str(s["name"])
+        try:
+            raw, meta = fetch_mod.fetch_source(s, timeout=ARCHIVE_TIMEOUT)
+            if meta.get("error") or not raw:
+                log("[archive] ⚠ %s 抓取失败：%s（本轮跳过）"
+                    % (name, meta.get("error") or "0 节点"))
+                continue
+            excl = s.get("exclude_filter") or exclude_default
+            drop_types = s.get("drop_types") or ()
+            kept, seen = [], set()
+            for p in raw:
+                if not isinstance(p, dict):
+                    continue
+                if not isinstance(p.get("name"), str):
+                    p["name"] = str(p.get("name", ""))
+                try:
+                    k = filters_mod.dedupe_key(p)
+                except (TypeError, ValueError):
+                    k = (str(p.get("type")), str(p.get("server")),
+                         str(p.get("port")),
+                         str(p.get("password") or p.get("uuid") or ""))
+                if k in seen:
+                    continue
+                seen.add(k)
+                ok, _why = filters_mod.hard_filter(p, excl, drop_types)
+                if ok:
+                    kept.append(p)
+            if not kept:
+                log("[archive] ⚠ %s 清洗后 0 节点（本轮跳过）" % name)
+                continue
+            picked = probe_mod.sample_nodes(kept, n)
+            path = os.path.join(out_dir, name + ".yaml")
+            tmp = path + ".tmp"
+            with open(tmp, "w", encoding="utf-8") as f:
+                yaml.safe_dump({"proxies": picked}, f, allow_unicode=True,
+                               sort_keys=False, width=4096)
+            os.replace(tmp, path)
+            keep.add(name)
+            staged.append(name)
+            log("[archive] %s：%d 原始 -> %d 清洗 -> %d 抽样"
+                % (name, len(raw), len(kept), len(picked)))
+        except Exception as e:                       # noqa: BLE001
+            log("[archive] ⚠ %s 重探准备失败（本轮跳过）：%r" % (name, e))
+    _clean_archive_nodes(out_dir, keep, log)
+    return staged
+
+
 def run_probe(args):
     """真探针。注意每次先清空装置目录 —— mihomo 的 -d 会残留上次文件。"""
     probe_dir = os.path.join(ROOT, ".probe")
@@ -767,6 +887,15 @@ def main():
         # 先把工作区快进到远端：probe.py 探的是 dist/nodes（CI 构建产物），
         # 不拉取就会反复探旧 dist（2026-11-08 free-nodes/clashdaily 实踩）。
         sync_from_remote()
+        # 历史库隔离源也要有回归通道（2026-11-20 B 方案）：先抓取+抽样写成
+        # state/archive_nodes/<name>.yaml，probe.py 会以 arch__<name> 一并探。
+        print("[local] 历史库隔离源 staging（分层抽样，供 arch__ 重探）…")
+        staged = stage_archive_nodes()
+        if staged:
+            print("[local] 已 staging %d 个隔离源：%s"
+                  % (len(staged), "、".join(staged)))
+        else:
+            print("[local] 历史库没有可 staging 的隔离源")
         print("[local] 本机真探针（scope=local，国内口径）…")
         if run_probe(args) != 0:
             print("[local] 探针失败，退出（不改动健康档案）")
@@ -774,7 +903,7 @@ def main():
     else:
         print("[local] --scope-only：复用现有 state/probe_latest.json")
 
-    print("[local] 健康档案（国内口径只判优/回收，判死留给 CI）…")
+    print("[local] 健康档案（国内口径只判优/恢复，判死留给 CI）…")
     # ⚠ 必须**显式**把父进程（可能已被重定向到日志文件）的句柄递过去。
     #   `contextlib.redirect_stdout(buf)` 抓不到子进程 —— 它只改父进程的
     #   Python 级 sys.stdout，子进程写的是继承来的 OS 句柄，buf 恒空

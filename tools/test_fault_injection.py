@@ -201,7 +201,7 @@ def c_health_corrupt():
 
 def c_cnci_corrupt():
     """云效档案被截断（云效推主仓中断的典型情形）。
-    期望：明说无云效数据 + 拒绝任何回收。"""
+    期望：明说无云效数据；恢复仍按本机口径（不依赖云效）。"""
     inject(os.path.join(STATE, "probe_cnci_latest.json"), '{"scope": "cnci", "sources": ')
     return run("health.py")[0], run("health.py")[1], None
 

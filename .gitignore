@@ -29,6 +29,10 @@ ci_capability_result.json
 # 它是本地诊断产物，绝不能被 local_probe 的 `git add -A state` 顺手提交上去。
 state/*.corrupt-*
 
+# 历史库隔离源的 staging（含节点凭据；local_probe 会 `git add -A state`）。
+# 由 src/local_probe.py 的 stage_archive_nodes() 每轮重建，绝不能入库。
+state/archive_nodes/
+
 
 # 云效 Codeup 的 HTTPS 克隆密码（明文，绝不入库）
 *.https

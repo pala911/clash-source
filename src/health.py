@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""源健康档案：差源降级进历史库，变好自动回收。
+"""源健康档案：差源降级进历史库，变好交回联赛挑战者池。
 
 ⚠ 双口径铁律（2026-10-14 实测校准，坑 §40/§48）：
   CI runner 在**美国**，国内口径只能由本机提供。两者**不是同一件事**，必须分开：
@@ -7,7 +7,7 @@
       口径          能判什么          不能判什么
       ────────────────────────────────────────────────────────────
       CI(美国)      是否彻底死了      好不好、能不能排序
-      本机(国内)    好不好、能否回收   是否彻底死了（alive=0 是歧义的）
+      本机(国内)    好不好、能否恢复   是否彻底死了（alive=0 是歧义的）
 
   美国口径不能判优：同一批节点从美国看，通过率系统性虚高 1.8~13 倍
   （shaoyouvip 美国 81.2%(#4) / 国内 6.2%(#11 垫底)，yypool 84.3% / 13.1%），
@@ -25,7 +25,9 @@
     且永远只是 enabled=false 不删数据。
     （跨度这条是 2026-10-16 加的：L1 的 cron 从每周提到每 6 小时后，
      只数轮数会让判死从 3 周变成 18 小时 —— 见 DEAD_STREAK_HOURS。）
-  - **回收积极**：本机 alive ≥ 5 且通过率 ≥ 8% 连续 2 轮就自动放回（宁可多试，不可错杀好源）。
+  - **回收积极**：本机 alive ≥ 5 且通过率 ≥ 8% 连续 2 轮就把源从历史库打上
+    `relegated` 标交回联赛挑战者池（**不直接 enabled: true** —— 由 +5pp 换位
+    规则决定是否入册，见 src/league.py；这样既不会超 7 源 cap，也不会绕过排名）。
   - 探针不完整（incomplete，大源没加载完）**不参与判定**，否则会把 2000 节点的
     autojiedian 误判成死源。
 
@@ -48,12 +50,12 @@ DEAD_STREAK = 3        # 连续 N 轮 0 活 -> 降级
 # 判死还必须**横跨**这么多小时。为什么不是只看轮数：
 #   「连续 3 轮 0 活」这条规则的本意是「持续观察三段时间」，不是「数三次」。
 #   2026-10-16 把 L1 的 cron 从「每周一」提到「每 6 小时」时会顺手把它变成
-#   **18 小时就判死**（原来是 3 周），而本机+云效的回收闸门要 2 轮本机 + 7 轮云效，
-#   代价不对称：误杀一个源要等好几天才可能收回来。
+#   **18 小时就判死**（原来是 3 周），而恢复要等本机连续 2 轮达标（每天 1 轮，
+#   最快 2 天）+ 联赛 +5pp 换位，代价不对称：误杀一个源要等好几天才可能回来。
 #   所以改成「轮数 ≥ DEAD_STREAK **且** 首末轮相隔 ≥ DEAD_STREAK_HOURS」——
 #   对任何 cron 频率都自动等价于「观察满两天」，改频率不必再回来调常数。
 DEAD_STREAK_HOURS = 48
-GOOD_STREAK = 2        # 连续 N 轮达标 -> 回收
+GOOD_STREAK = 2        # 连续 N 轮达标 -> 交回联赛挑战者池（relegated）
 GOOD_ALIVE = 5         # 「变好」的活节点下限（绝对值，不是比例）
 GOOD_RATE = 8.0        # 「变好」的通过率下限（%）
 KEEP_RUNS = 12         # 每源保留最近 N 轮历史（**每个口径各留 N 轮**）
@@ -66,29 +68,30 @@ KEEP_RUNS = 12         # 每源保留最近 N 轮历史（**每个口径各留 N
 # 仅 0.734 —— 两个视角看的是不同的网络，各自成立但都不完整。
 #
 # => **分歧本身就是要用的信息**，不是噪音：
-#      两边都达标       -> T1 到处能用，可回收
-#      本机达标云效不行 -> T2 位置敏感（你手机能用与否取决于在哪，绝不自动回收）
+#      两边都达标       -> T1 到处能用
+#      本机达标云效不行 -> T2 位置敏感（build 会把它降到「备用」组）
 #      本机不行云效行   -> T3 机房友好（家里被压，机房能用）
-#      两边都不行       -> T4 到处都不行
+#      两边都不行       -> T4 到处都不行（auto_added 源的质量退出尺子）
 #
-# 云效**只有否决权、没有决定权**：回收（enabled: false -> true）要求
-# 「本机达标 且 云效达标」双视角同意。这让回收只会变**更保守**，
-# 符合全系统的保守失败原则；且 T2 类源自动被排除在自动回收之外 ——
-# 而这类源恰恰是最不该自动处置的（它在手机上的可用性最不稳定）。
+# 分级读的是历史轮次，用于 build 的 AUTO 排序与 T2 降级；**它不决定隔离源恢复**
+# （2026-11-20 B 方案：恢复由本机连续 2 轮达标触发，交回联赛 +5pp 换位决定）。
+# 云效对 enabled 源仍有交叉验证价值：T2 类源在手机上最不稳定，build 会避开它。
 #
 # ⚠ 阈值尚未校准（分级已于 2026-10-16 生效：9 轮历史回放后 12/12 源都有 tier）。
 #   cnci 单轮噪声实测 avg 5.5pp / max 16.7pp（同一份配置、
 #   相隔 2 小时的两次运行），与 8% 阈值同量级，单轮结果不可用于判定。
 #   因此 cnci 必须攒够 TIER_MIN_CNCI_RUNS 轮、并取最近 TIER_WINDOW 轮均值
-#   （理论噪声 5.5/sqrt(7) ≈ 2.1pp）后才参与回收判定。攒够之前只做展示分级。
+#   （理论噪声 5.5/sqrt(7) ≈ 2.1pp）后才参与分级。攒够之前只展示 `?`。
 #   **两周后用实际累积数据回来校准 CNCI 的阈值**，别在此之前调这些常数。
 CNCI = os.path.join(ROOT, "state", "probe_cnci_latest.json")
 # 稳定性加权写出的「移出竞速池」节点文件的后缀（见 src/build.py 的 write_dist）。
 # 探针会测量它们（否则无法翻盘），但它们不是独立的源。
 FLAKY_SUFFIX = "--flaky"
-TIER_MIN_CNCI_RUNS = 7    # cnci 轮次不足就不参与回收判定（只展示分级）
+# 历史库隔离源的 staging 文件名前缀（src/local_probe.py 生成 state/archive_nodes/，
+# src/probe.py 以 arch__<name> 的身份探）。health 在这里把它映射回真实源名。
+ARCHIVE_PREFIX = "arch__"
+TIER_MIN_CNCI_RUNS = 7    # cnci 轮次不足就只展示 `?`，不参与分级
 TIER_WINDOW = 7            # 取最近 N 轮算均值
-TIER_REQUIRE_CNCI = True   # True=回收需双视角同意；False=退回本机单视角
 
 # ---------------------------------------------------------------------------
 # 自动补员退出阈值（2026-10-29 拍板「补员也自动化处理」的退出半边）
@@ -99,7 +102,7 @@ TIER_REQUIRE_CNCI = True   # True=回收需双视角同意；False=退回本机�
 # 均值 2% 比分级 T4 的 8% 严得多：刚补进来的源单轮波动大（cnci 抽样噪声
 # avg 5.5pp），只让「稳定垫底」的出去，2%~8% 的半吊子留给人工阈值，
 # 避免补员刚落地就被单轮噪声送出 —— 那样补员就永远攒不起观察期。
-# 退出 = 降级（quarantined 同机制），翻盘走既有回收路径（门槛 T1，比准入严）。
+# 退出 = 降级（quarantined 同机制），翻盘走既有恢复路径（本机 2 轮 -> 联赛）。
 AUTO_EXIT_RATE = 2.0
 AUTO_EXIT_LOCAL_RUNS = 3
 
@@ -355,38 +358,66 @@ def _src_entries(text):
     return out
 
 
-def _rewrite_enabled(text, want):
-    """就地改 `sources:` 段里各源的 enabled 值，**其余一字不动**。
+def _rewrite_enabled(text, want, relegated=None):
+    """就地改 `sources:` 段里各源的 enabled 值 / relegated 标，**其余一字不动**。
 
-    want: {源名: bool}。返回新文本。
+    want: {源名: bool}；relegated: {源名: 'YYYY-MM-DD'}（可选）。返回新文本。
 
     ⚠ 为什么必须这么做（2026-10-16 实测）：原来写回是
       `yaml.safe_dump(cfg) + 4 行固定表头`，**一次降级就把 sources.yaml 的
       注释从 23 行抹到 4 行** —— 那些注释正是「为什么 exclude_filter 必须逐源」
       「12% 通过率但 2100+ 节点」这类唯一留痕（`note:` 字段能留下结论，
       留不下「为什么这么定」）。注释不进任何数据结构，丢了就找不回来。
+
+    ⚠ relegated 与 enabled 必须在**同一次**原子写里落盘（2026-11-20）：
+       隔离源恢复时要「保持 enabled:false + 打 relegated 标」两件事一起发生。
+       分两次写的话，中间崩掉会留下「已出历史库、却既没 enabled 也没 relegated」
+       的孤儿源 —— league 永远不会重探它，等于永久失踪。
     """
     import re
     lines = text.split("\n")
     edits, inserts = {}, []
+    marks = relegated or {}
     for name, s, e in _src_entries(text):
-        if name not in want:
-            continue
-        val = "true" if want[name] else "false"
-        for i in range(s + 1, e):
-            m = re.match(r"^(\s*)enabled:\s*", lines[i])
-            if m:
-                edits[i] = "%senabled: %s" % (m.group(1), val)
-                break
-        else:
-            # 条目里压根没有 enabled 字段：照其他字段的缩进补一行
-            indent = "    "
+        en_idx, en_indent = None, None
+        if name in want:
+            val = "true" if want[name] else "false"
             for i in range(s + 1, e):
-                m = re.match(r"^(\s+)\S", lines[i])
+                m = re.match(r"^(\s*)enabled:\s*", lines[i])
                 if m:
-                    indent = m.group(1)
+                    edits[i] = "%senabled: %s" % (m.group(1), val)
+                    en_idx, en_indent = i, m.group(1)
                     break
-            inserts.append((s + 1, "%senabled: %s" % (indent, val)))
+            else:
+                # 条目里压根没有 enabled 字段：照其他字段的缩进补一行
+                indent = "    "
+                for i in range(s + 1, e):
+                    m = re.match(r"^(\s+)\S", lines[i])
+                    if m:
+                        indent = m.group(1)
+                        break
+                inserts.append((s + 1, "%senabled: %s" % (indent, val)))
+                en_idx, en_indent = s + 1, indent
+        if name in marks:
+            val = "relegated: '%s'" % marks[name]
+            for i in range(s + 1, e):
+                m = re.match(r"^(\s*)relegated:\s*", lines[i])
+                if m:
+                    edits[i] = "%s%s" % (m.group(1), val)
+                    break
+            else:
+                # 紧跟 enabled 之后插：语义上紧邻开关，读起来最清楚。
+                # （league 的换位路径是插在字段区末尾，两种位置 YAML 都合法。）
+                indent = en_indent
+                if indent is None:
+                    indent = "    "
+                    for i in range(s + 1, e):
+                        m = re.match(r"^(\s+)\S", lines[i])
+                        if m:
+                            indent = m.group(1)
+                            break
+                idx = (en_idx + 1) if en_idx is not None else (s + 1)
+                inserts.append((idx, "%s%s" % (indent, val)))
     for i, ln in edits.items():
         lines[i] = ln
     for idx, ln in sorted(inserts, reverse=True):     # 倒序插，避免行号漂移
@@ -394,8 +425,10 @@ def _rewrite_enabled(text, want):
     return "\n".join(lines)
 
 
-def write_src_cfg(cfg, prev_count=None):
-    """写回源清单 —— **只改 enabled 开关**，注释/格式原样保留（见 _rewrite_enabled）。
+def write_src_cfg(cfg, prev_count=None, relegated=None):
+    """写回源清单 —— **只改 enabled 开关 / relegated 标**，注释/格式原样保留。
+
+    relegated: {源名: 'YYYY-MM-DD'}，与 enabled 同一次原子写（见 _rewrite_enabled）。
 
     ⚠ 理智守卫：源清单是整个 pipeline 的**唯一事实来源**，而且进 git。
 
@@ -447,7 +480,7 @@ def write_src_cfg(cfg, prev_count=None):
             "         这说明清单被改坏了（缺 name / 缩进变了 / 段落结构变了）。\n"
             "         此时**不写**比整份重写安全 —— 重写会把注释全部抹掉。"
             % (extra or "无", missing or "无"))
-    _atomic_write(SOURCES, _rewrite_enabled(text, want))
+    _atomic_write(SOURCES, _rewrite_enabled(text, want, relegated))
 
 
 def arch_cfg():
@@ -465,7 +498,8 @@ def write_arch(cfg):
     _atomic_write(ARCHIVE,
                   "# 历史库：曾启用但被判死的源。**源本体永不删除**，只是被摘掉。\n"
                   "# 判据：真探针（youtube/generate_204）连续 %d 轮 0 活，且横跨 ≥ %d 小时。\n"
-                  "# 恢复：alive ≥ %d 且通过率 ≥ %s%% 连续 %d 轮 -> health.py 自动回填 enabled: true。\n"
+                  "# 恢复：本机抽样 alive ≥ %d 且通过率 ≥ %s%% 连续 %d 轮 -> 打 relegated 标\n"
+                  "#       交回联赛挑战者池（不直接 enabled: true，由 +5pp 换位规则决定）。\n"
                   "# ⚠ 探针 runner 在美国，判据偏保守（宁可多留，不可错杀）。\n"
                   % (DEAD_STREAK, DEAD_STREAK_HOURS, GOOD_ALIVE, GOOD_RATE, GOOD_STREAK)
                   + yaml.safe_dump(cfg, allow_unicode=True, sort_keys=False, width=4096))
@@ -539,6 +573,50 @@ def main():
     arch = arch_cfg()
     arch_by_name = {s["name"]: s for s in (arch.get("sources") or [])}
     src_by_name = {s["name"]: s for s in (cfg.get("sources") or [])}
+
+    # ------------------------------------------------------------------
+    # 历史库隔离源的探针结果归一化（2026-11-20，B 方案）
+    # src/local_probe.py 把 archive/sources.yaml 里的源抓下来、分层抽样，写成
+    # state/archive_nodes/<name>.yaml；src/probe.py 以 arch__<name> 的身份探。
+    # 这里映射回真实源名，并标记 is_archive / is_sampled：
+    #   · 只认仍在历史库里的源 —— 已恢复/已删除留下的 stale staging 直接忽略，
+    #     否则会凭空长出 arch__xxx 这种伪源档案；
+    #   · 同名 live 行优先（理论上不会同时出现，防一手）；
+    #   · 抽样轮次**绝不参与判死**（与 cnci 抽样同纪律），只用于「变好」判定。
+    # ------------------------------------------------------------------
+    live_rows = {n: r for n, r in rows.items()
+                 if not n.startswith(ARCHIVE_PREFIX)}
+    arch_rows = {}
+    for n, r in rows.items():
+        if not n.startswith(ARCHIVE_PREFIX):
+            continue
+        base = n[len(ARCHIVE_PREFIX):]
+        if base not in arch_by_name:
+            print("[health] 忽略过期的历史库探针：%s（源已不在历史库）" % n)
+            continue
+        if base in live_rows:
+            print("[health] %s 同时有 live 与历史库探针，采用 live" % base)
+            continue
+        rr = dict(r)
+        rr["is_archive"] = True
+        rr["is_sampled"] = True
+        arch_rows[base] = rr
+    rows = dict(live_rows)
+    rows.update(arch_rows)
+
+    # 档案与历史库不一致时以历史库为准：档案损坏/重建后 state 可能丢了
+    # quarantined，若不纠正，恢复分支永远进不去 —— 源会被永久困在历史库。
+    for name in arch_by_name:
+        rec = hs.get(name)
+        if rec is None:
+            continue
+        if name in src_by_name and src_by_name[name].get("enabled", True):
+            continue                      # 数据不一致：优先信 sources.yaml
+        if rec.get("state") != "quarantined":
+            print("[health] %-24s 档案 state=%s 与历史库不一致，按历史库置为 quarantined"
+                  % (name, rec.get("state")))
+            rec["state"] = "quarantined"
+
     now = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
     # 用**探针自己的时间戳**当这一轮的身份，而不是 health.py 的运行时刻。
     # 这样重复跑（CI 重试 / 手动再跑一次 / local_probe 的 --scope-only）能被识别为
@@ -553,7 +631,7 @@ def main():
 
     # ------------------------------------------------------------------
     # 先把云效（scope=cnci）这一轮记进档案 —— **只记档，不碰任何 streak**。
-    # 必须排在主探针循环之前：下面的回收判定要读 cnci 的均值来当否决闸门。
+    # 必须排在主探针循环之前：下面的 compute_tier 要读云效历史来算分级。
     # ------------------------------------------------------------------
     cnci = load_cnci()
     cnci_rows = (cnci.get("sources") or {})
@@ -566,8 +644,10 @@ def main():
               % len(cnci_rows))
     cnci_ok = 0
     if not cnci_rows:
+        # 分级只影响 build 的 AUTO 排序/T2 降级，不再卡恢复：隔离源恢复走
+        # 本机连续 2 轮达标 -> relegated -> 联赛 +5pp（2026-11-20 B 方案）。
         print("[health] ⚠ 无云效(cnci)数据 -> 分级标为未知"
-              + ("，回收需要双视角同意，本轮不回收任何源" if TIER_REQUIRE_CNCI else ""))
+              "（恢复仍按本机口径交回联赛挑战者池）")
     else:
         for name, r in sorted(cnci_rows.items()):
             if name not in hs:
@@ -596,6 +676,7 @@ def main():
             cnci_ok += 1
 
     changed_enabled = []
+    new_relegated = {}
     dup_sources = []
     unsettled = {}
     tiers = {}
@@ -666,10 +747,10 @@ def main():
             #     我们根本连不上？美国 runner 能直连全球节点 IP，它说 0 活才可信。
             #     （反过来说，也正因为如此，「判死」不能搬到任何国内机器上去做。）
             #
-            #   good_streak 只由本机（国内）口径累积 —— 判优 / 回收。
+            #   good_streak 只由本机（国内）口径累积 —— 判优 / 恢复。
             #     原实现里 else 分支（alive>0 但 rate 未达标）会无条件清零 good_streak，
             #     而 CI 每天都在跑，于是本机攒的 good_streak 每天被抹掉，
-            #     「变好回收」永远达不到 GOOD_STREAK —— 那是死代码。
+            #     「变好恢复」永远达不到 GOOD_STREAK —— 那是死代码。
             #     美国口径也不该参与：实测 ssrsub 美国#2/国内#2 尚可，但 shaoyouvip
             #     美国 81.2%(#4) / 国内 6.2%(#11 垫底)，Spearman rho 仅 0.48，不可信。
             #
@@ -677,7 +758,7 @@ def main():
             #   抽样数据永远不参与降级。n=30、真实通过率 10% 时抽 30 个全死的概率
             #   = 0.9^30 ≈ 4.2%，一轮 12 源就有 40% 概率至少错判一个。
             #   scope=cnci **不参与降级**（判死仍然只由美国 CI 口径做，铁律①不动），
-            #   但从 2026-10-15 起它对**回收**有否决权（见下面的 tier 闸门）。
+            #   只参与 compute_tier 的分级展示与 build 的 AUTO 排序。
             dead = (alive == 0)
             # ⚠ rate 可能是 None（sanitize_rows 把不合格的字段置空了）。
             #   此时**必须整段跳过该源的 streak 累积**，而不是当成「不达标」。
@@ -747,13 +828,13 @@ def main():
                 pass
             elif span is None:
                 # 时间戳解析不出来 = 「我不知道这跨度有多久」，唯一正确的反应是
-                # 不判死（判死不可逆，回收要等好几天），但**必须说出来**，
+                # 不判死（判死不可逆，恢复要等好几天），但**必须说出来**，
                 # 否则又是一次静默失败。
                 print("[health] %-24s ⚠ 轮次时间戳无法解析（bad_since=%r），"
                       "本轮不判死" % (name, rec.get("bad_since")))
             # 再加一道**跨度**闸门：轮数够了还要看这些轮次横跨了多久。
             # 只看轮数会随着 cron 提速而自动变激进（每 6 小时 = 18 小时判死，
-            # 原来是 3 周），而回收的代价高得多 —— 见 DEAD_STREAK_HOURS 的注释。
+            # 原来是 3 周），而恢复的代价高得多 —— 见 DEAD_STREAK_HOURS 的注释。
             elif span < DEAD_STREAK_HOURS:
                 print("[health] %-24s 连续 %d 轮 0 活，但只横跨 %.1fh（< %dh）："
                       "判死不提速（cron 变快不等于判死变快）"
@@ -773,33 +854,33 @@ def main():
                 })
                 rec["state"] = "quarantined"
         elif rec["state"] == "quarantined" and rec["good_streak"] >= GOOD_STREAK:
-            # good_streak 已由上面的逻辑保证只有 scope==local 才累积，这里是二次保险。
-            # CI 口径的分数毫无意义：美国跑出来 ssrsub 90%、shaoyouvip 81%（国内实测垫底 6.2%），
-            # 拿它判回收会把差源误收回来。
+            # 恢复口径（2026-11-20 用户拍板 B 方案）：
+            # 不再直接 enabled: true，而是从历史库摘掉、打 relegated 标，交回
+            # 联赛挑战者池 —— 由「超在册末位 +5pp」决定是否真正入册。
             #
-            # 2026-10-15 起再加一道**云效否决闸门**：回收要求两个视角都达标（T1）。
-            # 设计取向是「让回收更保守、绝不更激进」——
-            #   * 云效否决 = 不回收。失败方向是「多留一个源在历史库里」，可逆、无害。
-            #   * 云效若能单独放行 = 会把差源捞回池子。那是不可逆的污染。
-            # 所以云效只有否决权。没有决定权。
-            # ⚠ cnci_ready/cn/why 是 compute_tier() 的局部变量，这里**够不着** ——
-            #   分级抽成函数后它们没跟着出来，回收分支一进来就 NameError
-            #   （实测：隔离中的源 + 本机连续 2 轮达标 -> exit=1，回收成了死路径）。
-            #   改读 compute_tier 写回 rec 的 tier_rates/tier_why（单一事实来源）。
-            tr = rec.get("tier_rates") or {}
-            cnci_runs = tr.get("cnci_runs") or 0
-            cnci_ready = cnci_runs >= TIER_MIN_CNCI_RUNS
+            # 为什么必须换掉旧的「T1 双视角回收」：
+            #   1) cnci 只探 enabled 源（tools/ci_probe_run.py 读 dist/nodes），
+            #      隔离源永远攒不到 ≥7 轮云效数据 -> 旧闸门是一条**永远过不了**
+            #      的死路。2026-10-30 隔离的 anaer/passcro/wzmfree 就是实证。
+            #   2) 直接 enabled 会让 enabled 变成 8 个，league.verify_swap 会因
+            #      `enabled_count > TARGET_CAP` 拒绝写入，整轮换位失败。
+            #   3) 联赛的 +5pp 门槛比较的是**当前池子的末位**，比固定 8% 更贴合
+            #      真实竞争；而且每轮 ≤1 次换位、24h 节流仍然有效。
+            #
+            # good_streak 只由 scope==local 累积（上面已保证），这里再挡一次：
+            # CI 口径的分数不能判优（美国 vs 国内 rho 仅 0.48）。
             if scope != "local":
-                print("[health] %-24s CI 口径不判回收（等本机探针确认）" % name)
-            elif TIER_REQUIRE_CNCI and not cnci_ready:
-                print("[health] %-24s 暂不回收（云效样本 %d/%d 轮不足，双视角未达成一致）"
-                      % (name, cnci_runs, TIER_MIN_CNCI_RUNS))
-            elif TIER_REQUIRE_CNCI and tier != "T1":
-                print("[health] %-24s 暂不回收（云效否决：%s）" % (name, rec.get("tier_why")))
-            elif name in src_by_name:
-                src_by_name[name]["enabled"] = True
+                print("[health] %-24s CI 口径不判恢复（等本机探针确认）" % name)
+            elif name not in src_by_name:
+                print("[health] %-24s 恢复达标，但 sources.yaml 里没有这个源，"
+                      "无法交回联赛（保留在历史库）" % name)
+            else:
+                today = time.strftime("%Y-%m-%d", time.gmtime())
+                src_by_name[name]["enabled"] = False
                 src_by_name[name].pop("quarantine_reason", None)
-                changed_enabled.append("%s -> 达标回收（T1 双视角）" % name)
+                new_relegated[name] = today
+                changed_enabled.append(
+                    "%s -> 恢复达标，打 relegated(%s) 标交回挑战者池" % (name, today))
                 arch_by_name.pop(name, None)
                 rec["state"] = "active"
 
@@ -838,7 +919,7 @@ def main():
 
     if changed_enabled:
         # 传上一轮的源数量，让 write_src_cfg 能识别「暴跌」而不只是「归零」
-        write_src_cfg(cfg, prev_count=prev_src_count)
+        write_src_cfg(cfg, prev_count=prev_src_count, relegated=new_relegated)
         arch["sources"] = list(arch_by_name.values())
         write_arch(arch)
     save_health(h)
@@ -861,7 +942,7 @@ def main():
         for nm in sorted(tiers):
             buckets.setdefault(tiers[nm], []).append(nm)
         label = {"T1": "两视角都达标，到处能用",
-                 "T2": "本机行/云效不行 -> 位置敏感，自动回收会排除它",
+                 "T2": "本机行/云效不行 -> 位置敏感，build 会把它降到备用",
                  "T3": "本机不行/云效行 -> 机房友好",
                  "T4": "两视角都不行 -> 到处都不行，该考虑降级",
                  "?": "数据不足，暂不判定"}
@@ -874,7 +955,7 @@ def main():
         print("[health] 本轮记入云效数据 %d 个源；单源最多已有 %d 轮%s"
               % (cnci_ok, max_cnci_runs,
                  "" if max_cnci_runs >= TIER_MIN_CNCI_RUNS else
-                 "（< %d，分级仅供参考，**不参与回收判定**）" % TIER_MIN_CNCI_RUNS))
+                 "（< %d，分级仅供参考，**不影响恢复**）" % TIER_MIN_CNCI_RUNS))
     return 0
 
 

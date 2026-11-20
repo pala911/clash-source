@@ -115,7 +115,7 @@ def build_md():
           "数据来自 `state/source_health.json`（每口径只保留最近 %d 轮）。" % 12, ""]
 
     for scope, title in (("local", "本机口径（唯一有权判优）"),
-                         ("cnci", "云效口径（回收的否决权）")):
+                         ("cnci", "云效口径（第二视角分级）")):
         rows = {}
         for name, rec in sorted(srcs.items()):
             rows[name] = analyze(rec, scope)

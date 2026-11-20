@@ -4,8 +4,8 @@
 两个场景都必须验证，缺一不可：
 
   场景 A（真实当前状态）：云效只有 1 轮数据
-      -> 分级应全部显示「数据不足」，且**不回收任何源**。
-         这是安全默认值：阈值还没校准，不该让未校准的数据驱动决策。
+      -> 分级应全部显示「数据不足」，且**不影响隔离源恢复**（恢复只看本机口径）。
+         这是安全默认值：阈值还没校准，不该让未校准的数据驱动分级决策。
 
   场景 B（模拟攒够 7 轮）：灌 7 轮合成数据
       -> 四格应正确分化。用的是 2026-10-15 两次实测的真实数值。
@@ -89,8 +89,8 @@ def _s(v):
 def run_health():
     """跑一轮 health.py，返回 (退出码, stdout+stderr)。
 
-    ⚠ 退出码必须一起返回：场景 D 守的正是「回收分支一进来就 NameError、exit=1」，
-       只看输出文本会漏掉「进程整体崩掉」这一类失败。
+    ⚠ 退出码必须一起返回：历史上「回收分支一进来就 NameError、exit=1」被静默
+       吞了三天，只看输出文本会漏掉「进程整体崩掉」这一类失败。
     """
     env = dict(os.environ, PYTHONIOENCODING="utf-8")
     p = subprocess.run([PY, os.path.join(ROOT, "src", "health.py")],
@@ -192,7 +192,7 @@ try:
         json.dump(cnci_doc(1, "A"), f, ensure_ascii=False, indent=2)
     rc, out = run_health()
     for ln in out.splitlines():
-        if "分级" in ln or "暂不回收" in ln or "无云效" in ln:
+        if "分级" in ln or "恢复" in ln or "无云效" in ln:
             print("  " + ln.strip())
     print()
     hs = json.load(open(HEALTH_PATH, encoding="utf-8"))
@@ -427,16 +427,17 @@ finally:
 
 print()
 print("=" * 72)
-print("场景 D：被判死的源攒够条件后能否**自动回收**")
+print("场景 D：被判死的源攒够条件后能否**回到挑战者池**（B 方案）")
 print("=" * 72)
 print("""
-  背景：回收分支（state=quarantined + good_streak>=2 + 云效 7 轮 + T1）自
-        2026-10-15 分级抽成 compute_tier() 之后就是一条**死路径** ——
-        cnci_ready/cn/why 是那个函数的局部变量，回收分支够不着，一进来就
-        NameError，health.py 直接 exit=1。线上表现：判死历史库里的源
-        从来没有一个被回收过（回收功能上线起 0 次生效）。
-        这条用例走**真实路径**：先让 health.py 真判死，再喂 7 轮云效 +
-        本机达标轮，看它能不能自己回来。
+  背景：旧回收分支要求「本机 2 轮 + 云效 7 轮 + T1」，但 cnci 只探 enabled
+        源 —— 隔离源永远攒不到云效轮次，这是一条**永远过不了**的死路
+        （2026-10-30 隔离的 anaer/passcro/wzmfree 实证）。
+        2026-11-20 用户拍板 B：本机连续 2 轮达标 -> 从历史库摘掉、打
+        `relegated` 标交回联赛挑战者池，**不直接 enabled: true**；
+        是否入册由「超在册末位 +5pp」决定（也不会撑破 7 源 cap）。
+        这条用例走**真实路径**：先让 health.py 真判死，再喂本机达标轮
+        （以 arch__<name> 身份，模拟 local_probe 的隔离源 staging）。
 """)
 backup()
 try:
@@ -454,39 +455,58 @@ try:
     check(FAKE in archive_names(), "前置：进了历史库 archive/sources.yaml",
           "；".join(archive_names()))
 
-    # ---- 2) 灌历史：本机 1 轮达标（本轮再达标 -> good_streak=2）、
-    #          云效 7 轮达标（-> cnci_runs>=7 且 T1「两视角均达标」） ----
+    # ---- 2) 灌历史：本机 1 轮达标（本轮再达标 -> good_streak=2）。
+    #          ⚠ 刻意**不灌云效数据**：cnci 只探 enabled 源，隔离源攒不到
+    #          ≥7 轮；旧 T1 回收路径因此永远走不通 —— 这正是 B 方案要修的。
     h = json.load(open(HEALTH_PATH, encoding="utf-8"))
     rec = (h.get("sources") or {}).get(FAKE)
     if rec is None:
         raise SystemExit("[tier-test] 场景 D 前置失败：健康档案里没有 %s 的记录" % FAKE)
     rec["good_streak"] = 1
-    rec["runs"] = (seeded_runs("cnci", 7, 66.0, 20, 1)
-                   + seeded_runs("local", 1, 33.0, 99, 1)
+    rec["runs"] = (seeded_runs("local", 1, 33.0, 10, 1)
                    + list(rec.get("runs") or []))
     with open(HEALTH_PATH, "w", encoding="utf-8") as f:
         json.dump(h, f, ensure_ascii=False, indent=2)
 
-    # ---- 3) 本轮：本机全量达标（合成源也在里面），云效文档不含合成源 ----
-    seed_local_probe({FAKE: 33.0})
-    with open(CNCI_PATH, "w", encoding="utf-8") as f:
-        json.dump(cnci_doc(1, "D"), f, ensure_ascii=False, indent=2)
+    # ---- 3) 本轮：隔离源以 arch__<name> 身份被抽样探到（30 节点 / 10 活）。
+    #          只喂隔离源这一行：模拟 local_probe staging 后 probe.py 的真实产物。
+    doc = {"scope": "local", "probed_at": "2026-10-15T12:07:00Z",
+           "hc_timeout_ms": 8000,
+           "sources": {"arch__" + FAKE: {
+               "nodes": 30, "tested": 30, "alive": 10, "rate": 33.3,
+               "best_ms": 800, "settled": True, "incomplete": False,
+               "is_sampled": True}}}
+    with open(PROBE_PATH, "w", encoding="utf-8") as f:
+        json.dump(doc, f, ensure_ascii=False, indent=2)
+    if os.path.exists(CNCI_PATH):
+        os.remove(CNCI_PATH)             # 确保本轮没有云效数据也能恢复
     n_cmt = sum(1 for ln in open(SRC_YAML, encoding="utf-8")
                 if ln.lstrip().startswith("#"))
     rc, out = run_health()
     for ln in out.splitlines():
-        if FAKE in ln or "回收" in ln:
+        if FAKE in ln or "恢复" in ln:
             print("  " + ln.strip())
     print()
     check(rc == 0 and "NameError" not in out, "health.py 正常退出（不再 NameError）",
           "exit=%s" % rc)
-    check(enabled_of(FAKE) is True, "回收：enabled 回到 true")
+    check(enabled_of(FAKE) is False, "恢复后**不直接启用**（保持 enabled: false）")
+    cfg2 = yaml.safe_load(open(SRC_YAML, encoding="utf-8")) or {}
+    ent2 = next((s for s in (cfg2.get("sources") or [])
+                 if s.get("name") == FAKE), {}) or {}
+    rel = str(ent2.get("relegated") or "")
+    check(bool(rel), "已打 relegated 标，交回联赛挑战者池", "relegated=%r" % rel)
+    check(len(rel) == 10 and rel[4] == "-" and rel[7] == "-",
+          "relegated 是 YYYY-MM-DD 日期标", rel)
     rec2 = (json.load(open(HEALTH_PATH, encoding="utf-8")).get("sources") or {}).get(FAKE) or {}
-    check(rec2.get("state") == "active", "回收：状态回到 active",
+    check(rec2.get("state") == "active", "恢复：状态回到 active",
           "实际 %s" % rec2.get("state"))
-    check(FAKE not in archive_names(), "回收：已从历史库摘掉", "；".join(archive_names()))
-    # 回收要写两处：src/sources.yaml（就地改 enabled）与 archive/sources.yaml。
-    # 这一步同时守住那个反复发作的事故（写归档时把 src 的源清单覆盖成历史库内容）。
+    check(FAKE not in archive_names(), "恢复：已从历史库摘掉", "；".join(archive_names()))
+    h2 = json.load(open(HEALTH_PATH, encoding="utf-8")).get("sources") or {}
+    check(("arch__" + FAKE) not in h2, "没有长出 arch__ 伪源档案",
+          "、".join(sorted(h2))[:120])
+    # 恢复要写两处：src/sources.yaml（enabled + relegated 同一次原子写）与
+    # archive/sources.yaml。这一步同时守住那个反复发作的事故（写归档时把
+    # src 的源清单覆盖成历史库内容）。
     n2 = sum(1 for ln in open(SRC_YAML, encoding="utf-8") if ln.lstrip().startswith("#"))
     check(n2 == n_cmt, "write_arch 写的是历史库，没盖到 src/sources.yaml",
           "%d -> %d 行注释" % (n_cmt, n2))
@@ -502,7 +522,7 @@ print("场景 E：auto_added 源的「自动补员退出」（2026-10-29 拍板�
 print("=" * 72)
 print("""
   拍板：compute_tier T4 + 双口径均值 <2% + 云效 ≥7 轮 + 本机 ≥3 轮
-        -> 自动降级（入历史库，翻盘走既有回收路线）。
+        -> 自动降级（入历史库，翻盘走本机恢复→relegated）。
 
   E1 云效 6 轮（<7）、本机 3 轮        -> 不退出（云效观察期未满）
   E2 云效 7 轮、本机 1+本轮=2（<3）    -> 不退出（本机观察期未满；本轮新轮次计入窗口）
@@ -593,7 +613,7 @@ try:
     check(AUTO_SRC in archive_names(), "退出：已入历史库 archive/sources.yaml")
     rec3 = json.load(open(HEALTH_PATH, encoding="utf-8"))["sources"].get(AUTO_SRC) or {}
     check(rec3.get("state") == "quarantined", "退出：状态 = quarantined（复用降级机制，"
-          "翻盘走既有回收路线）", "实际 %s" % rec3.get("state"))
+          "翻盘走本机恢复→relegated）", "实际 %s" % rec3.get("state"))
     check("自动补员退出" in out, "大声说明（不是静默消失）")
     arch3 = yaml.safe_load(open(ARCHIVE_YAML, encoding="utf-8")) or {}
     why3 = [s.get("quarantine_reason") for s in (arch3.get("sources") or [])
@@ -620,9 +640,87 @@ finally:
     if os.path.exists(SRC_BASE):
         os.remove(SRC_BASE)
 
+print()
+print("=" * 72)
+print("场景 F：历史库隔离源的 staging（B 方案的回归通道）")
+print("=" * 72)
+print("""
+  local_probe.stage_archive_nodes() 负责把 archive/sources.yaml 里的源
+  抓下来 -> 清洗 -> 分层抽样 -> state/archive_nodes/<name>.yaml，
+  之后 probe.py 以 arch__<name> 的身份一并探。它必须：
+    · 逐源 fail-soft（抓取/清洗失败只跳过该源，不炸整轮）；
+    · 抽样上限生效（30/源，测试用 10 验证）；
+    · 清理已不在历史库的 stale staging（否则会一直探幽灵源）。
+  本场景用 monkeypatch 替换 fetch，不碰网络、不碰真实 state/archive_nodes。
+""")
+FARCH = os.path.join(ROOT, ".tools", "_tier_test_archive.yaml")
+FOUT = os.path.join(ROOT, ".tools", "_tier_test_archive_nodes")
+try:
+    sys.path.insert(0, os.path.join(ROOT, "src"))
+    import local_probe                                  # noqa: E402
+    import fetch as fetch_mod                           # noqa: E402
+
+    def _fake_proxies(tag, n=40):
+        return [{"name": "%s-%02d" % (tag, i), "type": "http",
+                 "server": "10.0.%d.%d" % (i // 250, i % 250), "port": 8080}
+                for i in range(n)]
+
+    def _fake_fetch(src, timeout=45):
+        if src.get("name") == "demo_bad":
+            raise RuntimeError("simulated fetch boom")
+        px = _fake_proxies(src.get("name") or "x")
+        return px, {"name": src.get("name"), "url": src.get("url"),
+                    "raw_nodes": len(px)}
+
+    with open(FARCH, "w", encoding="utf-8") as f:
+        yaml.safe_dump({"sources": [
+            {"name": "demo_arch", "url": "https://example/arch",
+             "quarantined_at": "2026-10-30T13:14:33Z"},
+            {"name": "demo_bad", "url": "https://example/bad",
+             "quarantined_at": "2026-10-30T13:14:33Z"},
+        ]}, f, allow_unicode=True, sort_keys=False)
+    shutil.rmtree(FOUT, ignore_errors=True)
+    os.makedirs(FOUT)
+    with open(os.path.join(FOUT, "stale.yaml"), "w", encoding="utf-8") as f:
+        f.write("proxies: []\n")
+    orig_fetch = fetch_mod.fetch_source
+    fetch_mod.fetch_source = _fake_fetch
+    try:
+        staged = local_probe.stage_archive_nodes(
+            arch_path=FARCH, out_dir=FOUT, sample=10, log=lambda _m: None)
+    finally:
+        fetch_mod.fetch_source = orig_fetch
+    check(staged == ["demo_arch"], "逐源 fail-soft：坏源跳过、好源照常 staging",
+          "staged=%r" % (staged,))
+    good = os.path.join(FOUT, "demo_arch.yaml")
+    check(os.path.exists(good), "写出了 state/archive_nodes/<name>.yaml")
+    n_px = len((yaml.safe_load(open(good, encoding="utf-8")) or {}).get("proxies") or [])
+    check(n_px == 10, "分层抽样上限生效（40 -> 10）", "实际 %d" % n_px)
+    check(not os.path.exists(os.path.join(FOUT, "demo_bad.yaml")),
+          "坏源没有留下半成品文件")
+    check(not os.path.exists(os.path.join(FOUT, "stale.yaml")),
+          "已清理不在历史库的 stale staging")
+    check(not [x for x in os.listdir(FOUT) if x.endswith(".tmp")],
+          "没有 .tmp 残留（原子写）")
+
+    # 空历史库：返回空，且把旧 staging 全部清掉
+    with open(FARCH, "w", encoding="utf-8") as f:
+        yaml.safe_dump({"sources": []}, f)
+    staged2 = local_probe.stage_archive_nodes(
+        arch_path=FARCH, out_dir=FOUT, sample=10, log=lambda _m: None)
+    check(staged2 == [], "历史库为空时返回空列表")
+    check(os.listdir(FOUT) == [], "历史库为空时清空全部 staging",
+          "、".join(os.listdir(FOUT)) or "（空）")
+finally:
+    shutil.rmtree(FOUT, ignore_errors=True)
+    if os.path.exists(FARCH):
+        os.remove(FARCH)
+
+print()
 print("=" * 72)
 if FAILS:
     print("结果：失败 %d 项 —— %s" % (len(FAILS), "；".join(FAILS)))
     sys.exit(1)
 print("结果：全部通过（A 数据不足不判定 / B 四格全覆盖 / C 判死双闸门 + 注释零丢失 "
-      "/ D 判死后可回收 / E 自动补员退出双观察期闸门 + auto_added 旗标限定）")
+      "/ D 判死→relegated 交回联赛 / E 自动补员退出双观察期闸门 + auto_added 旗标限定 "
+      "/ F 历史库 staging 抽样与 stale 清理）")

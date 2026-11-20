@@ -58,7 +58,7 @@ bash tools/sync_and_probe.sh
 ## 定位
 
 本层数据标记 `scope=cnci`，**只做交叉验证，永不触发任何源的升降级**。
-有权判死的是美国 GitHub Actions，有权回收的是本机探针。
+有权判死的是美国 GitHub Actions，有权恢复（判优）的是本机探针。
 
 实测（12 源，云效抽样30 vs 本机全量）：Spearman rho=0.734，
 但云效系统性偏高 +11.9pp（阿里云杭州国际出口优于家用宽带）；
