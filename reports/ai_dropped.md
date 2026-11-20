@@ -1,38 +1,34 @@
-# AI 审核逐条留痕（生成于 2026-11-20T07:20:53Z，模型 `http`）
+# AI 审核逐条留痕（生成于 2026-11-20T14:38:58Z，模型 `http`）
 
-共剔除 19 簇 / 43 节点（下表每簇列一条代表节点 + 理由，「节点数」列是该簇实际覆盖的节点数）。若发现误杀，把节点名与理由贴回来即可针对性收窄 prompt。
+共剔除 10 簇 / 20 节点（下表每簇列一条代表节点 + 理由，「节点数」列是该簇实际覆盖的节点数）。若发现误杀，把节点名与理由贴回来即可针对性收窄 prompt。
 
+
+## zhuhaiuk
+
+| 节点名 | 类型 | server | 节点数 | 模型理由 |
+|---|---|---|---|---|
+| US - zhuhai.uk | http | 38.247.141.135 | 8 | 伪装名称批量克隆 |
 
 ## ruk1ng001
 
 | 节点名 | 类型 | server | 节点数 | 模型理由 |
 |---|---|---|---|---|
-| D🔴🇯🇵hos[🤖💬🔮🧩]_dokng.com_0f4839b8 | http | fan.571589.xyz | 1 | 声称国外服务器境内 |
-| D🔴🇰🇷hos[🔮🎵📚]_dokng.com_f7be86c8 | socks5 | 121.169.46.116 | 1 | 声称国外服务器境内 |
-| D🔴🇸🇬hos[🎮✈️🐙🔍]_dokng.com_f56c2037 | vless | free.fugui.lol | 1 | 声称国外服务器境内 |
-| D🔴🇳🇱hos[🤖💬🔮🧩]_dokng.com_9986f45d | http | 84.17.47.148 | 1 | 声称国外服务器境内 |
-| D🔴🇺🇸hos[🤖💬🔮🎮]_dokng.com_f4f770d1 | http | 38.28.185.166 | 1 | 声称国外服务器境内 |
-| D🔴🇮🇹hos[🤖🔮🎵🎮]_dokng.com_444fcb7f | ss | 202.50.253.54 | 1 | 声称国外服务器境内 |
-| D🔴🇳🇱hos[🤖💬🔮🎵]_dokng.com_33ffe908 | http | 84.17.47.146 | 1 | 声称国外服务器境内 |
-| D🔴🇺🇸hos[🤖💬🔮🎵]_dokng.com_ffebf486 | http | fan.365747.xyz | 1 | 声称国外服务器境内 |
-| U⚪🏳️ukn_dokng.com_18866abf | vmess | www.shopify.com | 1 | 占位符示例节点 |
-| U⚪🏳️ukn_dokng.com_5bde06c7 | vless | 172.67.199.126 | 1 | 占位符示例节点 |
-| U⚪🏳️ukn[🤖💬🔮🎵]_dokng.com_a07afe5c | vless | zfapi.zalolink.com | 1 | 占位符示例节点 |
-| U⚪🏳️ukn[🤖🔮🎵✈️]_dokng.com_7441ad35 | ss | 202.50.253.99 | 1 | 占位符示例节点 |
-| U⚪🏳️ukn[🤖🔮🎵]_dokng.com_1188f394 | http | fan.226278.xyz | 1 | 占位符示例节点 |
-| U⚪🏳️ukn[🎮✈️🔍📚]_dokng.com_899fc334 | vless | zfapi.zalolink.com | 1 | 占位符示例节点 |
+| D🔴🇯🇵hos_dokng.com_4900a88a | socks5 | 103.248.150.50 | 2 | 广告 |
+| D🔴🇸🇪hos[🤖💬🔮🧩]_dokng.com_180c9335 | vless | subgift.gcorecdn.com | 2 | 广告 |
+| A🟢🇸🇬res[💬]_dokng.com_903162eb | http | 149.88.99.209 | 1 | 广告 |
+| D🔴🇺🇸hos[🤖💬🔮🧩]_dokng.com_0cb09444 | vmess | 192.74.236.148 | 1 | 引流 |
+
+## snakem982
+
+| 节点名 | 类型 | server | 节点数 | 模型理由 |
+|---|---|---|---|---|
+| 🇫🇷 法国 \| FRA | vless | notified-rendered-moore-consideration.trycloudflare.com | 2 | 占位符域名 |
 
 ## leilaomi
 
 | 节点名 | 类型 | server | 节点数 | 模型理由 |
 |---|---|---|---|---|
-| [261.4ms +/-1ms] http-172.64.68.89 | http | 172.64.68.89 | 24 | 占位符http-IP |
-| 🇮🇹 [536.5ms +/-12ms] 🇮🇹 | ss | 202.50.253.99 | 2 | 仅国旗无节点名 |
-| [513.4ms +/-1ms] 4Nika-29cd1ae321 | vless | share.gifmems.com | 1 | 引流 |
-
-## Free-Nodes
-
-| 节点名 | 类型 | server | 节点数 | 模型理由 |
-|---|---|---|---|---|
-| 🇳🇬 尼日利亚 \| TROJAN \| 001 | trojan | sclass-01.catcat321.com | 1 | 伪装为尼日利亚实为境内中转 |
-| 🇺🇳 未知地区 \| TROJAN \| 001 | trojan | 95.143.196.32 | 1 | 未知地区为引流占位 |
+| [533.9ms +/-2ms] 4FreeIran-48421a2e2b | vless | 80.47.13.188 | 1 | 伪装伊朗节点，境内IP |
+| [711.6ms +/-77ms] 4FreeIran-0f77d63040 | vless | 139.162.91.247 | 1 | 伪装伊朗节点，境内IP |
+| [1471.9ms +/-378ms] 4FreeIran-d9a7dc08a5 | hysteria2 | 168.113.254.247 | 1 | 伪装伊朗节点，境内IP |
+| [591.8ms +/-11ms] 4FreeIran-da9d12cc4e | vless | 139.162.91.239 | 1 | 伪装伊朗节点，境内IP |
