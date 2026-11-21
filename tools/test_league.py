@@ -170,12 +170,16 @@ check("块名撞车自动 -2", cname == "new-2", str(cname))
 
 print("")
 print("=" * 68)
-print("场景 I：通道候选三道筛 —— 样本 ≥20 / 镜像判重 / 同仓库判重")
+print("场景 I：通道候选三道筛 —— 样本 ≥5 / 镜像判重 / 同仓库判重")
 print("=" * 68)
 vtmp = tempfile.mkdtemp(prefix="league_v_")
 vpath = os.path.join(vtmp, "eval_verdicts.json")
 with io.open(vpath, "w", encoding="utf-8") as f:
     json.dump({"candidates": [
+        # 低于 5 样本：评估阶段本就该拒，联赛这层再兜一道
+        {"url": "https://example/tiny4.yaml", "verdict": "approved",
+         "rate": 75.0, "alive": 3, "nodes": 4},
+        # 7 样本（2026-11-21 门槛 20→5 后应放行）
         {"url": "https://example/tiny.yaml", "verdict": "approved",
          "rate": 42.9, "alive": 3, "nodes": 7},
         {"url": "https://example/big.yaml", "verdict": "approved",
@@ -200,7 +204,8 @@ try:
         "https://raw.githubusercontent.com/owner/known/main/x.yaml"})
 finally:
     league.VERDICTS = old_verdicts
-check("小样本被挡", "channel:https://example/tiny.yaml" not in got, str(list(got)))
+check("低于 5 样本被挡", "channel:https://example/tiny4.yaml" not in got, str(list(got)))
+check("5 样本以上保留", "channel:https://example/tiny.yaml" in got, str(list(got)))
 check("足样本保留", "channel:https://example/big.yaml" in got, str(list(got)))
 check("镜像写法被挡",
       not any("owner/known" in k for k in got), str(list(got)))

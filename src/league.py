@@ -54,9 +54,11 @@ STAGEDIR = os.path.join(ROOT, ".league_stage")
 
 MARGIN_PP = 5.0          # 挑战者必须比在册末位高这么多 pp 才换位（防抖动）
 CHALL_MIN_ALIVE = 3      # 挑战者最少活节点
-CHANNEL_MIN_NODES = 20   # 通道候选最少样本数（2026-11-02 真事故：7 节点 3 活的
-                         # 小源 42.9% 差点换掉 184 节点的 leilaomi —— 样本太小，
-                         # 比率不可比。relegated 重探固定抽 25，不存在这个问题）
+CHANNEL_MIN_NODES = 5    # 通道候选最少样本数（2026-11-21 用户拍板由 20 降到 5，
+                         # 与 eval_candidates.MIN_NODES 对齐；低于 5 的候选在评估
+                         # 阶段已被拒。注意：小样本比率噪声大，7 节点 3 活=42.9%
+                         # 与 184 节点 26% 仍不同量纲，靠 alive>=3 + 5pp 防抖兜底。
+                         # relegated 重探固定抽 25，不存在这个问题）
 REPROBE_SAMPLE = 25      # relegated 重探抽样数（分层）
 MIN_GAP_HOURS = 24       # 两次换位最小间隔
 
@@ -256,8 +258,9 @@ def load_challengers_from_channel(known_urls):
         if rate <= 0:
             continue
         if nodes < CHANNEL_MIN_NODES:
-            # 样本太小：7 节点里 3 个活 = 42.9%，与 184 节点的 26% 不是同一量纲。
-            # 这类候选留在通道里继续观察，但不进本轮换位比较。
+            # 样本太小：低于评估阶段 MIN_NODES=5 的候选本来就进不了通道。
+            # 2026-11-21 门槛由 20 降到 5（用户拍板），小样本比率噪声更大，
+            # 但 alive>=3 与 +5pp 防抖仍在；更小的候选继续留在通道观察。
             continue
         name = c.get("name") or (c.get("repo") or "").rsplit("/", 1)[-1] or url
         key = ident or ("url:" + url)
