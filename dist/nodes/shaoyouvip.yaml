@@ -1,41 +1,117 @@
-# clash-source 自动生成 —— 源 shaoyouvip，共 4 节点（稳定性加权后留在竞速池内的部分）
+# clash-source 自动生成 —— 源 shaoyouvip，共 8 节点（稳定性加权后留在竞速池内的部分）
 # 不要手改；改动会在下次定时任务被覆盖（上游 https://pala911.github.io/clash-source/nodes/shaoyouvip.yaml）
 proxies:
-- name: 🇩🇪DE_1|1.2MB/s
-  type: http
-  server: 172.64.68.89
-  port: 443
-  skip-cert-verify: true
-  sni: 172.64.68.89
-  tls: true
-- name: 🇭🇰HK_1|1.3MB/s
-  type: http
-  server: 45.205.18.25
-  port: 3128
-  password: ''
-  skip-cert-verify: true
-  username: ''
-- name: 🇭🇰HK_2|2.5MB/s
+- name: 🇩🇪DE_1|3.2MB/s
   type: hysteria2
-  server: 43.103.2.53
-  port: 443
-  down: ''
+  server: a3dee.supertoolify.com
+  port: 4430
+  alpn:
+  - h3
+  down: 200
   obfs: salamander
-  obfs-password: 9veAh9pTbrAfDwM1fIYI
-  password: hAUdd15a7YGHUSgiPOUz
+  obfs-password: off3io88xwyc76g8
+  password: 57beeeb0-03fc-4fc9-94da-7604488a7134
   skip-cert-verify: true
-  sni: ''
-  up: ''
-- name: 🇯🇵JP_1|2.4MB/s
+  sni: psstatic.cdn.bcebos.com
+  udp: true
+  up: 100
+- name: 🇩🇪DE_2|3.4MB/s
   type: vless
-  server: 23.27.11.86
+  server: 172.67.67.89
   port: 443
-  client-fingerprint: chrome
-  encryption: none
-  flow: xtls-rprx-vision
-  network: tcp
-  servername: jp.burmy.xyz
+  alpn:
+  - h3
+  - h2
+  - http/1.1
+  client-fingerprint: ios
+  network: ws
+  servername: 1.proxy2.us.ci.
   tls: true
   udp: true
-  uuid: e8a346c2-e14c-4f82-876f-367dc19ee541
+  uuid: 4859c235-2530-4062-9a0b-ea859cbbf861
+  ws-opts:
+    headers:
+      Host: 1.proxy2.us.ci.
+    path: /?ed=2560
+- name: 🇭🇰HK_1|2.9MB/s
+  type: hysteria2
+  server: 66hk.mateflora.com
+  port: 443
+  alpn:
+  - h3
+  down: 200
+  obfs: salamander
+  obfs-password: aemx2gndpgrt1qau
+  password: 57beeeb0-03fc-4fc9-94da-7604488a7134
+  skip-cert-verify: true
+  sni: 66hk.mateflora.com
+  udp: true
+  up: 100
+- name: 🇭🇰HK_2|1.4MB/s
+  type: hysteria2
+  server: nb2hk.hikigo.com
+  port: 443
+  alpn:
+  - h3
+  down: 200
+  obfs: salamander
+  obfs-password: o5qgnpl75wayhkn5
+  password: 57beeeb0-03fc-4fc9-94da-7604488a7134
+  skip-cert-verify: true
+  sni: nb2hk.hikigo.com
+  udp: true
+  up: 100
+- name: 🇯🇵JP_1|2.5MB/s
+  type: hysteria2
+  server: kr-01.xn--9kqp42aims.top
+  port: 65502
+  obfs: salamander
+  obfs-password: OTA2ZjRiOGQ5MWYxNmQyZA==
+  password: aec36b98-3c2c-4959-974a-baa5915cb938
+  skip-cert-verify: true
+  sni: jp.xn--9kqp42aims.top
+  udp: true
+- name: 🇸🇪SE_1|1.6MB/s
+  type: vless
+  server: 0ef47cx.se4.h1clayd.click
+  port: 443
+  client-fingerprint: chrome
+  network: xhttp
+  reality-opts:
+    public-key: LZhuBYUqlo8epvzFF3tOPMZ_vjZPN1sraOYy2CKtcz4
+    short-id: 356cc54d885a4036
+  servername: 0ef47cx.se4.h1clayd.click
+  tls: true
+  udp: true
+  uuid: f15a2e25-6859-4bcc-b4c4-a14bb8ae0fbb
+- name: 🇫🇷FR_1|1.1MB/s
+  type: vless
+  server: 185.133.35.86
+  port: 443
+  alpn:
+  - h3
+  - h2
+  - http/1.1
+  client-fingerprint: chrome
+  encryption: none
+  network: xhttp
+  servername: mamafrance.baklajann.ru
+  tls: true
+  udp: true
+  uuid: d795a9ec-5ed0-4309-ba6c-edc09b818669
+  xudp: true
+- name: 🇳🇱NL_1|1.3MB/s
+  type: vless
+  server: r4.pythonmakemigreat.wiki
+  port: 8443
+  client-fingerprint: firefox
+  encryption: none
+  network: xhttp
+  reality-opts:
+    public-key: QrNs0ew7snHqLfpVXS9RAhlRzgAzzGZK9fXmDcx9xHI
+    short-id: 40a4b9403abe554c
+  servername: assets.study.golangwikito.cfd
+  tls: true
+  udp: true
+  uuid: f8d52ece-fad4-478d-875d-df6eed3befa7
   xudp: true

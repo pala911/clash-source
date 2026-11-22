@@ -1,59 +1,165 @@
 # 未过滤原始快照（对比用，勿订阅）—— 源 shaoyouvip
 proxies:
-- name: 🇩🇪DE_1|1.2MB/s
-  port: 443
-  server: 172.64.68.89
-  skip-cert-verify: true
-  sni: 172.64.68.89
-  tls: true
-  type: http
-- name: 🇩🇪DE_2|1.1MB/s|P002-260618
-  password: None
-  port: 443
-  server: 172.64.68.89
-  skip-cert-verify: true
-  sub_tag: P002-260618
-  tls: true
-  type: http
-  udp: true
-  x-toolall-mihomo: true
-- name: 🇩🇪DE_3|1.0MB/s
-  password: 'null'
-  port: 443
-  server: 172.64.69.89
-  skip-cert-verify: true
-  tls: true
-  type: http
-  username: 'null'
-- name: 🇭🇰HK_1|1.3MB/s
-  password: ''
-  port: '3128'
-  server: 45.205.18.25
-  skip-cert-verify: true
-  type: http
-  username: ''
-- down: ''
-  fingerprint: ''
-  name: 🇭🇰HK_2|2.5MB/s
+- alpn:
+  - h3
+  auth: 57beeeb0-03fc-4fc9-94da-7604488a7134
+  down: 200
+  name: 🇩🇪DE_1|3.2MB/s
   obfs: salamander
-  obfs-password: 9veAh9pTbrAfDwM1fIYI
-  password: hAUdd15a7YGHUSgiPOUz
-  port: '443'
-  server: 43.103.2.53
+  obfs-password: off3io88xwyc76g8
+  password: 57beeeb0-03fc-4fc9-94da-7604488a7134
+  port: 4430
+  server: a3dee.supertoolify.com
   skip-cert-verify: true
-  sni: ''
+  sni: psstatic.cdn.bcebos.com
   type: hysteria2
-  up: ''
-- client-fingerprint: chrome
-  encryption: none
-  flow: xtls-rprx-vision
-  name: 🇯🇵JP_1|2.4MB/s
-  network: tcp
-  port: '443'
-  server: 23.27.11.86
-  servername: jp.burmy.xyz
+  udp: true
+  up: 100
+- alpn:
+  - h3
+  - h2
+  - http/1.1
+  client-fingerprint: ios
+  name: 🇩🇪DE_2|3.4MB/s
+  network: ws
+  port: 443
+  server: 172.67.67.89
+  servername: 1.proxy2.us.ci.
   tls: true
   type: vless
   udp: true
-  uuid: e8a346c2-e14c-4f82-876f-367dc19ee541
+  uuid: 4859c235-2530-4062-9a0b-ea859cbbf861
+  ws-opts:
+    headers:
+      Host: 1.proxy2.us.ci.
+    path: /?ed=2560
+- alpn:
+  - h3
+  auth: 57beeeb0-03fc-4fc9-94da-7604488a7134
+  down: 200
+  name: 🇭🇰HK_1|2.9MB/s
+  obfs: salamander
+  obfs-password: aemx2gndpgrt1qau
+  password: 57beeeb0-03fc-4fc9-94da-7604488a7134
+  port: 443
+  server: 66hk.mateflora.com
+  skip-cert-verify: true
+  sni: 66hk.mateflora.com
+  type: hysteria2
+  udp: true
+  up: 100
+- alpn:
+  - h3
+  auth: 57beeeb0-03fc-4fc9-94da-7604488a7134
+  down: 200
+  name: 🇭🇰HK_2|1.4MB/s
+  obfs: salamander
+  obfs-password: o5qgnpl75wayhkn5
+  password: 57beeeb0-03fc-4fc9-94da-7604488a7134
+  port: 443
+  server: nb2hk.hikigo.com
+  skip-cert-verify: true
+  sni: nb2hk.hikigo.com
+  type: hysteria2
+  udp: true
+  up: 100
+- cipher: aes-256-gcm
+  name: 🇮🇹IT_1|1.2MB/s
+  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
+  port: 19999
+  server: 202.50.253.27
+  type: ss
+  udp: true
+- auth: aec36b98-3c2c-4959-974a-baa5915cb938
+  name: 🇯🇵JP_1|2.5MB/s
+  obfs: salamander
+  obfs-password: OTA2ZjRiOGQ5MWYxNmQyZA==
+  password: aec36b98-3c2c-4959-974a-baa5915cb938
+  port: 65502
+  server: kr-01.xn--9kqp42aims.top
+  skip-cert-verify: true
+  sni: jp.xn--9kqp42aims.top
+  type: hysteria2
+  udp: true
+- client-fingerprint: chrome
+  name: 🇸🇪SE_1|1.6MB/s
+  network: xhttp
+  port: 443
+  reality-opts:
+    public-key: LZhuBYUqlo8epvzFF3tOPMZ_vjZPN1sraOYy2CKtcz4
+    short-id: 356cc54d885a4036
+  server: 0ef47cx.se4.h1clayd.click
+  servername: 0ef47cx.se4.h1clayd.click
+  tls: true
+  type: vless
+  udp: true
+  uuid: f15a2e25-6859-4bcc-b4c4-a14bb8ae0fbb
+  xhttp-opts:
+    host: 0ef47cx.se4.h1clayd.click
+    mode: auto
+    path: /444de120fb2d
+- alpn:
+  - h3
+  - h2
+  - http/1.1
+  client-fingerprint: chrome
+  encryption: none
+  name: 🇫🇷FR_1|1.1MB/s
+  network: xhttp
+  port: '443'
+  server: 185.133.35.86
+  servername: mamafrance.baklajann.ru
+  tls: true
+  type: vless
+  udp: true
+  uuid: d795a9ec-5ed0-4309-ba6c-edc09b818669
+  xhttp-opts:
+    host: mamafrance.baklajann.ru
+    mode: auto
+    path: /
+    reuse-settings:
+      c-max-reuse-times: '0'
+      h-keep-alive-period: 0
+      h-max-request-times: 600-900
+      h-max-reusable-secs: 1800-3000
+      max-concurrency: '0'
+      max-connections: '4'
+  xudp: true
+- name: 🇷🇴RO_1|1.1MB/s|K001-260618
+  password: None
+  port: 9443
+  server: 135.136.1.2
+  skip-cert-verify: true
+  sub_tag: K001-260618
+  tls: true
+  type: http
+  udp: true
+  username: ''
+  x-toolall-mihomo: true
+- name: 🇹🇭TH_1|1.5MB/s
+  password: YlRoWvE0dL_cUqS94wPeKnA4
+  port: 62000
+  server: 87.84.49.140
+  type: socks5
+  username: ks878449260d
+- client-fingerprint: firefox
+  encryption: none
+  name: 🇳🇱NL_1|1.3MB/s
+  network: xhttp
+  port: '8443'
+  reality-opts:
+    public-key: QrNs0ew7snHqLfpVXS9RAhlRzgAzzGZK9fXmDcx9xHI
+    short-id: 40a4b9403abe554c
+  server: r4.pythonmakemigreat.wiki
+  servername: assets.study.golangwikito.cfd
+  tls: true
+  type: vless
+  udp: true
+  uuid: f8d52ece-fad4-478d-875d-df6eed3befa7
+  xhttp-opts:
+    mode: packet-up
+    path: /
+    reuse-settings:
+      max-connections: '3'
+    x-padding-bytes: 100-500
   xudp: true
