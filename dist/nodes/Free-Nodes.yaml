@@ -1,68 +1,120 @@
-# clash-source 自动生成 —— 源 Free-Nodes，共 16 节点（稳定性加权后留在竞速池内的部分）
+# clash-source 自动生成 —— 源 Free-Nodes，共 27 节点（稳定性加权后留在竞速池内的部分）
 # 不要手改；改动会在下次定时任务被覆盖（上游 https://pala911.github.io/clash-source/nodes/Free-Nodes.yaml）
 proxies:
-- name: 🇺🇸 美国 | SS | 001
-  type: ss
-  server: 48.103.218.77
-  port: 18443
-  cipher: aes-256-gcm
-  password: 5mKjXAGrliIAlYwWDeFzkCEMIgQdFQLe
+- name: 🇭🇰 中国香港 | HYSTERIA2 | 001
+  type: hysteria2
+  server: 23.141.172.229
+  port: 50541
+  password: ePPsH1bMFD
+  sni: is1-ssl.mzstatic.com
+  skip-cert-verify: true
+- name: 🇭🇰 中国香港 | VLESS | 001
+  type: vless
+  server: 116.213.43.43
+  port: 11107
+  uuid: 08a37d1f-7bf1-4b5d-a2ec-5ced6a633d7f
   udp: true
-- name: 🇺🇳 未知地区 | VMESS | 001
-  type: vmess
-  server: 168.110.63.247
-  port: 8081
-  uuid: c3bde296-8e44-4b8c-a325-577d5b3cc7c8
-  alterId: 0
-  cipher: auto
+  flow: xtls-rprx-vision
+  tls: true
+  servername: www.apple.com
+  client-fingerprint: chrome
+  reality-opts:
+    public-key: 6GRzkPbs12fKBdBBFzs5dmtmbSHCXMngUCBKLrXYm3U
+    short-id: e2ccd8eedcbee2ce
+- name: 🇺🇸 美国 | VLESS | 001
+  type: vless
+  server: 43.110.39.161
+  port: 443
+  uuid: da39704f-79b2-460e-b77f-8d12397b3112
+  tls: true
+  flow: xtls-rprx-vision
+  reality-opts:
+    public-key: OsXk2qNUNsQsjMHAx6z6GdVflb0gD5AI8izM5W_J_00
+    short-id: db9af76e455811d0
+  servername: www.apple.com
+  client-fingerprint: chrome
+  network: tcp
   udp: true
-  network: ws
-  ws-opts:
-    path: /vless
-- name: 🇮🇹 意大利 | SS | 003
+- name: 🇺🇳 未知地区 | HYSTERIA2 | 001
+  type: hysteria2
+  server: starlink-ft.251313.xyz
+  port: 443
+  password: https://xship.2fa.cat
+  sni: xship.top
+  skip-cert-verify: true
+- name: 🇵🇱 波兰 | VLESS | 001
+  type: vless
+  server: 191.217.244.190
+  port: 443
+  uuid: a086c8e2-7a2f-4265-9518-6d7529106b80
+  udp: true
+  flow: xtls-rprx-vision
+  tls: true
+  servername: ertgmb.wey-land.net
+  client-fingerprint: firefox
+  reality-opts:
+    public-key: l6dfeSmhGc7dGLU_PqhPtMbj4_eONm2Sz_S9D8ePFxY
+    short-id: ''
+- name: 🇯🇵 日本 | VLESS | 001
+  type: vless
+  server: jp2static.jumpernode.site
+  port: 443
+  uuid: f325fb7d-cad5-4ac8-8888-3f39b4b9d1ca
+  udp: true
+  flow: xtls-rprx-vision
+  tls: true
+  servername: www.amzn.com
+  client-fingerprint: chrome
+  reality-opts:
+    public-key: GeKuYNeAqQQkTN9OMJxXA9I-rXs7IiGh4Sl82crCITc
+    short-id: 6281f3ef81187ad8
+- name: 🇮🇹 意大利 | SS | 005
   type: ss
-  server: 202.50.253.18
+  server: 202.50.253.45
   port: 19999
   password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
   cipher: aes-256-gcm
   udp: true
   tls: false
   skip-cert-verify: false
-- name: 🇯🇵 日本 | VLESS | 001
-  type: vless
-  server: 23.27.11.86
-  port: 443
-  uuid: e8a346c2-e14c-4f82-876f-367dc19ee541
+- name: 🇮🇹 意大利 | SS | 007
+  type: ss
+  server: 202.50.253.27
+  port: 19999
+  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
+  cipher: aes-256-gcm
   udp: true
-  flow: xtls-rprx-vision
-  tls: true
-  servername: jp.burmy.xyz
-  client-fingerprint: chrome
-- name: 🇺🇳 未知地区 | VLESS | 001
-  type: vless
-  server: 5.34.178.120
-  port: 443
-  uuid: 23b848b7-93e5-4d96-b36d-ed704912e5b7
+  tls: false
+  skip-cert-verify: false
+- name: 🇹🇼 中国台湾 | TROJAN | 001
+  type: trojan
+  server: 161.114.15.215
+  port: 30502
+  password: 5KdDtpoJI58OTsoG0PwEYunqB0mkAEDm
+  sni: www.cloudflare.com
+  skip-cert-verify: true
   udp: true
-  flow: xtls-rprx-vision
-  tls: true
-  servername: www.cloudflare.com
-  client-fingerprint: chrome
-  reality-opts:
-    public-key: 4RaNuv9yehmcfpdzvRxCWWzEWERWzZSIHqcgg3l35Cw
-    short-id: e16bbf1a5bee2321
-- name: 🇵🇱 波兰 | VLESS | 001
-  type: vless
-  server: 136.148.83.69
-  port: 443
-  uuid: 666821a2-5c3d-0001-a56f-5a3a562d7324
-  udp: true
-  tls: true
-  servername: szqbx-ru-77dc.my-fade.cloud
-  client-fingerprint: qq
-- name: 🇮🇹 意大利 | SS | 009
+- name: 🇮🇹 意大利 | SS | 008
   type: ss
   server: 202.50.253.81
+  port: 19999
+  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
+  cipher: aes-256-gcm
+  udp: true
+  tls: false
+  skip-cert-verify: false
+- name: 🇫🇮 芬兰 | VLESS | 001
+  type: vless
+  server: 168.113.253.178
+  port: 443
+  uuid: 58708e38-dd5a-0001-902d-93621ee2bd83
+  udp: true
+  tls: true
+  servername: uzndiuvzvqqljdyhzs.fcloudservices.site
+  client-fingerprint: chrome
+- name: 🇮🇹 意大利 | SS | 009
+  type: ss
+  server: 202.50.253.54
   port: 19999
   password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
   cipher: aes-256-gcm
@@ -75,105 +127,179 @@ proxies:
   port: 443
   uuid: 4201786b-d99b-4147-a5f0-20d47acddb81
   udp: true
-  flow: xtls-rprx-vision
   tls: true
-  servername: 7aa271t.es1.h1clayd.click
-  client-fingerprint: firefox
+  servername: 38917fx.es1.h1clayd.click
+  client-fingerprint: chrome
   reality-opts:
-    public-key: ZSmetD4e9QG5CiXhniHg5HJB68L4kwbgAkJmMHtVwEE
-    short-id: 42426c882c5fcd41
-- name: 🇪🇸 西班牙 | VLESS | 002
-  type: vless
-  server: api.ferrin.uk
-  port: 443
-  uuid: 7d1a74fd-8a38-4a29-863f-5da53a9e557e
-  udp: true
-  tls: true
-  servername: 7d1a74fd.ferrin.uk
-  client-fingerprint: safari
+    public-key: 4mgkA2kT_Im0rkGi-fVSUU5CyF5xvMVcjA6MXBSEDAA
+    short-id: d5501b156391e01d
   network: xhttp
+- name: 🇺🇳 未知地区 | HYSTERIA2 | 003
+  type: hysteria2
+  server: 66hk.mateflora.com
+  port: 443
+  password: 57beeeb0-03fc-4fc9-94da-7604488a7134
+  sni: 66hk.mateflora.com
+  skip-cert-verify: true
+  obfs: salamander
+  obfs-password: aemx2gndpgrt1qau
+- name: 🇩🇪 德国 | HYSTERIA2 | 001
+  type: hysteria2
+  server: dga1de.mateflora.com
+  port: 40120
+  password: 57beeeb0-03fc-4fc9-94da-7604488a7134
+  sni: psstatic.cdn.bcebos.com
+  up: 100
+  down: 200
+  skip-cert-verify: true
+  alpn:
+  - h3
+  obfs: salamander
+  obfs-password: pz7lyeav76a5wqzb
+  udp: true
+- name: 🇯🇵 日本 | HYSTERIA2 | 001
+  type: hysteria2
+  server: dg3rb.ianai.it.com
+  port: 443
+  password: 57beeeb0-03fc-4fc9-94da-7604488a7134
+  sni: dg3rb.ianai.it.com
+  skip-cert-verify: true
+  obfs: salamander
+  obfs-password: e3ymhs6gbzptjysj
 - name: 🇪🇸 西班牙 | VLESS | 003
   type: vless
   server: 196.199.122.2
   port: 443
   uuid: 4201786b-d99b-4147-a5f0-20d47acddb81
   udp: true
-  flow: xtls-rprx-vision
   tls: true
-  servername: 7aa271t.es1.h1clayd.click
-  client-fingerprint: chrome
+  servername: 38917fx.es1.h1clayd.click
+  client-fingerprint: firefox
   reality-opts:
-    public-key: ZSmetD4e9QG5CiXhniHg5HJB68L4kwbgAkJmMHtVwEE
-    short-id: 42426c882c5fcd41
-- name: 🇪🇸 西班牙 | VLESS | 005
+    public-key: 4mgkA2kT_Im0rkGi-fVSUU5CyF5xvMVcjA6MXBSEDAA
+    short-id: d5501b156391e01d
+  network: xhttp
+- name: 🇬🇧 英国 | VLESS | 001
   type: vless
-  server: 196.196.149.80
-  port: 443
-  uuid: 4201786b-d99b-4147-a5f0-20d47acddb81
-  udp: true
-  flow: xtls-rprx-vision
-  tls: true
-  servername: 7aa271t.es1.h1clayd.click
-  client-fingerprint: chrome
-  reality-opts:
-    public-key: ZSmetD4e9QG5CiXhniHg5HJB68L4kwbgAkJmMHtVwEE
-    short-id: 42426c882c5fcd41
-- name: 🇺🇳 未知地区 | VLESS | 002
-  type: vless
-  server: 188.114.98.0
-  port: 443
-  uuid: 88e79aa6-f431-4453-8dcc-652a0c747198
+  server: 172.64.155.209
+  port: 8443
+  uuid: a20ea704-ec9d-4c5d-9b12-fa760cdf2290
   udp: true
   tls: true
-  servername: o685y.save-node.com
+  servername: sinavm2.soft10.ir
+  client-fingerprint: chrome
   alpn:
   - http/1.1
-  network: ws
-  ws-opts:
-    path: /api/se1k2rfxlsuer3ry4u6e84kl8rqp721p
-    headers:
-      Host: o685y.save-node.com
-- name: 🇺🇳 未知地区 | VLESS | 003
+  - h2
+  - h3
+  network: xhttp
+- name: 🇫🇮 芬兰 | VLESS | 002
   type: vless
-  server: pl.galacticworld.online
+  server: 178.214.125.2
   port: 443
-  uuid: ecc0e60a-f2cc-4266-8353-b228df89730a
+  uuid: da8972f9-770f-4012-ab46-5de2711a718b
   udp: true
   flow: xtls-rprx-vision
   tls: true
-  servername: pl.galacticworld.online
+  servername: conf.emaar.ru
   client-fingerprint: qq
   reality-opts:
-    public-key: GBO_paFyK9FihgPMH8r_vHa4IKMkSGfvAQ2fhPK_1H4
-    short-id: ''
-- name: 🇩🇪 德国 | VLESS | 001
-  type: vless
-  server: 179.253.80.175
-  port: 4443
-  uuid: a35c508f-4d5d-4531-842e-6e9d43c762c0
-  udp: true
-  tls: true
-  servername: swo2.nexfile.net
-  client-fingerprint: chrome
-  network: xhttp
-- name: 🇳🇬 尼日利亚 | TROJAN | 001
+    public-key: ZxCwJxbsZWJYYCPzeWj7_fxJMVhwh4XGfpvjmEIQjHY
+    short-id: 6172ba9cffe9c22f
+- name: 🇺🇳 未知地区 | TROJAN | 001
   type: trojan
-  server: sclass-c2.catcat321.com
-  port: 20051
+  server: sclass-00.catcat321.com
+  port: 20103
   password: d9064589-74af-432a-9390-5d8a9da281bf
   udp: true
   sni: hk.catxstar.com
   skip-cert-verify: true
-- name: 🇳🇱 荷兰 | VLESS | 006
+- name: 🇳🇱 荷兰 | VLESS | 002
   type: vless
   server: 196.245.52.183
   port: 443
   uuid: cda0862a-0f87-4be9-8ed8-1d0c9e382839
   udp: true
   tls: true
-  servername: e60833x.nl7.h1clayd.click
+  servername: 15b171g.nl7.h1clayd.click
   client-fingerprint: firefox
   reality-opts:
-    public-key: jIRVNEf9SpuWP2nJrAbHGGIUnfzOmwZZlrNGw-Y-O2Q
-    short-id: 2d2598d60447a967
-  network: xhttp
+    public-key: zbz--PMjcIC4Ggr3j-ibDf0fzXRTj0lM_HzjPJyMkVE
+    short-id: 50a749f0eccb628c
+  network: grpc
+- name: 🇺🇸 美国 | HYSTERIA2 | 001
+  type: hysteria2
+  server: a3dgus.supertoolify.com
+  port: 40055
+  password: 57beeeb0-03fc-4fc9-94da-7604488a7134
+  sni: psstatic.cdn.bcebos.com
+  up: 100
+  down: 200
+  skip-cert-verify: true
+  alpn:
+  - h3
+  obfs: salamander
+  obfs-password: re61ep4ancwplwh8
+  udp: true
+- name: 🇵🇱 波兰 | VLESS | 002
+  type: vless
+  server: 136.148.83.69
+  port: 443
+  uuid: 7dff1be7-b930-0001-a8ad-dc7850168215
+  udp: true
+  tls: true
+  servername: szqbx-ru-77dc.my-fade.cloud
+  client-fingerprint: chrome
+- name: 🇺🇸 美国 | VLESS | 002
+  type: vless
+  server: 162.35.101.177
+  port: 443
+  uuid: cda0862a-0f87-4be9-8ed8-1d0c9e382839
+  udp: true
+  tls: true
+  servername: 0592efg.us8.h1clayd.click
+  client-fingerprint: edge
+  reality-opts:
+    public-key: cO3wYHISTeorXcM8ffaDCDdqZ-olBQL-GyZqb-W7rTk
+    short-id: bd8f712209a9c283
+  network: grpc
+- name: 🇸🇬 新加坡 | HYSTERIA2 | 001
+  type: hysteria2
+  server: hkzfsg2.mateflora.com
+  port: 443
+  password: 57beeeb0-03fc-4fc9-94da-7604488a7134
+  sni: hkzfsg2.mateflora.com
+  up: 100
+  down: 200
+  skip-cert-verify: true
+  alpn:
+  - h3
+  obfs: salamander
+  obfs-password: fcfqz5o4znnjqtrp
+  udp: true
+- name: 🇭🇰 中国香港 | VLESS | 002
+  type: vless
+  server: 116.213.43.43
+  port: 11103
+  uuid: bb836d81-d0c5-4f01-a584-806cdf65e36a
+  udp: true
+  flow: xtls-rprx-vision
+  tls: true
+  servername: www.apple.com
+  client-fingerprint: chrome
+  reality-opts:
+    public-key: 5NNdXPMTBLP-xeDKFwcG-j6u-c4DhXIfnlHMqMJZ4n4
+    short-id: 9564e1a7a1cf8b3a
+- name: 🇳🇱 荷兰 | VLESS | 003
+  type: vless
+  server: 717252g.nl8.h1clayd.click
+  port: 443
+  uuid: cda0862a-0f87-4be9-8ed8-1d0c9e382839
+  udp: true
+  tls: true
+  servername: 717252g.nl8.h1clayd.click
+  client-fingerprint: firefox
+  reality-opts:
+    public-key: PD8Jdlg3xB9QY--jwQjp8PFPzCS8-Oryw6-HWBcHMFU
+    short-id: d3bd772514c87d28
+  network: grpc

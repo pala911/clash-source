@@ -1,32 +1,42 @@
-# clash-source 自动生成 —— 全源合并，共 683 节点（名字带源前缀）
+# clash-source 自动生成 —— 全源合并，共 677 节点（名字带源前缀）
 # 供多源合并场景使用；profile.yaml 默认按源分文件挂载
 proxies:
-- name: 'automerge_🇺🇸 美国 | USA #10'
-  type: hysteria2
-  server: media.embrofree.org
+- name: 'automerge_🇺🇸 美国 | USA #7'
+  type: vless
+  server: 172.67.197.170
   port: 443
-  password: 713142c9-ad09-4894-b35c-645423f3f6c9
-  skip-cert-verify: true
-  sni: media.embrofree.org
-  tls: false
-- name: 'automerge_🇨🇳 CN_87 #1'
-  type: trojan
-  server: sclass-01.catcat321.com
-  port: 20103
-  password: d7563108-615c-4338-a7bd-77f359869a4a
-  skip-cert-verify: true
-  sni: hk.catxstar.com
-  udp: true
-- name: automerge_🇯🇵JP_1|2.3MB/s
-  type: vmess
-  server: afzuv.xiaoyan.io
-  port: 16617
   alpn:
-  - ''
-  alterId: 0
+  - http/1.1
+  client-fingerprint: chrome
+  network: ws
+  servername: o685y.save-node.com
+  tls: true
+  udp: true
+  uuid: 88e79aa6-f431-4453-8dcc-652a0c747198
+  ws-opts:
+    headers:
+      Host: o685y.save-node.com
+    path: /api/se1k2rfxlsuer3ry4u6e84kl8rqp721p
+- name: 'automerge_🇬🇧 英国 | GBR #3'
+  type: vless
+  server: 136.148.83.69
+  port: 443
+  client-fingerprint: qq
+  network: tcp
+  servername: szqbx-ru-77dc.my-fade.cloud
+  tls: true
+  udp: true
+  uuid: 666821a2-5c3d-0001-a56f-5a3a562d7324
+  ws-opts:
+    path: /
+- name: automerge_🇺🇸US_1|4.1MB/s
+  type: vmess
+  server: d1eyz.xiaoyan.io
+  port: 16648
+  alterId: '0'
   cipher: auto
   network: ws
-  skip-cert-verify: true
+  skip-cert-verify: false
   tls: false
   udp: true
   uuid: 904f0569-8695-466f-97cf-0de2face1b46
@@ -34,450 +44,250 @@ proxies:
     headers:
       Host: f9309cc88637c26f552a1a64fb311cae.mobgslb.tbcache.com
     path: /
-- name: automerge_🇺🇸US_1|3.8MB/s
-  type: vmess
-  server: 107.174.133.115
-  port: 52080
-  alterId: 0
-  cipher: auto
-  network: http
-  skip-cert-verify: true
-  tls: false
-  udp: true
-  uuid: e7fb8bc6-5e0a-4e64-86cc-eb0ddd7ef4dd
-- name: automerge_🇹🇷TR_1|3.7MB/s
-  type: vless
-  server: 172.64.155.209
-  port: 8443
-  client-fingerprint: chrome
-  encryption: none
-  network: xhttp
-  servername: sinavm3.soft10.ir
-  tls: true
-  udp: true
-  uuid: e16c3f43-8ece-4ce2-b62a-92df4c351d35
   xudp: true
-- name: automerge_🇩🇪DE_1|2.3MB/s
-  type: vless
-  server: 191.217.215.186
-  port: 2053
-  client-fingerprint: chrome
-  encryption: none
-  flow: xtls-rprx-vision
-  network: tcp
-  servername: 191.217.215.186
-  tls: true
-  udp: true
-  uuid: fbe22815-0718-4eae-816f-e91c67d15b54
-  xudp: true
-- name: 'automerge_🇩🇪 德国 | DEU #5'
-  type: vmess
-  server: 128.140.49.30
-  port: 443
-  alterId: 0
-  cipher: auto
-  network: ws
-  servername: germanyhetz.onlinernet.ir
-  skip-cert-verify: true
-  tls: true
-  udp: true
-  uuid: 11edc5c6-bd3f-48f5-ae44-7b61758f323b
-  ws-opts:
-    headers:
-      Host: germanyhetz.onlinernet.ir
-    path: /
-  xudp: true
-- name: automerge_🇸🇬SG_1|3.7MB/s
-  type: vless
-  server: epam.com
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: wallweb-boi.pages.dev
-  tls: true
-  udp: true
-  uuid: 8895be79-9817-4011-b81a-14a35a3d328e
-  ws-opts:
-    headers:
-      Host: wallweb-boi.pages.dev
-      User-Agent: Mozilla/5.0 (Linux; Android 6.0; vivo 1610 Build/MMB29M) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.124 Mobile Safari/537.36
-    path: /
-  xudp: true
-- name: automerge_🇩🇪DE_4|3.9MB/s
+- name: automerge_NN_speednode_0023
   type: http
-  server: 172.64.68.89
+  server: usgp1-cdn-route.couldflare-cdn.com
   port: 443
-  skip-cert-verify: true
-  sni: 172.64.68.89
-  tls: true
-- name: automerge_NL_speednode_0022
-  type: http
-  server: 103.97.88.154
-  port: 443
-  password: 'null'
-  skip-cert-verify: true
+  password: exaxgqkKkd0TAMrCxeonWg==
   tls: true
   udp: true
-  username: 'null'
-- name: automerge_🇩🇪DE_8|1.5MB/s|R002-260618
-  type: http
-  server: 158.173.154.3
-  port: 9002
-  skip-cert-verify: true
-  tls: true
-  udp: true
-- name: automerge_🇷🇴RO_3|2.4MB/s
-  type: http
-  server: 193.176.84.26
-  port: 9002
-  skip-cert-verify: true
-  sni: www.bing.com
-  tls: true
-  udp: true
-- name: automerge_NL_speednode_0024
-  type: http
-  server: 84.17.47.148
-  port: 9002
-  password: None
-  skip-cert-verify: true
-  sni: 84.17.47.148
-  tls: true
-  udp: true
-  username: 'null'
-- name: automerge_🇳🇱NL_8|2.5MB/s
-  type: http
-  server: 84.17.47.147
-  port: 9002
-  skip-cert-verify: true
-  tls: true
-  udp: true
-- name: automerge_🇷🇴RO_2|1.7MB/s|K001-260618
-  type: http
-  server: 135.136.1.2
-  port: 9443
-  password: None
-  skip-cert-verify: true
-  tls: true
-  udp: true
-- name: automerge_🇬🇷GR_1|2.1MB/s
-  type: http
-  server: 149.22.85.78
-  port: 443
-  skip-cert-verify: true
-  tls: true
-  udp: true
-- name: automerge_🇺🇸US_3|2.6MB/s|K001-260618
-  type: http
-  server: 12.202.180.118
-  port: 443
-  password: None
-  skip-cert-verify: true
-  tls: true
-  udp: true
-- name: automerge_🇷🇴RO_4|3.3MB/s
-  type: http
-  server: 193.176.84.24
-  port: 9002
-  skip-cert-verify: true
-  tls: true
-- name: automerge_🇩🇪DE_15|2.2MB/s
+  username: mrwdfNTD8M79LCukCieldrqZWqs=
+- name: 'automerge_🇩🇪 德国 | DEU #2'
   type: vless
-  server: 104.20.63.254
-  port: 443
-  client-fingerprint: chrome
-  encryption: none
-  network: ws
-  servername: joeypg.ezbiz.dynv6.net
-  tls: true
-  udp: true
-  uuid: cd3d8e5c-794f-4c34-8222-59d3e99e35fe
-  ws-opts:
-    headers:
-      Host: joeypg.ezbiz.dynv6.net
-      User-Agent: Mozilla/5.0 (Linux; Android 7.0; SM-G610M) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.80 Mobile Safari/537.36
-    path: /?ed=2048
-  xudp: true
-- name: automerge_🇸🇬SG_2|3.8MB/s
-  type: vless
-  server: 104.18.35.180
-  port: 8443
-  client-fingerprint: chrome
-  encryption: none
-  network: ws
-  servername: cdn.lahjy.xyz
-  tls: true
-  udp: true
-  uuid: 5821f560-4156-4faf-80ec-9d798b128090
-  ws-opts:
-    headers:
-      Host: cdn.lahjy.xyz
-      User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36
-    path: /
-  xudp: true
-- name: automerge_🇯🇵JP_2|4.6MB/s
-  type: vless
-  server: 172.64.229.239
-  port: 2083
-  client-fingerprint: chrome
-  encryption: none
-  network: ws
-  servername: cdn.lahjy.xyz
-  tls: true
-  udp: true
-  uuid: 5821f560-4156-4faf-80ec-9d798b128090
-  ws-opts:
-    headers:
-      Host: cdn.lahjy.xyz
-      User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36
-    path: /
-  xudp: true
-- name: automerge_🇺🇸US_7|1.6MB/s
-  type: vless
-  server: 172.64.67.1
-  port: 2096
-  client-fingerprint: chrome
-  encryption: none
-  network: ws
-  servername: cdn.lahjy.xyz
-  tls: true
-  udp: true
-  uuid: 5821f560-4156-4faf-80ec-9d798b128090
-  ws-opts:
-    headers:
-      Host: cdn.lahjy.xyz
-      User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.111 Safari/537.36
-    path: /
-  xudp: true
-- name: automerge_🇺🇸US_8|1.8MB/s
-  type: vless
-  server: 104.19.58.88
-  port: 443
-  client-fingerprint: chrome
-  encryption: none
-  network: ws
-  servername: cdn.lahjy.xyz
-  tls: true
-  udp: true
-  uuid: 5821f560-4156-4faf-80ec-9d798b128090
-  ws-opts:
-    headers:
-      Host: cdn.lahjy.xyz
-      User-Agent: Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.101 Safari/537.36
-    path: /
-  xudp: true
-- name: automerge_🇺🇸US_9|3.3MB/s
-  type: vless
-  server: 104.17.166.12
-  port: 2087
-  client-fingerprint: chrome
-  encryption: none
-  network: ws
-  servername: cdn.lahjy.xyz
-  tls: true
-  udp: true
-  uuid: 5821f560-4156-4faf-80ec-9d798b128090
-  ws-opts:
-    headers:
-      Host: cdn.lahjy.xyz
-      User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36
-    path: /
-  xudp: true
-- name: automerge_🇺🇸US_10|2.5MB/s
-  type: vless
-  server: 104.17.99.49
-  port: 443
-  client-fingerprint: chrome
-  encryption: none
-  network: ws
-  servername: cdn.lahjy.xyz
-  tls: true
-  udp: true
-  uuid: 5821f560-4156-4faf-80ec-9d798b128090
-  ws-opts:
-    headers:
-      Host: cdn.lahjy.xyz
-      User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.109 Safari/537.36
-    path: /
-  xudp: true
-- name: automerge_🇺🇸US_11|4.1MB/s
-  type: hysteria2
-  server: 104.233.178.178
-  port: 443
-  down: ''
-  obfs: ''
-  obfs-password: ''
-  password: fanvpn.net
-  skip-cert-verify: true
-  sni: www.bing.com
-  up: ''
-- name: automerge_🇩🇪DE_16|2.9MB/s
-  type: vless
-  server: 50.7.28.213
+  server: heatherfield.moltex.click
   port: 443
   alpn:
   - h2
-  client-fingerprint: firefox
-  encryption: none
+  - http/1.1
+  client-fingerprint: edge
   network: xhttp
-  servername: api-v3-e9958027.vmagnum.win
+  servername: heatherfield.moltex.click
   tls: true
   udp: true
-  uuid: e9958027-03be-4eb5-bcec-70415b2e4844
-  xudp: true
-- name: automerge_🇺🇸US_12|3.1MB/s
+  uuid: 0b6a7fe0-206b-4071-9f96-cd397d1ec01a
+- name: 'automerge_🇩🇪 德国 | DEU #3'
   type: vless
-  server: 104.18.14.19
-  port: 8443
+  server: wildflower.elvano.website
+  port: 443
+  alpn:
+  - h2
+  - http/1.1
+  client-fingerprint: firefox
+  network: xhttp
+  servername: wildflower.elvano.website
+  tls: true
+  udp: true
+  uuid: 0b6a7fe0-206b-4071-9f96-cd397d1ec01a
+- name: 'automerge_🇩🇪 德国 | DEU #5'
+  type: vless
+  server: 193.160.208.240
+  port: 443
+  client-fingerprint: firefox
+  network: xhttp
+  servername: 193.160.208.240
+  tls: true
+  udp: true
+  uuid: 4777d90d-265b-4927-a0d1-63f36ed1421c
+- name: 'automerge_🇩🇪 德国 | DEU #6'
+  type: vless
+  server: fresco.merlano.monster
+  port: 443
+  alpn:
+  - h2
+  - http/1.1
+  client-fingerprint: ios
+  network: xhttp
+  servername: fresco.merlano.monster
+  tls: true
+  udp: true
+  uuid: 0b6a7fe0-206b-4071-9f96-cd397d1ec01a
+- name: 'automerge_🇩🇪 德国 | DEU #7'
+  type: vless
+  server: du5g.altheora.ir
+  port: 27181
+  client-fingerprint: chrome
+  encryption: mlkem768x25519plus.native.0rtt.F5LiR4Hs6W_x17I2LmxdFA8MUGvpHSaVuZ4zxTCAkmI
+  network: ws
+  servername: login.zanjanphone.ir
+  tls: true
+  udp: true
+  uuid: 5c683113-0abe-4d0b-aad9-0f198186b45a
+  ws-opts:
+    headers:
+      Host: login.zanjanphone.ir
+    path: /user
+- name: automerge_🇩🇪 德国 | DEU 8
+  type: vless
+  server: archive.filnex.baby
+  port: 443
+  alpn:
+  - h2
   client-fingerprint: random
-  network: ws
-  servername: hk.zhaoqing.city
+  network: grpc
+  servername: elmharbor.gerqix.online
   tls: true
   udp: true
-  uuid: 226279dd-28b2-4b61-96be-a2a0b1afd522
+  uuid: 0b6a7fe0-206b-4071-9f96-cd397d1ec01a
+- name: 'automerge_🇩🇪 德国 | DEU #9'
+  type: vless
+  server: seedling.elvano.website
+  port: 443
+  alpn:
+  - h2
+  - http/1.1
+  client-fingerprint: firefox
+  network: xhttp
+  servername: seedling.elvano.website
+  tls: true
+  udp: true
+  uuid: 0b6a7fe0-206b-4071-9f96-cd397d1ec01a
+- name: 'automerge_🇩🇪 德国 | DEU #10'
+  type: vless
+  server: riverstone.gerqix.online
+  port: 443
+  alpn:
+  - h2
+  - http/1.1
+  client-fingerprint: firefox
+  network: xhttp
+  servername: riverstone.gerqix.online
+  tls: true
+  udp: true
+  uuid: 0b6a7fe0-206b-4071-9f96-cd397d1ec01a
+- name: 'automerge_🇩🇪 德国 | DEU #11'
+  type: vless
+  server: arbor.elvano.website
+  port: 443
+  alpn:
+  - h2
+  - http/1.1
+  client-fingerprint: firefox
+  network: xhttp
+  servername: arbor.elvano.website
+  tls: true
+  udp: true
+  uuid: 0b6a7fe0-206b-4071-9f96-cd397d1ec01a
+- name: 'automerge_🇩🇪 德国 | DEU #12'
+  type: vless
+  server: brookside.moltex.click
+  port: 443
+  alpn:
+  - h2
+  - http/1.1
+  client-fingerprint: ios
+  network: xhttp
+  servername: brookside.moltex.click
+  tls: true
+  udp: true
+  uuid: 0b6a7fe0-206b-4071-9f96-cd397d1ec01a
+- name: 'automerge_🇩🇪 德国 | DEU #13'
+  type: vless
+  server: garden.elvano.website
+  port: 443
+  alpn:
+  - h2
+  - http/1.1
+  client-fingerprint: firefox
+  network: xhttp
+  servername: garden.elvano.website
+  tls: true
+  udp: true
+  uuid: 0b6a7fe0-206b-4071-9f96-cd397d1ec01a
+- name: 'automerge_🇩🇪 德国 | DEU #14'
+  type: vless
+  server: gesso.merlano.monster
+  port: 443
+  alpn:
+  - h2
+  - http/1.1
+  client-fingerprint: edge
+  network: xhttp
+  servername: gesso.merlano.monster
+  tls: true
+  udp: true
+  uuid: 0b6a7fe0-206b-4071-9f96-cd397d1ec01a
+- name: 'automerge_🇩🇪 德国 | DEU #15'
+  type: vless
+  server: clearing.moltex.click
+  port: 443
+  alpn:
+  - h2
+  - http/1.1
+  client-fingerprint: edge
+  network: xhttp
+  servername: clearing.moltex.click
+  tls: true
+  udp: true
+  uuid: 0b6a7fe0-206b-4071-9f96-cd397d1ec01a
+- name: 'automerge_🇩🇪 德国 | DEU #16'
+  type: vless
+  server: bayleaf.elvano.website
+  port: 443
+  alpn:
+  - h2
+  - http/1.1
+  client-fingerprint: edge
+  network: xhttp
+  servername: bayleaf.elvano.website
+  tls: true
+  udp: true
+  uuid: 0b6a7fe0-206b-4071-9f96-cd397d1ec01a
+- name: automerge_🇩🇪 德国 | DEU 17
+  type: vless
+  server: birchbark.gerqix.online
+  port: 443
+  alpn:
+  - h2
+  client-fingerprint: edge
+  network: grpc
+  servername: birchbark.gerqix.online
+  tls: true
+  udp: true
+  uuid: 0b6a7fe0-206b-4071-9f96-cd397d1ec01a
+- name: 'automerge_🇩🇪 德国 | DEU #18'
+  type: vless
+  server: rainwater.elvano.website
+  port: 443
+  alpn:
+  - h2
+  - http/1.1
+  client-fingerprint: firefox
+  network: xhttp
+  servername: rainwater.elvano.website
+  tls: true
+  udp: true
+  uuid: 0b6a7fe0-206b-4071-9f96-cd397d1ec01a
+- name: 'automerge_🇩🇪 德国 | DEU #19'
+  type: vless
+  server: palette.merlano.monster
+  port: 443
+  alpn:
+  - h2
+  - http/1.1
+  client-fingerprint: edge
+  network: xhttp
+  servername: palette.merlano.monster
+  tls: true
+  udp: true
+  uuid: 0b6a7fe0-206b-4071-9f96-cd397d1ec01a
+- name: 'automerge_🇩🇪 德国 | DEU #20'
+  type: vless
+  server: cabinet.filnex.baby
+  port: 443
+  alpn:
+  - http/1.1
+  client-fingerprint: edge
+  network: ws
+  servername: claywick.elvano.website
+  tls: true
+  udp: true
+  uuid: 0b6a7fe0-206b-4071-9f96-cd397d1ec01a
   ws-opts:
     headers:
-      Host: hk.zhaoqing.city
-      User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.85 Safari/537.36
-    path: /?TELEGRAM--MARAMBASHI--MARAMBASHI--MARAMBASHI--MARAMBASHI?ed=2560
-  xudp: true
-- name: automerge_🇮🇹IT_5|2.2MB/s
-  type: socks5
-  server: 91.199.137.149
-  port: 2010
-  skip-cert-verify: true
-- name: automerge_🇺🇸US_13|1.9MB/s
-  type: vless
-  server: 104.18.15.19
-  port: 8443
-  client-fingerprint: random
-  network: ws
-  servername: hk.zhaoqing.city
-  tls: true
-  udp: true
-  uuid: 226279dd-28b2-4b61-96be-a2a0b1afd522
-  ws-opts:
-    headers:
-      Host: hk.zhaoqing.city
-      User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.87 Safari/537.36
-    path: /?TELEGRAM--MARAMBASHI--MARAMBASHI--MARAMBASHI--MARAMBASHI?ed=2560
-  xudp: true
-- name: automerge_🇰🇷KR_1|1.4MB/s
-  type: http
-  server: 217.142.139.207
-  port: 8085
-  skip-cert-verify: true
-- name: automerge_🇺🇸US_14|3.8MB/s
-  type: hysteria2
-  server: 152.234.245.52
-  port: 443
-  down: ''
-  obfs: ''
-  obfs-password: ''
-  password: 713142c9-ad09-4894-b35c-645423f3f6c9
-  skip-cert-verify: false
-  sni: media.embrofree.org
-  up: ''
-- name: automerge_🇸🇬SG_3|1.4MB/s
-  type: http
-  server: 167.99.74.174
-  port: 9090
-  skip-cert-verify: true
-- name: automerge_🇨🇲CM_1|1.7MB/s
-  type: http
-  server: 102.244.78.61
-  port: 8088
-  skip-cert-verify: true
-- name: automerge_🇸🇬SG_4|1.1MB/s
-  type: http
-  server: 146.190.80.158
-  port: 9090
-  skip-cert-verify: true
-- name: automerge_🇭🇰HK_2|1.1MB/s
-  type: socks5
-  server: 219.78.223.199
-  port: 5001
-  skip-cert-verify: true
-- name: automerge_🇮🇩ID_1|1.5MB/s
-  type: socks5
-  server: 202.155.99.212
-  port: 62000
-  password: APJ7RmY9
-  skip-cert-verify: true
-  username: gebHTLF6
-- name: automerge_🇫🇷FR_3|2.5MB/s
-  type: http
-  server: 31.32.19.111
-  port: 8081
-  skip-cert-verify: true
-  tls: true
-- name: automerge_🇺🇸US_15|2.0MB/s
-  type: vless
-  server: www.visa.com
-  port: 8443
-  client-fingerprint: chrome
-  encryption: none
-  network: ws
-  servername: hk.zhaoqing.city
-  tls: true
-  udp: true
-  uuid: 226279dd-28b2-4b61-96be-a2a0b1afd522
-  ws-opts:
-    headers:
-      Host: hk.zhaoqing.city
-      User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36
-    path: /?TELEGRAM--MARAMBASHI--MARAMBASHI--MARAMBASHI--MARAMBASHI?ed=2560
-  xudp: true
-- name: automerge_🇺🇸US_16|1.7MB/s
-  type: vless
-  server: 104.168.132.123
-  port: 443
-  client-fingerprint: chrome
-  encryption: none
-  network: ws
-  servername: cf-1rm.pages.dev
-  tls: true
-  udp: true
-  uuid: 5e610f80-fc6a-479d-8621-b672355b96a1
-  ws-opts:
-    headers:
-      Host: cf-1rm.pages.dev
-      User-Agent: Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36
-    path: /
-  xudp: true
-- name: automerge_🇷🇴RO_7|3.3MB/s
-  type: http
-  server: 193.176.84.35
-  port: 9002
-  skip-cert-verify: true
-  sni: www.bing.com
-  tls: true
-- name: automerge_🇫🇷FR_4|4.0MB/s
-  type: http
-  server: 87.98.174.157
-  port: 6103
-  skip-cert-verify: true
-  tls: true
-- name: 'automerge_🇦🇺 澳大利亚 | AUS #1'
-  type: vless
-  server: 13.211.155.89
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: www.microsoft.com
-  tls: true
-  uuid: e3a1c7f2-9b4d-4e8a-a6c5-1f2d3b4a5e6f
-  ws-opts:
-    path: /7b9977b2af9da85fa86adc065c362efe
-- name: 'automerge_🇩🇪 德国 | DEU #1'
-  type: vless
-  server: 168.119.190.106
-  port: 443
-  encryption: mlkem768x25519plus.random.0rtt.swY_aKEuuHUHKO0BHVV2uot-UFbtrXpLWr7g8uZk0xk
-  network: http
-  tls: false
-  udp: true
-  uuid: 45f7bbfe-7d9c-49e1-81f3-154c0cd40121
-- name: 'automerge_🇩🇪 德国 | DEU #4'
+      Host: cabinet.filnex.baby
+    path: /api/de7/stream
+- name: 'automerge_🇩🇪 德国 | DEU #21'
   type: vless
   server: testvalikan.rovilo.ir
   port: 443
@@ -489,6 +299,20 @@ proxies:
   tls: true
   udp: true
   uuid: 93cdb4e7-ab65-44fa-91c8-f46e80806bca
+- name: 'automerge_🇬🇧 英国 | GBR #1'
+  type: vless
+  server: ipfast.kingmna.com
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: community.fastly.steamstatic.com
+  tls: true
+  udp: true
+  uuid: b8b85757-b721-4f54-820f-545190cfa807
+  ws-opts:
+    headers:
+      Host: snaanjaai.global.ssl.fastly.net
+    path: /
 - name: 'automerge_🇬🇧 英国 | GBR #2'
   type: vless
   server: 136.148.83.69
@@ -501,96 +325,167 @@ proxies:
   uuid: 7dff1be7-b930-0001-a8ad-dc7850168215
   ws-opts:
     path: /
-- name: automerge_🇭🇰 香港 | HKG 2
-  type: anytls
-  server: ibsdsf.df6h451rh.xin
-  port: 443
-  password: 2902c46c8493
-  skip-cert-verify: true
-  sni: docs.microsoft.com
-  udp: true
-- name: 'automerge_🇯🇵 日本 | JPN #1'
-  type: trojan
-  server: 156.246.93.237
-  port: 17443
-  password: LDSLDq9XlM4-92pvTPOUuklMb99BLOCrdyejsupEca4
-  skip-cert-verify: true
-  sni: jpk.wentibuxiaobuda.xyz
-- name: 'automerge_🇯🇵 日本 | JPN #2'
+- name: automerge_🇬🇧 英国 | GBR 4
   type: hysteria2
-  server: jpk.wentibuxiaobuda.xyz
+  server: dg3yg.mateflora.com
   port: 443
-  password: 36187bef1c708c82fd4099b9d70116ffd8c0f1f5bfd19cbb319eeb67899714f6
+  alpn:
+  - h3
+  down: 200
+  obfs: salamander
+  obfs-password: 8utjvetgzbiuwfa7
+  password: 57beeeb0-03fc-4fc9-94da-7604488a7134
   skip-cert-verify: true
-  sni: jpk.wentibuxiaobuda.xyz
+  sni: dg3yg.mateflora.com
+  udp: true
+  up: 100
+- name: automerge_🇬🇧 英国 | GBR 5
+  type: hysteria2
+  server: 22egdg.mateflora.com
+  port: 40055
+  alpn:
+  - h3
+  down: 200
+  obfs: salamander
+  obfs-password: 6fltjteoyab7fjf1
+  password: 57beeeb0-03fc-4fc9-94da-7604488a7134
+  skip-cert-verify: true
+  sni: psstatic.cdn.bcebos.com
+  udp: true
+  up: 100
+- name: 'automerge_🇭🇰 香港 | HKG #1'
+  type: vmess
+  server: 47.244.120.197
+  port: 36703
+  alpn:
+  - ''
+  alterId: 0
+  cipher: auto
+  network: ws
+  skip-cert-verify: true
   tls: false
   udp: true
-- name: 'automerge_🇰🇷 韩国 | KOR #1'
-  type: ss
-  server: 13.124.39.151
-  port: 8443
-  cipher: chacha20-ietf-poly1305
-  password: 7e68e32f-8015-4f37-9082-70e8b0b58043
-  udp: true
-- name: 'automerge_🇳🇬 尼日利亚 | NGA #1'
-  type: trojan
-  server: sclass-b1.catcat321.com
-  port: 20051
-  password: d7563108-615c-4338-a7bd-77f359869a4a
-  skip-cert-verify: true
-  sni: hk.catxstar.com
-  udp: true
-- name: 'automerge_🇳🇱 荷兰 | NLD #4'
+  uuid: 45b83519-9c4f-4052-a11b-02e017b636d4
+  ws-opts:
+    path: /arki
+- name: 'automerge_🇭🇰 香港 | HKG #2'
   type: vless
-  server: 201.34.142.108
+  server: 45.133.73.167
   port: 443
   client-fingerprint: chrome
-  network: xhttp
+  network: ws
+  servername: zmxoo.de5.net
   tls: true
   udp: true
-  uuid: 4777d90d-265b-4927-a0d1-63f36ed1421c
-- name: 'automerge_🇳🇱 荷兰 | NLD #9'
+  uuid: 0fc0ded7-32b3-4e36-a623-6e7670225247
+  ws-opts:
+    headers:
+      Host: zmxoo.de5.net
+    path: /html/order/torrent
+- name: automerge_🇭🇰 香港 | HKG 3
+  type: anytls
+  server: 5641sdds.df6h451rh.xin
+  port: 443
+  password: 0324fbc29561
+  skip-cert-verify: true
+  sni: images.ctfassets.net
+- name: automerge_🇭🇰 香港 | HKG 4
+  type: anytls
+  server: turn.gosthk.site
+  port: 57180
+  password: c698e777-2ede-446c-aa76-04ea46070e43
+  skip-cert-verify: true
+  sni: turn.gosthk.site
+  udp: true
+- name: automerge_🇯🇵 日本 | JPN
+  type: hysteria2
+  server: nb5rb.hikigo.com
+  port: 443
+  alpn:
+  - h3
+  down: 200
+  obfs: salamander
+  obfs-password: yhlbhcysaba0wtn1
+  password: 57beeeb0-03fc-4fc9-94da-7604488a7134
+  skip-cert-verify: true
+  sni: nb5rb.hikigo.com
+  udp: true
+  up: 100
+- name: 'automerge_🇰🇿 哈萨克斯坦 | KAZ #1'
   type: vless
-  server: 48.102.173.125
-  port: 444
+  server: insightfailover.ratethatrestaurant.org
+  port: 443
   client-fingerprint: chrome
   network: ws
-  servername: neplay603.gangtype.com
+  servername: insightfailover.ratethatrestaurant.org
+  tls: true
+  udp: true
+  uuid: 4cadde0d-41c1-0002-98f9-3231b252d4bd
+  ws-opts:
+    headers:
+      Host: insightfailover.ratethatrestaurant.org
+    path: /media/ws/
+- name: 'automerge_🇳🇱 荷兰 | NLD #1'
+  type: vless
+  server: 66.90.91.138
+  port: 443
+  alpn:
+  - h2
+  client-fingerprint: firefox
+  network: xhttp
+  servername: 6b014610-e9958027.ferrin.uk
+  tls: true
+  udp: true
+  uuid: e9958027-03be-4eb5-bcec-70415b2e4844
+- name: 'automerge_🇳🇱 荷兰 | NLD #2'
+  type: vless
+  server: 31.177.111.136
+  port: 443
+  alpn:
+  - h2
+  client-fingerprint: firefox
+  network: ws
+  servername: q075gi2cms.schoolbag.top
   tls: true
   udp: true
   uuid: ef5a57c7-84d5-4f86-b99c-875a16da485f
   ws-opts:
     headers:
-      Host: neplay603.gangtype.com
-    path: /stream/updates/a66d7902
-- name: 'automerge_🇵🇱 波兰 | POL #1'
+      Host: q075gi2cms.schoolbag.top
+    path: /collector/runtime/channel/open
+- name: 'automerge_🇳🇱 荷兰 | NLD #3'
+  type: ss
+  server: 172.233.41.127
+  port: 2078
+  cipher: chacha20-ietf-poly1305
+  password: 54pwunbkxwjulx36
+  udp: true
+- name: 'automerge_🇳🇱 荷兰 | NLD #4'
   type: vless
-  server: 146.75.57.111
+  server: 188.166.70.24
   port: 443
-  alpn:
-  - h2
+  network: http
+  tls: false
+  udp: true
+  uuid: 40992c2a-513e-4837-9594-23411fd42afd
+- name: 'automerge_🇷🇺 俄罗斯 | RUS #1'
+  type: vless
+  server: 168.113.253.178
+  port: 443
   client-fingerprint: chrome
-  network: xhttp
-  servername: cdn.akamai.steamstatic.com
+  network: tcp
+  servername: uzndiuvzvqqljdyhzs.fcloudservices.site
   tls: true
   udp: true
-  uuid: 93cdb4e7-ab65-44fa-91c8-f46e80806bca
-- name: automerge_🇷🇺 俄罗斯 | RUS
+  uuid: d6d40100-9442-0001-b5b9-6d259318c421
+  ws-opts:
+    path: /
+- name: automerge_🇷🇺 俄罗斯 | RUS 2
   type: vless
   server: vps3.nemnogogo.com
   port: 443
   alpn:
   - h2
-  client-fingerprint: firefox
-  network: grpc
-  servername: vps3.nemnogogo.com
-  tls: true
-  udp: true
-  uuid: 38308ff1-5aa9-494f-a25a-0f2870d56b3e
-- name: automerge_🇷🇺 俄罗斯 | RUS 2
-  type: vless
-  server: 201.51.12.98
-  port: 443
   client-fingerprint: firefox
   network: grpc
   servername: vps3.nemnogogo.com
@@ -609,214 +504,77 @@ proxies:
   uuid: eb88bb1a-7bf0-0001-b9cd-4f97c89f0e9b
   ws-opts:
     path: /
-- name: automerge_🇷🇺 俄罗斯 | RUS 4
-  type: vless
-  server: 201.24.116.192
-  port: 443
-  client-fingerprint: firefox
-  network: grpc
-  servername: vps3.nemnogogo.com
-  tls: true
-  udp: true
-  uuid: 38308ff1-5aa9-494f-a25a-0f2870d56b3e
-- name: 'automerge_🇷🇺 俄罗斯 | RUS #5'
-  type: vless
-  server: 168.113.253.178
-  port: 443
-  client-fingerprint: chrome
-  network: tcp
-  servername: uzndiuvzvqqljdyhzs.fcloudservices.site
-  tls: true
-  udp: true
-  uuid: 58708e38-dd5a-0001-902d-93621ee2bd83
-  ws-opts:
-    path: /
-- name: 'automerge_🇷🇺 俄罗斯 | RUS #6'
-  type: vless
-  server: 168.113.253.178
-  port: 443
-  client-fingerprint: chrome
-  network: tcp
-  servername: uzndiuvzvqqljdyhzs.fcloudservices.site
-  tls: true
-  udp: true
-  uuid: d6d40100-9442-0001-b5b9-6d259318c421
-  ws-opts:
-    path: /
-- name: 'automerge_🇷🇺 俄罗斯 | RUS #7'
-  type: vless
-  server: 168.113.253.178
-  port: 443
-  client-fingerprint: chrome
-  network: tcp
-  servername: uzndiuvzvqqljdyhzs.fcloudservices.site
-  tls: true
-  udp: true
-  uuid: 608172ed-68e4-0001-85dc-f92c25d0eb92
-  ws-opts:
-    path: /
-- name: 'automerge_🇸🇬 新加坡 | SGP #1'
-  type: vless
-  server: 138.2.86.205
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: www.microsoft.com
-  tls: true
-  uuid: b2d4f6a8-1c3e-4a5b-9d7f-2e4a6c8b0d1f
-  ws-opts:
-    path: /7b9977b2af9da85fa86adc065c362efe
 - name: 'automerge_🇸🇬 新加坡 | SGP #2'
-  type: hysteria2
-  server: 54.255.168.93
+  type: trojan
+  server: bgsg1.hikigo.com
   port: 443
-  password: 7e68e32f-8015-4f37-9082-70e8b0b58043
+  password: 57beeeb0-03fc-4fc9-94da-7604488a7134
   skip-cert-verify: true
-  sni: www.bing.com
-  tls: false
-- name: 'automerge_🇸🇬 新加坡 | SGP #3'
-  type: vless
-  server: 168.107.79.37
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: www.microsoft.com
-  tls: true
-  uuid: c5e7a9b1-3d5f-4a6c-8b0d-2f4a6c8e0b2d
-  ws-opts:
-    path: /7b9977b2af9da85fa86adc065c362efe
-- name: automerge_🇹🇼 🇨🇳 台湾 | TWN 2
+  sni: bgsg1.hikigo.com
+  udp: true
+- name: automerge_🇹🇼 🇨🇳 台湾 | TWN
   type: anytls
-  server: rtifgjdr.df6h451rh.xin
+  server: im.frnhk.xyz
   port: 443
-  password: 2902c46c8493
+  password: e2413369-16de-4c90-97c5-b39b8d6b71cd
   skip-cert-verify: true
-  sni: docs.microsoft.com
+  sni: im.frnhk.xyz
   udp: true
-- name: 'automerge_🇺🇸 美国 | USA #3'
+- name: 'automerge_🇺🇸 美国 | USA #1'
   type: vless
-  server: swo2.nexfile.net
-  port: 4443
-  client-fingerprint: chrome
-  network: xhttp
-  servername: swo2.nexfile.net
-  tls: true
-  udp: true
-  uuid: a35c508f-4d5d-4531-842e-6e9d43c762c0
-- name: 'automerge_🇺🇸 美国 | USA #6'
-  type: vless
-  server: 179.253.80.175
-  port: 4443
-  client-fingerprint: firefox
-  network: xhttp
-  servername: swo2.nexfile.net
-  tls: true
-  udp: true
-  uuid: a35c508f-4d5d-4531-842e-6e9d43c762c0
-- name: 'automerge_🇺🇸 美国 | USA #7'
-  type: vless
-  server: sparkling-gadabout.quick-cdn.net
-  port: 443
-  client-fingerprint: chrome
-  network: ws
-  servername: sparkling-gadabout.quick-cdn.net
-  tls: true
-  udp: true
-  uuid: bde4fc77-a93a-49c0-bf0e-de3471cd52bd
-  ws-opts:
-    headers:
-      Host: sparkling-gadabout.quick-cdn.net
-    path: /ws
-- name: 'automerge_🇺🇸 美国 | USA #9'
-  type: vless
-  server: tachu37.top
+  server: 140.248.186.54
   port: 443
   alpn:
-  - http/1.1
+  - h2
   client-fingerprint: chrome
-  network: ws
-  servername: tachu37.top
+  network: xhttp
+  servername: cdn.akamai.steamstatic.com
   tls: true
   udp: true
-  uuid: 65c21703-ae89-4eed-ae87-8bec8a4c000c
-  ws-opts:
-    headers:
-      Host: tachu37.top
-    path: /js
-- name: automerge_AT_speednode_0001
-  type: vless
-  server: au2.pad-sservice.lat
-  port: 8443
-  client-fingerprint: chrome
-  network: ws
-  servername: au2.pad-sservice.lat
-  skip-cert-verify: false
-  tls: true
+  uuid: 93cdb4e7-ab65-44fa-91c8-f46e80806bca
+- name: automerge_🇺🇸 美国 | USA 6
+  type: hysteria2
+  server: a1dgus.supertoolify.com
+  port: 40205
+  alpn:
+  - h3
+  down: 200
+  obfs: salamander
+  obfs-password: kydqninqtcdomlcb
+  password: 57beeeb0-03fc-4fc9-94da-7604488a7134
+  skip-cert-verify: true
+  sni: psstatic.cdn.bcebos.com
   udp: true
-  uuid: 2b0e5676-fb62-4bf0-9607-6e7818421e8e
-  ws-opts:
-    headers:
-      Host: au2.pad-service.com
-    path: /A11U
-- name: automerge_AT_speednode_0002
-  type: vless
-  server: 152.53.31.46
-  port: 8443
-  client-fingerprint: firefox
-  network: ws
-  servername: usa3.pad-sservice.lat
-  skip-cert-verify: false
-  tls: true
-  udp: true
-  uuid: 2b0e5676-fb62-4bf0-9607-6e7818421e8e
-  ws-opts:
-    headers:
-      Host: usa3.pad-service.com
-    path: /U1SA
-- name: automerge_BR_speednode_0003
-  type: vless
-  server: de9.pad-sservice.lat
-  port: 8443
-  network: ws
-  servername: de9.pad-sservice.lat
-  skip-cert-verify: false
-  tls: true
-  udp: true
-  uuid: 2b0e5676-fb62-4bf0-9607-6e7818421e8e
-  ws-opts:
-    headers:
-      Host: de9.pad-service.com
-    path: /DE9W
-- name: automerge_ES_speednode_0007
-  type: vless
-  server: au5.pad-sservice.lat
-  port: 8443
-  client-fingerprint: chrome
-  network: ws
-  servername: au5.pad-sservice.lat
-  skip-cert-verify: false
-  tls: true
-  udp: true
-  uuid: 2b0e5676-fb62-4bf0-9607-6e7818421e8e
-  ws-opts:
-    headers:
-      Host: au5.pad-sservice.lat
-    path: /AU5W
-- name: automerge_FR_speednode_0012
+  up: 100
+- name: automerge_DK_speednode_0006
   type: http
-  server: 82.65.162.76
-  port: 443
+  server: 158.173.154.5
+  port: 9002
   skip-cert-verify: true
   tls: true
   udp: true
-- name: automerge_IE_speednode_0013
+- name: automerge_FR_speednode_0007
+  type: http
+  server: 87.98.174.157
+  port: 6103
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: automerge_IE_speednode_0009
   type: http
   server: 34.249.214.108
   port: 443
   skip-cert-verify: true
   tls: true
   udp: true
-- name: automerge_NL_speednode_0027
+- name: automerge_NL_speednode_0017
+  type: http
+  server: 84.17.47.125
+  port: 9002
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: automerge_NL_speednode_0020
   type: http
   server: 84.17.47.123
   port: 9002
@@ -824,217 +582,199 @@ proxies:
   skip-cert-verify: true
   tls: true
   udp: true
-- name: automerge_PL_speednode_0028
-  type: http
-  server: 31.186.220.204
-  port: 443
-  skip-cert-verify: true
-  tls: true
-  udp: true
-- name: automerge_US_speednode_0039
-  type: http
-  server: 44.248.167.117
-  port: 8443
-  skip-cert-verify: true
-  tls: true
-  udp: true
-- name: automerge_US_speednode_0041
-  type: http
-  server: 64.98.50.100
-  port: 443
-  skip-cert-verify: true
-  tls: true
-  udp: true
-- name: automerge_US_speednode_0042
-  type: vless
-  server: mx001.zestapp778.com
-  port: 19167
-  client-fingerprint: chrome
-  servername: mx001.zestapp778.com
-  skip-cert-verify: false
-  tls: true
-  udp: true
-  uuid: e9a8144e-5237-488a-afb1-9ca3d8d54c80
-- name: automerge_US_speednode_0043
-  type: vless
-  server: 130.94.18.208
-  port: 54857
-  client-fingerprint: firefox
-  servername: us001.zestapp778.com
-  skip-cert-verify: false
-  tls: true
-  udp: true
-  uuid: e9a8144e-5237-488a-afb1-9ca3d8d54c80
 - name: zhuhaiuk_US - zhuhai.uk
-  type: http
-  server: 138.199.35.200
-  port: 9002
-  tls: true
-  skip-cert-verify: true
-- name: zhuhaiuk_RU - zhuhai.uk
-  type: http
-  server: 87.242.85.187
-  port: 8443
-  tls: true
-  sni: 87.242.85.187
-  skip-cert-verify: true
-- name: zhuhaiuk_KR - zhuhai.uk
-  type: socks5
-  server: 121.169.46.116
-  port: 1090
-  username: VDJjbE0wUWxNMFE2Og==
-- name: zhuhaiuk_US - zhuhai.uk 02
-  type: http
-  server: 38.247.141.135
-  port: 443
-  username: 'null'
-  password: 'null'
-  tls: true
-  skip-cert-verify: true
-- name: zhuhaiuk_US - zhuhai.uk 03
-  type: http
-  server: 107.151.238.27
-  port: 443
-  username: testuser1
-  password: e4b72b531a2d10900519
-  tls: true
-  sni: 6b97ee1b.acsnet.co
-- name: zhuhaiuk_US - zhuhai.uk 04
-  type: http
-  server: 138.199.35.200
-  port: 9002
-  username: 'null'
-  password: 'null'
-  tls: true
-  sni: 138.199.35.200
-  skip-cert-verify: true
-- name: zhuhaiuk_US - zhuhai.uk 05
-  type: http
-  server: 47.90.206.169
-  port: 7615
-  tls: true
-  sni: 47.90.206.169
-  skip-cert-verify: true
-- name: zhuhaiuk_US - zhuhai.uk 06
-  type: http
-  server: 138.199.35.204
-  port: 9002
-  tls: true
-  sni: 138.199.35.204
-  skip-cert-verify: true
-- name: zhuhaiuk_US - zhuhai.uk 07
-  type: http
-  server: 38.28.193.188
-  port: 443
-  username: 'null'
-  password: 'null'
-  tls: true
-  sni: 38.28.193.188
-  skip-cert-verify: true
-- name: zhuhaiuk_US - zhuhai.uk 08
-  type: http
-  server: 138.199.35.216
-  port: 9002
-  username: 'null'
-  password: 'null'
-  tls: true
-  sni: 138.199.35.216
-  skip-cert-verify: true
-- name: zhuhaiuk_US - zhuhai.uk 09
-  type: socks5
-  server: 193.25.215.182
-  port: 22222
-- name: zhuhaiuk_FR - zhuhai.uk
-  type: http
-  server: 84.235.228.156
-  port: 443
-  username: 'null'
-  password: 'null'
-  tls: true
-  skip-cert-verify: true
-- name: zhuhaiuk_US - zhuhai.uk 10
-  type: http
-  server: 38.28.193.188
-  port: 443
-  tls: true
-  sni: 38.28.193.188
-  skip-cert-verify: true
-- name: zhuhaiuk_US - zhuhai.uk 11
   type: http
   server: 74.208.250.147
   port: 8443
   tls: true
+  sni: 74.208.250.147
   skip-cert-verify: true
-- name: zhuhaiuk_US - zhuhai.uk 12
+- name: zhuhaiuk_NL - zhuhai.uk
   type: http
-  server: 23.133.176.14
-  port: 443
+  server: 84.17.47.149
+  port: 9002
+  username: 'null'
+  password: 'null'
   tls: true
-  sni: 23.133.176.14
+  sni: 84.17.47.149
   skip-cert-verify: true
-- name: zhuhaiuk_SE - zhuhai.uk
-  type: vless
-  server: 150.241.87.52
-  port: 443
-  uuid: ecc0e60a-f2cc-4266-8353-b228df89730a
-  flow: xtls-rprx-vision
-  tls: true
-  servername: pl.galacticworld.online
-  client-fingerprint: chrome
-  reality-opts:
-    public-key: GBO_paFyK9FihgPMH8r_vHa4IKMkSGfvAQ2fhPK_1H4
-- name: zhuhaiuk_SE - zhuhai.uk 02
-  type: socks5
-  server: 202.4.117.245
-  port: 9090
-- name: zhuhaiuk_EC - zhuhai.uk
+- name: zhuhaiuk_CH - zhuhai.uk
   type: http
-  server: 38.165.231.71
+  server: 149.88.27.46
   port: 9443
   tls: true
-  sni: 38.165.231.71
+  sni: 149.88.27.46
   skip-cert-verify: true
-- name: zhuhaiuk_ES - zhuhai.uk
+- name: zhuhaiuk_JP - zhuhai.uk
   type: http
-  server: 80.24.34.107
-  port: 8090
+  server: fan.587475.xyz
+  port: 443
   tls: true
-  sni: 80.24.34.107
   skip-cert-verify: true
-- name: zhuhaiuk_US - zhuhai.uk 13
+- name: zhuhaiuk_US - zhuhai.uk 02
   type: http
-  server: 45.145.73.240
-  port: 8443
+  server: 172.64.68.89
+  port: 443
   tls: true
-  sni: 45.145.73.240
+  sni: 172.64.68.89
   skip-cert-verify: true
-- name: zhuhaiuk_DK - zhuhai.uk
+- name: zhuhaiuk_NL - zhuhai.uk 02
   type: http
-  server: 185.245.84.50
-  port: 9443
+  server: 84.17.47.124
+  port: 9002
+  username: 'null'
+  password: 'null'
   tls: true
+  skip-cert-verify: true
+- name: zhuhaiuk_AU - zhuhai.uk
+  type: http
+  server: 103.62.50.130
+  port: 443
+  tls: true
+  sni: 103.62.50.130
   skip-cert-verify: true
 - name: zhuhaiuk_HK - zhuhai.uk
+  type: vmess
+  server: byr3a.xiaoyan.io
+  port: 16622
+  uuid: 904f0569-8695-466f-97cf-0de2face1b46
+  alterId: 0
+  cipher: auto
+  network: ws
+  ws-opts:
+    path: /
+    headers:
+      Host: f9309cc88637c26f552a1a64fb311cae.mobgslb.tbcache.com
+- name: zhuhaiuk_US - zhuhai.uk 03
+  type: http
+  server: 152.233.50.145
+  port: 9443
+  tls: true
+  skip-cert-verify: true
+- name: zhuhaiuk_IE - zhuhai.uk
+  type: http
+  server: 18.200.158.139
+  port: 443
+  username: 'null'
+  password: 'null'
+  tls: true
+  sni: 18.200.158.139
+  skip-cert-verify: true
+- name: zhuhaiuk_JP - zhuhai.uk 02
+  type: http
+  server: fan.571589.xyz
+  port: 443
+  tls: true
+  sni: fan.571589.xyz
+  skip-cert-verify: true
+- name: zhuhaiuk_US - zhuhai.uk 04
+  type: http
+  server: 38.28.185.222
+  port: 443
+  tls: true
+  skip-cert-verify: true
+- name: zhuhaiuk_GB - zhuhai.uk
+  type: http
+  server: 37.221.113.162
+  port: 9443
+  tls: true
+  sni: 37.221.113.162
+  skip-cert-verify: true
+- name: zhuhaiuk_PL - zhuhai.uk
+  type: http
+  server: 151.115.54.133
+  port: 443
+  username: 'null'
+  password: None
+  tls: true
+  skip-cert-verify: true
+- name: zhuhaiuk_NL - zhuhai.uk 03
+  type: http
+  server: 82.196.9.7
+  port: 443
+  username: testuser1
+  password: e4b72b531a2d10900519
+  tls: true
+  sni: 52c40907.acsnet.co
+  skip-cert-verify: true
+- name: zhuhaiuk_NL - zhuhai.uk 04
+  type: http
+  server: 84.17.47.126
+  port: 9002
+  tls: true
+  sni: 84.17.47.126
+  skip-cert-verify: true
+- name: zhuhaiuk_FR - zhuhai.uk
+  type: http
+  server: 146.70.253.162
+  port: 9443
+  tls: true
+  skip-cert-verify: true
+- name: zhuhaiuk_AU - zhuhai.uk 02
+  type: http
+  server: 150.230.14.159
+  port: 443
+  tls: true
+  skip-cert-verify: true
+- name: zhuhaiuk_LV - zhuhai.uk
+  type: http
+  server: 185.219.159.16
+  port: 443
+  username: 'null'
+  password: 'null'
+  tls: true
+  skip-cert-verify: true
+- name: zhuhaiuk_NL - zhuhai.uk 05
+  type: vless
+  server: 48.102.205.89
+  port: 22444
+  uuid: a9ff24d3-f308-4e72-acb9-a76062583837
+  flow: xtls-rprx-vision
+  tls: true
+  servername: fontanka.ru
+  skip-cert-verify: true
+  client-fingerprint: firefox
+  reality-opts:
+    public-key: T1BWBw3lq9G1LiQ7eQSPfdNQic7bUMEbdFNJBewAwB8
+    short-id: 6ad3c0f1e9b2478a
+- name: zhuhaiuk_NL - zhuhai.uk 06
+  type: http
+  server: 84.17.47.123
+  port: 9002
+  username: 'null'
+  password: 'null'
+  tls: true
+  skip-cert-verify: true
+- name: zhuhaiuk_DE - zhuhai.uk
+  type: http
+  server: 158.173.154.4
+  port: 9002
+  tls: true
+  sni: 158.173.154.4
+  skip-cert-verify: true
+- name: zhuhaiuk_HK - zhuhai.uk 02
   type: http
   server: 119.28.24.235
   port: 3128
   tls: true
   skip-cert-verify: true
-- name: zhuhaiuk_HK - zhuhai.uk 02
+- name: zhuhaiuk_HK - zhuhai.uk 03
   type: http
   server: fan.240104.xyz
   port: 443
   tls: true
   sni: fan.240104.xyz
   skip-cert-verify: true
-- name: zhuhaiuk_JP - zhuhai.uk
+- name: zhuhaiuk_KR - zhuhai.uk
   type: socks5
-  server: 101.36.104.46
-  port: 10808
-- name: zhuhaiuk_JP - zhuhai.uk 02
-  type: socks5
-  server: 101.36.104.239
-  port: 10808
+  server: 121.169.46.116
+  port: 1090
+- name: zhuhaiuk_KR - zhuhai.uk 02
+  type: http
+  server: 152.69.230.221
+  port: 443
+  tls: true
+  skip-cert-verify: true
 - name: zhuhaiuk_SG - zhuhai.uk
   type: socks5
   server: 66.80.2.252
@@ -1094,12 +834,28 @@ proxies:
   skip-cert-verify: true
   tls: true
   udp: true
+- name: ssrsub_🇮🇩 机场推荐:dafei.de 印尼 03
+  type: http
+  server: 103.86.116.118
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
 - name: ssrsub_🇮🇩 机场推荐:dafei.de 印尼 04
   type: http
   server: 178.248.73.58
   port: 443
   skip-cert-verify: true
   tls: true
+  udp: true
+- name: ssrsub_🇩🇪 机场推荐:dafei.de 德国 02
+  type: http
+  server: 87.106.223.158
+  port: 443
+  password: 'null'
+  skip-cert-verify: true
+  tls: true
+  username: 'null'
   udp: true
 - name: ssrsub_🇩🇪 机场推荐:dafei.de 德国 03
   type: http
@@ -1134,6 +890,15 @@ proxies:
   tls: true
   udp: true
   username: testuser1
+- name: ssrsub_🇩🇪 机场推荐:dafei.de 德国 11
+  type: http
+  server: 213.109.163.119
+  port: 443
+  password: 'null'
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: 'null'
 - name: ssrsub_🇩🇪 机场推荐:dafei.de 德国 13
   type: http
   server: 158.173.154.2
@@ -1142,6 +907,13 @@ proxies:
   skip-cert-verify: true
   tls: true
   username: 'null'
+  udp: true
+- name: ssrsub_🇩🇪 机场推荐:dafei.de 德国 15
+  type: http
+  server: 185.44.107.166
+  port: 443
+  skip-cert-verify: true
+  tls: true
   udp: true
 - name: ssrsub_🇩🇪 机场推荐:dafei.de 德国 16
   type: http
@@ -1166,6 +938,15 @@ proxies:
   skip-cert-verify: true
   tls: true
   udp: true
+- name: ssrsub_🇩🇪 机场推荐:dafei.de 德国 19
+  type: http
+  server: 37.203.35.27
+  port: 443
+  password: ''
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: ''
 - name: ssrsub_🇩🇪 机场推荐:dafei.de 德国 20
   type: http
   server: 87.249.132.97
@@ -1313,6 +1094,8 @@ proxies:
   type: vmess
   server: guanwang.awsno.com
   port: 443
+  alpn:
+  - ''
   alterId: '0'
   cipher: auto
   network: ws
@@ -1334,6 +1117,15 @@ proxies:
   tls: false
   username: fQ67Dpe5dU
   udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 08
+  type: http
+  server: 129.153.93.183
+  port: 443
+  password: 'null'
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: 'null'
 - name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 09
   type: http
   server: 68.235.56.51
@@ -1360,6 +1152,14 @@ proxies:
   type: http
   server: 121.127.34.82
   port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 15
+  type: http
+  server: 23.133.176.14
+  port: 443
+  password: None
   skip-cert-verify: true
   tls: true
   udp: true
@@ -1411,12 +1211,11 @@ proxies:
   udp: true
 - name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 25
   type: vmess
-  server: 172.64.145.93
+  server: www.shopify.com
   port: 443
   alterId: 0
   cipher: auto
   network: ws
-  skip-cert-verify: true
   tls: true
   uuid: 6a89a215-22bf-4bd7-9642-b95b2e09583a
   ws-opts:
@@ -1434,11 +1233,12 @@ proxies:
   udp: true
 - name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 28
   type: vmess
-  server: www.shopify.com
+  server: 172.64.145.93
   port: 443
   alterId: 0
   cipher: auto
   network: ws
+  skip-cert-verify: true
   tls: true
   uuid: 6a89a215-22bf-4bd7-9642-b95b2e09583a
   ws-opts:
@@ -1447,6 +1247,22 @@ proxies:
     path: /hls/cctv5phd.m3u8
   udp: true
   servername: guanwang.awsno.com
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 30
+  type: http
+  server: 38.95.111.226
+  port: 9443
+  password: ''
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: ''
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 31
+  type: http
+  server: 38.28.193.188
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
 - name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 32
   type: vmess
   server: 188.114.99.137
@@ -1794,6 +1610,13 @@ proxies:
     headers:
       Host: f9309cc88637c26f552a1a64fb311cae.mobgslb.tbcache.com
     path: /
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 83
+  type: http
+  server: 138.199.35.216
+  port: 9002
+  skip-cert-verify: true
+  tls: true
+  udp: true
 - name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 85
   type: http
   server: 138.199.35.211
@@ -1814,6 +1637,14 @@ proxies:
     headers:
       Host: copy_az_channel_NUFiLTER_17i.global.ssl.fastly.net.
     path: /TELEGRAM-@NUFiLTER-TELEGRAM-@NUFiLTER-TELEGRAM-@NUFiLTER-TELEGRAM-@NUFiLTER-TELEGRAM-@NUFiLTER-TELEGRAM-@NUFiLTER-TELEGRAM-@NUFiLTER-TELEGRAM-@NUFiLTER
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 87
+  type: http
+  server: 138.199.35.204
+  port: 9002
+  password: None
+  skip-cert-verify: true
+  tls: true
   udp: true
 - name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 91
   type: http
@@ -1860,6 +1691,13 @@ proxies:
   skip-cert-verify: true
   username: ''
   udp: true
+- name: ssrsub_🇳🇱 机场推荐:dafei.de 荷兰 02
+  type: http
+  server: 84.17.47.124
+  port: 9002
+  skip-cert-verify: true
+  tls: true
+  udp: true
 - name: ssrsub_🇳🇱 机场推荐:dafei.de 荷兰 03
   type: http
   server: 103.97.88.154
@@ -1868,6 +1706,15 @@ proxies:
   sni: 4a8c2906c96058315dffbc2b0e7ff19b-98005bea43f9ac33.apache-iv.com
   tls: true
   udp: true
+- name: ssrsub_🇳🇱 机场推荐:dafei.de 荷兰 04
+  type: http
+  server: 84.17.47.149
+  port: 9002
+  password: 'null'
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: 'null'
 - name: ssrsub_🇳🇱 机场推荐:dafei.de 荷兰 05
   type: http
   server: nl205.freeconnect.link
@@ -1892,6 +1739,13 @@ proxies:
   port: 443
   skip-cert-verify: true
   sni: 51.158.243.91
+  tls: true
+  udp: true
+- name: ssrsub_🇳🇱 机场推荐:dafei.de 荷兰 08
+  type: http
+  server: 51.159.225.197
+  port: 19362
+  skip-cert-verify: true
   tls: true
   udp: true
 - name: ssrsub_🇳🇱 机场推荐:dafei.de 荷兰 09
@@ -1926,6 +1780,15 @@ proxies:
   skip-cert-verify: true
   sni: 482c8436a1f7c908b48a1757abb5dd79-3791fb4df2db250b.apache-iv.com
   tls: true
+  udp: true
+- name: ssrsub_🇳🇱 机场推荐:dafei.de 荷兰 14
+  type: http
+  server: 84.17.47.126
+  port: 9002
+  password: 'null'
+  skip-cert-verify: true
+  tls: true
+  username: 'null'
   udp: true
 - name: ssrsub_🇳🇱 机场推荐:dafei.de 荷兰 15
   type: http
@@ -2151,6 +2014,14 @@ proxies:
   type: http
   server: 169.150.199.1
   port: 9443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇷🇴 机场推荐:dafei.de 罗马尼亚 05
+  type: http
+  server: 193.176.84.26
+  port: 9002
   password: None
   skip-cert-verify: true
   tls: true
@@ -2406,9 +2277,24 @@ proxies:
   uuid: b9bfa54d-bc44-4592-a6d6-89a9665d286f
   xudp: true
   servername: mother-earth.fyi
+- name: ssrsub_🇱🇻 机场推荐:dafei.de 拉脱维亚 01
+  type: http
+  server: 185.219.159.16
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
 - name: ssrsub_🇱🇻 机场推荐:dafei.de 拉脱维亚 02
   type: http
   server: 109.248.147.66
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇱🇻 机场推荐:dafei.de 拉脱维亚 03
+  type: http
+  server: 185.219.159.15
   port: 443
   skip-cert-verify: true
   tls: true
@@ -2893,6 +2779,13 @@ proxies:
   skip-cert-verify: true
   tls: true
   udp: true
+- name: ssrsub_🇨🇦 机场推荐:dafei.de 加拿大 08
+  type: http
+  server: 198.44.142.27
+  port: 9443
+  skip-cert-verify: true
+  tls: true
+  udp: true
 - name: ssrsub_🇨🇦 机场推荐:dafei.de 加拿大 09
   type: http
   server: 23.169.224.34
@@ -2993,6 +2886,13 @@ proxies:
   uuid: 4201786b-d99b-4147-a5f0-20d47acddb81
   xudp: true
   servername: 38917fx.es1.h1clayd.click
+- name: ssrsub_🇪🇸 机场推荐:dafei.de 西班牙 06
+  type: http
+  server: 82.102.17.178
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
 - name: ssrsub_🇪🇸 机场推荐:dafei.de 西班牙 07
   type: vless
   server: 196.196.148.90
@@ -3203,6 +3103,15 @@ proxies:
   password: jHsK2gqs
   username: qT46DZLv
   udp: true
+- name: ssrsub_🇻🇳 机场推荐:dafei.de 越南 02
+  type: http
+  server: 14.225.71.128
+  port: 8443
+  password: ''
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: ''
 - name: ssrsub_🇻🇳 机场推荐:dafei.de 越南 03
   type: http
   server: 14.225.71.128
@@ -3329,13 +3238,6 @@ proxies:
   sni: 482c8436a1f7c908b48a1757abb5dd79-ce85c45206570905.apache-iv.com
   tls: true
   udp: true
-- name: ruk1ng001_D🔴🇩🇪hos[🤖💬🧩🎵]_dokng.com_359b6483
-  type: http
-  server: 158.173.154.5
-  port: 9002
-  skip-cert-verify: true
-  tls: true
-  udp: true
 - name: ruk1ng001_D🔴🇩🇪hos[🤖💬🧩🎵]_dokng.com_fa577ab1
   type: http
   server: 159.69.94.125
@@ -3360,14 +3262,6 @@ proxies:
   skip-cert-verify: true
   tls: true
   udp: true
-- name: ruk1ng001_D🔴🇩🇪hos[🤖💬🔮🎭]_dokng.com_c8998a01
-  type: http
-  server: 193.233.75.115
-  port: 443
-  password: None
-  skip-cert-verify: true
-  tls: true
-  udp: true
 - name: ruk1ng001_D🔴🇩🇪hos[🤖💬🧩📺]_dokng.com_a57dccb8
   type: http
   server: 158.173.154.1
@@ -3385,28 +3279,12 @@ proxies:
   skip-cert-verify: true
   tls: true
   udp: true
-- name: ruk1ng001_D🔴🇺🇸hos[🤖💬🧩🎵]_dokng.com_4451c444
-  type: http
-  server: 138.199.35.216
-  port: 9002
-  password: 'null'
-  skip-cert-verify: true
-  tls: true
-  udp: true
-  username: 'null'
 - name: ruk1ng001_D🔴🇷🇴hos[🤖💬🔮🧩]_dokng.com_4efcc5ec
   type: http
   server: 193.176.84.24
   port: 9002
   skip-cert-verify: true
   sni: www.bing.com
-  tls: true
-  udp: true
-- name: ruk1ng001_D🔴🇺🇸hos[🤖💬🧩📺]_dokng.com_022e1256
-  type: http
-  server: 138.199.35.216
-  port: 9002
-  skip-cert-verify: true
   tls: true
   udp: true
 - name: ruk1ng001_D🔴🇺🇸hos[💬🧩📺🎵]_dokng.com_652faead
@@ -3416,34 +3294,9 @@ proxies:
   skip-cert-verify: true
   tls: true
   udp: true
-- name: ruk1ng001_D🔴🇩🇪hos[🤖💬🔮🧩]_dokng.com_065054e8
-  type: http
-  server: 87.106.223.158
-  port: 443
-  password: 'null'
-  skip-cert-verify: true
-  tls: true
-  udp: true
-  username: 'null'
 - name: ruk1ng001_D🔴🇳🇱hos[🤖💬🔮🧩]_dokng.com_387205ed
   type: http
   server: 84.17.47.150
-  port: 9002
-  password: 'null'
-  skip-cert-verify: true
-  tls: true
-  udp: true
-  username: 'null'
-- name: ruk1ng001_D🔴🇳🇱hos[🤖💬🔮🧩]_dokng.com_1402a953
-  type: http
-  server: 84.17.47.124
-  port: 9002
-  skip-cert-verify: true
-  tls: true
-  udp: true
-- name: ruk1ng001_D🔴🇩🇪hos[🤖💬🧩🎵]_dokng.com_460e6705
-  type: http
-  server: 158.173.154.5
   port: 9002
   password: 'null'
   skip-cert-verify: true
@@ -3458,14 +3311,6 @@ proxies:
   skip-cert-verify: true
   tls: true
   username: 'null'
-- name: ruk1ng001_D🔴🇺🇸hos[🤖💬🧩📺]_dokng.com_73b58d08
-  type: http
-  server: 138.199.35.218
-  port: 9002
-  skip-cert-verify: true
-  sni: 138.199.35.218
-  tls: true
-  udp: true
 - name: ruk1ng001_C🟠🇱🇻hos[🤖💬🔮🧩]_dokng.com_8dc05edd
   type: http
   server: 109.248.149.34
@@ -3473,15 +3318,6 @@ proxies:
   skip-cert-verify: true
   tls: true
   udp: true
-- name: ruk1ng001_D🔴🇳🇱hos[🤖💬🔮📺]_dokng.com_25479245
-  type: http
-  server: 84.17.47.123
-  port: 9002
-  password: 'null'
-  skip-cert-verify: true
-  tls: true
-  udp: true
-  username: 'null'
 - name: ruk1ng001_D🔴🇩🇪hos[🤖💬🧩🎵]_dokng.com_ffdd4b91
   type: http
   server: 158.173.154.4
@@ -3519,15 +3355,6 @@ proxies:
   skip-cert-verify: true
   tls: true
   username: 'null'
-- name: ruk1ng001_D🔴🇷🇴hos[🤖💬🔮🧩]_dokng.com_0b5076bf
-  type: http
-  server: 193.176.84.26
-  port: 9002
-  password: ''
-  skip-cert-verify: true
-  tls: true
-  udp: true
-  username: ''
 - name: ruk1ng001_D🔴🇺🇸hos[🤖💬🧩📺]_dokng.com_e25ed24c
   type: http
   server: 138.199.35.211
@@ -3676,13 +3503,6 @@ proxies:
   skip-cert-verify: true
   tls: true
   udp: true
-- name: ruk1ng001_D🔴🇳🇱hos[🤖💬🔮🧩]_dokng.com_4cc80e22
-  type: http
-  server: 84.17.47.125
-  port: 9002
-  skip-cert-verify: true
-  tls: true
-  udp: true
 - name: ruk1ng001_D🔴🇷🇺hos[🔮📺🎵🎮]_dokng.com_2a2e62a5
   type: http
   server: 46.29.166.134
@@ -3721,15 +3541,6 @@ proxies:
   skip-cert-verify: true
   tls: true
   udp: true
-- name: ruk1ng001_D🔴🇺🇸hos[🤖💬🔮🎞️]_dokng.com_9728447c
-  type: http
-  server: 162.244.227.36
-  port: 443
-  password: None
-  skip-cert-verify: true
-  tls: true
-  udp: true
-  username: ''
 - name: ruk1ng001_D🔴🇷🇴hos[🤖💬🔮🧩]_dokng.com_f2345fbf
   type: http
   server: 135.136.1.2
@@ -3754,14 +3565,6 @@ proxies:
   port: 443
   skip-cert-verify: true
   tls: true
-- name: ruk1ng001_D🔴🇺🇸hos[🤖💬🧩🎵]_dokng.com_8f481182
-  type: http
-  server: 138.199.35.204
-  port: 9002
-  password: None
-  skip-cert-verify: true
-  tls: true
-  udp: true
 - name: ruk1ng001_U⚪🏳️ukn[🤖💬🔮🧩]_dokng.com_0ab99749
   type: vless
   server: 62.144.51.95
@@ -3778,24 +3581,6 @@ proxies:
   skip-cert-verify: true
   tls: true
   udp: true
-- name: ruk1ng001_D🔴🇳🇱hos[🤖💬🔮🧩]_dokng.com_338a16a0
-  type: http
-  server: 84.17.47.126
-  port: 9002
-  password: 'null'
-  skip-cert-verify: true
-  tls: true
-  udp: true
-  username: 'null'
-- name: ruk1ng001_D🔴🇩🇪hos[🤖💬🔮🧩]_dokng.com_13237107
-  type: http
-  server: 37.203.35.27
-  port: 443
-  password: ''
-  skip-cert-verify: true
-  tls: true
-  udp: true
-  username: ''
 - name: ruk1ng001_D🔴🇮🇪hos[🤖💬🎞️🎮]_dokng.com_ccdfe7c3
   type: http
   server: 18.200.158.139
@@ -3811,15 +3596,6 @@ proxies:
   skip-cert-verify: true
   tls: true
   udp: true
-- name: ruk1ng001_D🔴🇺🇸hos[🤖💬🔮🧩]_dokng.com_4cc7e454
-  type: http
-  server: 38.95.111.226
-  port: 9443
-  password: ''
-  skip-cert-verify: true
-  tls: true
-  udp: true
-  username: ''
 - name: ruk1ng001_D🔴🇺🇸hos[🤖💬🔮🧩]_dokng.com_41c9dcd3
   type: http
   server: 172.64.68.89
@@ -3829,14 +3605,6 @@ proxies:
   tls: true
   udp: true
   username: 'null'
-- name: ruk1ng001_D🔴🇺🇸hos[🤖💬🔮🧩]_dokng.com_d0705873
-  type: http
-  server: 23.133.176.14
-  port: 443
-  password: None
-  skip-cert-verify: true
-  tls: true
-  udp: true
 - name: ruk1ng001_D🔴🇳🇱hos[🤖💬🔮🧩]_dokng.com_ddf212e8
   type: http
   server: 84.17.47.146
@@ -3853,13 +3621,6 @@ proxies:
   skip-cert-verify: true
   tls: true
   udp: true
-- name: ruk1ng001_D🔴🇱🇻hos[🤖💬🔮🧩]_dokng.com_36d7f182
-  type: http
-  server: 185.219.159.15
-  port: 443
-  skip-cert-verify: true
-  tls: true
-  udp: true
 - name: ruk1ng001_C🟠🇦🇱hos[🤖💬🔮🧩]_dokng.com_5c5a81ec
   type: http
   server: 87.120.103.242
@@ -3868,23 +3629,6 @@ proxies:
   skip-cert-verify: true
   tls: true
   udp: true
-- name: ruk1ng001_D🔴🇳🇱hos[🤖💬🔮🧩]_dokng.com_d004f021
-  type: http
-  server: 84.17.47.147
-  port: 9002
-  password: None
-  skip-cert-verify: true
-  tls: true
-  udp: true
-- name: ruk1ng001_D🔴🇺🇸hos[🤖💬🧩🎵]_dokng.com_56d31441
-  type: http
-  server: 129.153.93.183
-  port: 443
-  password: 'null'
-  skip-cert-verify: true
-  tls: true
-  udp: true
-  username: 'null'
 - name: ruk1ng001_C🟠🇬🇷hos[🤖💬🧩📺]_dokng.com_4cc1e630
   type: http
   server: 149.22.85.78
@@ -3909,13 +3653,6 @@ proxies:
   port: 9002
   skip-cert-verify: true
   sni: www.bing.com
-  tls: true
-  udp: true
-- name: ruk1ng001_D🔴🇳🇱hos[🤖💬🔮🧩]_dokng.com_9d193960
-  type: http
-  server: 84.17.47.149
-  port: 9002
-  skip-cert-verify: true
   tls: true
   udp: true
 - name: ruk1ng001_D🔴🇳🇱hos[🤖💬🔮🧩]_dokng.com_0dc67707
@@ -3943,15 +3680,6 @@ proxies:
   port: 9002
   skip-cert-verify: true
   tls: true
-- name: ruk1ng001_D🔴🇳🇱hos[🤖💬🔮🧩]_dokng.com_c6134407
-  type: http
-  server: 84.17.47.149
-  port: 9002
-  password: 'null'
-  skip-cert-verify: true
-  tls: true
-  udp: true
-  username: 'null'
 - name: ruk1ng001_C🟠🇳🇱hos[🤖💬🧩📺]_dokng.com_3744e5a8
   type: http
   server: 149.36.51.129
@@ -3977,13 +3705,6 @@ proxies:
   skip-cert-verify: true
   tls: true
   udp: true
-- name: ruk1ng001_D🔴🇯🇵hos[🤖💬🧩🎵]_dokng.com_d8303f72
-  type: http
-  server: 64.176.51.83
-  port: 8443
-  skip-cert-verify: true
-  sni: 64.176.51.83
-  tls: true
 - name: ruk1ng001_A🟢🇮🇱res[🤖💬🔮🧩]_dokng.com_fbd6fbce
   type: http
   server: 62.90.77.30
@@ -4088,13 +3809,6 @@ proxies:
   skip-cert-verify: true
   tls: true
   username: 'null'
-- name: ruk1ng001_D🔴🇪🇸hos[📺🎵🎞️]_dokng.com_a960088a
-  type: http
-  server: 82.102.17.178
-  port: 443
-  skip-cert-verify: true
-  tls: true
-  udp: true
 - name: ruk1ng001_A🟢🇲🇽res_dokng.com_f20cb370
   type: socks5
   server: 94.194.165.96
@@ -4151,13 +3865,6 @@ proxies:
   port: 62000
   password: VvUAFi2E
   username: UBXich0K
-- name: ruk1ng001_D🔴🇨🇦hos[🤖💬🔮🧩]_dokng.com_8a105a38
-  type: http
-  server: 198.44.142.27
-  port: 9443
-  skip-cert-verify: true
-  tls: true
-  udp: true
 - name: ruk1ng001_C🟠🇲🇽hos_dokng.com_d02e3829
   type: socks5
   server: 144.225.47.158
@@ -4188,14 +3895,6 @@ proxies:
   skip-cert-verify: true
   tls: true
   udp: true
-- name: ruk1ng001_D🔴🇱🇻hos[💬🔮🧩🎵]_dokng.com_21c34602
-  type: http
-  server: 185.219.159.16
-  port: 443
-  password: None
-  skip-cert-verify: true
-  tls: true
-  udp: true
 - name: ruk1ng001_D🔴🇺🇸hos[🤖💬🔮🧩]_dokng.com_fb6ab23c
   type: http
   server: fan.365747.xyz
@@ -4218,21 +3917,6 @@ proxies:
   skip-cert-verify: true
   tls: true
   udp: true
-- name: ruk1ng001_C🟠🇲🇽hos_dokng.com_12126395
-  type: socks5
-  server: 144.225.47.106
-  port: 42000
-  password: sZnD8GTz
-  username: DJy1T0dt
-- name: ruk1ng001_D🔴🇩🇪hos[🤖💬🔮🧩]_dokng.com_c22c6176
-  type: http
-  server: 213.109.163.119
-  port: 443
-  password: 'null'
-  skip-cert-verify: true
-  tls: true
-  udp: true
-  username: 'null'
 - name: ruk1ng001_A🟢🇮🇩res[🤖💬🔮🧩]_dokng.com_d1da622b
   type: http
   server: 178.248.73.58
@@ -4294,15 +3978,6 @@ proxies:
   tls: true
   udp: true
   username: ''
-- name: ruk1ng001_D🔴🇨🇿hos[🤖💬🧩📺]_dokng.com_9304b81d
-  type: http
-  server: 152.233.16.174
-  port: 9443
-  password: None
-  skip-cert-verify: true
-  tls: true
-  udp: true
-  username: ''
 - name: ruk1ng001_D🔴🇳🇱hos[🤖💬🧩📺]_dokng.com_294d9c7a
   type: http
   server: 185.53.129.141
@@ -4310,11 +3985,6 @@ proxies:
   skip-cert-verify: true
   tls: true
   udp: true
-- name: ruk1ng001_D🔴🇺🇸hos[🤖💬🔮🧩]_dokng.com_1188f394
-  type: http
-  server: fan.226278.xyz
-  port: 443
-  tls: true
 - name: ruk1ng001_D🔴🇺🇸hos[🤖💬📺🎵]_dokng.com_568f056a
   type: http
   server: 149.34.248.65
@@ -4357,15 +4027,6 @@ proxies:
   password: s6a1j38q
   udp: true
   username: uv4oakg5
-- name: ruk1ng001_D🔴🇪🇨hos[🤖💬📺🎵]_dokng.com_41643452
-  type: http
-  server: 38.165.231.71
-  port: 9443
-  password: ''
-  skip-cert-verify: true
-  tls: true
-  udp: true
-  username: ''
 - name: ruk1ng001_C🟠🇯🇵hos[🤖💬🎵🎞️]_dokng.com_6fe6d031
   type: trojan
   server: 161.33.5.106
@@ -4397,22 +4058,12 @@ proxies:
   server: 161.33.45.134
   port: 8443
   uuid: a46d02b0-48bb-4a83-94fb-b72df283de93
-- name: ruk1ng001_D🔴🇨🇦hos[🤖💬🧩🎭]_dokng.com_2017146a
-  type: http
-  server: 149.88.98.81
-  port: 9443
-  skip-cert-verify: true
-  tls: true
 - name: ruk1ng001_C🟠🇮🇹hos[🤖💬🔮🧩]_dokng.com_92c172b4
   type: ss
   server: 202.50.253.45
   port: 19999
   cipher: aes-256-gcm
   password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
-- name: ruk1ng001_U⚪🇰🇷ukn_dokng.com_418b38c8
-  type: socks5
-  server: 121.169.46.116
-  port: 1090
 - name: ruk1ng001_D🔴🇩🇪hos[🤖💬🔮🧩]_dokng.com_ce5222b2
   type: http
   server: 217.92.132.233
@@ -4439,14 +4090,6 @@ proxies:
   servername: 5d0319t.nl7.h1clayd.click
   tls: true
   uuid: cda0862a-0f87-4be9-8ed8-1d0c9e382839
-- name: ruk1ng001_D🔴🇷🇴hos[🤖💬🔮🧩]_dokng.com_2850908f
-  type: http
-  server: 193.176.84.32
-  port: 9002
-  password: None
-  skip-cert-verify: true
-  tls: true
-  udp: true
 - name: ruk1ng001_D🔴🇺🇸hos_dokng.com_8e2f1699
   type: socks5
   server: 216.132.114.194
@@ -4546,15 +4189,6 @@ proxies:
   cipher: aes-256-gcm
   password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
   udp: true
-- name: ruk1ng001_D🔴🇺🇸hos[🤖💬🔮🧩]_dokng.com_b332bf46
-  type: http
-  server: fan.596189.xyz
-  port: 443
-  password: 'null'
-  sni: fan.596189.xyz
-  tls: true
-  udp: true
-  username: 'null'
 - name: ruk1ng001_C🟠🇺🇸hos[🤖💬🔮🎮]_dokng.com_52af43bb
   type: vless
   server: 162.35.101.177
@@ -4738,14 +4372,6 @@ proxies:
   tls: true
   udp: true
   username: ''
-- name: ruk1ng001_D🔴🇩🇪hos[🤖💬🔮🧩]_dokng.com_b3176287
-  type: http
-  server: 213.109.163.119
-  port: 443
-  password: None
-  skip-cert-verify: true
-  tls: true
-  udp: true
 - name: ruk1ng001_D🔴🇺🇸hos[🤖💬🔮🎮]_dokng.com_5d7bcd6f
   type: http
   server: fan.596189.xyz
@@ -4833,13 +4459,6 @@ proxies:
   skip-cert-verify: true
   tls: true
   udp: true
-- name: ruk1ng001_D🔴🇮🇩hos[🤖💬🔮📺]_dokng.com_33704a70
-  type: http
-  server: 103.86.116.118
-  port: 443
-  skip-cert-verify: true
-  tls: true
-  udp: true
 - name: ruk1ng001_C🟠🇪🇸hos[🤖💬🔮🎮]_dokng.com_c851b7e4
   type: vless
   server: 196.196.149.81
@@ -4886,13 +4505,6 @@ proxies:
   port: 42000
   password: DJy1T0dt
   username: Tek2x6av
-- name: ruk1ng001_D🔴🇳🇱hos[🤖💬🔮🧩]_dokng.com_a57a3277
-  type: http
-  server: 51.159.225.197
-  port: 19362
-  skip-cert-verify: true
-  tls: true
-  udp: true
 - name: ruk1ng001_A🟢🇹🇭res_dokng.com_63f8b36e
   type: socks5
   server: 82.47.152.151
@@ -4942,13 +4554,6 @@ proxies:
   servername: gateway.icloud.com
   tls: true
   uuid: a1bd17a7-cd13-46e5-a0cc-2f1f5109f664
-- name: ruk1ng001_D🔴🇳🇱hos[🤖💬🔮🧩]_dokng.com_c0858c45
-  type: http
-  server: 5.255.97.222
-  port: 443
-  skip-cert-verify: true
-  tls: true
-  udp: true
 - name: ruk1ng001_A🟢🇹🇭res_dokng.com_18746d5d
   type: socks5
   server: 109.66.136.42
@@ -4998,13 +4603,6 @@ proxies:
   servername: 0592efg.us8.h1clayd.click
   tls: true
   uuid: cda0862a-0f87-4be9-8ed8-1d0c9e382839
-- name: ruk1ng001_D🔴🇺🇸hos[🤖💬🔮🎵]_dokng.com_6c56a283
-  type: http
-  server: 38.28.193.188
-  port: 443
-  skip-cert-verify: true
-  tls: true
-  udp: true
 - name: ruk1ng001_D🔴🇫🇷hos[🤖💬🔮🧩]_dokng.com_e773cd92
   type: http
   server: 80.124.109.22
@@ -5018,21 +4616,6 @@ proxies:
   port: 42000
   password: ao3W5ZML
   username: JPjarpW3
-- name: ruk1ng001_D🔴🇺🇸hos[🤖💬🔮🧩]_dokng.com_13889823
-  type: vmess
-  server: 192.74.236.148
-  port: 30004
-  alterId: 64
-  cipher: auto
-  network: ws
-  skip-cert-verify: true
-  tls: true
-  udp: true
-  uuid: 418048af-a293-4b99-9b0c-98ca3580dd24
-  ws-opts:
-    headers:
-      Host: www.91334565.xyz
-    path: /path/1733477783705
 - name: ruk1ng001_C🟠🇪🇸hos[💬🔮🎮✈️]_dokng.com_2e5562ed
   type: vless
   server: 196.196.149.80
@@ -5061,12 +4644,6 @@ proxies:
   password: VAwyJQX0iKMJiyCw5UVK9wGH
   udp: true
   username: route164JIa2CBPxfy
-- name: ruk1ng001_C🟠🇺🇸hos_dokng.com_54966195
-  type: socks5
-  server: 23.230.200.250
-  port: 62000
-  password: kingstar123++
-  username: kingstar123
 - name: ruk1ng001_D🔴🇭🇰hos[🎵🎮✈️🐙]_dokng.com_dabbadb6
   type: http
   server: fan.240104.xyz
@@ -5158,15 +4735,6 @@ proxies:
   tls: true
   udp: true
   username: ''
-- name: ruk1ng001_D🔴🇻🇳hos[🤖💬🔮🎵]_dokng.com_c355101a
-  type: http
-  server: 14.225.71.128
-  port: 8443
-  password: ''
-  skip-cert-verify: true
-  tls: true
-  udp: true
-  username: ''
 - name: ruk1ng001_A🟢🇹🇭res_dokng.com_bf81894b
   type: socks5
   server: 151.246.109.158
@@ -5193,13 +4761,6 @@ proxies:
   tls: true
   udp: true
   uuid: cda0862a-0f87-4be9-8ed8-1d0c9e382839
-- name: ruk1ng001_D🔴🇨🇿hos[📺]_dokng.com_521c5945
-  type: http
-  server: 185.216.35.66
-  port: 443
-  skip-cert-verify: true
-  tls: true
-  udp: true
 - name: ruk1ng001_D🔴🇵🇹hos[🤖💬🎮✈️]_dokng.com_cebb66de
   type: http
   server: 149.22.86.1
@@ -5245,13 +4806,6 @@ proxies:
   servername: 04535dt.us8.h1clayd.click
   tls: true
   uuid: cda0862a-0f87-4be9-8ed8-1d0c9e382839
-- name: ruk1ng001_D🔴🇳🇱hos[🤖💬🔮🧩]_dokng.com_319d3692
-  type: http
-  server: 84.17.47.148
-  port: 9002
-  skip-cert-verify: true
-  tls: true
-  udp: true
 - name: ruk1ng001_C🟠🇺🇸hos[🤖💬🔮🎵]_dokng.com_5eb446e9
   type: vless
   server: 89.124.122.19
@@ -5376,13 +4930,6 @@ proxies:
   tls: true
   udp: true
   uuid: ead3595f-4020-4e76-a3ec-c248e1a2f2f7
-- name: ruk1ng001_D🔴🇩🇪hos[🤖💬🔮🎮]_dokng.com_380d6623
-  type: http
-  server: 185.44.107.166
-  port: 443
-  skip-cert-verify: true
-  tls: true
-  udp: true
 - name: ruk1ng001_D🔴🇵🇱hos[🤖💬🔮🎵]_dokng.com_bebfacdf
   type: http
   server: 151.115.54.133
@@ -5449,6 +4996,18 @@ proxies:
   skip-cert-verify: true
   tls: true
   udp: true
+- name: ruk1ng001_D🔴🇸🇪hos[🤖📺]_dokng.com_3a83a83c
+  type: vless
+  server: subgift.gcorecdn.com
+  port: 443
+  network: ws
+  servername: subgift.gcorecdn.com
+  tls: true
+  uuid: 740b2630-b42d-425c-bacd-37e7e30d78f1
+  ws-opts:
+    headers:
+      host: subgift.gcorecdn.com
+    path: /t.me-SubGift
 - name: ruk1ng001_D🔴🇺🇸hos_dokng.com_77b0e475
   type: socks5
   server: 69.55.49.177
@@ -5472,152 +5031,208 @@ proxies:
   password: https://xship.best
   skip-cert-verify: true
   sni: xship.top
-- name: ruk1ng001_D🔴🇷🇴hos[🤖💬🔮🧩]_dokng.com_568350f1
+- name: shaoyouvip_🇰🇷KR_1|4.1MB/s
+  type: socks5
+  server: 121.169.46.116
+  port: 1090
+  password: ''
+  skip-cert-verify: true
+  username: T2clM0QlM0Q6
+- name: shaoyouvip_🇬🇧GB_1|2.4MB/s
   type: http
-  server: 193.176.84.26
+  server: 212.102.63.31
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: shaoyouvip_🇩🇪DE_3|1.5MB/s
+  type: vless
+  server: terrace.elvano.website
+  port: 443
+  alpn:
+  - h2
+  - http/1.1
+  client-fingerprint: edge
+  network: xhttp
+  servername: terrace.elvano.website
+  tls: true
+  udp: true
+  uuid: 0b6a7fe0-206b-4071-9f96-cd397d1ec01a
+- name: shaoyouvip_🇹🇼TW_1|1.9MB/s
+  type: anytls
+  server: er8u54dh.df6h451rh.xin
+  port: 443
+  password: 2902c46c8493
+  skip-cert-verify: true
+  sni: px.ads.linkedin.com
+- name: shaoyouvip_🇧🇪BE_1|1.7MB/s
+  type: http
+  server: 146.70.123.98
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: shaoyouvip_🇨🇿CZ_1|2.2MB/s
+  type: http
+  server: 152.233.16.174
+  port: 9443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: shaoyouvip_🇳🇱NL_1|3.7MB/s
+  type: http
+  server: 149.36.51.129
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: shaoyouvip_🇩🇪DE_6|2.6MB/s
+  type: http
+  server: 172.64.69.89
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: shaoyouvip_🇩🇪DE_8|1.3MB/s|K001-260618
+  type: http
+  server: 158.173.154.3
   port: 9002
   password: None
   skip-cert-verify: true
   tls: true
   udp: true
-- name: shaoyouvip_🇩🇪DE_1|3.2MB/s
-  type: hysteria2
-  server: a3dee.supertoolify.com
-  port: 4430
-  alpn:
-  - h3
-  down: 200
-  obfs: salamander
-  obfs-password: off3io88xwyc76g8
-  password: 57beeeb0-03fc-4fc9-94da-7604488a7134
+  username: ''
+- name: shaoyouvip_🇳🇱NL_7|4.7MB/s
+  type: http
+  server: 84.17.47.123
+  port: 9002
+  password: 'null'
   skip-cert-verify: true
-  sni: psstatic.cdn.bcebos.com
-  udp: true
-  up: 100
-- name: shaoyouvip_🇩🇪DE_2|3.4MB/s
-  type: vless
-  server: 172.67.67.89
-  port: 443
-  alpn:
-  - h3
-  - h2
-  - http/1.1
-  client-fingerprint: ios
-  network: ws
-  servername: 1.proxy2.us.ci.
   tls: true
   udp: true
-  uuid: 4859c235-2530-4062-9a0b-ea859cbbf861
-  ws-opts:
-    headers:
-      Host: 1.proxy2.us.ci.
-    path: /?ed=2560
-- name: shaoyouvip_🇭🇰HK_1|2.9MB/s
-  type: hysteria2
-  server: 66hk.mateflora.com
-  port: 443
-  alpn:
-  - h3
-  down: 200
-  obfs: salamander
-  obfs-password: aemx2gndpgrt1qau
-  password: 57beeeb0-03fc-4fc9-94da-7604488a7134
+  username: 'null'
+- name: shaoyouvip_🇷🇴RO_1|1.3MB/s
+  type: http
+  server: 193.176.84.26
+  port: 9002
+  password: ''
   skip-cert-verify: true
-  sni: 66hk.mateflora.com
-  udp: true
-  up: 100
-- name: shaoyouvip_🇭🇰HK_2|1.4MB/s
-  type: hysteria2
-  server: nb2hk.hikigo.com
-  port: 443
-  alpn:
-  - h3
-  down: 200
-  obfs: salamander
-  obfs-password: o5qgnpl75wayhkn5
-  password: 57beeeb0-03fc-4fc9-94da-7604488a7134
-  skip-cert-verify: true
-  sni: nb2hk.hikigo.com
-  udp: true
-  up: 100
-- name: shaoyouvip_🇯🇵JP_1|2.5MB/s
-  type: hysteria2
-  server: kr-01.xn--9kqp42aims.top
-  port: 65502
-  obfs: salamander
-  obfs-password: OTA2ZjRiOGQ5MWYxNmQyZA==
-  password: aec36b98-3c2c-4959-974a-baa5915cb938
-  skip-cert-verify: true
-  sni: jp.xn--9kqp42aims.top
-  udp: true
-- name: shaoyouvip_🇸🇪SE_1|1.6MB/s
-  type: vless
-  server: 0ef47cx.se4.h1clayd.click
-  port: 443
-  client-fingerprint: chrome
-  network: xhttp
-  reality-opts:
-    public-key: LZhuBYUqlo8epvzFF3tOPMZ_vjZPN1sraOYy2CKtcz4
-    short-id: 356cc54d885a4036
-  servername: 0ef47cx.se4.h1clayd.click
   tls: true
   udp: true
-  uuid: f15a2e25-6859-4bcc-b4c4-a14bb8ae0fbb
-- name: shaoyouvip_🇫🇷FR_1|1.1MB/s
-  type: vless
-  server: 185.133.35.86
+  username: ''
+- name: shaoyouvip_🇳🇱NL_9|2.3MB/s|R002-260618
+  type: http
+  server: 103.97.88.154
   port: 443
-  alpn:
-  - h3
-  - h2
-  - http/1.1
-  client-fingerprint: chrome
-  encryption: none
-  network: xhttp
-  servername: mamafrance.baklajann.ru
+  password: 'null'
+  skip-cert-verify: true
   tls: true
   udp: true
-  uuid: d795a9ec-5ed0-4309-ba6c-edc09b818669
-  xudp: true
-- name: shaoyouvip_🇳🇱NL_1|1.3MB/s
-  type: vless
-  server: r4.pythonmakemigreat.wiki
-  port: 8443
-  client-fingerprint: firefox
-  encryption: none
-  network: xhttp
-  reality-opts:
-    public-key: QrNs0ew7snHqLfpVXS9RAhlRzgAzzGZK9fXmDcx9xHI
-    short-id: 40a4b9403abe554c
-  servername: assets.study.golangwikito.cfd
+  username: 'null'
+- name: shaoyouvip_🇳🇱NL_11|1.0MB/s|R002-260618
+  type: http
+  server: 84.17.47.149
+  port: 9002
+  skip-cert-verify: true
   tls: true
   udp: true
-  uuid: f8d52ece-fad4-478d-875d-df6eed3befa7
-  xudp: true
-- name: leilaomi_[265.4ms +/-0ms] http-172.64.68.89
+- name: shaoyouvip_🇪🇨EC_1|1.4MB/s|P002-260618
+  type: http
+  server: 38.165.231.71
+  port: 9443
+  password: ''
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: ''
+- name: shaoyouvip_🇳🇱NL_16|1.1MB/s|R002-260618
+  type: http
+  server: 84.17.47.150
+  port: 9002
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: shaoyouvip_🇸🇬SG_2|3.0MB/s
+  type: http
+  server: 128.199.254.13
+  port: 9090
+  password: ''
+  skip-cert-verify: true
+  username: ''
+- name: shaoyouvip_🇨🇴CO_1|2.6MB/s
+  type: http
+  server: 158.247.125.5
+  port: 9443
+  password: ''
+  skip-cert-verify: true
+  username: ''
+- name: shaoyouvip_🇮🇪IE_1|1.1MB/s
+  type: http
+  server: 18.200.158.139
+  port: 443
+  password: 'null'
+  skip-cert-verify: true
+  tls: true
+  username: 'null'
+- name: shaoyouvip_🇩🇪DE_17|2.4MB/s
+  type: http
+  server: 79.127.156.177
+  port: 443
+  password: ''
+  skip-cert-verify: true
+  tls: true
+  username: ''
+- name: shaoyouvip_🇺🇸US_13|2.2MB/s
+  type: http
+  server: 23.133.176.14
+  port: 443
+  password: 'null'
+  skip-cert-verify: true
+  tls: true
+  username: 'null'
+- name: shaoyouvip_🇸🇪SE_1|1.5MB/s
+  type: http
+  server: 146.70.242.146
+  port: 443
+  password: ''
+  skip-cert-verify: true
+  tls: true
+  username: ''
+- name: shaoyouvip_🇺🇸US_14|2.8MB/s
+  type: http
+  server: 138.199.35.216
+  port: 9002
+  password: None
+  skip-cert-verify: true
+  tls: true
+  username: 'null'
+- name: shaoyouvip_🇺🇸US_15|2.4MB/s
+  type: http
+  server: 138.199.35.200
+  port: 9002
+  password: ''
+  skip-cert-verify: true
+  tls: true
+  username: ''
+- name: leilaomi_[299.8ms +/-1ms] http-172.64.68.89
   type: http
   server: 172.64.68.89
   port: 443
   tls: true
   skip-cert-verify: true
-- name: leilaomi_[449.2ms +/-0ms] http-34.249.214.108
-  type: http
-  server: 34.249.214.108
-  port: 443
-  tls: true
-  skip-cert-verify: true
-- name: leilaomi_[361.0ms +/-0ms] 4Jadi-a54b9513ab
+- name: leilaomi_[303.8ms +/-5ms] 4Sarina-0b46822871
   type: vless
-  server: 172.233.142.149
+  server: 107.191.58.86
   port: 443
-  uuid: 61e3954d-0d66-4b69-b6cd-9b4fc2352303
+  uuid: 4444e77e-3d2a-4dc9-bf31-936f038f5570
   udp: true
   tls: true
   servername: itunes.apple.com
   skip-cert-verify: true
   reality-opts:
-    public-key: f9D1ZzG6vP1HgjCaCIutbykWkab8VEDuitwuwaeuBgY
-    short-id: 4206512a
+    public-key: ZZwZGoX0Us8t6nLvckDWskC1c25F9rL0_nUXmd8BFxQ
+    short-id: 8dd324c1
     support-x25519mlkem768: true
   client-fingerprint: chrome
   network: ws
@@ -5625,69 +5240,131 @@ proxies:
     path: /ws
     headers:
       Host: itunes.apple.com
-- name: leilaomi_[503.0ms +/-5ms] http-84.17.47.149
-  type: http
-  server: 84.17.47.149
-  port: 9002
+- name: leilaomi_[354.0ms +/-1ms] 4Jadi-5d923b8fb3
+  type: vless
+  server: 172.236.231.45
+  port: 443
+  uuid: 4c4f7955-3b05-4795-b3b7-6c83b7f82b0f
+  udp: true
   tls: true
+  servername: itunes.apple.com
   skip-cert-verify: true
-- name: leilaomi_[507.4ms +/-12ms] http-84.17.47.123
+  reality-opts:
+    public-key: M6kLOIYA9IagUu0eiplnPZFObYVzTc4GfPyEqKQnZWQ
+    short-id: 8353867a
+    support-x25519mlkem768: true
+  client-fingerprint: chrome
+  network: ws
+  ws-opts:
+    path: /ws
+    headers:
+      Host: itunes.apple.com
+- name: leilaomi_[497.6ms +/-1ms] http-34.249.214.108
   type: http
-  server: 84.17.47.123
-  port: 9002
-  tls: true
-  skip-cert-verify: true
-- name: leilaomi_[502.1ms +/-24ms] http-84.17.47.125
-  type: http
-  server: 84.17.47.125
-  port: 9002
-  tls: true
-  skip-cert-verify: true
-- name: leilaomi_[487.8ms +/-2ms] http-38.247.141.135
-  type: http
-  server: 38.247.141.135
+  server: 34.249.214.108
   port: 443
   tls: true
   skip-cert-verify: true
-- name: leilaomi_[564.8ms +/-1ms] http-103.97.88.154
-  type: http
-  server: 103.97.88.154
-  port: 443
-  username: 'null'
-  password: 'null'
-  tls: true
-  skip-cert-verify: true
-- name: leilaomi_[550.3ms +/-4ms] http-84.17.47.148
-  type: http
-  server: 84.17.47.148
-  port: 9002
-  tls: true
-  skip-cert-verify: true
-- name: leilaomi_[548.0ms +/-5ms] http-158.173.154.1
-  type: http
-  server: 158.173.154.1
-  port: 9002
-  tls: true
-  skip-cert-verify: true
-- name: leilaomi_[565.3ms +/-0ms] http-158.173.154.5
-  type: http
-  server: 158.173.154.5
-  port: 9002
-  tls: true
-  skip-cert-verify: true
-- name: leilaomi_[583.0ms +/-17ms] http-84.17.47.124
+- name: leilaomi_[541.1ms +/-4ms] http-84.17.47.124
   type: http
   server: 84.17.47.124
   port: 9002
   tls: true
   skip-cert-verify: true
-- name: leilaomi_[656.2ms +/-3ms] http-51.159.225.197
+- name: leilaomi_[531.8ms +/-12ms] http-158.173.154.5
+  type: http
+  server: 158.173.154.5
+  port: 9002
+  tls: true
+  skip-cert-verify: true
+- name: leilaomi_[540.3ms +/-7ms] http-84.17.47.125
+  type: http
+  server: 84.17.47.125
+  port: 9002
+  tls: true
+  skip-cert-verify: true
+- name: leilaomi_[550.4ms +/-9ms] http-158.173.154.1
+  type: http
+  server: 158.173.154.1
+  port: 9002
+  tls: true
+  skip-cert-verify: true
+- name: leilaomi_[550.0ms +/-13ms] http-84.17.47.123
+  type: http
+  server: 84.17.47.123
+  port: 9002
+  tls: true
+  skip-cert-verify: true
+- name: leilaomi_[504.4ms +/-0ms] 4FreeIran-0f77d63040
+  type: vless
+  server: 139.162.91.247
+  port: 443
+  uuid: 8cfdacf8-e781-42f0-9872-8d1d22469de5
+  udp: true
+  tls: true
+  servername: itunes.apple.com
+  skip-cert-verify: true
+  reality-opts:
+    public-key: _gFFckW3h8hFfllawgec9U2PDBeLJeCK_Jgk1S5tgC8
+    short-id: 536d7739
+    support-x25519mlkem768: true
+  client-fingerprint: chrome
+  network: ws
+  ws-opts:
+    path: /ws
+    headers:
+      Host: itunes.apple.com
+- name: leilaomi_[580.6ms +/-4ms] http-51.159.225.197
   type: http
   server: 51.159.225.197
   port: 19362
   tls: true
   skip-cert-verify: true
-- name: leilaomi_[685.7ms +/-9ms] http-51.159.225.196
+- name: leilaomi_[316.3ms +/-2ms] 4Kian-0f11c01ab0
+  type: ss
+  server: 192.6.83.24
+  port: 8388
+  cipher: chacha20-ietf-poly1305
+  password: my8gGU2rn0qBviYEW6F6
+  udp: true
+- name: leilaomi_[551.1ms +/-10ms] http-84.17.47.148
+  type: http
+  server: 84.17.47.148
+  port: 9002
+  tls: true
+  skip-cert-verify: true
+- name: leilaomi_[504.4ms +/-3ms] 4Mohsen-c5c19c2f89
+  type: vless
+  server: 139.162.91.224
+  port: 443
+  uuid: ff3038b1-a2f5-428f-89cd-5d5e4efba8e7
+  udp: true
+  tls: true
+  servername: itunes.apple.com
+  skip-cert-verify: true
+  reality-opts:
+    public-key: wmbc3kcjbG9-A9Fi7zaHuRVPH7A7UQkKNNvqyqJtMEk
+    short-id: e5b03494
+    support-x25519mlkem768: true
+  client-fingerprint: chrome
+  network: ws
+  ws-opts:
+    path: /ws
+    headers:
+      Host: itunes.apple.com
+- name: leilaomi_[588.0ms +/-6ms] http-84.17.47.149
+  type: http
+  server: 84.17.47.149
+  port: 9002
+  tls: true
+  skip-cert-verify: true
+- name: leilaomi_[631.7ms +/-0ms] http-213.109.163.119
+  type: http
+  server: 213.109.163.119
+  port: 443
+  tls: true
+  skip-cert-verify: true
+- name: leilaomi_[644.0ms +/-3ms] http-51.159.225.196
   type: http
   server: 51.159.225.196
   port: 23856
@@ -5695,101 +5372,422 @@ proxies:
   password: 'null'
   tls: true
   skip-cert-verify: true
-- name: leilaomi_[693.3ms +/-1ms] http-152.233.20.206
-  type: http
-  server: 152.233.20.206
+- name: leilaomi_[525.2ms +/-3ms] 4Sarina-67a234f6d7
+  type: vless
+  server: 172.105.203.15
   port: 443
-  tls: true
-  skip-cert-verify: true
-- name: leilaomi_[578.2ms +/-7ms] 4Jadi-e437da273f
-  type: ss
-  server: 8.209.117.187
-  port: 443
-  cipher: 2022-blake3-chacha20-poly1305
-  password: 8yO3ANWefuuGs1lRKXECQA1FEhxlWFV2ppQMcBaZo5Y=
+  uuid: c8c9b995-b4b9-4915-9c7d-dee94aa733ba
   udp: true
-- name: leilaomi_[816.6ms +/-228ms] http-213.109.163.119
-  type: http
-  server: 213.109.163.119
+  tls: true
+  servername: itunes.apple.com
+  skip-cert-verify: true
+  reality-opts:
+    public-key: HyAx05nhCz5mXxVxWXU1TrWRKdpYE0MHF4-V-LtyhTA
+    short-id: 0784b134
+    support-x25519mlkem768: true
+  client-fingerprint: chrome
+  network: ws
+  ws-opts:
+    path: /ws
+    headers:
+      Host: itunes.apple.com
+- name: leilaomi_[528.2ms +/-14ms] 4Nika-25476e2f6e
+  type: vless
+  server: 172.104.86.181
   port: 443
+  uuid: 010431f3-04f6-4404-a801-b93bf2e3c2b2
+  udp: true
+  tls: true
+  servername: itunes.apple.com
+  skip-cert-verify: true
+  reality-opts:
+    public-key: ujYDprigWFLxcj4BtitDNa-hoPjIbpSzrnEcqp3cgjk
+    short-id: c8559ca1
+    support-x25519mlkem768: true
+  client-fingerprint: chrome
+  network: ws
+  ws-opts:
+    path: /ws
+    headers:
+      Host: itunes.apple.com
+- name: leilaomi_[625.1ms +/-3ms] http-103.97.88.154
+  type: http
+  server: 103.97.88.154
+  port: 443
+  username: 'null'
+  password: 'null'
   tls: true
   skip-cert-verify: true
-- name: leilaomi_🇳🇱 [1219.1ms +/-39ms] 🇺🇸
+- name: leilaomi_[496.9ms +/-2ms] 4Mohsen-8f54a72b9a
+  type: vless
+  server: 178.104.236.189
+  port: 8443
+  uuid: 987aed7f-6001-4d07-8635-38b8b10b671d
+  udp: true
+  flow: xtls-rprx-vision
+  tls: true
+  servername: ads.x5.ru
+  skip-cert-verify: true
+  reality-opts:
+    public-key: Z4c6jB-9KBN0U1mcLgP_bg5PuAG_wHF7Mw8dnZScSxA
+    short-id: 802d309a6102f126
+    support-x25519mlkem768: true
+  client-fingerprint: chrome
+- name: leilaomi_[553.5ms +/-3ms] 4Sarina-883ae95e35
+  type: vless
+  server: 88.216.129.84
+  port: 443
+  uuid: 9986b4e5-58dd-4360-8c58-d6b9c86584e2
+  udp: true
+  flow: xtls-rprx-vision
+  tls: true
+  servername: reeltiles.com
+  skip-cert-verify: true
+  reality-opts:
+    public-key: 0MrhgrveImRyxFaC9Q11Mm4-oN38uFlFFt4UnmGrxRo
+    short-id: 041a595c72d82db0
+    support-x25519mlkem768: true
+  client-fingerprint: chrome
+- name: leilaomi_[535.9ms +/-98ms] 4Sarina-7a0b530893
+  type: vless
+  server: 45.76.222.108
+  port: 443
+  uuid: bd95a04e-e3e1-460e-b89d-e9a693d393e0
+  udp: true
+  tls: true
+  servername: itunes.apple.com
+  skip-cert-verify: true
+  reality-opts:
+    public-key: -_YzpVlKrn08il_kQdHxHTvJyWYAdetWN_IFRtvPgmE
+    short-id: b5c85d2d
+    support-x25519mlkem768: true
+  client-fingerprint: chrome
+  network: ws
+  ws-opts:
+    path: /ws
+    headers:
+      Host: itunes.apple.com
+- name: leilaomi_🇳🇱 [592.1ms +/-9ms] 4Kian-5a8b528ce7
   type: ss
   server: 216.172.144.199
   port: 40643
   cipher: chacha20-ietf-poly1305
   password: Xd4G9xn7AgT88msCYC9MZfavMUqd3dWFNAvswi6KfaD9YcexptMbPn4cSECEMzDgvAMomAWJHyweqJer99ssMVYGH6TK8k4c
   udp: true
-- name: leilaomi_[1206.6ms +/-407ms] 4Mohsen-92677d0f9e
-  type: hysteria2
-  server: 168.113.252.11
+- name: leilaomi_[742.9ms +/-0ms] 4Sarina-947ff000b1
+  type: vless
+  server: 139.180.221.53
   port: 443
-  password: 004ea4a8-d701-0001-b0c0-8e61a5c31a23
-  sni: jkawq-ru-45sb.fade.mom
+  uuid: 2b30d0df-6ebe-4aed-9bad-b7c554e35e1d
+  udp: true
+  tls: true
+  servername: itunes.apple.com
   skip-cert-verify: true
-- name: Free-Nodes_🇺🇸 美国 | SS | 001
-  type: ss
-  server: 48.103.218.77
-  port: 18443
-  cipher: aes-256-gcm
-  password: 5mKjXAGrliIAlYwWDeFzkCEMIgQdFQLe
-  udp: true
-- name: Free-Nodes_🇺🇳 未知地区 | VMESS | 001
-  type: vmess
-  server: 168.110.63.247
-  port: 8081
-  uuid: c3bde296-8e44-4b8c-a325-577d5b3cc7c8
-  alterId: 0
-  cipher: auto
-  udp: true
+  reality-opts:
+    public-key: plfXwkb-ewI6iibJBTRmPnf8eqPId1BfdArMIm3_mB4
+    short-id: 2f6f6f87
+    support-x25519mlkem768: true
+  client-fingerprint: chrome
   network: ws
   ws-opts:
-    path: /vless
-- name: Free-Nodes_🇮🇹 意大利 | SS | 003
+    path: /ws
+    headers:
+      Host: itunes.apple.com
+- name: leilaomi_[678.1ms +/-2ms] http-185.219.159.15
+  type: http
+  server: 185.219.159.15
+  port: 443
+  tls: true
+  skip-cert-verify: true
+- name: leilaomi_[812.0ms +/-1ms] 4Kian-2d5ccc0247
+  type: vless
+  server: 172.104.48.194
+  port: 443
+  uuid: a28d0884-193d-4591-aa64-8638ba1481ce
+  udp: true
+  tls: true
+  servername: itunes.apple.com
+  skip-cert-verify: true
+  reality-opts:
+    public-key: u_4r8NRmRsN5Ndbt0koyC73DLC7mCcK4wAA0YiIR4ko
+    short-id: b0af872e
+    support-x25519mlkem768: true
+  client-fingerprint: chrome
+  network: ws
+  ws-opts:
+    path: /ws
+    headers:
+      Host: itunes.apple.com
+- name: leilaomi_[651.8ms +/-1ms] 4Sarina-7cd44b7489
+  type: vless
+  server: 31.77.142.19
+  port: 443
+  uuid: 58e22afd-bf74-4736-984d-63a8ca03d7f0
+  udp: true
+  tls: true
+  servername: calendarbaseline.lucheeebezlimitnoekino.stream
+  skip-cert-verify: true
+  client-fingerprint: firefox
+  network: ws
+  ws-opts:
+    path: /media/ws/
+    headers: {}
+- name: leilaomi_[746.6ms +/-144ms] 4Jadi-450346117c
+  type: vless
+  server: 172.238.18.103
+  port: 443
+  uuid: f4a4498a-c02f-4862-93ae-8f495c9cd2c0
+  udp: true
+  tls: true
+  servername: itunes.apple.com
+  skip-cert-verify: true
+  reality-opts:
+    public-key: BDt3yJpYIovC6b1iJF2h8qH4LfQAoSC0u3iVa0cFeSM
+    short-id: 6ff775ae
+    support-x25519mlkem768: true
+  client-fingerprint: chrome
+  network: ws
+  ws-opts:
+    path: /ws
+    headers:
+      Host: itunes.apple.com
+- name: leilaomi_[565.3ms +/-1ms] DE_speednode_0003
+  type: http
+  server: 149.36.50.1
+  port: 443
+  tls: true
+  skip-cert-verify: true
+- name: leilaomi_[574.9ms +/-1ms] GB_speednode_0008
+  type: http
+  server: 212.102.63.31
+  port: 443
+  tls: true
+  skip-cert-verify: true
+- name: leilaomi_[592.9ms +/-0ms] BE_speednode_0001
+  type: http
+  server: 146.70.123.98
+  port: 443
+  tls: true
+  skip-cert-verify: true
+- name: leilaomi_[807.4ms +/-1ms] 4FreeIran-aa7a117861
+  type: vless
+  server: 13.211.155.89
+  port: 443
+  uuid: e3a1c7f2-9b4d-4e8a-a6c5-1f2d3b4a5e6f
+  udp: true
+  tls: true
+  servername: www.microsoft.com
+  skip-cert-verify: true
+  client-fingerprint: chrome
+  network: ws
+  ws-opts:
+    path: /7b9977b2af9da85fa86adc065c362efe
+    headers: {}
+- name: leilaomi_[568.5ms +/-8ms] FR_speednode_0007
+  type: http
+  server: 87.98.174.157
+  port: 6103
+  tls: true
+  skip-cert-verify: true
+- name: leilaomi_[586.8ms +/-2ms] NL_speednode_0018
+  type: http
+  server: 84.17.47.147
+  port: 9002
+  username: 'null'
+  password: 'null'
+  tls: true
+  skip-cert-verify: true
+- name: leilaomi_[756.1ms +/-49ms] 4Kian-109bec801e
+  type: vless
+  server: 138.2.86.205
+  port: 443
+  uuid: b2d4f6a8-1c3e-4a5b-9d7f-2e4a6c8b0d1f
+  udp: true
+  tls: true
+  servername: www.microsoft.com
+  skip-cert-verify: true
+  client-fingerprint: chrome
+  network: ws
+  ws-opts:
+    path: /7b9977b2af9da85fa86adc065c362efe
+    headers: {}
+- name: leilaomi_[716.0ms +/-1ms] NL_speednode_0014
+  type: http
+  server: 149.36.51.129
+  port: 443
+  tls: true
+  skip-cert-verify: true
+- name: leilaomi_[924.9ms +/-70ms] 4Nika-9d51cb672e
+  type: vless
+  server: 168.107.79.37
+  port: 443
+  uuid: c5e7a9b1-3d5f-4a6c-8b0d-2f4a6c8e0b2d
+  udp: true
+  tls: true
+  servername: www.microsoft.com
+  skip-cert-verify: true
+  client-fingerprint: chrome
+  network: ws
+  ws-opts:
+    path: /7b9977b2af9da85fa86adc065c362efe
+    headers: {}
+- name: leilaomi_[1077.4ms +/-26ms] 4Sarina-28bfab4a9d
+  type: vless
+  server: 4c980ft.fi15.h1clayd.click
+  port: 443
+  uuid: f15a2e25-6859-4bcc-b4c4-a14bb8ae0fbb
+  udp: true
+  flow: xtls-rprx-vision
+  tls: true
+  servername: 4c980ft.fi15.h1clayd.click
+  skip-cert-verify: true
+  reality-opts:
+    public-key: -ZN1kT3JlPFxu1E906JRqLAGoQQucSmL6xPiuAyasTk
+    short-id: 597e1c279d224774
+    support-x25519mlkem768: true
+  client-fingerprint: chrome
+- name: leilaomi_[460.4ms +/-120ms] NN_speednode_0023
+  type: http
+  server: usgp1-cdn-route.couldflare-cdn.com
+  port: 443
+  username: mrwdfNTD8M79LCukCieldrqZWqs=
+  password: exaxgqkKkd0TAMrCxeonWg==
+  tls: true
+  skip-cert-verify: true
+- name: leilaomi_[863.9ms +/-4ms] BR_speednode_0002
+  type: http
+  server: 152.233.16.174
+  port: 9443
+  tls: true
+  skip-cert-verify: true
+- name: leilaomi_[610.6ms +/-10ms] 🇭🇰 香港 | HKG 2
+  type: anytls
+  server: ibsdsf.df6h451rh.xin
+  port: 443
+  password: 2902c46c8493
+  sni: docs.microsoft.com
+  skip-cert-verify: true
+- name: leilaomi_[958.2ms +/-0ms] 🇹🇼 🇨🇳 台湾 | TWN 2
+  type: anytls
+  server: rtifgjdr.df6h451rh.xin
+  port: 443
+  password: 2902c46c8493
+  sni: docs.microsoft.com
+  skip-cert-verify: true
+- name: Free-Nodes_🇭🇰 中国香港 | HYSTERIA2 | 001
+  type: hysteria2
+  server: 23.141.172.229
+  port: 50541
+  password: ePPsH1bMFD
+  sni: is1-ssl.mzstatic.com
+  skip-cert-verify: true
+- name: Free-Nodes_🇭🇰 中国香港 | VLESS | 001
+  type: vless
+  server: 116.213.43.43
+  port: 11107
+  uuid: 08a37d1f-7bf1-4b5d-a2ec-5ced6a633d7f
+  udp: true
+  flow: xtls-rprx-vision
+  tls: true
+  servername: www.apple.com
+  client-fingerprint: chrome
+  reality-opts:
+    public-key: 6GRzkPbs12fKBdBBFzs5dmtmbSHCXMngUCBKLrXYm3U
+    short-id: e2ccd8eedcbee2ce
+- name: Free-Nodes_🇺🇸 美国 | VLESS | 001
+  type: vless
+  server: 43.110.39.161
+  port: 443
+  uuid: da39704f-79b2-460e-b77f-8d12397b3112
+  tls: true
+  flow: xtls-rprx-vision
+  reality-opts:
+    public-key: OsXk2qNUNsQsjMHAx6z6GdVflb0gD5AI8izM5W_J_00
+    short-id: db9af76e455811d0
+  servername: www.apple.com
+  client-fingerprint: chrome
+  network: tcp
+  udp: true
+- name: Free-Nodes_🇺🇳 未知地区 | HYSTERIA2 | 001
+  type: hysteria2
+  server: starlink-ft.251313.xyz
+  port: 443
+  password: https://xship.2fa.cat
+  sni: xship.top
+  skip-cert-verify: true
+- name: Free-Nodes_🇵🇱 波兰 | VLESS | 001
+  type: vless
+  server: 191.217.244.190
+  port: 443
+  uuid: a086c8e2-7a2f-4265-9518-6d7529106b80
+  udp: true
+  flow: xtls-rprx-vision
+  tls: true
+  servername: ertgmb.wey-land.net
+  client-fingerprint: firefox
+  reality-opts:
+    public-key: l6dfeSmhGc7dGLU_PqhPtMbj4_eONm2Sz_S9D8ePFxY
+    short-id: ''
+- name: Free-Nodes_🇯🇵 日本 | VLESS | 001
+  type: vless
+  server: jp2static.jumpernode.site
+  port: 443
+  uuid: f325fb7d-cad5-4ac8-8888-3f39b4b9d1ca
+  udp: true
+  flow: xtls-rprx-vision
+  tls: true
+  servername: www.amzn.com
+  client-fingerprint: chrome
+  reality-opts:
+    public-key: GeKuYNeAqQQkTN9OMJxXA9I-rXs7IiGh4Sl82crCITc
+    short-id: 6281f3ef81187ad8
+- name: Free-Nodes_🇮🇹 意大利 | SS | 005
   type: ss
-  server: 202.50.253.18
+  server: 202.50.253.45
   port: 19999
   password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
   cipher: aes-256-gcm
   udp: true
   tls: false
   skip-cert-verify: false
-- name: Free-Nodes_🇯🇵 日本 | VLESS | 001
-  type: vless
-  server: 23.27.11.86
-  port: 443
-  uuid: e8a346c2-e14c-4f82-876f-367dc19ee541
+- name: Free-Nodes_🇮🇹 意大利 | SS | 007
+  type: ss
+  server: 202.50.253.27
+  port: 19999
+  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
+  cipher: aes-256-gcm
   udp: true
-  flow: xtls-rprx-vision
-  tls: true
-  servername: jp.burmy.xyz
-  client-fingerprint: chrome
-- name: Free-Nodes_🇺🇳 未知地区 | VLESS | 001
-  type: vless
-  server: 5.34.178.120
-  port: 443
-  uuid: 23b848b7-93e5-4d96-b36d-ed704912e5b7
+  tls: false
+  skip-cert-verify: false
+- name: Free-Nodes_🇹🇼 中国台湾 | TROJAN | 001
+  type: trojan
+  server: 161.114.15.215
+  port: 30502
+  password: 5KdDtpoJI58OTsoG0PwEYunqB0mkAEDm
+  sni: www.cloudflare.com
+  skip-cert-verify: true
   udp: true
-  flow: xtls-rprx-vision
-  tls: true
-  servername: www.cloudflare.com
-  client-fingerprint: chrome
-  reality-opts:
-    public-key: 4RaNuv9yehmcfpdzvRxCWWzEWERWzZSIHqcgg3l35Cw
-    short-id: e16bbf1a5bee2321
-- name: Free-Nodes_🇵🇱 波兰 | VLESS | 001
-  type: vless
-  server: 136.148.83.69
-  port: 443
-  uuid: 666821a2-5c3d-0001-a56f-5a3a562d7324
-  udp: true
-  tls: true
-  servername: szqbx-ru-77dc.my-fade.cloud
-  client-fingerprint: qq
-- name: Free-Nodes_🇮🇹 意大利 | SS | 009
+- name: Free-Nodes_🇮🇹 意大利 | SS | 008
   type: ss
   server: 202.50.253.81
+  port: 19999
+  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
+  cipher: aes-256-gcm
+  udp: true
+  tls: false
+  skip-cert-verify: false
+- name: Free-Nodes_🇫🇮 芬兰 | VLESS | 001
+  type: vless
+  server: 168.113.253.178
+  port: 443
+  uuid: 58708e38-dd5a-0001-902d-93621ee2bd83
+  udp: true
+  tls: true
+  servername: uzndiuvzvqqljdyhzs.fcloudservices.site
+  client-fingerprint: chrome
+- name: Free-Nodes_🇮🇹 意大利 | SS | 009
+  type: ss
+  server: 202.50.253.54
   port: 19999
   password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
   cipher: aes-256-gcm
@@ -5802,105 +5800,179 @@ proxies:
   port: 443
   uuid: 4201786b-d99b-4147-a5f0-20d47acddb81
   udp: true
-  flow: xtls-rprx-vision
   tls: true
-  servername: 7aa271t.es1.h1clayd.click
-  client-fingerprint: firefox
+  servername: 38917fx.es1.h1clayd.click
+  client-fingerprint: chrome
   reality-opts:
-    public-key: ZSmetD4e9QG5CiXhniHg5HJB68L4kwbgAkJmMHtVwEE
-    short-id: 42426c882c5fcd41
-- name: Free-Nodes_🇪🇸 西班牙 | VLESS | 002
-  type: vless
-  server: api.ferrin.uk
-  port: 443
-  uuid: 7d1a74fd-8a38-4a29-863f-5da53a9e557e
-  udp: true
-  tls: true
-  servername: 7d1a74fd.ferrin.uk
-  client-fingerprint: safari
+    public-key: 4mgkA2kT_Im0rkGi-fVSUU5CyF5xvMVcjA6MXBSEDAA
+    short-id: d5501b156391e01d
   network: xhttp
+- name: Free-Nodes_🇺🇳 未知地区 | HYSTERIA2 | 003
+  type: hysteria2
+  server: 66hk.mateflora.com
+  port: 443
+  password: 57beeeb0-03fc-4fc9-94da-7604488a7134
+  sni: 66hk.mateflora.com
+  skip-cert-verify: true
+  obfs: salamander
+  obfs-password: aemx2gndpgrt1qau
+- name: Free-Nodes_🇩🇪 德国 | HYSTERIA2 | 001
+  type: hysteria2
+  server: dga1de.mateflora.com
+  port: 40120
+  password: 57beeeb0-03fc-4fc9-94da-7604488a7134
+  sni: psstatic.cdn.bcebos.com
+  up: 100
+  down: 200
+  skip-cert-verify: true
+  alpn:
+  - h3
+  obfs: salamander
+  obfs-password: pz7lyeav76a5wqzb
+  udp: true
+- name: Free-Nodes_🇯🇵 日本 | HYSTERIA2 | 001
+  type: hysteria2
+  server: dg3rb.ianai.it.com
+  port: 443
+  password: 57beeeb0-03fc-4fc9-94da-7604488a7134
+  sni: dg3rb.ianai.it.com
+  skip-cert-verify: true
+  obfs: salamander
+  obfs-password: e3ymhs6gbzptjysj
 - name: Free-Nodes_🇪🇸 西班牙 | VLESS | 003
   type: vless
   server: 196.199.122.2
   port: 443
   uuid: 4201786b-d99b-4147-a5f0-20d47acddb81
   udp: true
-  flow: xtls-rprx-vision
   tls: true
-  servername: 7aa271t.es1.h1clayd.click
-  client-fingerprint: chrome
+  servername: 38917fx.es1.h1clayd.click
+  client-fingerprint: firefox
   reality-opts:
-    public-key: ZSmetD4e9QG5CiXhniHg5HJB68L4kwbgAkJmMHtVwEE
-    short-id: 42426c882c5fcd41
-- name: Free-Nodes_🇪🇸 西班牙 | VLESS | 005
+    public-key: 4mgkA2kT_Im0rkGi-fVSUU5CyF5xvMVcjA6MXBSEDAA
+    short-id: d5501b156391e01d
+  network: xhttp
+- name: Free-Nodes_🇬🇧 英国 | VLESS | 001
   type: vless
-  server: 196.196.149.80
-  port: 443
-  uuid: 4201786b-d99b-4147-a5f0-20d47acddb81
-  udp: true
-  flow: xtls-rprx-vision
-  tls: true
-  servername: 7aa271t.es1.h1clayd.click
-  client-fingerprint: chrome
-  reality-opts:
-    public-key: ZSmetD4e9QG5CiXhniHg5HJB68L4kwbgAkJmMHtVwEE
-    short-id: 42426c882c5fcd41
-- name: Free-Nodes_🇺🇳 未知地区 | VLESS | 002
-  type: vless
-  server: 188.114.98.0
-  port: 443
-  uuid: 88e79aa6-f431-4453-8dcc-652a0c747198
+  server: 172.64.155.209
+  port: 8443
+  uuid: a20ea704-ec9d-4c5d-9b12-fa760cdf2290
   udp: true
   tls: true
-  servername: o685y.save-node.com
+  servername: sinavm2.soft10.ir
+  client-fingerprint: chrome
   alpn:
   - http/1.1
-  network: ws
-  ws-opts:
-    path: /api/se1k2rfxlsuer3ry4u6e84kl8rqp721p
-    headers:
-      Host: o685y.save-node.com
-- name: Free-Nodes_🇺🇳 未知地区 | VLESS | 003
+  - h2
+  - h3
+  network: xhttp
+- name: Free-Nodes_🇫🇮 芬兰 | VLESS | 002
   type: vless
-  server: pl.galacticworld.online
+  server: 178.214.125.2
   port: 443
-  uuid: ecc0e60a-f2cc-4266-8353-b228df89730a
+  uuid: da8972f9-770f-4012-ab46-5de2711a718b
   udp: true
   flow: xtls-rprx-vision
   tls: true
-  servername: pl.galacticworld.online
+  servername: conf.emaar.ru
   client-fingerprint: qq
   reality-opts:
-    public-key: GBO_paFyK9FihgPMH8r_vHa4IKMkSGfvAQ2fhPK_1H4
-    short-id: ''
-- name: Free-Nodes_🇩🇪 德国 | VLESS | 001
-  type: vless
-  server: 179.253.80.175
-  port: 4443
-  uuid: a35c508f-4d5d-4531-842e-6e9d43c762c0
-  udp: true
-  tls: true
-  servername: swo2.nexfile.net
-  client-fingerprint: chrome
-  network: xhttp
-- name: Free-Nodes_🇳🇬 尼日利亚 | TROJAN | 001
+    public-key: ZxCwJxbsZWJYYCPzeWj7_fxJMVhwh4XGfpvjmEIQjHY
+    short-id: 6172ba9cffe9c22f
+- name: Free-Nodes_🇺🇳 未知地区 | TROJAN | 001
   type: trojan
-  server: sclass-c2.catcat321.com
-  port: 20051
+  server: sclass-00.catcat321.com
+  port: 20103
   password: d9064589-74af-432a-9390-5d8a9da281bf
   udp: true
   sni: hk.catxstar.com
   skip-cert-verify: true
-- name: Free-Nodes_🇳🇱 荷兰 | VLESS | 006
+- name: Free-Nodes_🇳🇱 荷兰 | VLESS | 002
   type: vless
   server: 196.245.52.183
   port: 443
   uuid: cda0862a-0f87-4be9-8ed8-1d0c9e382839
   udp: true
   tls: true
-  servername: e60833x.nl7.h1clayd.click
+  servername: 15b171g.nl7.h1clayd.click
   client-fingerprint: firefox
   reality-opts:
-    public-key: jIRVNEf9SpuWP2nJrAbHGGIUnfzOmwZZlrNGw-Y-O2Q
-    short-id: 2d2598d60447a967
-  network: xhttp
+    public-key: zbz--PMjcIC4Ggr3j-ibDf0fzXRTj0lM_HzjPJyMkVE
+    short-id: 50a749f0eccb628c
+  network: grpc
+- name: Free-Nodes_🇺🇸 美国 | HYSTERIA2 | 001
+  type: hysteria2
+  server: a3dgus.supertoolify.com
+  port: 40055
+  password: 57beeeb0-03fc-4fc9-94da-7604488a7134
+  sni: psstatic.cdn.bcebos.com
+  up: 100
+  down: 200
+  skip-cert-verify: true
+  alpn:
+  - h3
+  obfs: salamander
+  obfs-password: re61ep4ancwplwh8
+  udp: true
+- name: Free-Nodes_🇵🇱 波兰 | VLESS | 002
+  type: vless
+  server: 136.148.83.69
+  port: 443
+  uuid: 7dff1be7-b930-0001-a8ad-dc7850168215
+  udp: true
+  tls: true
+  servername: szqbx-ru-77dc.my-fade.cloud
+  client-fingerprint: chrome
+- name: Free-Nodes_🇺🇸 美国 | VLESS | 002
+  type: vless
+  server: 162.35.101.177
+  port: 443
+  uuid: cda0862a-0f87-4be9-8ed8-1d0c9e382839
+  udp: true
+  tls: true
+  servername: 0592efg.us8.h1clayd.click
+  client-fingerprint: edge
+  reality-opts:
+    public-key: cO3wYHISTeorXcM8ffaDCDdqZ-olBQL-GyZqb-W7rTk
+    short-id: bd8f712209a9c283
+  network: grpc
+- name: Free-Nodes_🇸🇬 新加坡 | HYSTERIA2 | 001
+  type: hysteria2
+  server: hkzfsg2.mateflora.com
+  port: 443
+  password: 57beeeb0-03fc-4fc9-94da-7604488a7134
+  sni: hkzfsg2.mateflora.com
+  up: 100
+  down: 200
+  skip-cert-verify: true
+  alpn:
+  - h3
+  obfs: salamander
+  obfs-password: fcfqz5o4znnjqtrp
+  udp: true
+- name: Free-Nodes_🇭🇰 中国香港 | VLESS | 002
+  type: vless
+  server: 116.213.43.43
+  port: 11103
+  uuid: bb836d81-d0c5-4f01-a584-806cdf65e36a
+  udp: true
+  flow: xtls-rprx-vision
+  tls: true
+  servername: www.apple.com
+  client-fingerprint: chrome
+  reality-opts:
+    public-key: 5NNdXPMTBLP-xeDKFwcG-j6u-c4DhXIfnlHMqMJZ4n4
+    short-id: 9564e1a7a1cf8b3a
+- name: Free-Nodes_🇳🇱 荷兰 | VLESS | 003
+  type: vless
+  server: 717252g.nl8.h1clayd.click
+  port: 443
+  uuid: cda0862a-0f87-4be9-8ed8-1d0c9e382839
+  udp: true
+  tls: true
+  servername: 717252g.nl8.h1clayd.click
+  client-fingerprint: firefox
+  reality-opts:
+    public-key: PD8Jdlg3xB9QY--jwQjp8PFPzCS8-Oryw6-HWBcHMFU
+    short-id: d3bd772514c87d28
+  network: grpc
