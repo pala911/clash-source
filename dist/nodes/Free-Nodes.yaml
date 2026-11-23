@@ -55,6 +55,15 @@ proxies:
   reality-opts:
     public-key: l6dfeSmhGc7dGLU_PqhPtMbj4_eONm2Sz_S9D8ePFxY
     short-id: ''
+- name: 🇮🇹 意大利 | SS | 001
+  type: ss
+  server: 202.50.253.72
+  port: 19999
+  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
+  cipher: aes-256-gcm
+  udp: true
+  tls: false
+  skip-cert-verify: false
 - name: 🇯🇵 日本 | VLESS | 001
   type: vless
   server: jp2static.jumpernode.site
@@ -68,24 +77,13 @@ proxies:
   reality-opts:
     public-key: GeKuYNeAqQQkTN9OMJxXA9I-rXs7IiGh4Sl82crCITc
     short-id: 6281f3ef81187ad8
-- name: 🇮🇹 意大利 | SS | 005
+- name: 🇩🇪 德国 | SS | 001
   type: ss
-  server: 202.50.253.45
-  port: 19999
-  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
-  cipher: aes-256-gcm
+  server: 47.254.128.109
+  port: 443
+  cipher: 2022-blake3-chacha20-poly1305
+  password: 8yO3ANWefuuGs1lRKXECQA1FEhxlWFV2ppQMcBaZo5Y=
   udp: true
-  tls: false
-  skip-cert-verify: false
-- name: 🇮🇹 意大利 | SS | 007
-  type: ss
-  server: 202.50.253.27
-  port: 19999
-  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
-  cipher: aes-256-gcm
-  udp: true
-  tls: false
-  skip-cert-verify: false
 - name: 🇹🇼 中国台湾 | TROJAN | 001
   type: trojan
   server: 161.114.15.215
@@ -143,6 +141,21 @@ proxies:
   skip-cert-verify: true
   obfs: salamander
   obfs-password: aemx2gndpgrt1qau
+- name: 🇪🇸 西班牙 | VLESS | 002
+  type: vless
+  server: 196.196.149.80
+  port: 443
+  uuid: 4201786b-d99b-4147-a5f0-20d47acddb81
+  flow: xtls-rprx-vision
+  udp: true
+  tls: true
+  servername: 7aa271t.es1.h1clayd.click
+  sni: 7aa271t.es1.h1clayd.click
+  skip-cert-verify: false
+  client-fingerprint: chrome
+  reality-opts:
+    public-key: ZSmetD4e9QG5CiXhniHg5HJB68L4kwbgAkJmMHtVwEE
+    short-id: 42426c882c5fcd41
 - name: 🇩🇪 德国 | HYSTERIA2 | 001
   type: hysteria2
   server: dga1de.mateflora.com
@@ -227,20 +240,6 @@ proxies:
     public-key: zbz--PMjcIC4Ggr3j-ibDf0fzXRTj0lM_HzjPJyMkVE
     short-id: 50a749f0eccb628c
   network: grpc
-- name: 🇺🇸 美国 | HYSTERIA2 | 001
-  type: hysteria2
-  server: a3dgus.supertoolify.com
-  port: 40055
-  password: 57beeeb0-03fc-4fc9-94da-7604488a7134
-  sni: psstatic.cdn.bcebos.com
-  up: 100
-  down: 200
-  skip-cert-verify: true
-  alpn:
-  - h3
-  obfs: salamander
-  obfs-password: re61ep4ancwplwh8
-  udp: true
 - name: 🇵🇱 波兰 | VLESS | 002
   type: vless
   server: 136.148.83.69
