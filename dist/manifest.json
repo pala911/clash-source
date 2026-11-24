@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-23T07:46:56Z",
+  "generated_at": "2026-11-24T00:05:53Z",
   "owner": "pala911",
   "repo": "clash-source",
   "pages_base": "https://pala911.github.io/clash-source",
@@ -18,8 +18,10 @@
     ],
     "观察": [],
     "不稳定": [
+      "SRCFL-Free-Nodes",
       "SRCFL-leilaomi",
       "SRCFL-ruk1ng001",
+      "SRCFL-shaoyouvip",
       "SRCFL-ssrsub"
     ],
     "degraded": "",
@@ -57,9 +59,9 @@
   "sources": [
     {
       "name": "zhuhaiuk",
-      "raw": 31,
-      "kept": 30,
-      "bytes": 5312,
+      "raw": 26,
+      "kept": 25,
+      "bytes": 4529,
       "mirror": false,
       "ai_dropped": 0,
       "ai_dropped_clusters": 0,
@@ -69,112 +71,112 @@
     {
       "name": "ssrsub",
       "raw": 386,
-      "kept": 365,
-      "bytes": 103618,
+      "kept": 369,
+      "bytes": 103637,
       "mirror": false,
-      "ai_dropped": 2,
-      "ai_dropped_clusters": 1,
-      "dup_removed": 11,
+      "ai_dropped": 0,
+      "ai_dropped_clusters": 0,
+      "dup_removed": 8,
       "error": null
     },
     {
       "name": "ruk1ng001",
       "raw": 129,
-      "kept": 91,
+      "kept": 70,
       "bytes": 72277,
       "mirror": false,
-      "ai_dropped": 14,
-      "ai_dropped_clusters": 14,
-      "dup_removed": 0,
+      "ai_dropped": 34,
+      "ai_dropped_clusters": 32,
+      "dup_removed": 1,
       "error": null
     },
     {
       "name": "shaoyouvip",
-      "raw": 6,
-      "kept": 3,
-      "bytes": 1438,
+      "raw": 100,
+      "kept": 60,
+      "bytes": 24203,
       "mirror": false,
-      "ai_dropped": 3,
-      "ai_dropped_clusters": 1,
-      "dup_removed": 0,
+      "ai_dropped": 0,
+      "ai_dropped_clusters": 0,
+      "dup_removed": 32,
       "error": null
     },
     {
       "name": "leilaomi",
-      "raw": 41,
-      "kept": 39,
-      "bytes": 17424,
+      "raw": 82,
+      "kept": 68,
+      "bytes": 26036,
       "mirror": false,
       "ai_dropped": 0,
       "ai_dropped_clusters": 0,
-      "dup_removed": 2,
+      "dup_removed": 6,
       "error": null
     },
     {
       "name": "wzmfree",
       "raw": 134,
-      "kept": 13,
+      "kept": 14,
       "bytes": 67237,
       "mirror": false,
       "ai_dropped": 6,
       "ai_dropped_clusters": 4,
-      "dup_removed": 87,
+      "dup_removed": 86,
       "error": null
     },
     {
       "name": "Free-Nodes",
-      "raw": 51,
-      "kept": 27,
-      "bytes": 19083,
+      "raw": 1263,
+      "kept": 494,
+      "bytes": 409874,
       "mirror": false,
-      "ai_dropped": 4,
-      "ai_dropped_clusters": 1,
-      "dup_removed": 8,
+      "ai_dropped": 0,
+      "ai_dropped_clusters": 0,
+      "dup_removed": 6,
       "error": null
     }
   ],
   "totals": {
-    "kept": 568,
-    "merged": 568,
-    "dup_removed": 108,
-    "ai_reviewed": 705
+    "kept": 1100,
+    "merged": 1100,
+    "dup_removed": 139,
+    "ai_reviewed": 1593
   },
   "ai_scope": "mixed",
   "ai_usage": {
-    "prompt": 67650,
-    "completion": 37954,
-    "calls": 36,
-    "timeouts": 13,
+    "prompt": 66626,
+    "completion": 68397,
+    "calls": 40,
+    "timeouts": 10,
     "by_backend": {
       "siliconflow_xing": {
-        "calls": 24,
-        "prompt": 57923,
-        "completion": 31608
+        "calls": 30,
+        "prompt": 57653,
+        "completion": 57656
       },
       "siliconflow_qwen25": {
         "calls": 3,
-        "prompt": 2827,
-        "completion": 172
+        "prompt": 2645,
+        "completion": 62
       },
       "siliconflow_glm4": {
-        "calls": 4,
-        "prompt": 2612,
-        "completion": 285
+        "calls": 2,
+        "prompt": 1719,
+        "completion": 262
       },
       "siliconflow_qwen35": {
-        "calls": 2,
-        "prompt": 1500,
+        "calls": 1,
+        "prompt": 750,
         "completion": 0
       },
       "siliconflow_qwen3": {
-        "calls": 1,
-        "prompt": 998,
-        "completion": 1653
+        "calls": 3,
+        "prompt": 2980,
+        "completion": 7933
       },
       "siliconflow_deepseek_r1": {
-        "calls": 2,
-        "prompt": 1790,
-        "completion": 4236
+        "calls": 1,
+        "prompt": 879,
+        "completion": 2484
       }
     }
   },
@@ -194,7 +196,7 @@
   },
   "video": {
     "provider": "video",
-    "nodes": 6,
+    "nodes": 5,
     "threshold_mbps": 0.6,
     "cap": 40,
     "per_source": 12,
@@ -210,6 +212,6 @@
     "note": ""
   },
   "warnings": [
-    "leilaomi AI 剔除超阈值，已整体回滚"
+    "Free-Nodes 产出 814 超过 max_nodes=500，已截断"
   ]
 }
