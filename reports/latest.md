@@ -1,6 +1,6 @@
 # clash-source 运行报告
 
-- 生成时间：2026-11-24 09:54:32（UTC 记录：2026-11-24T09:54:31Z）
+- 生成时间：2026-11-24 22:26:49（UTC 记录：2026-11-24T22:26:48Z）
 - AI 模式：`http`
 - 订阅入口：`https://pala911.github.io/clash-source/profile.yaml`
 - 备用入口（github.io 不达时）：`https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/profile.yaml`
@@ -13,7 +13,7 @@
 | AUTO | 参与自动竞速 | zhuhaiuk、ruk1ng001、ssrsub、leilaomi |
 | 备用 | 不自动竞速，手动切 | shaoyouvip、Free-Nodes、wzmfree |
 | 观察 | 本机实测不达标 | - |
-| 视频 | 本机实测高带宽（手动切） | 8 节点（≥ 0.6 MB/s） |
+| 视频 | 本机实测高带宽（手动切） | 7 节点（≥ 0.6 MB/s） |
 
 排序依据是**国内口径**（本机全量探针的多轮均值）。美国 CI 口径不用来排序 —— 实测 Spearman rho 仅 0.48，排名不可信。
 
@@ -31,15 +31,15 @@
 
 | 源 | 原始 | 产出 | AI 剔除(簇/节点) | 镜像回退 | 分组 | 备注 |
 |---|---:|---:|---:|---|---|---|
-| zhuhaiuk | 38 | 37 | 0 节点 | 否 | auto | - |
-| ssrsub | 396 | 373 | 0 节点 | 否 | auto | 跨源去重 -16 |
+| zhuhaiuk | 38 | 38 | 0 节点 | 否 | auto | - |
+| ssrsub | 396 | 372 | 0 节点 | 否 | auto | 跨源去重 -16 |
 | ruk1ng001 | 129 | 104 | 0 节点 | 否 | auto | 跨源去重 -1 |
-| shaoyouvip | 11 | 8 | 0 节点 | 否 | 备用 | 跨源去重 -3 |
-| leilaomi | 82 | 67 | 0 节点 | 否 | auto | 跨源去重 -7 |
+| shaoyouvip | 100 | 57 | 0 节点 | 否 | 备用 | 跨源去重 -34 |
+| leilaomi | 80 | 60 | 0 节点 | 否 | auto | 跨源去重 -12 |
 | wzmfree | 134 | 1 | 0 节点 | 否 | 备用 | 跨源去重 -105 |
-| Free-Nodes | 1260 | 491 | 0 节点 | 否 | 备用 | 跨源去重 -9 |
+| Free-Nodes | 81 | 44 | 0 节点 | 否 | 备用 | 跨源去重 -10 |
 
-合计产出 **1081** 节点（合并池 1081；跨源内容去重剔除 141）。
+合计产出 **676** 节点（合并池 676；跨源内容去重剔除 178）。
 
 > 注意：节点数 ≠ 可用性。真实质量门禁是 **youtube/generate_204 探针**（手机/PC 侧 mihomo 自己跑）；CI 在美国机，连通性检查只能删明显死的。
 
@@ -52,7 +52,6 @@
 - leilaomi AI 部分批次不可用（相关批次保留全部节点）：全部批次失败
 - wzmfree AI 部分批次不可用（相关批次保留全部节点）：全部批次失败
 - Free-Nodes AI 部分批次不可用（相关批次保留全部节点）：全部批次失败
-- Free-Nodes 产出 752 超过 max_nodes=500，已截断
 
 ## 硬过滤命中 TOP（按源）
 
