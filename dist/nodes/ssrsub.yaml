@@ -1,4 +1,4 @@
-# clash-source 自动生成 —— 源 ssrsub，共 386 节点（稳定性加权后留在竞速池内的部分）
+# clash-source 自动生成 —— 源 ssrsub，共 385 节点（稳定性加权后留在竞速池内的部分）
 # 不要手改；改动会在下次定时任务被覆盖（上游 https://pala911.github.io/clash-source/nodes/ssrsub.yaml）
 proxies:
 - name: 🇮🇩 机场推荐:dafei.de 印尼 01
@@ -301,6 +301,23 @@ proxies:
   skip-cert-verify: true
   tls: true
   udp: true
+- name: 🇺🇸 机场推荐:dafei.de 美国 06
+  type: vmess
+  server: guanwang.awsno.com
+  port: 443
+  alterId: '0'
+  cipher: auto
+  network: ws
+  skip-cert-verify: false
+  tls: true
+  udp: true
+  uuid: 6a89a215-22bf-4bd7-9642-b95b2e09583a
+  ws-opts:
+    headers:
+      Host: guanwang.awsno.com
+    path: /hls/cctv5phd.m3u8
+  xudp: true
+  servername: guanwang.awsno.com
 - name: 🇺🇸 机场推荐:dafei.de 美国 07
   type: http
   server: 154.26.192.123
@@ -425,22 +442,6 @@ proxies:
   skip-cert-verify: true
   tls: true
   udp: true
-- name: 🇺🇸 机场推荐:dafei.de 美国 23
-  type: vmess
-  server: 172.64.145.93
-  port: 443
-  alterId: 0
-  cipher: auto
-  network: ws
-  skip-cert-verify: true
-  tls: true
-  uuid: 6a89a215-22bf-4bd7-9642-b95b2e09583a
-  ws-opts:
-    headers:
-      Host: guanwang.awsno.com
-    path: /hls/cctv5phd.m3u8
-  udp: true
-  servername: guanwang.awsno.com
 - name: 🇺🇸 机场推荐:dafei.de 美国 24
   type: http
   server: 149.22.88.65
@@ -455,21 +456,6 @@ proxies:
   skip-cert-verify: true
   tls: true
   udp: true
-- name: 🇺🇸 机场推荐:dafei.de 美国 26
-  type: vmess
-  server: www.shopify.com
-  port: 443
-  alterId: 0
-  cipher: auto
-  network: ws
-  tls: true
-  uuid: 6a89a215-22bf-4bd7-9642-b95b2e09583a
-  ws-opts:
-    headers:
-      Host: guanwang.awsno.com
-    path: /hls/cctv5phd.m3u8
-  udp: true
-  servername: guanwang.awsno.com
 - name: 🇺🇸 机场推荐:dafei.de 美国 27
   type: http
   server: fan.365747.xyz
