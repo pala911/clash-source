@@ -136,10 +136,10 @@ proxy-groups:
 - name: AUTO
   type: url-test
   proxies:
-  - SRC-ssrsub
   - SRC-zhuhaiuk
-  - SRC-ruk1ng001
+  - SRC-ssrsub
   - SRC-leilaomi
+  - SRC-ruk1ng001
   url: https://www.youtube.com/generate_204
   expected-status: 204
   interval: 120
@@ -148,11 +148,10 @@ proxy-groups:
 - name: 不稳定
   type: url-test
   use:
-  - SRCFL-Free-Nodes
   - SRCFL-leilaomi
   - SRCFL-ruk1ng001
-  - SRCFL-shaoyouvip
   - SRCFL-ssrsub
+  - SRCFL-zhuhaiuk
   url: https://www.youtube.com/generate_204
   expected-status: 204
   interval: 300
@@ -189,7 +188,6 @@ proxy-groups:
   - FAILOVER
   - 家里路由
   - AUTO
-  - 视频
   - 备用
   - 观察
   - SRC-passcro
@@ -223,15 +221,6 @@ proxy-groups:
   - Free-Nodes
   proxies:
   - PROXY
-- name: 视频
-  type: url-test
-  use:
-  - video
-  url: https://www.youtube.com/generate_204
-  expected-status: 204
-  interval: 300
-  timeout: 5000
-  tolerance: 200
 rule-providers:
   LocalAreaNetwork:
     type: http
@@ -511,11 +500,11 @@ rules:
 - RULE-SET,claude,Claude
 - DOMAIN-SUFFIX,claude.com,Claude
 - RULE-SET,gemini,Gemini
-- RULE-SET,YouTube,视频
-- RULE-SET,Netflix,视频
-- RULE-SET,ProxyMedia,视频
-- RULE-SET,Bahamut,视频
-- RULE-SET,BilibiliHMT,视频
+- RULE-SET,YouTube,PROXY
+- RULE-SET,Netflix,PROXY
+- RULE-SET,ProxyMedia,PROXY
+- RULE-SET,Bahamut,PROXY
+- RULE-SET,BilibiliHMT,PROXY
 - RULE-SET,OpenAi,PROXY
 - RULE-SET,GoogleFCM,PROXY
 - RULE-SET,Telegram,PROXY
@@ -615,18 +604,6 @@ proxy-providers:
       interval: 300
       timeout: 5000
       expected-status: 204
-  SRCFL-Free-Nodes:
-    type: http
-    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/Free-Nodes--flaky.yaml
-    path: ./providers/SRCFL-Free-Nodes.yaml
-    interval: 3600
-    exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
-    health-check:
-      enable: true
-      url: https://www.youtube.com/generate_204
-      interval: 300
-      timeout: 5000
-      expected-status: 204
   SRCFL-leilaomi:
     type: http
     url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/leilaomi--flaky.yaml
@@ -651,18 +628,6 @@ proxy-providers:
       interval: 300
       timeout: 5000
       expected-status: 204
-  SRCFL-shaoyouvip:
-    type: http
-    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/shaoyouvip--flaky.yaml
-    path: ./providers/SRCFL-shaoyouvip.yaml
-    interval: 3600
-    exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
-    health-check:
-      enable: true
-      url: https://www.youtube.com/generate_204
-      interval: 300
-      timeout: 5000
-      expected-status: 204
   SRCFL-ssrsub:
     type: http
     url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/ssrsub--flaky.yaml
@@ -675,12 +640,12 @@ proxy-providers:
       interval: 300
       timeout: 5000
       expected-status: 204
-  video:
+  SRCFL-zhuhaiuk:
     type: http
-    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/video.yaml
-    path: ./providers/video.yaml
+    url: https://gh-proxy.com/raw.githubusercontent.com/pala911/clash-source/gh-pages/nodes/zhuhaiuk--flaky.yaml
+    path: ./providers/SRCFL-zhuhaiuk.yaml
     interval: 3600
-    exclude-filter: ''
+    exclude-filter: (?i)(推荐|广告|订阅|官网|网址|域名|加群|群|电报|telegram|t\.me|https?://|www\.|一元|试用|试看|购买|续费|到期|过期|剩余|重置|频道|@|🇨🇳CN_[0-9])
     health-check:
       enable: true
       url: https://www.youtube.com/generate_204

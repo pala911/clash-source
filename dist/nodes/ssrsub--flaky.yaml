@@ -1,59 +1,82 @@
-# clash-source 自动生成 —— 源 ssrsub，被稳定性加权移出的 6 个节点
+# clash-source 自动生成 —— 源 ssrsub，被稳定性加权移出的 9 个节点
 # 历史可用率偏低，不参与 AUTO 自动竞速；需要时可从「备用」组手工切。
 proxies:
-- name: 🇩🇪 机场推荐:dafei.de 德国 16
+- name: 🇩🇪 机场推荐:dafei.de 德国 18
   type: http
-  server: 87.249.132.97
-  port: 443
-  password: None
+  server: 213.177.229.161
+  port: 9443
   skip-cert-verify: true
   tls: true
   udp: true
-- name: 🇺🇸 机场推荐:dafei.de 美国 03
+- name: 🇩🇪 机场推荐:dafei.de 德国 19
+  type: socks5
+  server: 91.107.179.68
+  port: 10809
+  password: ''
+  skip-cert-verify: true
+  username: ''
+  udp: true
+- name: 🇺🇸 机场推荐:dafei.de 美国 06
   type: vmess
-  server: 172.67.190.164
+  server: guanwang.awsno.com
   port: 443
-  alterId: 0
+  alpn:
+  - ''
+  alterId: '0'
   cipher: auto
   network: ws
-  skip-cert-verify: true
+  skip-cert-verify: false
   tls: true
+  udp: true
   uuid: 6a89a215-22bf-4bd7-9642-b95b2e09583a
   ws-opts:
     headers:
       Host: guanwang.awsno.com
     path: /hls/cctv5phd.m3u8
-  udp: true
+  xudp: true
   servername: guanwang.awsno.com
-- name: 🇺🇸 机场推荐:dafei.de 美国 75
+- name: 🇺🇸 机场推荐:dafei.de 美国 70
   type: http
-  server: 138.199.35.211
-  port: 9002
-  password: None
+  server: 152.233.50.145
+  port: 9443
   skip-cert-verify: true
   tls: true
   udp: true
-- name: 🇷🇴 机场推荐:dafei.de 罗马尼亚 01
+- name: 🇸🇪 机场推荐:dafei.de 瑞典 04
   type: http
-  server: 185.163.110.194
-  port: 443
+  server: 146.70.242.146
+  port: 9443
   skip-cert-verify: true
   tls: true
   udp: true
-- name: 🇭🇰 机场推荐:dafei.de 香港 04
-  type: socks5
-  server: 47.243.225.10
-  port: 8888
-  password: '123'
-  skip-cert-verify: true
-  username: '123'
-  udp: true
-- name: 🇨🇦 机场推荐:dafei.de 加拿大 09
+- name: 🇨🇿 机场推荐:dafei.de 捷克 01
   type: http
-  server: 206.223.161.47
+  server: 185.216.35.66
   port: 443
-  password: None
+  password: ''
   skip-cert-verify: true
   tls: true
   udp: true
   username: ''
+- name: 🇨🇭 机场推荐:dafei.de 瑞士 02
+  type: http
+  server: 149.88.27.33
+  port: 9443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇭🇷 机场推荐:dafei.de 克罗地亚 02
+  type: http
+  server: 154.47.29.174
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇪🇸 机场推荐:dafei.de 西班牙 02
+  type: http
+  server: 130.195.250.18
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
