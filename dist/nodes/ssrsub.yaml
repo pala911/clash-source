@@ -1,4 +1,4 @@
-# clash-source 自动生成 —— 源 ssrsub，共 385 节点（稳定性加权后留在竞速池内的部分）
+# clash-source 自动生成 —— 源 ssrsub，共 357 节点（稳定性加权后留在竞速池内的部分）
 # 不要手改；改动会在下次定时任务被覆盖（上游 https://pala911.github.io/clash-source/nodes/ssrsub.yaml）
 proxies:
 - name: 🇮🇩 机场推荐:dafei.de 印尼 01
@@ -187,6 +187,21 @@ proxies:
   password: None
   skip-cert-verify: true
   tls: true
+  udp: true
+- name: 🇩🇪 机场推荐:dafei.de 德国 18
+  type: http
+  server: 213.177.229.161
+  port: 9443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇩🇪 机场推荐:dafei.de 德国 19
+  type: socks5
+  server: 91.107.179.68
+  port: 10809
+  password: ''
+  skip-cert-verify: true
+  username: ''
   udp: true
 - name: 🇩🇪 机场推荐:dafei.de 德国 20
   type: http
@@ -442,13 +457,22 @@ proxies:
   skip-cert-verify: true
   tls: true
   udp: true
-- name: 🇺🇸 机场推荐:dafei.de 美国 24
-  type: http
-  server: 149.22.88.65
+- name: 🇺🇸 机场推荐:dafei.de 美国 23
+  type: vmess
+  server: www.shopify.com
   port: 443
+  alterId: 0
+  cipher: auto
+  network: ws
   skip-cert-verify: true
   tls: true
+  uuid: 6a89a215-22bf-4bd7-9642-b95b2e09583a
+  ws-opts:
+    headers:
+      Host: guanwang.awsno.com
+    path: /hls/cctv5phd.m3u8
   udp: true
+  servername: guanwang.awsno.com
 - name: 🇺🇸 机场推荐:dafei.de 美国 25
   type: http
   server: 162.244.227.36
@@ -464,15 +488,6 @@ proxies:
   sni: fan.365747.xyz
   tls: true
   udp: true
-- name: 🇺🇸 机场推荐:dafei.de 美国 28
-  type: http
-  server: 38.95.111.226
-  port: 9443
-  password: ''
-  skip-cert-verify: true
-  tls: true
-  udp: true
-  username: ''
 - name: 🇺🇸 机场推荐:dafei.de 美国 29
   type: http
   server: 38.28.193.188
@@ -591,14 +606,6 @@ proxies:
   skip-cert-verify: true
   tls: true
   udp: true
-- name: 🇺🇸 机场推荐:dafei.de 美国 44
-  type: http
-  server: 198.44.135.19
-  port: 9443
-  password: None
-  skip-cert-verify: true
-  tls: true
-  udp: true
 - name: 🇺🇸 机场推荐:dafei.de 美国 45
   type: http
   server: 38.28.185.224
@@ -648,29 +655,6 @@ proxies:
   skip-cert-verify: true
   tls: true
   udp: true
-- name: 🇺🇸 机场推荐:dafei.de 美国 52
-  type: http
-  server: 149.88.21.140
-  port: 443
-  skip-cert-verify: true
-  tls: true
-  udp: true
-- name: 🇺🇸 机场推荐:dafei.de 美国 53
-  type: http
-  server: 167.88.60.242
-  port: 443
-  skip-cert-verify: true
-  tls: true
-  udp: true
-- name: 🇺🇸 机场推荐:dafei.de 美国 54
-  type: http
-  server: 198.44.138.27
-  port: 9443
-  password: None
-  skip-cert-verify: true
-  tls: true
-  udp: true
-  username: ''
 - name: 🇺🇸 机场推荐:dafei.de 美国 55
   type: socks5
   server: 69.55.49.177
@@ -777,6 +761,13 @@ proxies:
   server: 138.199.35.218
   port: 9002
   password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇺🇸 机场推荐:dafei.de 美国 70
+  type: http
+  server: 152.233.50.145
+  port: 9443
   skip-cert-verify: true
   tls: true
   udp: true
@@ -1300,14 +1291,6 @@ proxies:
   skip-cert-verify: true
   tls: true
   udp: true
-- name: 🇳🇱 机场推荐:dafei.de 荷兰 23
-  type: http
-  server: 149.36.51.157
-  port: 9443
-  password: None
-  skip-cert-verify: true
-  tls: true
-  udp: true
 - name: 🇳🇱 机场推荐:dafei.de 荷兰 24
   type: http
   server: 185.53.129.141
@@ -1316,22 +1299,6 @@ proxies:
   skip-cert-verify: true
   tls: true
   udp: true
-- name: 🇳🇱 机场推荐:dafei.de 荷兰 25
-  type: vless
-  server: 196.196.148.76
-  port: 443
-  client-fingerprint: firefox
-  encryption: none
-  flow: xtls-rprx-vision
-  network: tcp
-  reality-opts:
-    public-key: VZS639V1i-35g7VXb9EoTYL-Srm7858sxcvFAunncmA
-    short-id: 8d0d0679f42ffd98
-  tls: true
-  udp: true
-  uuid: 4201786b-d99b-4147-a5f0-20d47acddb81
-  xudp: true
-  servername: 8a2e72t.nl20.h1clayd.shop
 - name: 🇳🇱 机场推荐:dafei.de 荷兰 26
   type: vless
   server: 196.245.52.183
@@ -1654,30 +1621,9 @@ proxies:
   skip-cert-verify: true
   tls: true
   udp: true
-- name: 🇮🇹 机场推荐:dafei.de 意大利 03
-  type: ss
-  server: 202.50.253.54
-  port: 19999
-  cipher: aes-256-gcm
-  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
-  udp: true
 - name: 🇮🇹 机场推荐:dafei.de 意大利 04
   type: ss
   server: 202.50.253.99
-  port: 19999
-  cipher: aes-256-gcm
-  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
-  udp: true
-- name: 🇮🇹 机场推荐:dafei.de 意大利 05
-  type: ss
-  server: 202.50.253.36
-  port: 19999
-  cipher: aes-256-gcm
-  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
-  udp: true
-- name: 🇮🇹 机场推荐:dafei.de 意大利 06
-  type: ss
-  server: 202.50.253.90
   port: 19999
   cipher: aes-256-gcm
   password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
@@ -1688,27 +1634,6 @@ proxies:
   port: 443
   skip-cert-verify: true
   tls: true
-  udp: true
-- name: 🇮🇹 机场推荐:dafei.de 意大利 08
-  type: ss
-  server: 202.50.253.72
-  port: 19999
-  cipher: aes-256-gcm
-  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
-  udp: true
-- name: 🇮🇹 机场推荐:dafei.de 意大利 09
-  type: ss
-  server: 202.50.253.63
-  port: 19999
-  cipher: aes-256-gcm
-  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
-  udp: true
-- name: 🇮🇹 机场推荐:dafei.de 意大利 10
-  type: ss
-  server: 202.50.253.45
-  port: 19999
-  cipher: aes-256-gcm
-  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
   udp: true
 - name: 🇮🇹 机场推荐:dafei.de 意大利 11
   type: ss
@@ -1724,20 +1649,6 @@ proxies:
   password: JdFlrZhqHP
   udp: true
   username: ufCobhydz4Wd
-- name: 🇮🇹 机场推荐:dafei.de 意大利 13
-  type: ss
-  server: 202.50.253.27
-  port: 19999
-  cipher: aes-256-gcm
-  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
-  udp: true
-- name: 🇮🇹 机场推荐:dafei.de 意大利 14
-  type: ss
-  server: 202.50.253.81
-  port: 19999
-  cipher: aes-256-gcm
-  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
-  udp: true
 - name: 🇭🇰 机场推荐:dafei.de 香港 01
   type: http
   server: 120.232.204.58
@@ -1853,13 +1764,6 @@ proxies:
   skip-cert-verify: true
   tls: true
   udp: true
-- name: 🇫🇷 机场推荐:dafei.de 法国 10
-  type: http
-  server: 213.139.9.142
-  port: 9443
-  skip-cert-verify: true
-  tls: true
-  udp: true
 - name: 🇫🇷 机场推荐:dafei.de 法国 11
   type: http
   server: 80.124.109.22
@@ -1930,13 +1834,6 @@ proxies:
   skip-cert-verify: true
   tls: true
   udp: true
-- name: 🇱🇻 机场推荐:dafei.de 拉脱维亚 05
-  type: http
-  server: 85.203.39.130
-  port: 443
-  skip-cert-verify: true
-  tls: true
-  udp: true
 - name: 🇸🇪 机场推荐:dafei.de 瑞典 01
   type: http
   server: 146.70.242.130
@@ -1951,11 +1848,10 @@ proxies:
   skip-cert-verify: true
   tls: true
   udp: true
-- name: 🇸🇪 机场推荐:dafei.de 瑞典 03
+- name: 🇸🇪 机场推荐:dafei.de 瑞典 04
   type: http
-  server: 149.50.216.65
-  port: 443
-  password: None
+  server: 146.70.242.146
+  port: 9443
   skip-cert-verify: true
   tls: true
   udp: true
@@ -2026,6 +1922,15 @@ proxies:
   skip-cert-verify: true
   tls: true
   udp: true
+- name: 🇨🇿 机场推荐:dafei.de 捷克 01
+  type: http
+  server: 185.216.35.66
+  port: 443
+  password: ''
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: ''
 - name: 🇨🇿 机场推荐:dafei.de 捷克 02
   type: http
   server: 152.233.16.174
@@ -2047,13 +1952,6 @@ proxies:
   skip-cert-verify: true
   sni: 991cc80f13caf81d3426ddebb2da7f49-240d6105b6ef86f0.apache-iv.com
   tls: true
-  udp: true
-- name: 🇲🇽 机场推荐:dafei.de 墨西哥 02
-  type: socks5
-  server: 144.225.47.8
-  port: 42000
-  password: DJy1T0dt
-  username: Tek2x6av
   udp: true
 - name: 🇲🇽 机场推荐:dafei.de 墨西哥 03
   type: socks5
@@ -2113,14 +2011,6 @@ proxies:
   password: KsPAxZGn
   username: userLRgK
   udp: true
-- name: 🇲🇽 机场推荐:dafei.de 墨西哥 11
-  type: socks5
-  server: 72.57.228.87
-  port: 62000
-  password: VvUAFi2E
-  skip-cert-verify: true
-  username: UBXich0K
-  udp: true
 - name: 🇲🇽 机场推荐:dafei.de 墨西哥 12
   type: socks5
   server: 94.194.165.131
@@ -2128,13 +2018,6 @@ proxies:
   password: lcFa8dTH
   skip-cert-verify: true
   username: QyVdo5ks
-  udp: true
-- name: 🇸🇬 机场推荐:dafei.de 新加坡 01
-  type: http
-  server: 149.88.99.209
-  port: 9443
-  skip-cert-verify: true
-  tls: true
   udp: true
 - name: 🇸🇬 机场推荐:dafei.de 新加坡 02
   type: socks5
@@ -2150,14 +2033,6 @@ proxies:
   port: 443
   skip-cert-verify: true
   tls: true
-  udp: true
-- name: 🇸🇬 机场推荐:dafei.de 新加坡 04
-  type: socks5
-  server: 66.80.2.252
-  port: 62000
-  password: c0a34a
-  skip-cert-verify: true
-  username: usereb7d
   udp: true
 - name: 🇸🇬 机场推荐:dafei.de 新加坡 05
   type: vless
@@ -2202,6 +2077,14 @@ proxies:
   skip-cert-verify: true
   tls: true
   udp: true
+- name: 🇨🇭 机场推荐:dafei.de 瑞士 02
+  type: http
+  server: 149.88.27.33
+  port: 9443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
 - name: 🇨🇭 机场推荐:dafei.de 瑞士 03
   type: http
   server: 31.7.62.50
@@ -2241,13 +2124,6 @@ proxies:
   skip-cert-verify: true
   tls: true
   udp: true
-- name: 🇬🇧 机场推荐:dafei.de 英国 03
-  type: http
-  server: 84.233.178.33
-  port: 9443
-  skip-cert-verify: true
-  tls: true
-  udp: true
 - name: 🇬🇧 机场推荐:dafei.de 英国 04
   type: http
   server: 206.189.118.214
@@ -2265,31 +2141,9 @@ proxies:
   skip-cert-verify: true
   tls: true
   udp: true
-- name: 🇬🇧 机场推荐:dafei.de 英国 06
-  type: http
-  server: 84.17.50.214
-  port: 9443
-  skip-cert-verify: true
-  tls: true
-  udp: true
-- name: 🇬🇧 机场推荐:dafei.de 英国 07
-  type: http
-  server: 212.102.63.1
-  port: 443
-  password: None
-  skip-cert-verify: true
-  tls: true
-  udp: true
 - name: 🇬🇧 机场推荐:dafei.de 英国 08
   type: http
   server: 185.164.138.156
-  port: 443
-  skip-cert-verify: true
-  tls: true
-  udp: true
-- name: 🇬🇧 机场推荐:dafei.de 英国 09
-  type: http
-  server: 212.102.63.31
   port: 443
   skip-cert-verify: true
   tls: true
@@ -2335,6 +2189,13 @@ proxies:
 - name: 🇭🇷 机场推荐:dafei.de 克罗地亚 01
   type: http
   server: 154.47.29.161
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: 🇭🇷 机场推荐:dafei.de 克罗地亚 02
+  type: http
+  server: 154.47.29.174
   port: 443
   skip-cert-verify: true
   tls: true
@@ -2414,15 +2275,6 @@ proxies:
   skip-cert-verify: true
   tls: true
   udp: true
-- name: 🇨🇦 机场推荐:dafei.de 加拿大 04
-  type: http
-  server: 198.44.157.19
-  port: 9443
-  password: None
-  skip-cert-verify: true
-  tls: true
-  udp: true
-  username: ''
 - name: 🇨🇦 机场推荐:dafei.de 加拿大 05
   type: http
   server: 198.44.157.27
@@ -2445,26 +2297,10 @@ proxies:
   skip-cert-verify: true
   tls: true
   udp: true
-- name: 🇨🇦 机场推荐:dafei.de 加拿大 08
-  type: http
-  server: 198.44.142.27
-  port: 9443
-  skip-cert-verify: true
-  tls: true
-  udp: true
 - name: 🇨🇦 机场推荐:dafei.de 加拿大 09
   type: http
   server: 206.223.161.47
   port: 443
-  password: None
-  skip-cert-verify: true
-  tls: true
-  udp: true
-  username: ''
-- name: 🇨🇦 机场推荐:dafei.de 加拿大 10
-  type: http
-  server: 23.169.224.34
-  port: 9443
   password: None
   skip-cert-verify: true
   tls: true
@@ -2514,11 +2350,10 @@ proxies:
   skip-cert-verify: true
   tls: true
   udp: true
-- name: 🇪🇸 机场推荐:dafei.de 西班牙 01
+- name: 🇪🇸 机场推荐:dafei.de 西班牙 02
   type: http
-  server: 130.195.250.34
+  server: 130.195.250.18
   port: 443
-  password: None
   skip-cert-verify: true
   tls: true
   udp: true
@@ -2536,13 +2371,6 @@ proxies:
   uuid: 4201786b-d99b-4147-a5f0-20d47acddb81
   network: tcp
   servername: 7aa271t.es1.h1clayd.click
-- name: 🇪🇸 机场推荐:dafei.de 西班牙 04
-  type: http
-  server: 82.102.17.178
-  port: 443
-  skip-cert-verify: true
-  tls: true
-  udp: true
 - name: 🇪🇸 机场推荐:dafei.de 西班牙 05
   type: vless
   server: 196.199.122.2
@@ -2729,15 +2557,6 @@ proxies:
   skip-cert-verify: true
   tls: true
   udp: true
-- name: 🇬🇷 机场推荐:dafei.de 希腊 01
-  type: http
-  server: 149.22.85.65
-  port: 443
-  password: ''
-  skip-cert-verify: true
-  tls: true
-  udp: true
-  username: ''
 - name: 🇬🇷 机场推荐:dafei.de 希腊 02
   type: http
   server: 149.22.85.78
@@ -2796,13 +2615,6 @@ proxies:
   skip-cert-verify: true
   tls: true
   udp: true
-- name: 🇹🇭 机场推荐:dafei.de 泰国 01
-  type: socks5
-  server: 151.246.109.86
-  port: 42000
-  password: 1pB7HV6u
-  username: AJ3d9gJw
-  udp: true
 - name: 🇹🇭 机场推荐:dafei.de 泰国 02
   type: socks5
   server: 151.246.109.158
@@ -2816,13 +2628,6 @@ proxies:
   port: 42000
   password: VAwyJQX0iKMJiyCw5UVK9wGH
   username: route164JIa2CBPxfy
-  udp: true
-- name: 🇹🇭 机场推荐:dafei.de 泰国 04
-  type: socks5
-  server: 151.246.108.69
-  port: 42000
-  password: fAgE2jqK
-  username: h87527jJ
   udp: true
 - name: 🇹🇭 机场推荐:dafei.de 泰国 05
   type: socks5
@@ -2874,14 +2679,6 @@ proxies:
   password: YlRoWvE0dL_cUqS94wPeKnA4
   skip-cert-verify: true
   username: ks878449260d
-  udp: true
-- name: 🇹🇭 机场推荐:dafei.de 泰国 12
-  type: socks5
-  server: 109.66.136.194
-  port: 62000
-  password: zdnivBaI
-  skip-cert-verify: true
-  username: r3ZzP8WW
   udp: true
 - name: 🇹🇭 机场推荐:dafei.de 泰国 13
   type: socks5
@@ -3086,13 +2883,6 @@ proxies:
   server: 158.247.125.5
   port: 9443
   skip-cert-verify: true
-  udp: true
-- name: 🇧🇦 机场推荐:dafei.de 波斯尼亚和黑塞哥维那 01
-  type: http
-  server: 185.164.35.16
-  port: 443
-  skip-cert-verify: true
-  tls: true
   udp: true
 - name: 🇨🇳 机场推荐:dafei.de 台湾 01
   type: anytls
