@@ -1,0 +1,4496 @@
+# clash-source 自动生成 —— 全源合并，共 543 节点（名字带源前缀）
+# 供多源合并场景使用；profile.yaml 默认按源分文件挂载
+proxies:
+- name: anaer_伊朗-001
+  type: vless
+  server: 194.60.228.97
+  port: 443
+  network: tcp
+  uuid: 667016ca-f02e-4b5f-bfc3-3d8ed81e9bec
+  servername: base.hosamobenl.co.uk
+  tls: true
+  ws-opts:
+    path: /
+  client-fingerprint: chrome
+- name: anaer_德国-002
+  type: vless
+  server: 185.197.193.137
+  port: 443
+  network: ws
+  uuid: 313b84fa-b922-500f-9b65-acb67c040cc0
+  servername: us2.v2less.site
+  skip-cert-verify: false
+  tls: true
+  udp: true
+  ws-opts:
+    headers:
+      Host: us2.v2less.site
+    path: /vless
+  client-fingerprint: chrome
+- name: anaer_美国-001
+  type: vmess
+  server: 192.74.236.148
+  port: 30004
+  network: ws
+  uuid: 418048af-a293-4b99-9b0c-98ca3580dd24
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  alterId: 64
+  cipher: auto
+  ws-opts:
+    headers:
+      Host: www.91334565.xyz
+    path: /path/1733477783705
+- name: anaer_美国-002 |3.2MB/s|TK-US|YT-US|GPT⁺-US|GM-US
+  type: http
+  server: 38.28.193.188
+  port: 443
+  skip-cert-verify: true
+  tls: true
+- name: anaer_美国-003 |1.5MB/s|TK-US|YT-US|GPT⁺-US|GM-US
+  type: http
+  server: 209.148.53.153
+  port: 8090
+  skip-cert-verify: true
+  tls: true
+- name: anaer_荷兰-001 |2.1MB/s|TK-NL|GPT⁺-NL|GM-NL
+  type: http
+  server: 84.17.47.150
+  port: 9002
+  skip-cert-verify: true
+  tls: true
+- name: anaer_荷兰-002 |1.8MB/s|TK-NL|GPT⁺-NL
+  type: http
+  server: 51.159.225.196
+  port: 23856
+  skip-cert-verify: true
+  tls: true
+- name: anaer_荷兰-003 |1.8MB/s|TK-NL|GPT⁺-NL|GM-NL
+  type: http
+  server: 5.255.118.82
+  port: 443
+  skip-cert-verify: true
+  tls: true
+- name: anaer_荷兰-004 |1.6MB/s|TK-NL|GPT⁺-NL|GM-NL
+  type: http
+  server: 84.17.47.147
+  port: 9002
+  skip-cert-verify: true
+  tls: true
+- name: passcro_DK_speednode_0005
+  type: http
+  server: 158.173.154.4
+  port: 9002
+  password: None
+  tls: true
+  skip-cert-verify: true
+  udp: true
+- name: passcro_DK_speednode_0006
+  type: http
+  server: 158.173.154.5
+  port: 9002
+  tls: true
+  skip-cert-verify: true
+  udp: true
+- name: passcro_FR_speednode_0007
+  type: http
+  server: 87.98.174.157
+  port: 6103
+  tls: true
+  skip-cert-verify: true
+  udp: true
+- name: passcro_IE_speednode_0010
+  type: http
+  server: 18.200.158.139
+  port: 443
+  tls: true
+  skip-cert-verify: true
+  udp: true
+- name: passcro_NL_speednode_0014
+  type: http
+  server: 149.36.51.129
+  port: 443
+  tls: true
+  skip-cert-verify: true
+  udp: true
+- name: passcro_NL_speednode_0017
+  type: http
+  server: 84.17.47.125
+  port: 9002
+  tls: true
+  skip-cert-verify: true
+  udp: true
+- name: passcro_NL_speednode_0021
+  type: http
+  server: 84.17.47.148
+  port: 9002
+  password: None
+  tls: true
+  skip-cert-verify: true
+  udp: true
+- name: passcro_RU_speednode_0025
+  type: ss
+  server: 46.17.42.129
+  port: 18443
+  cipher: aes-256-gcm
+  password: NTiHBg64fsY8u8DbGrtypD9gPGSL386p
+  udp: true
+- name: passcro_US_speednode_0027
+  type: http
+  server: 172.64.69.89
+  port: 443
+  tls: true
+  skip-cert-verify: true
+  udp: true
+- name: 'passcro_说明-来源: zhangkaiitugithub/passcro'
+  type: trojan
+  server: 127.0.0.1
+  port: 443
+  password: dummy
+  udp: true
+  skip-cert-verify: true
+- name: zhuhaiuk_HR - zhuhai.uk
+  type: http
+  server: 154.47.29.161
+  port: 443
+  tls: true
+  skip-cert-verify: true
+- name: zhuhaiuk_SG - zhuhai.uk
+  type: vless
+  server: 149.28.152.20
+  port: 443
+  uuid: e17ca473-bd02-4fe6-873f-5866d729b0a3
+  tls: true
+  servername: itunes.apple.com
+  skip-cert-verify: true
+  client-fingerprint: chrome
+  network: ws
+  ws-opts:
+    path: /ws
+    headers:
+      Host: itunes.apple.com
+  reality-opts:
+    public-key: sli7AT0WEhYMVMARhHh-ZQMK7zHHn0cGsxw2gPhoBis
+    short-id: 107ff148
+- name: zhuhaiuk_US - zhuhai.uk
+  type: http
+  server: 38.247.141.135
+  port: 443
+  username: 'null'
+  password: 'null'
+  tls: true
+  sni: 38.247.141.135
+  skip-cert-verify: true
+- name: zhuhaiuk_US - zhuhai.uk 02
+  type: http
+  server: 138.199.35.198
+  port: 9002
+  username: 'null'
+  password: None
+  tls: true
+  skip-cert-verify: true
+- name: zhuhaiuk_NL - zhuhai.uk
+  type: http
+  server: 5.255.118.82
+  port: 443
+  username: 'null'
+  password: 'null'
+  tls: true
+  sni: 5.255.118.82
+  skip-cert-verify: true
+- name: zhuhaiuk_AL - zhuhai.uk
+  type: http
+  server: 91.92.250.33
+  port: 443
+  username: 'null'
+  password: 'null'
+  tls: true
+  skip-cert-verify: true
+- name: zhuhaiuk_NL - zhuhai.uk 02
+  type: http
+  server: 84.17.47.149
+  port: 9002
+  tls: true
+  sni: 84.17.47.149
+  skip-cert-verify: true
+- name: zhuhaiuk_PL - zhuhai.uk
+  type: http
+  server: 151.115.54.133
+  port: 443
+  tls: true
+  sni: 151.115.54.133
+  skip-cert-verify: true
+- name: zhuhaiuk_NL - zhuhai.uk 03
+  type: http
+  server: 84.17.47.146
+  port: 9002
+  username: 'null'
+  password: 'null'
+  tls: true
+  sni: 84.17.47.146
+  skip-cert-verify: true
+- name: zhuhaiuk_NL - zhuhai.uk 04
+  type: vless
+  server: 8a2e72t.nl20.h1clayd.shop
+  port: 443
+  uuid: 4201786b-d99b-4147-a5f0-20d47acddb81
+  flow: xtls-rprx-vision
+  tls: true
+  servername: 8a2e72t.nl20.h1clayd.shop
+  skip-cert-verify: true
+  client-fingerprint: chrome
+  reality-opts:
+    public-key: VZS639V1i-35g7VXb9EoTYL-Srm7858sxcvFAunncmA
+    short-id: 8d0d0679f42ffd98
+- name: zhuhaiuk_US - zhuhai.uk 03
+  type: http
+  server: 138.199.35.215
+  port: 9002
+  tls: true
+  sni: 138.199.35.215
+  skip-cert-verify: true
+- name: zhuhaiuk_NL - zhuhai.uk 05
+  type: http
+  server: 51.159.225.196
+  port: 23856
+  username: 'null'
+  password: 'null'
+  tls: true
+  sni: 51.159.225.196
+  skip-cert-verify: true
+- name: zhuhaiuk_NL - zhuhai.uk 06
+  type: vless
+  server: 196.196.148.76
+  port: 443
+  uuid: 4201786b-d99b-4147-a5f0-20d47acddb81
+  flow: xtls-rprx-vision
+  tls: true
+  servername: 8a2e72t.nl20.h1clayd.shop
+  client-fingerprint: chrome
+  reality-opts:
+    public-key: VZS639V1i-35g7VXb9EoTYL-Srm7858sxcvFAunncmA
+    short-id: 8d0d0679f42ffd98
+- name: zhuhaiuk_SG - zhuhai.uk 02
+  type: http
+  server: 213.35.107.110
+  port: 443
+  tls: true
+  sni: 213.35.107.110
+  skip-cert-verify: true
+- name: zhuhaiuk_NL - zhuhai.uk 07
+  type: vless
+  server: 196.245.52.178
+  port: 443
+  uuid: cda0862a-0f87-4be9-8ed8-1d0c9e382839
+  tls: true
+  servername: 15b171g.nl7.h1clayd.click
+  client-fingerprint: chrome
+  network: grpc
+  reality-opts:
+    public-key: zbz--PMjcIC4Ggr3j-ibDf0fzXRTj0lM_HzjPJyMkVE
+    short-id: 50a749f0eccb628c
+- name: zhuhaiuk_CA - zhuhai.uk
+  type: http
+  server: 149.57.28.9
+  port: 9443
+  tls: true
+  skip-cert-verify: true
+- name: zhuhaiuk_RU - zhuhai.uk
+  type: http
+  server: 46.29.166.134
+  port: 1446
+  username: 'null'
+  password: 'null'
+  tls: true
+  skip-cert-verify: true
+- name: zhuhaiuk_NL - zhuhai.uk 08
+  type: vless
+  server: 196.196.148.85
+  port: 443
+  uuid: cda0862a-0f87-4be9-8ed8-1d0c9e382839
+  tls: true
+  servername: 5d0319t.nl7.h1clayd.click
+  client-fingerprint: chrome
+  reality-opts:
+    public-key: l-GzBDuNuhnjxoRlZqKvT7jAt_sbVAxhGFsAttO5kXs
+    short-id: 361d0dd59c70516f
+- name: zhuhaiuk_RU - zhuhai.uk 02
+  type: http
+  server: 82.147.71.46
+  port: 443
+  tls: true
+  skip-cert-verify: true
+- name: zhuhaiuk_US - zhuhai.uk 04
+  type: http
+  server: 96.5.129.85
+  port: 443
+  tls: true
+  sni: 96.5.129.85
+  skip-cert-verify: true
+- name: zhuhaiuk_FR - zhuhai.uk
+  type: http
+  server: 213.139.9.142
+  port: 9443
+  tls: true
+  sni: 213.139.9.142
+  skip-cert-verify: true
+- name: zhuhaiuk_US - zhuhai.uk 05
+  type: http
+  server: 76.164.193.18
+  port: 9443
+  tls: true
+  sni: 76.164.193.18
+  skip-cert-verify: true
+- name: zhuhaiuk_IS - zhuhai.uk
+  type: http
+  server: 185.165.170.1
+  port: 9443
+  tls: true
+  skip-cert-verify: true
+- name: zhuhaiuk_NL - zhuhai.uk 09
+  type: http
+  server: 84.17.47.126
+  port: 9002
+  tls: true
+  sni: 84.17.47.126
+  skip-cert-verify: true
+- name: zhuhaiuk_GB - zhuhai.uk
+  type: http
+  server: 212.102.63.1
+  port: 443
+  tls: true
+  skip-cert-verify: true
+- name: zhuhaiuk_HK - zhuhai.uk
+  type: http
+  server: 119.28.24.235
+  port: 3128
+  tls: true
+  skip-cert-verify: true
+- name: zhuhaiuk_HK - zhuhai.uk 02
+  type: http
+  server: fan.240104.xyz
+  port: 443
+  tls: true
+  sni: fan.240104.xyz
+  skip-cert-verify: true
+- name: zhuhaiuk_JP - zhuhai.uk
+  type: socks5
+  server: 101.36.104.239
+  port: 10808
+- name: zhuhaiuk_JP - zhuhai.uk 02
+  type: socks5
+  server: 103.248.150.166
+  port: 42000
+  username: x0dM1dTw
+  password: ZWCdC3C1
+- name: zhuhaiuk_KR - zhuhai.uk
+  type: socks5
+  server: 121.169.46.116
+  port: 1090
+- name: zhuhaiuk_KR - zhuhai.uk 02
+  type: http
+  server: 152.69.230.221
+  port: 443
+  tls: true
+  skip-cert-verify: true
+- name: zhuhaiuk_VN - zhuhai.uk
+  type: socks5
+  server: 221.133.22.195
+  port: 62000
+  username: KUs4xRXd
+  password: 480w0Yy4
+- name: zhuhaiuk_VN - zhuhai.uk 02
+  type: socks5
+  server: 221.133.22.51
+  port: 62000
+  username: KUs4xRXd
+  password: 480w0Yy4
+- name: zhuhaiuk_IT - zhuhai.uk
+  type: ss
+  server: 202.50.253.72
+  port: 19999
+  cipher: aes-256-gcm
+  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
+- name: zhuhaiuk_IT - zhuhai.uk 02
+  type: ss
+  server: 202.50.253.99
+  port: 19999
+  cipher: aes-256-gcm
+  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
+- name: zhuhaiuk_RU - zhuhai.uk 01
+  type: vless
+  server: 201.24.116.192
+  port: 443
+  uuid: 38308ff1-5aa9-494f-a25a-0f2870d56b3e
+  udp: true
+  network: grpc
+  tls: true
+  servername: vps3.nemnogogo.com
+  client-fingerprint: chrome
+- name: ssrsub_🇮🇩 机场推荐:dafei.de 印尼 01
+  type: http
+  server: sr2-id.freeconnect.link
+  port: 9251
+  password: freeuser1
+  sni: sr2-id.freeconnect.link
+  tls: true
+  username: freeuser1
+  udp: true
+- name: ssrsub_🇮🇩 机场推荐:dafei.de 印尼 02
+  type: http
+  server: 103.86.117.202
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇮🇩 机场推荐:dafei.de 印尼 03
+  type: http
+  server: 103.86.116.118
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇮🇩 机场推荐:dafei.de 印尼 04
+  type: http
+  server: 178.248.73.58
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇮🇩 机场推荐:dafei.de 印尼 05
+  type: socks5
+  server: 203.84.138.59
+  port: 62000
+  password: RRWtX6XP
+  username: 9tcjLp2W
+  udp: true
+- name: ssrsub_🇮🇩 机场推荐:dafei.de 印尼 06
+  type: socks5
+  server: 202.155.99.212
+  port: 62000
+  password: APJ7RmY9
+  skip-cert-verify: true
+  username: gebHTLF6
+  udp: true
+- name: ssrsub_🇮🇩 机场推荐:dafei.de 印尼 07
+  type: socks5
+  server: 202.155.99.32
+  port: 62000
+  password: APJ7RmY9
+  username: gebHTLF6
+  udp: true
+- name: ssrsub_🇩🇪 机场推荐:dafei.de 德国 01
+  type: http
+  server: 77.221.136.60
+  port: 8443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇩🇪 机场推荐:dafei.de 德国 02
+  type: http
+  server: 87.106.223.158
+  port: 443
+  password: 'null'
+  skip-cert-verify: true
+  tls: true
+  username: 'null'
+  udp: true
+- name: ssrsub_🇩🇪 机场推荐:dafei.de 德国 03
+  type: http
+  server: 176.94.74.21
+  port: 443
+  skip-cert-verify: true
+  sni: 176.94.74.21
+  tls: true
+  udp: true
+- name: ssrsub_🇩🇪 机场推荐:dafei.de 德国 04
+  type: http
+  server: 158.173.154.3
+  port: 9002
+  password: 'null'
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: 'null'
+- name: ssrsub_🇩🇪 机场推荐:dafei.de 德国 05
+  type: http
+  server: 149.36.50.129
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇩🇪 机场推荐:dafei.de 德国 06
+  type: http
+  server: 167.172.172.190
+  port: 443
+  password: e4b72b531a2d10900519
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: testuser1
+- name: ssrsub_🇩🇪 机场推荐:dafei.de 德国 08
+  type: http
+  server: 217.92.132.233
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇩🇪 机场推荐:dafei.de 德国 09
+  type: http
+  server: 159.69.94.125
+  port: 443
+  password: 'null'
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: 'null'
+- name: ssrsub_🇩🇪 机场推荐:dafei.de 德国 10
+  type: http
+  server: 193.233.75.115
+  port: 443
+  password: 'null'
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: 'null'
+- name: ssrsub_🇩🇪 机场推荐:dafei.de 德国 11
+  type: http
+  server: 213.109.163.119
+  port: 443
+  password: 'null'
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: 'null'
+- name: ssrsub_🇩🇪 机场推荐:dafei.de 德国 12
+  type: http
+  server: 158.173.154.1
+  port: 9002
+  password: 'null'
+  skip-cert-verify: true
+  tls: true
+  username: 'null'
+  udp: true
+- name: ssrsub_🇩🇪 机场推荐:dafei.de 德国 13
+  type: http
+  server: 158.173.154.2
+  port: 9002
+  password: 'null'
+  skip-cert-verify: true
+  tls: true
+  username: 'null'
+  udp: true
+- name: ssrsub_🇩🇪 机场推荐:dafei.de 德国 14
+  type: http
+  server: 158.173.154.4
+  port: 9002
+  password: 'null'
+  skip-cert-verify: true
+  sni: 158.173.154.4
+  tls: true
+  udp: true
+  username: 'null'
+- name: ssrsub_🇩🇪 机场推荐:dafei.de 德国 15
+  type: http
+  server: 149.36.50.157
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇩🇪 机场推荐:dafei.de 德国 16
+  type: http
+  server: 87.249.132.97
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇩🇪 机场推荐:dafei.de 德国 17
+  type: http
+  server: 149.36.50.1
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇩🇪 机场推荐:dafei.de 德国 18
+  type: http
+  server: 213.177.229.161
+  port: 9443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇩🇪 机场推荐:dafei.de 德国 19
+  type: http
+  server: 152.233.20.206
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇩🇪 机场推荐:dafei.de 德国 20
+  type: http
+  server: 79.127.156.177
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇩🇪 机场推荐:dafei.de 德国 21
+  type: hysteria2
+  server: uk-tube-01.stre4m.net
+  port: 13337
+  down: ''
+  obfs: ''
+  obfs-password: ''
+  password: 900c8c92-1979-4c7c-8f2f-63e87d53d8fe
+  skip-cert-verify: true
+  sni: 127.0.0.1
+  up: ''
+  udp: true
+- name: ssrsub_🇩🇪 机场推荐:dafei.de 德国 22
+  type: vless
+  server: alsu.deev-guard.ir
+  port: 1289
+  encryption: mlkem768x25519plus.native.0rtt.l4vL8o_tMDEuI19vLDJYXFJOvYodTEgF6uK6gqjsDVw
+  network: tcp
+  udp: true
+  uuid: d1ec39e3-ad7b-4b65-9f65-813696f9a04e
+  xudp: true
+- name: ssrsub_🇩🇪 机场推荐:dafei.de 德国 23
+  type: hysteria2
+  server: 128.254.186.163
+  port: 13337
+  down: ''
+  obfs: ''
+  obfs-password: ''
+  password: 900c8c92-1979-4c7c-8f2f-63e87d53d8fe
+  skip-cert-verify: false
+  sni: mother-earth.fyi
+  up: ''
+  udp: true
+- name: ssrsub_🇩🇪 机场推荐:dafei.de 德国 24
+  type: hysteria2
+  server: 135.126.21.107
+  port: 443
+  down: ''
+  obfs: ''
+  obfs-password: ''
+  password: 6ac6d17d-040c-4fab-940e-8f5d72c3fed6
+  skip-cert-verify: false
+  sni: de2-balance.rezproffx.ru
+  up: ''
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 01
+  type: http
+  server: 45.145.73.240
+  port: 8443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 02
+  type: http
+  server: 162.243.146.243
+  port: 443
+  password: e4b72b531a2d10900519
+  sni: a2f392f3.acsnet.co
+  tls: true
+  username: testuser1
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 03
+  type: vmess
+  server: 172.67.190.164
+  port: 443
+  alterId: 0
+  cipher: auto
+  network: ws
+  skip-cert-verify: true
+  tls: true
+  uuid: 6a89a215-22bf-4bd7-9642-b95b2e09583a
+  ws-opts:
+    headers:
+      Host: guanwang.awsno.com
+    path: /hls/cctv5phd.m3u8
+  udp: true
+  servername: guanwang.awsno.com
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 04
+  type: http
+  server: 71.43.26.234
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 05
+  type: http
+  server: 12.221.146.147
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 06
+  type: http
+  server: 154.26.192.123
+  port: 10988
+  password: gs4BXwT6SW
+  tls: false
+  username: fQ67Dpe5dU
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 07
+  type: http
+  server: 129.153.93.183
+  port: 443
+  password: 'null'
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: 'null'
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 08
+  type: http
+  server: 68.235.56.51
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 09
+  type: http
+  server: 172.64.68.89
+  port: 443
+  skip-cert-verify: true
+  sni: 172.64.68.89
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 10
+  type: http
+  server: fan.596189.xyz
+  port: 443
+  skip-cert-verify: true
+  sni: fan.596189.xyz
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 11
+  type: http
+  server: 121.127.34.82
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 12
+  type: http
+  server: 23.133.176.14
+  port: 443
+  password: 'null'
+  skip-cert-verify: true
+  tls: true
+  username: 'null'
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 13
+  type: http
+  server: 172.64.69.89
+  port: 443
+  password: 'null'
+  skip-cert-verify: true
+  tls: true
+  username: 'null'
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 14
+  type: http
+  server: 198.44.135.27
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 15
+  type: http
+  server: 24.225.10.211
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 16
+  type: http
+  server: dl1-us.freeconnect.link
+  port: 9251
+  password: freeuser1
+  sni: dl1-us.freeconnect.link
+  tls: true
+  username: freeuser1
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 17
+  type: http
+  server: 96.5.129.85
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 18
+  type: http
+  server: 38.28.193.1
+  port: 443
+  skip-cert-verify: true
+  sni: 38.28.193.1
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 19
+  type: http
+  server: 98.101.229.212
+  port: 8090
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 20
+  type: http
+  server: 12.202.180.118
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 21
+  type: http
+  server: 193.239.236.134
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 22
+  type: vmess
+  server: www.shopify.com
+  port: 443
+  alterId: 0
+  cipher: auto
+  network: ws
+  skip-cert-verify: true
+  tls: true
+  uuid: 6a89a215-22bf-4bd7-9642-b95b2e09583a
+  ws-opts:
+    headers:
+      Host: guanwang.awsno.com
+    path: /hls/cctv5phd.m3u8
+  udp: true
+  servername: guanwang.awsno.com
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 23
+  type: http
+  server: 149.22.88.65
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 24
+  type: http
+  server: 162.244.227.36
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 26
+  type: http
+  server: fan.365747.xyz
+  port: 443
+  skip-cert-verify: true
+  sni: fan.365747.xyz
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 27
+  type: http
+  server: 38.95.111.226
+  port: 9443
+  password: ''
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: ''
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 28
+  type: http
+  server: 38.28.193.188
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 29
+  type: vmess
+  server: 188.114.99.137
+  port: 443
+  alterId: 0
+  cipher: auto
+  network: ws
+  skip-cert-verify: true
+  tls: true
+  uuid: 6a89a215-22bf-4bd7-9642-b95b2e09583a
+  ws-opts:
+    headers:
+      Host: guanwang.awsno.com
+    path: /hls/cctv5phd.m3u8
+  udp: true
+  servername: guanwang.awsno.com
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 30
+  type: http
+  server: 137.175.22.16
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 31
+  type: http
+  server: 137.175.22.40
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 32
+  type: http
+  server: 137.175.22.98
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 33
+  type: http
+  server: 137.175.22.52
+  port: 443
+  skip-cert-verify: true
+  sni: 137.175.22.52
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 34
+  type: http
+  server: 149.34.248.65
+  port: 443
+  skip-cert-verify: true
+  sni: 149.34.248.65
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 35
+  type: http
+  server: fan.226278.xyz
+  port: 443
+  sni: fan.226278.xyz
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 36
+  type: http
+  server: 137.175.22.29
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 37
+  type: http
+  server: 137.175.22.85
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 38
+  type: http
+  server: 149.88.21.129
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 39
+  type: http
+  server: usgp1-cdn-route.couldflare-cdn.com
+  port: 443
+  password: exaxgqkKkd0TAMrCxeonWg==
+  sni: usgp1-cdn-route.couldflare-cdn.com
+  tls: true
+  udp: true
+  username: mrwdfNTD8M79LCukCieldrqZWqs=
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 40
+  type: http
+  server: 137.175.22.41
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 41
+  type: http
+  server: 137.175.22.56
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 42
+  type: http
+  server: 137.175.22.89
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 43
+  type: http
+  server: 198.44.135.19
+  port: 9443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 44
+  type: http
+  server: 38.28.185.224
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 45
+  type: http
+  server: 137.175.22.84
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 46
+  type: http
+  server: 137.175.22.72
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 47
+  type: http
+  server: 162.217.114.50
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 48
+  type: http
+  server: 38.28.185.222
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 49
+  type: http
+  server: 137.175.22.116
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 50
+  type: http
+  server: 68.235.56.59
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 51
+  type: http
+  server: 149.88.21.140
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 52
+  type: http
+  server: 167.88.60.242
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 53
+  type: socks5
+  server: 69.55.49.177
+  port: 38182
+  password: ''
+  skip-cert-verify: true
+  username: ''
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 54
+  type: socks5
+  server: 66.253.2.69
+  port: 62000
+  password: l1tlrdx52v
+  username: u_rb1dba2
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 55
+  type: http
+  server: 137.175.22.88
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 56
+  type: http
+  server: 38.28.185.152
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 57
+  type: http
+  server: 38.28.185.205
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 58
+  type: http
+  server: 38.28.185.207
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 59
+  type: http
+  server: 38.28.185.163
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 60
+  type: http
+  server: 38.28.185.143
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 61
+  type: socks5
+  server: 23.230.200.250
+  port: 62000
+  password: kingstar123++
+  username: kingstar123
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 62
+  type: http
+  server: 137.175.22.120
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 63
+  type: http
+  server: 12.202.180.10
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: ''
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 64
+  type: http
+  server: 38.28.193.39
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 65
+  type: http
+  server: 38.28.185.166
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 66
+  type: http
+  server: 137.175.77.35
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 67
+  type: http
+  server: 138.199.35.218
+  port: 9002
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 68
+  type: http
+  server: 152.233.50.145
+  port: 9443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 69
+  type: http
+  server: 138.199.35.216
+  port: 9002
+  password: None
+  skip-cert-verify: true
+  tls: true
+  username: 'null'
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 70
+  type: http
+  server: 138.199.35.206
+  port: 9002
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 71
+  type: http
+  server: 138.199.35.211
+  port: 9002
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 72
+  type: http
+  server: 138.199.35.204
+  port: 9002
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 73
+  type: socks5
+  server: 216.132.114.27
+  port: 62000
+  password: 75bPoRcB
+  udp: true
+  username: JzufiJ62
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 74
+  type: http
+  server: 137.175.22.45
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 75
+  type: http
+  server: 137.175.22.96
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 76
+  type: http
+  server: 38.28.185.247
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 77
+  type: http
+  server: 66.153.187.90
+  port: 8090
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 78
+  type: http
+  server: 162.191.87.112
+  port: 8443
+  skip-cert-verify: true
+  sni: 162.191.87.112
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 79
+  type: http
+  server: 107.151.238.27
+  port: 443
+  password: e4b72b531a2d10900519
+  sni: 6b97ee1b.acsnet.co
+  tls: true
+  udp: true
+  username: testuser1
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 80
+  type: http
+  server: 23.169.224.34
+  port: 9443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: ''
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 82
+  type: http
+  server: 138.199.35.200
+  port: 9002
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 83
+  type: http
+  server: 24.142.229.178
+  port: 8090
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 84
+  type: http
+  server: 138.199.35.219
+  port: 9002
+  password: 'null'
+  skip-cert-verify: true
+  sni: 138.199.35.219
+  tls: true
+  username: 'null'
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 87
+  type: http
+  server: 138.199.35.220
+  port: 9002
+  password: 'null'
+  skip-cert-verify: true
+  tls: true
+  username: 'null'
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 89
+  type: http
+  server: 138.199.35.196
+  port: 9002
+  password: ''
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: ''
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 90
+  type: vless
+  server: 162.35.101.177
+  port: 443
+  client-fingerprint: edge
+  network: grpc
+  reality-opts:
+    public-key: cO3wYHISTeorXcM8ffaDCDdqZ-olBQL-GyZqb-W7rTk
+    short-id: bd8f712209a9c283
+  tls: true
+  uuid: cda0862a-0f87-4be9-8ed8-1d0c9e382839
+  udp: true
+  servername: 0592efg.us8.h1clayd.click
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 91
+  type: vless
+  server: 153.56.230.6
+  port: 443
+  client-fingerprint: edge
+  network: grpc
+  reality-opts:
+    public-key: cO3wYHISTeorXcM8ffaDCDdqZ-olBQL-GyZqb-W7rTk
+    short-id: bd8f712209a9c283
+  tls: true
+  uuid: cda0862a-0f87-4be9-8ed8-1d0c9e382839
+  udp: true
+  servername: 0592efg.us8.h1clayd.click
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 92
+  type: http
+  server: 138.199.35.199
+  port: 9002
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 93
+  type: http
+  server: 138.199.35.202
+  port: 9002
+  password: None
+  skip-cert-verify: true
+  tls: true
+  username: 'null'
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 94
+  type: http
+  server: 138.199.35.215
+  port: 9002
+  password: 'null'
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: 'null'
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 95
+  type: anytls
+  server: sdf65h46wr.df6h451rh.xin
+  port: 443
+  password: 0324fbc29561
+  skip-cert-verify: true
+  sni: sdf65h46wr.df6h451rh.xin
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 96
+  type: http
+  server: 138.199.35.214
+  port: 9002
+  password: 'null'
+  skip-cert-verify: true
+  tls: true
+  username: 'null'
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 97
+  type: vless
+  server: 196.245.52.187
+  port: 443
+  client-fingerprint: firefox
+  network: tcp
+  reality-opts:
+    public-key: UoS8qZ74hP_ECcncCz55lzvlcVss3R7VA0WYZE0YQCY
+    short-id: ba2a3dce62b99092
+  tls: true
+  uuid: cda0862a-0f87-4be9-8ed8-1d0c9e382839
+  udp: true
+  servername: 04535dt.us8.h1clayd.click
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 99
+  type: vless
+  server: 196.196.149.34
+  port: 443
+  client-fingerprint: qq
+  network: xhttp
+  reality-opts:
+    public-key: LsaTohbE6CqCH9UbYKwIybVXG3E5Wgz_X9czqas2LAI
+    short-id: 9acff4d98e2fbcc6
+  tls: true
+  udp: true
+  uuid: cda0862a-0f87-4be9-8ed8-1d0c9e382839
+  xudp: true
+  servername: 35295cx.us8.h1clayd.click
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 100
+  type: socks5
+  server: 23.230.200.176
+  port: 62000
+  password: ppyefe3k
+  skip-cert-verify: true
+  username: u1f0cijj
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 102
+  type: socks5
+  server: 209.50.255.91
+  port: 1080
+  password: ''
+  skip-cert-verify: true
+  username: ''
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 103
+  type: http
+  server: 138.199.35.209
+  port: 9002
+  password: 'null'
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: 'null'
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 104
+  type: http
+  server: 138.199.35.198
+  port: 9002
+  password: 'null'
+  skip-cert-verify: true
+  sni: 138.199.35.198
+  tls: true
+  username: 'null'
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 105
+  type: http
+  server: 138.199.35.197
+  port: 9002
+  password: ''
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: ''
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 107
+  type: http
+  server: 138.199.35.195
+  port: 9002
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 108
+  type: vless
+  server: enter.toyotacamry2026.ir
+  port: 1927
+  client-fingerprint: chrome
+  encryption: mlkem768x25519plus.native.0rtt.LinviJ5PGGezIG1uTIoWf8e_fjkghgSnaUDj_d85wwo
+  network: ws
+  tls: true
+  udp: true
+  uuid: 1ebd4206-653e-426a-8588-7f4f09a67810
+  ws-opts:
+    headers:
+      Host: login.zanjanphone.ir
+      User-Agent: Mozilla/5.0 (Windows NT 6.2; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36
+    path: /signup
+  xudp: true
+  servername: login.zanjanphone.ir
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 109
+  type: vless
+  server: sssssss.260920-3.kdns.fr
+  port: 443
+  alpn:
+  - http/1.1
+  client-fingerprint: android
+  network: xhttp
+  tls: true
+  udp: true
+  uuid: ec613575-5972-41c9-a50f-9577bcd96ce3
+  servername: sssssss.260920-3.kdns.fr
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 110
+  type: vless
+  server: r.r0-4.cc.cd
+  port: 443
+  alpn:
+  - http/1.1
+  client-fingerprint: android
+  network: xhttp
+  tls: true
+  udp: true
+  uuid: da988d4c-540f-4719-896e-a878812bad69
+  servername: r.r0-4.cc.cd
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 111
+  type: http
+  server: 198.44.138.27
+  port: 9443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 112
+  type: vless
+  server: s.260920-3.kdns.fr
+  port: 443
+  alpn:
+  - http/1.1
+  client-fingerprint: android
+  network: xhttp
+  tls: true
+  udp: true
+  uuid: ec613575-5972-41c9-a50f-9577bcd96ce3
+  servername: s.260920-3.kdns.fr
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 113
+  type: vless
+  server: bbbbb.1111-08.ccwu.cc
+  port: 443
+  alpn:
+  - http/1.1
+  client-fingerprint: android
+  network: xhttp
+  tls: true
+  udp: true
+  uuid: ec613575-5972-41c9-a50f-9577bcd96ce3
+  servername: bbbbb.1111-08.ccwu.cc
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 114
+  type: vless
+  server: ddddddd.260920-1.kdns.fr
+  port: 443
+  alpn:
+  - http/1.1
+  client-fingerprint: android
+  network: xhttp
+  tls: true
+  udp: true
+  uuid: da988d4c-540f-4719-896e-a878812bad69
+  servername: ddddddd.260920-1.kdns.fr
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 115
+  type: vless
+  server: dd.260920-1.kdns.fr
+  port: 443
+  alpn:
+  - http/1.1
+  client-fingerprint: android
+  network: xhttp
+  tls: true
+  udp: true
+  uuid: da988d4c-540f-4719-896e-a878812bad69
+  servername: dd.260920-1.kdns.fr
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 116
+  type: vless
+  server: qqq.99944444.xyz
+  port: 443
+  alpn:
+  - http/1.1
+  client-fingerprint: android
+  network: xhttp
+  tls: true
+  udp: true
+  uuid: d2f2639b-ff62-4553-abce-d75e231b300c
+  servername: qqq.99944444.xyz
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 117
+  type: vless
+  server: rrr.260920-006.ccwu.cc
+  port: 443
+  alpn:
+  - http/1.1
+  client-fingerprint: android
+  network: xhttp
+  tls: true
+  udp: true
+  uuid: ec613575-5972-41c9-a50f-9577bcd96ce3
+  servername: rrr.260920-006.ccwu.cc
+- name: ssrsub_🇺🇸 机场推荐:dafei.de 美国 118
+  type: hysteria2
+  server: 45.86.74.193
+  port: 443
+  down: ''
+  obfs: ''
+  obfs-password: ''
+  password: 216c50f9-37dc-457d-b3f5-90732791d10d
+  skip-cert-verify: false
+  sni: media.embrofree.org
+  up: ''
+  udp: true
+- name: ssrsub_🇳🇱 机场推荐:dafei.de 荷兰 01
+  type: http
+  server: 84.17.47.150
+  port: 9002
+  skip-cert-verify: true
+  sni: 84.17.47.150
+  tls: true
+  udp: true
+- name: ssrsub_🇳🇱 机场推荐:dafei.de 荷兰 02
+  type: http
+  server: 84.17.47.124
+  port: 9002
+  password: 'null'
+  skip-cert-verify: true
+  tls: true
+  username: 'null'
+  udp: true
+- name: ssrsub_🇳🇱 机场推荐:dafei.de 荷兰 03
+  type: http
+  server: 103.97.88.154
+  port: 443
+  skip-cert-verify: true
+  sni: 4a8c2906c96058315dffbc2b0e7ff19b-98005bea43f9ac33.apache-iv.com
+  tls: true
+  udp: true
+- name: ssrsub_🇳🇱 机场推荐:dafei.de 荷兰 04
+  type: http
+  server: 84.17.47.149
+  port: 9002
+  password: 'null'
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: 'null'
+- name: ssrsub_🇳🇱 机场推荐:dafei.de 荷兰 05
+  type: http
+  server: nl205.freeconnect.link
+  port: 9251
+  password: freeuser1
+  tls: true
+  username: freeuser1
+  udp: true
+  sni: nl205.freeconnect.link
+- name: ssrsub_🇳🇱 机场推荐:dafei.de 荷兰 06
+  type: http
+  server: 84.17.47.147
+  port: 9002
+  password: 'null'
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: 'null'
+- name: ssrsub_🇳🇱 机场推荐:dafei.de 荷兰 07
+  type: http
+  server: 51.158.243.91
+  port: 443
+  skip-cert-verify: true
+  sni: 51.158.243.91
+  tls: true
+  udp: true
+- name: ssrsub_🇳🇱 机场推荐:dafei.de 荷兰 08
+  type: http
+  server: 51.159.225.197
+  port: 19362
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇳🇱 机场推荐:dafei.de 荷兰 09
+  type: http
+  server: 51.159.225.196
+  port: 23856
+  password: 'null'
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: 'null'
+- name: ssrsub_🇳🇱 机场推荐:dafei.de 荷兰 10
+  type: http
+  server: 84.17.47.148
+  port: 9002
+  password: 'null'
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: 'null'
+- name: ssrsub_🇳🇱 机场推荐:dafei.de 荷兰 11
+  type: http
+  server: 84.17.47.125
+  port: 9002
+  password: 'null'
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: 'null'
+- name: ssrsub_🇳🇱 机场推荐:dafei.de 荷兰 12
+  type: http
+  server: 84.17.47.123
+  port: 9002
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇳🇱 机场推荐:dafei.de 荷兰 13
+  type: http
+  server: 185.246.153.42
+  port: 443
+  skip-cert-verify: true
+  sni: 482c8436a1f7c908b48a1757abb5dd79-3791fb4df2db250b.apache-iv.com
+  tls: true
+  udp: true
+- name: ssrsub_🇳🇱 机场推荐:dafei.de 荷兰 14
+  type: http
+  server: 84.17.47.126
+  port: 9002
+  password: 'null'
+  skip-cert-verify: true
+  tls: true
+  username: 'null'
+  udp: true
+- name: ssrsub_🇳🇱 机场推荐:dafei.de 荷兰 15
+  type: http
+  server: nl203.freeconnect.link
+  port: 9251
+  password: freeuser1
+  tls: true
+  username: freeuser1
+  udp: true
+  sni: nl203.freeconnect.link
+- name: ssrsub_🇳🇱 机场推荐:dafei.de 荷兰 16
+  type: http
+  server: 84.17.47.146
+  port: 9002
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇳🇱 机场推荐:dafei.de 荷兰 17
+  type: http
+  server: 82.196.9.7
+  port: 443
+  password: e4b72b531a2d10900519
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: testuser1
+- name: ssrsub_🇳🇱 机场推荐:dafei.de 荷兰 18
+  type: http
+  server: 149.36.51.129
+  port: 443
+  password: ''
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: ''
+- name: ssrsub_🇳🇱 机场推荐:dafei.de 荷兰 19
+  type: http
+  server: 149.36.51.161
+  port: 9443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇳🇱 机场推荐:dafei.de 荷兰 20
+  type: http
+  server: 185.140.209.235
+  port: 443
+  password: 'null'
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: 'null'
+- name: ssrsub_🇳🇱 机场推荐:dafei.de 荷兰 21
+  type: http
+  server: 89.150.35.94
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇳🇱 机场推荐:dafei.de 荷兰 22
+  type: http
+  server: 161.129.60.66
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇳🇱 机场推荐:dafei.de 荷兰 23
+  type: http
+  server: 149.36.51.157
+  port: 9443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇳🇱 机场推荐:dafei.de 荷兰 24
+  type: http
+  server: 185.53.129.141
+  port: 9090
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇳🇱 机场推荐:dafei.de 荷兰 25
+  type: vless
+  server: 196.245.52.183
+  port: 443
+  client-fingerprint: firefox
+  encryption: none
+  network: xhttp
+  reality-opts:
+    public-key: jIRVNEf9SpuWP2nJrAbHGGIUnfzOmwZZlrNGw-Y-O2Q
+    short-id: 2d2598d60447a967
+  tls: true
+  udp: true
+  uuid: cda0862a-0f87-4be9-8ed8-1d0c9e382839
+  xudp: true
+  servername: e60833x.nl7.h1clayd.click
+- name: ssrsub_🇳🇱 机场推荐:dafei.de 荷兰 26
+  type: vless
+  server: 13.141.36.10
+  port: 443
+  client-fingerprint: chrome
+  network: tcp
+  reality-opts:
+    public-key: l-GzBDuNuhnjxoRlZqKvT7jAt_sbVAxhGFsAttO5kXs
+    short-id: 361d0dd59c70516f
+  tls: true
+  udp: true
+  uuid: cda0862a-0f87-4be9-8ed8-1d0c9e382839
+  xudp: true
+  servername: 5d0319t.nl7.h1clayd.click
+- name: ssrsub_🇳🇱 机场推荐:dafei.de 荷兰 27
+  type: vless
+  server: 13.141.36.136
+  port: 443
+  client-fingerprint: chrome
+  encryption: none
+  network: xhttp
+  reality-opts:
+    public-key: dtO7khFLUkpFDQOtNzo4Th4hJKLoPSY2VtD_9k4Hgiw
+    short-id: 7b2b1a14a6e0630d
+  tls: true
+  udp: true
+  uuid: cda0862a-0f87-4be9-8ed8-1d0c9e382839
+  xudp: true
+  servername: fc82dfx.nl8.h1clayd.click
+- name: ssrsub_🇳🇱 机场推荐:dafei.de 荷兰 28
+  type: vless
+  server: 6bf329t.nl18.h1clayd.click
+  port: 443
+  client-fingerprint: firefox
+  encryption: none
+  flow: xtls-rprx-vision
+  network: tcp
+  reality-opts:
+    public-key: p35RUaaaItuoyNiCrLpGeStBUpEJMSiZ2AajdfhhmiM
+    short-id: 92aee92130b46fe2
+  tls: true
+  udp: true
+  uuid: e894c08a-fecc-46f5-bf03-c95d0274c79d
+  xudp: true
+  servername: 6bf329t.nl18.h1clayd.click
+- name: ssrsub_🇳🇱 机场推荐:dafei.de 荷兰 29
+  type: vless
+  server: 185.16.110.62
+  port: 2052
+  network: ws
+  tls: false
+  udp: true
+  uuid: 85432578-96fd-4613-a255-e235a81cc94b
+  ws-opts:
+    headers:
+      Host: cd90.u8o.lol
+    path: /
+    early-data-header-name: Sec-WebSocket-Protocol
+    max-early-data: 2052
+- name: ssrsub_🇳🇱 机场推荐:dafei.de 荷兰 30
+  type: vless
+  server: 144.31.203.145
+  port: 443
+  client-fingerprint: firefox
+  flow: xtls-rprx-vision
+  network: tcp
+  reality-opts:
+    public-key: MAcch2LXcj3xo0ZZQIBvxS4GptpZ9ipzFNNn2BUa6mg
+    short-id: a54ec85c94547b17
+  tls: true
+  udp: true
+  uuid: f4b08bf1-d9bd-4755-aa88-ba922282c608
+  xudp: true
+  servername: nemicro543.aidating.am
+- name: ssrsub_🇯🇵 机场推荐:dafei.de 日本 01
+  type: http
+  server: fan.571589.xyz
+  port: 443
+  tls: true
+  udp: true
+  sni: fan.571589.xyz
+- name: ssrsub_🇯🇵 机场推荐:dafei.de 日本 02
+  type: http
+  server: 133.18.200.207
+  port: 343
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇯🇵 机场推荐:dafei.de 日本 03
+  type: http
+  server: jpgmo102-cdn-route.couldflare-cdn.com
+  port: 443
+  password: exaxgqkKkd0TAMrCxeonWg==
+  sni: jpgmo102-cdn-route.couldflare-cdn.com
+  tls: true
+  udp: true
+  username: mrwdfNTD8M79LCukCieldrqZWqs=
+- name: ssrsub_🇯🇵 机场推荐:dafei.de 日本 04
+  type: socks5
+  server: 103.248.150.50
+  port: 42000
+  password: EGJDy5Kg
+  skip-cert-verify: true
+  username: paZFN3JA
+  udp: true
+- name: ssrsub_🇯🇵 机场推荐:dafei.de 日本 05
+  type: http
+  server: 64.176.51.83
+  port: 8443
+  skip-cert-verify: true
+  sni: 64.176.51.83
+  tls: true
+  udp: true
+- name: ssrsub_🇯🇵 机场推荐:dafei.de 日本 06
+  type: socks5
+  server: 103.248.150.238
+  port: 42000
+  password: J5rM2xL9
+  skip-cert-verify: true
+  username: tB4vN7qP
+  udp: true
+- name: ssrsub_🇷🇴 机场推荐:dafei.de 罗马尼亚 01
+  type: http
+  server: 185.163.110.194
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇷🇴 机场推荐:dafei.de 罗马尼亚 02
+  type: http
+  server: 193.176.84.18
+  port: 9002
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: ''
+- name: ssrsub_🇷🇴 机场推荐:dafei.de 罗马尼亚 03
+  type: http
+  server: 169.150.199.1
+  port: 9443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇷🇴 机场推荐:dafei.de 罗马尼亚 04
+  type: http
+  server: 135.136.1.2
+  port: 9443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: ''
+- name: ssrsub_🇷🇴 机场推荐:dafei.de 罗马尼亚 05
+  type: http
+  server: 193.176.84.26
+  port: 9002
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇷🇴 机场推荐:dafei.de 罗马尼亚 06
+  type: http
+  server: 193.176.84.24
+  port: 9002
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇷🇴 机场推荐:dafei.de 罗马尼亚 07
+  type: http
+  server: 193.176.84.34
+  port: 9002
+  skip-cert-verify: true
+  sni: www.bing.com
+  tls: true
+  udp: true
+- name: ssrsub_🇷🇴 机场推荐:dafei.de 罗马尼亚 08
+  type: http
+  server: 193.176.84.32
+  port: 9002
+  password: 'null'
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: 'null'
+- name: ssrsub_🇷🇴 机场推荐:dafei.de 罗马尼亚 09
+  type: http
+  server: 193.176.84.33
+  port: 9002
+  password: 'null'
+  skip-cert-verify: true
+  sni: 193.176.84.33
+  tls: true
+  username: 'null'
+  udp: true
+- name: ssrsub_🇷🇴 机场推荐:dafei.de 罗马尼亚 10
+  type: http
+  server: 193.176.84.40
+  port: 9002
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇷🇴 机场推荐:dafei.de 罗马尼亚 11
+  type: http
+  server: 193.176.84.36
+  port: 9002
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇷🇴 机场推荐:dafei.de 罗马尼亚 12
+  type: http
+  server: 193.176.84.23
+  port: 9002
+  password: 'null'
+  skip-cert-verify: true
+  tls: true
+  username: 'null'
+  udp: true
+- name: ssrsub_🇷🇴 机场推荐:dafei.de 罗马尼亚 13
+  type: http
+  server: 193.176.84.20
+  port: 9002
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇷🇴 机场推荐:dafei.de 罗马尼亚 14
+  type: http
+  server: 193.176.84.35
+  port: 9002
+  password: 'null'
+  skip-cert-verify: true
+  sni: 193.176.84.35
+  tls: true
+  username: 'null'
+  udp: true
+- name: ssrsub_🇷🇴 机场推荐:dafei.de 罗马尼亚 15
+  type: http
+  server: 193.176.84.19
+  port: 9002
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇷🇴 机场推荐:dafei.de 罗马尼亚 16
+  type: http
+  server: 193.176.84.27
+  port: 9002
+  password: 'null'
+  skip-cert-verify: true
+  tls: true
+  username: 'null'
+  udp: true
+- name: ssrsub_🇷🇴 机场推荐:dafei.de 罗马尼亚 17
+  type: http
+  server: 193.176.84.37
+  port: 9002
+  skip-cert-verify: true
+  sni: www.bing.com
+  tls: true
+  udp: true
+- name: ssrsub_🇷🇴 机场推荐:dafei.de 罗马尼亚 18
+  type: http
+  server: 193.176.84.25
+  port: 9002
+  skip-cert-verify: true
+  sni: www.bing.com
+  tls: true
+  udp: true
+- name: ssrsub_🇷🇴 机场推荐:dafei.de 罗马尼亚 19
+  type: http
+  server: 193.176.84.39
+  port: 9002
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇷🇴 机场推荐:dafei.de 罗马尼亚 20
+  type: http
+  server: 193.176.84.38
+  port: 9002
+  skip-cert-verify: true
+  sni: www.bing.com
+  tls: true
+  udp: true
+- name: ssrsub_🇷🇴 机场推荐:dafei.de 罗马尼亚 21
+  type: http
+  server: 193.176.84.17
+  port: 9002
+  skip-cert-verify: true
+  sni: www.bing.com
+  tls: true
+  udp: true
+- name: ssrsub_🇷🇴 机场推荐:dafei.de 罗马尼亚 22
+  type: http
+  server: 193.176.84.30
+  port: 9002
+  skip-cert-verify: true
+  sni: www.bing.com
+  tls: true
+  udp: true
+- name: ssrsub_🇷🇴 机场推荐:dafei.de 罗马尼亚 23
+  type: http
+  server: 193.176.84.22
+  port: 9002
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇷🇴 机场推荐:dafei.de 罗马尼亚 24
+  type: http
+  server: 193.176.84.21
+  port: 9002
+  skip-cert-verify: true
+  sni: www.bing.com
+  tls: true
+  udp: true
+- name: ssrsub_🇷🇴 机场推荐:dafei.de 罗马尼亚 25
+  type: http
+  server: 193.176.84.31
+  port: 9002
+  skip-cert-verify: true
+  sni: www.bing.com
+  tls: true
+  udp: true
+- name: ssrsub_🇮🇹 机场推荐:dafei.de 意大利 01
+  type: http
+  server: 185.183.105.130
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇮🇹 机场推荐:dafei.de 意大利 02
+  type: http
+  server: 185.183.105.146
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇮🇹 机场推荐:dafei.de 意大利 07
+  type: http
+  server: 109.116.41.154
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇮🇹 机场推荐:dafei.de 意大利 10
+  type: ss
+  server: 202.50.253.45
+  port: 19999
+  cipher: aes-256-gcm
+  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
+  udp: true
+- name: ssrsub_🇮🇹 机场推荐:dafei.de 意大利 12
+  type: socks5
+  server: 69.16.157.244
+  port: 1080
+  password: JdFlrZhqHP
+  udp: true
+  username: ufCobhydz4Wd
+- name: ssrsub_🇮🇹 机场推荐:dafei.de 意大利 14
+  type: ss
+  server: 202.50.253.81
+  port: 19999
+  cipher: aes-256-gcm
+  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
+  udp: true
+- name: ssrsub_🇫🇷 机场推荐:dafei.de 法国 01
+  type: http
+  server: 103.82.101.43
+  port: 443
+  skip-cert-verify: true
+  sni: 76d1d3ecadca44efa2339867d7dfc9a1-8e928736d0f8dbdc.apache-iv.com
+  tls: true
+  udp: true
+- name: ssrsub_🇫🇷 机场推荐:dafei.de 法国 02
+  type: http
+  server: 217.181.201.254
+  port: 8090
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇫🇷 机场推荐:dafei.de 法国 03
+  type: http
+  server: 31.32.19.111
+  port: 8081
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇫🇷 机场推荐:dafei.de 法国 04
+  type: http
+  server: 87.98.174.157
+  port: 6103
+  password: 'null'
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: 'null'
+- name: ssrsub_🇫🇷 机场推荐:dafei.de 法国 05
+  type: http
+  server: 82.66.235.221
+  port: 443
+  password: 'null'
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: 'null'
+- name: ssrsub_🇫🇷 机场推荐:dafei.de 法国 06
+  type: http
+  server: 141.94.16.4
+  port: 443
+  skip-cert-verify: true
+  sni: 141.94.16.4
+  tls: true
+  udp: true
+- name: ssrsub_🇫🇷 机场推荐:dafei.de 法国 07
+  type: http
+  server: 103.82.101.44
+  port: 443
+  skip-cert-verify: true
+  sni: f3a61d8406d537345747f99f8a281007-3f754ed5da1bba09.apache-iv.com
+  tls: true
+  udp: true
+- name: ssrsub_🇫🇷 机场推荐:dafei.de 法国 08
+  type: http
+  server: 149.102.245.65
+  port: 443
+  password: ''
+  skip-cert-verify: true
+  tls: true
+  username: ''
+  udp: true
+- name: ssrsub_🇫🇷 机场推荐:dafei.de 法国 09
+  type: http
+  server: 213.139.9.142
+  port: 9443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇫🇷 机场推荐:dafei.de 法国 10
+  type: http
+  server: 80.124.109.22
+  port: 8090
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇫🇷 机场推荐:dafei.de 法国 11
+  type: http
+  server: 138.199.47.247
+  port: 9443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇫🇷 机场推荐:dafei.de 法国 12
+  type: socks5
+  server: 144.56.22.78
+  port: 42000
+  password: Zn5mR7vA
+  username: L8wP3kQx
+  udp: true
+- name: ssrsub_🇫🇷 机场推荐:dafei.de 法国 13
+  type: http
+  server: 83.206.1.225
+  port: 8090
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇫🇷 机场推荐:dafei.de 法国 15
+  type: http
+  server: 84.235.228.156
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇫🇷 机场推荐:dafei.de 法国 18
+  type: vless
+  server: logout.spacecdn.ir
+  port: 1926
+  client-fingerprint: chrome
+  encryption: mlkem768x25519plus.native.0rtt.rfdeGUDyczHSG0ad2TVH3js_RSHVJrdZl4S5aw8NpUY
+  flow: xtls-rprx-vision
+  network: ws
+  tls: true
+  udp: true
+  uuid: 1ebd4206-653e-426a-8588-7f4f09a67810
+  ws-opts:
+    headers:
+      Host: login.zanjanphone.ir
+      User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36
+    path: /user
+  xudp: true
+  servername: login.zanjanphone.ir
+- name: ssrsub_🇱🇻 机场推荐:dafei.de 拉脱维亚 01
+  type: http
+  server: 185.219.159.16
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇱🇻 机场推荐:dafei.de 拉脱维亚 02
+  type: http
+  server: 185.219.159.15
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇱🇻 机场推荐:dafei.de 拉脱维亚 03
+  type: http
+  server: 85.203.39.130
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇸🇪 机场推荐:dafei.de 瑞典 01
+  type: http
+  server: 146.70.242.130
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇸🇪 机场推荐:dafei.de 瑞典 02
+  type: http
+  server: 79.142.77.63
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇸🇪 机场推荐:dafei.de 瑞典 03
+  type: http
+  server: 149.50.216.65
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇸🇪 机场推荐:dafei.de 瑞典 04
+  type: http
+  server: 146.70.242.146
+  port: 9443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇦🇹 机场推荐:dafei.de 奥地利 01
+  type: http
+  server: 146.70.244.2
+  port: 443
+  password: ''
+  skip-cert-verify: true
+  tls: true
+  username: ''
+  udp: true
+- name: ssrsub_🇦🇹 机场推荐:dafei.de 奥地利 02
+  type: http
+  server: 146.70.244.18
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇹🇷 机场推荐:dafei.de 土耳其 01
+  type: http
+  server: br3-tr.freeconnect.link
+  port: 9251
+  password: freeuser1
+  sni: br3-tr.freeconnect.link
+  tls: true
+  udp: true
+  username: freeuser1
+- name: ssrsub_🇱🇹 机场推荐:dafei.de 立陶宛 01
+  type: http
+  server: 89.124.11.9
+  port: 443
+  password: 'null'
+  skip-cert-verify: true
+  tls: true
+  username: 'null'
+  udp: true
+- name: ssrsub_🇮🇪 机场推荐:dafei.de 爱尔兰 01
+  type: http
+  server: 18.200.158.139
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: ''
+- name: ssrsub_🇮🇪 机场推荐:dafei.de 爱尔兰 02
+  type: http
+  server: 34.249.214.108
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: ''
+- name: ssrsub_🇮🇪 机场推荐:dafei.de 爱尔兰 03
+  type: http
+  server: 149.88.96.1
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇮🇪 机场推荐:dafei.de 爱尔兰 04
+  type: http
+  server: 149.88.96.12
+  port: 9443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇨🇿 机场推荐:dafei.de 捷克 01
+  type: http
+  server: 185.216.35.66
+  port: 443
+  password: ''
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: ''
+- name: ssrsub_🇨🇿 机场推荐:dafei.de 捷克 02
+  type: http
+  server: 152.233.16.174
+  port: 9443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇨🇿 机场推荐:dafei.de 捷克 03
+  type: http
+  server: 185.216.35.130
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇲🇽 机场推荐:dafei.de 墨西哥 01
+  type: http
+  server: 45.134.9.41
+  port: 443
+  skip-cert-verify: true
+  sni: 991cc80f13caf81d3426ddebb2da7f49-240d6105b6ef86f0.apache-iv.com
+  tls: true
+  udp: true
+- name: ssrsub_🇲🇽 机场推荐:dafei.de 墨西哥 02
+  type: socks5
+  server: 144.225.47.8
+  port: 42000
+  password: DJy1T0dt
+  username: Tek2x6av
+  udp: true
+- name: ssrsub_🇲🇽 机场推荐:dafei.de 墨西哥 03
+  type: socks5
+  server: 144.225.47.106
+  port: 42000
+  password: sZnD8GTz
+  username: DJy1T0dt
+  udp: true
+- name: ssrsub_🇲🇽 机场推荐:dafei.de 墨西哥 04
+  type: socks5
+  server: 144.225.47.161
+  port: 42000
+  password: DJy1T0dt
+  skip-cert-verify: true
+  username: Tek2x6av
+  udp: true
+- name: ssrsub_🇲🇽 机场推荐:dafei.de 墨西哥 05
+  type: socks5
+  server: 94.194.164.203
+  port: 62000
+  password: 2j7CCZQb
+  username: rVkkraqT
+  udp: true
+- name: ssrsub_🇲🇽 机场推荐:dafei.de 墨西哥 06
+  type: socks5
+  server: 94.194.165.96
+  port: 62000
+  password: lcFa8dTH
+  username: QyVdo5ks
+  udp: true
+- name: ssrsub_🇲🇽 机场推荐:dafei.de 墨西哥 07
+  type: socks5
+  server: 144.225.47.68
+  port: 42000
+  password: sZnD8GTz
+  username: DJy1T0dt
+  udp: true
+- name: ssrsub_🇲🇽 机场推荐:dafei.de 墨西哥 08
+  type: socks5
+  server: 72.57.228.30
+  port: 62000
+  password: VvUAFi2E
+  username: UBXich0K
+  udp: true
+- name: ssrsub_🇲🇽 机场推荐:dafei.de 墨西哥 09
+  type: socks5
+  server: 144.225.47.158
+  port: 42000
+  password: sZnD8GTz
+  skip-cert-verify: true
+  username: DJy1T0dt
+  udp: true
+- name: ssrsub_🇲🇽 机场推荐:dafei.de 墨西哥 10
+  type: socks5
+  server: 94.194.166.52
+  port: 42000
+  password: KsPAxZGn
+  username: userLRgK
+  udp: true
+- name: ssrsub_🇲🇽 机场推荐:dafei.de 墨西哥 11
+  type: socks5
+  server: 72.57.228.87
+  port: 62000
+  password: VvUAFi2E
+  skip-cert-verify: true
+  username: UBXich0K
+  udp: true
+- name: ssrsub_🇲🇽 机场推荐:dafei.de 墨西哥 12
+  type: socks5
+  server: 94.194.165.131
+  port: 62000
+  password: lcFa8dTH
+  skip-cert-verify: true
+  username: QyVdo5ks
+  udp: true
+- name: ssrsub_🇸🇬 机场推荐:dafei.de 新加坡 01
+  type: http
+  server: 149.88.99.209
+  port: 9443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇸🇬 机场推荐:dafei.de 新加坡 02
+  type: socks5
+  server: 47.236.168.243
+  port: 1080
+  password: '8888'
+  skip-cert-verify: true
+  username: '8888'
+  udp: true
+- name: ssrsub_🇸🇬 机场推荐:dafei.de 新加坡 03
+  type: http
+  server: 154.26.139.24
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇸🇬 机场推荐:dafei.de 新加坡 04
+  type: socks5
+  server: 66.80.2.252
+  port: 62000
+  password: c0a34a
+  skip-cert-verify: true
+  username: usereb7d
+  udp: true
+- name: ssrsub_🇭🇰 机场推荐:dafei.de 香港 01
+  type: http
+  server: fan.240104.xyz
+  port: 443
+  password: 'null'
+  sni: fan.240104.xyz
+  tls: true
+  udp: true
+  username: 'null'
+- name: ssrsub_🇭🇰 机场推荐:dafei.de 香港 02
+  type: http
+  server: 202.85.53.25
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇭🇰 机场推荐:dafei.de 香港 03
+  type: anytls
+  server: ibsdsf.df6h451rh.xin
+  port: 443
+  client-fingerprint: chrome
+  password: 2902c46c8493
+  skip-cert-verify: true
+  sni: docs.microsoft.com
+  udp: true
+- name: ssrsub_🇭🇰 机场推荐:dafei.de 香港 04
+  type: ss
+  server: waic.pro.main.sys-metric-report.com
+  port: 28014
+  cipher: chacha20-ietf-poly1305
+  password: abc62f00-95a8-4c2e-a85d-36a2cdc977da
+  udp: true
+- name: ssrsub_🇭🇰 机场推荐:dafei.de 香港 05
+  type: vless
+  server: free.fugui.lol
+  port: 47396
+  client-fingerprint: chrome
+  flow: xtls-rprx-vision
+  network: tcp
+  reality-opts:
+    public-key: IjWYbHNrZb3UCQxsTJyekEOA3tHq42L6Jw3O8MmLYVQ
+    short-id: fa514b83
+  skip-cert-verify: false
+  tls: true
+  udp: true
+  uuid: ead3595f-4020-4e76-a3ec-c248e1a2f2f7
+  servername: swdist.apple.com
+- name: ssrsub_🇭🇰 机场推荐:dafei.de 香港 06
+  type: anytls
+  server: 5641sdds.df6h451rh.xin
+  port: 443
+  client-fingerprint: chrome
+  password: 0324fbc29561
+  servername: images.ctfassets.net
+  skip-cert-verify: true
+  sni: images.ctfassets.net
+  udp: true
+- name: ssrsub_🇨🇭 机场推荐:dafei.de 瑞士 01
+  type: http
+  server: 149.88.27.46
+  port: 9443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇨🇭 机场推荐:dafei.de 瑞士 02
+  type: http
+  server: 149.88.27.33
+  port: 9443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇨🇭 机场推荐:dafei.de 瑞士 03
+  type: http
+  server: 31.7.62.50
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇨🇭 机场推荐:dafei.de 瑞士 04
+  type: http
+  server: 37.120.213.210
+  port: 9443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇭🇺 机场推荐:dafei.de 匈牙利 01
+  type: http
+  server: 146.70.203.18
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇬🇧 机场推荐:dafei.de 英国 01
+  type: http
+  server: 212.102.63.61
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇬🇧 机场推荐:dafei.de 英国 02
+  type: http
+  server: 84.17.50.193
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇬🇧 机场推荐:dafei.de 英国 03
+  type: http
+  server: 84.233.178.33
+  port: 9443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇬🇧 机场推荐:dafei.de 英国 04
+  type: http
+  server: 206.189.118.214
+  port: 443
+  password: e4b72b531a2d10900519
+  sni: cebd76d6.acsnet.co
+  tls: true
+  username: testuser1
+  udp: true
+- name: ssrsub_🇬🇧 机场推荐:dafei.de 英国 05
+  type: http
+  server: 84.17.50.129
+  port: 9443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇬🇧 机场推荐:dafei.de 英国 06
+  type: http
+  server: 84.17.50.214
+  port: 9443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇬🇧 机场推荐:dafei.de 英国 07
+  type: http
+  server: 212.102.63.1
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇬🇧 机场推荐:dafei.de 英国 08
+  type: http
+  server: 185.164.138.156
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇬🇧 机场推荐:dafei.de 英国 09
+  type: http
+  server: 212.102.63.31
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇵🇱 机场推荐:dafei.de 波兰 01
+  type: http
+  server: 151.115.54.133
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇵🇱 机场推荐:dafei.de 波兰 02
+  type: http
+  server: 37.120.156.34
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇵🇱 机场推荐:dafei.de 波兰 03
+  type: http
+  server: 91.92.250.33
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇵🇱 机场推荐:dafei.de 波兰 04
+  type: vless
+  server: 136.148.83.70
+  port: 443
+  client-fingerprint: qq
+  network: tcp
+  tls: true
+  udp: true
+  uuid: 00000000-0000-0001-0000-000000000000
+  ws-opts:
+    path: /
+  servername: aszbk-ru-78dc.my-fade.cloud
+- name: ssrsub_🇵🇱 机场推荐:dafei.de 波兰 05
+  type: http
+  server: 37.120.156.18
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇭🇷 机场推荐:dafei.de 克罗地亚 01
+  type: http
+  server: 154.47.29.161
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇭🇷 机场推荐:dafei.de 克罗地亚 02
+  type: http
+  server: 154.47.29.174
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇪🇨 机场推荐:dafei.de 厄瓜多尔 01
+  type: http
+  server: 38.165.231.71
+  port: 9443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇧🇷 机场推荐:dafei.de 巴西 01
+  type: http
+  server: 134.65.17.77
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇧🇷 机场推荐:dafei.de 巴西 02
+  type: socks5
+  server: 191.7.129.133
+  port: 62000
+  password: 0mvrt5jb
+  username: uwrgfkwg
+  udp: true
+- name: ssrsub_🇮🇱 机场推荐:dafei.de 以色列 01
+  type: http
+  server: 62.90.77.30
+  port: 443
+  password: 'null'
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: 'null'
+- name: ssrsub_🇮🇱 机场推荐:dafei.de 以色列 02
+  type: http
+  server: 169.150.248.17
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇨🇦 机场推荐:dafei.de 加拿大 01
+  type: http
+  server: 142.44.210.129
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇨🇦 机场推荐:dafei.de 加拿大 02
+  type: http
+  server: 149.88.98.81
+  port: 9443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇨🇦 机场推荐:dafei.de 加拿大 03
+  type: http
+  server: 206.223.183.13
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇨🇦 机场推荐:dafei.de 加拿大 04
+  type: http
+  server: 198.44.157.19
+  port: 9443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: ''
+- name: ssrsub_🇨🇦 机场推荐:dafei.de 加拿大 05
+  type: http
+  server: 198.44.157.27
+  port: 9443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇨🇦 机场推荐:dafei.de 加拿大 06
+  type: http
+  server: 206.223.183.21
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇨🇦 机场推荐:dafei.de 加拿大 07
+  type: http
+  server: 206.223.183.16
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇨🇦 机场推荐:dafei.de 加拿大 08
+  type: http
+  server: 198.44.142.27
+  port: 9443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇨🇦 机场推荐:dafei.de 加拿大 09
+  type: http
+  server: 206.223.161.47
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: ''
+- name: ssrsub_🇧🇬 机场推荐:dafei.de 保加利亚 01
+  type: http
+  server: 109.204.88.17
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇧🇬 机场推荐:dafei.de 保加利亚 02
+  type: http
+  server: 185.94.192.210
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇧🇬 机场推荐:dafei.de 保加利亚 03
+  type: http
+  server: 169.150.237.1
+  port: 9443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇵🇹 机场推荐:dafei.de 葡萄牙 01
+  type: http
+  server: 149.22.86.14
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇵🇹 机场推荐:dafei.de 葡萄牙 02
+  type: http
+  server: 149.22.86.1
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇿🇦 机场推荐:dafei.de 南非 01
+  type: http
+  server: 197.242.159.23
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇿🇦 机场推荐:dafei.de 南非 02
+  type: ss
+  server: 102.37.111.8
+  port: 443
+  cipher: chacha20-ietf-poly1305
+  password: NqhvI3CfwbpcHA1H
+  udp: true
+- name: ssrsub_🇪🇸 机场推荐:dafei.de 西班牙 01
+  type: http
+  server: 130.195.250.34
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇪🇸 机场推荐:dafei.de 西班牙 02
+  type: http
+  server: 130.195.250.18
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇪🇸 机场推荐:dafei.de 西班牙 03
+  type: http
+  server: 82.102.17.178
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇪🇸 机场推荐:dafei.de 西班牙 04
+  type: vless
+  server: 196.196.149.81
+  port: 443
+  client-fingerprint: firefox
+  flow: xtls-rprx-vision
+  network: tcp
+  reality-opts:
+    public-key: ZSmetD4e9QG5CiXhniHg5HJB68L4kwbgAkJmMHtVwEE
+    short-id: 42426c882c5fcd41
+  tls: true
+  udp: true
+  uuid: 4201786b-d99b-4147-a5f0-20d47acddb81
+  servername: 7aa271t.es1.h1clayd.click
+- name: ssrsub_🇪🇸 机场推荐:dafei.de 西班牙 05
+  type: vless
+  server: 196.196.149.80
+  port: 443
+  client-fingerprint: firefox
+  flow: xtls-rprx-vision
+  network: tcp
+  reality-opts:
+    public-key: ZSmetD4e9QG5CiXhniHg5HJB68L4kwbgAkJmMHtVwEE
+    short-id: 42426c882c5fcd41
+  tls: true
+  uuid: 4201786b-d99b-4147-a5f0-20d47acddb81
+  udp: true
+  servername: 7aa271t.es1.h1clayd.click
+- name: ssrsub_🇪🇸 机场推荐:dafei.de 西班牙 06
+  type: vless
+  server: 196.196.148.90
+  port: 443
+  client-fingerprint: firefox
+  flow: xtls-rprx-vision
+  reality-opts:
+    public-key: ZSmetD4e9QG5CiXhniHg5HJB68L4kwbgAkJmMHtVwEE
+    short-id: 42426c882c5fcd41
+  tls: true
+  udp: true
+  uuid: 4201786b-d99b-4147-a5f0-20d47acddb81
+  network: tcp
+  servername: 7aa271t.es9.h1clayd.click
+- name: ssrsub_🇪🇸 机场推荐:dafei.de 西班牙 07
+  type: vless
+  server: 196.199.122.2
+  port: 443
+  client-fingerprint: firefox
+  encryption: none
+  network: xhttp
+  reality-opts:
+    public-key: 4mgkA2kT_Im0rkGi-fVSUU5CyF5xvMVcjA6MXBSEDAA
+    short-id: d5501b156391e01d
+  tls: true
+  udp: true
+  uuid: 4201786b-d99b-4147-a5f0-20d47acddb81
+  xudp: true
+  servername: 38917fx.es1.h1clayd.click
+- name: ssrsub_🇨🇾 机场推荐:dafei.de 塞浦路斯 01
+  type: http
+  server: 213.207.130.34
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇷🇺 机场推荐:dafei.de 俄罗斯 01
+  type: http
+  server: 46.29.166.134
+  port: 1446
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇳🇴 机场推荐:dafei.de 挪威 01
+  type: http
+  server: 146.70.170.210
+  port: 9443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇷🇸 机场推荐:dafei.de 塞尔维亚 01
+  type: http
+  server: 146.70.221.34
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇷🇸 机场推荐:dafei.de 塞尔维亚 02
+  type: http
+  server: 146.70.221.18
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇬🇷 机场推荐:dafei.de 希腊 01
+  type: http
+  server: 149.22.85.65
+  port: 443
+  password: ''
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: ''
+- name: ssrsub_🇬🇷 机场推荐:dafei.de 希腊 02
+  type: http
+  server: 149.22.85.78
+  port: 443
+  password: ''
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: ''
+- name: ssrsub_🇪🇪 机场推荐:dafei.de 爱沙尼亚 01
+  type: http
+  server: 95.153.31.66
+  port: 9443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇪🇪 机场推荐:dafei.de 爱沙尼亚 02
+  type: http
+  server: 95.153.32.2
+  port: 9443
+  password: ''
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: ''
+- name: ssrsub_🇪🇪 机场推荐:dafei.de 爱沙尼亚 03
+  type: http
+  server: 192.159.101.174
+  port: 9443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: ''
+- name: ssrsub_🇪🇪 机场推荐:dafei.de 爱沙尼亚 04
+  type: ss
+  server: estonia.astroapps.io
+  port: 443
+  cipher: chacha20-ietf-poly1305
+  password: 104243d8a410f4e54013b7fdb57c4b688d929c7b5b89e86b
+  plugin: v2ray-plugin
+  plugin-opts:
+    host: estonia.astroapps.io
+    mode: websocket
+    path: /fd3f56f3dc9f5ceca7e57ecd
+    tls: true
+  udp: true
+- name: ssrsub_🇲🇾 机场推荐:dafei.de 马来 01
+  type: http
+  server: 152.233.3.14
+  port: 9443
+  password: ''
+  skip-cert-verify: true
+  tls: true
+  username: ''
+  udp: true
+- name: ssrsub_🇧🇪 机场推荐:dafei.de 比利时 01
+  type: http
+  server: 146.70.176.242
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇧🇪 机场推荐:dafei.de 比利时 02
+  type: http
+  server: 146.70.123.98
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇹🇭 机场推荐:dafei.de 泰国 01
+  type: socks5
+  server: 151.246.109.86
+  port: 42000
+  password: 1pB7HV6u
+  username: AJ3d9gJw
+  udp: true
+- name: ssrsub_🇹🇭 机场推荐:dafei.de 泰国 02
+  type: socks5
+  server: 151.246.109.158
+  port: 42000
+  password: 1pB7HV6u
+  username: AJ3d9gJw
+  udp: true
+- name: ssrsub_🇹🇭 机场推荐:dafei.de 泰国 03
+  type: socks5
+  server: 103.14.164.30
+  port: 42000
+  password: VAwyJQX0iKMJiyCw5UVK9wGH
+  username: route164JIa2CBPxfy
+  udp: true
+- name: ssrsub_🇹🇭 机场推荐:dafei.de 泰国 04
+  type: socks5
+  server: 151.246.108.69
+  port: 42000
+  password: fAgE2jqK
+  username: h87527jJ
+  udp: true
+- name: ssrsub_🇹🇭 机场推荐:dafei.de 泰国 05
+  type: socks5
+  server: 87.84.49.245
+  port: 62000
+  password: YlRoWvE0dL_cUqS94wPeKnA4
+  username: ks878449260d
+  udp: true
+- name: ssrsub_🇹🇭 机场推荐:dafei.de 泰国 06
+  type: socks5
+  server: 103.14.164.202
+  port: 42000
+  password: VAwyJQX0iKMJiyCw5UVK9wGH
+  username: route164JIa2CBPxfy
+  udp: true
+- name: ssrsub_🇹🇭 机场推荐:dafei.de 泰国 07
+  type: socks5
+  server: 87.84.49.206
+  port: 62000
+  password: YlRoWvE0dL_cUqS94wPeKnA4
+  skip-cert-verify: true
+  username: ks878449260d
+  udp: true
+- name: ssrsub_🇹🇭 机场推荐:dafei.de 泰国 08
+  type: socks5
+  server: 192.204.15.135
+  port: 42000
+  password: mpbK00Pl
+  username: X3s3JteD
+  udp: true
+- name: ssrsub_🇹🇭 机场推荐:dafei.de 泰国 09
+  type: socks5
+  server: 82.47.152.151
+  port: 42000
+  password: Ks4Iab43
+  username: userLjVB
+  udp: true
+- name: ssrsub_🇹🇭 机场推荐:dafei.de 泰国 10
+  type: socks5
+  server: 87.84.49.140
+  port: 62000
+  password: YlRoWvE0dL_cUqS94wPeKnA4
+  skip-cert-verify: true
+  username: ks878449260d
+  udp: true
+- name: ssrsub_🇹🇭 机场推荐:dafei.de 泰国 11
+  type: socks5
+  server: 109.66.136.194
+  port: 62000
+  password: zdnivBaI
+  skip-cert-verify: true
+  username: r3ZzP8WW
+  udp: true
+- name: ssrsub_🇹🇭 机场推荐:dafei.de 泰国 12
+  type: socks5
+  server: 109.66.136.42
+  port: 62000
+  password: zdnivBaI
+  skip-cert-verify: true
+  username: r3ZzP8WW
+  udp: true
+- name: ssrsub_🇹🇭 机场推荐:dafei.de 泰国 13
+  type: socks5
+  server: 168.222.8.119
+  port: 42000
+  password: ao3W5ZML
+  skip-cert-verify: true
+  username: JPjarpW3
+  udp: true
+- name: ssrsub_🇹🇭 机场推荐:dafei.de 泰国 14
+  type: socks5
+  server: 192.204.15.192
+  port: 42000
+  password: mpbK00Pl
+  skip-cert-verify: true
+  username: X3s3JteD
+  udp: true
+- name: ssrsub_🇹🇭 机场推荐:dafei.de 泰国 15
+  type: socks5
+  server: 192.204.15.138
+  port: 42000
+  password: mpbK00Pl
+  skip-cert-verify: true
+  username: X3s3JteD
+  udp: true
+- name: ssrsub_🇹🇭 机场推荐:dafei.de 泰国 16
+  type: socks5
+  server: 104.234.70.136
+  port: 42000
+  password: KT5hiU8o
+  skip-cert-verify: true
+  username: rnt2L4XO
+  udp: true
+- name: ssrsub_🇹🇭 机场推荐:dafei.de 泰国 17
+  type: socks5
+  server: 45.201.39.74
+  port: 62000
+  password: wj2sNvDu
+  skip-cert-verify: true
+  username: y2stTQnf
+  udp: true
+- name: ssrsub_🇹🇭 机场推荐:dafei.de 泰国 18
+  type: socks5
+  server: 168.222.8.66
+  port: 42000
+  password: ao3W5ZML
+  skip-cert-verify: true
+  username: JPjarpW3
+  udp: true
+- name: ssrsub_🇹🇭 机场推荐:dafei.de 泰国 19
+  type: socks5
+  server: 109.66.136.242
+  port: 62000
+  password: zdnivBaI
+  skip-cert-verify: true
+  username: r3ZzP8WW
+  udp: true
+- name: ssrsub_🇹🇭 机场推荐:dafei.de 泰国 20
+  type: socks5
+  server: 168.222.8.4
+  port: 42000
+  password: ao3W5ZML
+  skip-cert-verify: true
+  username: JPjarpW3
+  udp: true
+- name: ssrsub_🇹🇭 机场推荐:dafei.de 泰国 21
+  type: socks5
+  server: 109.66.136.234
+  port: 62000
+  password: zdnivBaI
+  skip-cert-verify: true
+  username: r3ZzP8WW
+  udp: true
+- name: ssrsub_🇻🇳 机场推荐:dafei.de 越南 01
+  type: http
+  server: 14.225.71.128
+  port: 8443
+  password: ''
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: ''
+- name: ssrsub_🇻🇳 机场推荐:dafei.de 越南 02
+  type: socks5
+  server: 103.184.113.236
+  port: 62000
+  password: jHsK2gqs
+  username: qT46DZLv
+  udp: true
+- name: ssrsub_🇻🇳 机场推荐:dafei.de 越南 03
+  type: http
+  server: 14.225.71.128
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇻🇳 机场推荐:dafei.de 越南 04
+  type: socks5
+  server: 103.184.113.190
+  port: 62000
+  password: jHsK2gqs
+  skip-cert-verify: true
+  username: qT46DZLv
+  udp: true
+- name: ssrsub_🇱🇺 机场推荐:dafei.de 卢森堡 01
+  type: http
+  server: 185.221.132.226
+  port: 9443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇱🇺 机场推荐:dafei.de 卢森堡 02
+  type: http
+  server: 185.221.132.242
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: ''
+- name: ssrsub_🇬🇪 机场推荐:dafei.de 格鲁吉亚 01
+  type: http
+  server: 195.54.178.210
+  port: 443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇦🇱 机场推荐:dafei.de 阿尔巴尼亚 01
+  type: http
+  server: 31.171.155.210
+  port: 9443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: ''
+- name: ssrsub_🇦🇱 机场推荐:dafei.de 阿尔巴尼亚 02
+  type: http
+  server: 87.120.103.242
+  port: 443
+  password: ''
+  skip-cert-verify: true
+  tls: true
+  username: ''
+  udp: true
+- name: ssrsub_🇩🇰 机场推荐:dafei.de 丹麦 01
+  type: http
+  server: 185.245.84.50
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇲🇰 机场推荐:dafei.de 马其顿 01
+  type: http
+  server: 185.225.28.50
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇰🇷 机场推荐:dafei.de 韩国 01
+  type: socks5
+  server: 183.106.215.208
+  port: 1080
+  udp: true
+- name: ssrsub_🇰🇷 机场推荐:dafei.de 韩国 02
+  type: http
+  server: 152.69.230.221
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇰🇷 机场推荐:dafei.de 韩国 03
+  type: socks5
+  server: 59.11.209.162
+  port: 1080
+  password: ''
+  skip-cert-verify: true
+  username: ''
+  udp: true
+- name: ssrsub_🇮🇸 机场推荐:dafei.de 冰岛 01
+  type: http
+  server: 185.165.170.1
+  port: 9443
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: ''
+- name: ssrsub_🇨🇴 机场推荐:dafei.de 哥伦比亚 01
+  type: http
+  server: 158.247.125.5
+  port: 9443
+  skip-cert-verify: true
+  udp: true
+- name: ssrsub_🇧🇦 机场推荐:dafei.de 波斯尼亚和黑塞哥维那 01
+  type: http
+  server: 185.164.35.16
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ssrsub_🇨🇳 机场推荐:dafei.de 台湾 01
+  type: anytls
+  server: rtifgjdr.df6h451rh.xin
+  port: 443
+  password: 2902c46c8493
+  servername: docs.microsoft.com
+  skip-cert-verify: true
+  sni: docs.microsoft.com
+  udp: true
+- name: ssrsub_🇨🇳 机场推荐:dafei.de 台湾 02
+  type: anytls
+  server: a54ge.df6h451rh.xin
+  port: 443
+  client-fingerprint: chrome
+  password: 0324fbc29561
+  servername: docs.microsoft.com
+  skip-cert-verify: true
+  sni: docs.microsoft.com
+  udp: true
+- name: ssrsub_🇫🇮 机场推荐:dafei.de 芬兰 01
+  type: vless
+  server: 136.148.83.71
+  port: 443
+  client-fingerprint: qq
+  network: tcp
+  tls: true
+  udp: true
+  uuid: 00000000-0000-0001-0000-000000000000
+  ws-opts:
+    path: /
+  servername: wccfu-ru-79dc.my-fade.cloud
+- name: ssrsub_🇫🇮 机场推荐:dafei.de 芬兰 02
+  type: vless
+  server: 81.163.22.114
+  port: 443
+  client-fingerprint: chrome
+  encryption: none
+  network: tcp
+  tls: true
+  udp: true
+  uuid: 00000000-0000-0001-0000-000000000000
+  xudp: true
+  servername: oecxdhvdfbmwptoldi.fcloudservices.lat
+- name: ssrsub_🇫🇮 机场推荐:dafei.de 芬兰 03
+  type: ss
+  server: finland.astroapps.io
+  port: 443
+  cipher: chacha20-ietf-poly1305
+  password: 1c57654308df6d9b93b2bf749dd9f21ed7355aab8fd7ffbb
+  plugin: v2ray-plugin
+  plugin-opts:
+    host: finland.astroapps.io
+    mode: websocket
+    path: /ccad980a661bd347eaebae0f
+    tls: true
+  udp: true
+- name: ssrsub_🇫🇮 机场推荐:dafei.de 芬兰 04
+  type: vless
+  server: 13.143.164.89
+  port: 443
+  client-fingerprint: firefox
+  encryption: none
+  network: xhttp
+  reality-opts:
+    public-key: DfJ7Fj1CTooj72nYSOJqov0qoqsU5hhy6G9kEyIwGzc
+    short-id: 42d559cdd69e8d57
+  tls: true
+  udp: true
+  uuid: 61c9aca3-c23b-4410-a85d-85fda46a76cc
+  xudp: true
+  servername: www.cloudflare.com
+- name: ssrsub_🇮🇳 机场推荐:dafei.de 印度 01
+  type: vless
+  server: 147.93.171.8
+  port: 8443
+  alpn:
+  - http/1.1
+  client-fingerprint: firefox
+  network: ws
+  tls: true
+  udp: true
+  uuid: 591e7de6-f2dd-4ff9-ae21-8e00d5affa2a
+  ws-opts:
+    headers:
+      Host: 147-93-171-8.sslip.io
+    path: /vpn-live
+  servername: 147-93-171-8.sslip.io
+- name: ssrsub_🇬🇭 机场推荐:dafei.de 加纳 01
+  type: socks5
+  server: 169.255.56.148
+  port: 1080
+  password: test123
+  skip-cert-verify: true
+  udp: true
+  username: test123
+- name: ssrsub_🇮🇷 机场推荐:dafei.de 伊朗 01
+  type: vless
+  server: SUR.Deev-Guard.ir
+  port: 15470
+  encryption: mlkem768x25519plus.native.0rtt.zxPnV8JfYCCBaYEMhAz0LUK2vVHy4JlbyNoQGAL_zFE
+  network: tcp
+  udp: true
+  uuid: d1ec39e3-ad7b-4b65-9f65-813696f9a04e
+  xudp: true
+- name: ruk1ng001_D🔴🇩🇪hos[🤖💬🧩📺]_dokng.com_f53c6917
+  type: http
+  server: 158.173.154.1
+  port: 9002
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ruk1ng001_D🔴🇮🇪hos[🤖💬🧩🎵]_dokng.com_37e4a848
+  type: http
+  server: 34.249.214.108
+  port: 443
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ruk1ng001_D🔴🇷🇴hos[🤖💬🔮🧩]_dokng.com_caa83497
+  type: http
+  server: 193.176.84.23
+  port: 9002
+  password: 'null'
+  skip-cert-verify: true
+  tls: true
+  username: 'null'
+- name: ruk1ng001_D🔴🇷🇴hos[🤖💬🔮🧩]_dokng.com_beaebbc0
+  type: http
+  server: 193.176.84.19
+  port: 9002
+  password: 'null'
+  skip-cert-verify: true
+  tls: true
+  username: 'null'
+- name: ruk1ng001_D🔴🇳🇱hos[🤖💬🔮🧩]_dokng.com_f03b1640
+  type: http
+  server: 84.17.47.124
+  port: 9002
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ruk1ng001_D🔴🇳🇱hos[🤖💬🔮🧩]_dokng.com_5a16ef58
+  type: http
+  server: 84.17.47.123
+  port: 9002
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ruk1ng001_D🔴🇺🇸hos[🐙]_dokng.com_4e17894f
+  type: http
+  server: 154.26.192.123
+  port: 10988
+  password: gs4BXwT6SW
+  username: fQ67Dpe5dU
+- name: ruk1ng001_U⚪🇳🇱ukn[🤖💬🔮🧩]_dokng.com_1b492461
+  type: http
+  server: nl205.freeconnect.link
+  port: 9251
+  password: freeuser1
+  sni: nl205.freeconnect.link
+  tls: true
+  username: freeuser1
+- name: ruk1ng001_D🔴🇳🇱hos[🤖💬🔮🧩]_dokng.com_47dbdd00
+  type: http
+  server: 84.17.47.147
+  port: 9002
+  password: 'null'
+  skip-cert-verify: true
+  sni: 84.17.47.147
+  tls: true
+  username: 'null'
+- name: ruk1ng001_D🔴🇷🇴hos[🤖💬🔮🧩]_dokng.com_cf95381b
+  type: http
+  server: 193.176.84.27
+  port: 9002
+  password: 'null'
+  skip-cert-verify: true
+  tls: true
+  username: 'null'
+- name: ruk1ng001_D🔴🇷🇴hos[🤖💬🔮🧩]_dokng.com_c562dcb3
+  type: http
+  server: 193.176.84.27
+  port: 9002
+  skip-cert-verify: true
+  sni: www.bing.com
+  tls: true
+- name: ruk1ng001_D🔴🇳🇱hos[🤖💬🔮🧩]_dokng.com_461db3e8
+  type: http
+  server: 84.17.47.149
+  port: 9002
+  password: None
+  skip-cert-verify: true
+  tls: true
+  udp: true
+- name: ruk1ng001_D🔴🇷🇴hos[🤖💬🔮🧩]_dokng.com_49894881
+  type: http
+  server: 193.176.84.25
+  port: 9002
+  skip-cert-verify: true
+  tls: true
+- name: ruk1ng001_D🔴🇷🇴hos[🤖💬🔮🧩]_dokng.com_c52f2f9b
+  type: http
+  server: 193.176.84.31
+  port: 9002
+  password: 'null'
+  skip-cert-verify: true
+  tls: true
+  username: 'null'
+- name: ruk1ng001_D🔴🇯🇵hos[🤖💬🔮🧩]_dokng.com_9d3ee5ab
+  type: http
+  server: fan.571589.xyz
+  port: 443
+  tls: true
+- name: ruk1ng001_D🔴🇺🇸hos[🤖💬🔮🧩]_dokng.com_a6052a43
+  type: socks5
+  server: 66.253.2.69
+  port: 62000
+  password: l1tlrdx52v
+  username: u_rb1dba2
+- name: ruk1ng001_D🔴🇷🇴hos[🤖💬🔮🧩]_dokng.com_834e9703
+  type: http
+  server: 193.176.84.37
+  port: 9002
+  skip-cert-verify: true
+  sni: www.bing.com
+  tls: true
+- name: ruk1ng001_D🔴🇺🇸hos[🤖💬🧩🎵]_dokng.com_c6a884b6
+  type: http
+  server: 138.199.35.219
+  port: 9002
+  password: 'null'
+  skip-cert-verify: true
+  sni: 138.199.35.219
+  tls: true
+  username: 'null'
+- name: ruk1ng001_D🔴🇺🇸hos[🤖💬🔮🧩]_dokng.com_ffebf486
+  type: http
+  server: fan.365747.xyz
+  port: 443
+  password: 'null'
+  sni: fan.365747.xyz
+  tls: true
+  username: 'null'
+- name: ruk1ng001_D🔴🇷🇴hos[🤖💬🔮🧩]_dokng.com_c8b57947
+  type: http
+  server: 193.176.84.36
+  port: 9002
+  skip-cert-verify: true
+  sni: www.bing.com
+  tls: true
+- name: ruk1ng001_D🔴🇪🇨hos[🤖💬🧩📺]_dokng.com_b7f302f8
+  type: http
+  server: 38.165.231.71
+  port: 9443
+  password: ''
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: ''
+- name: ruk1ng001_U⚪🏳️ukn_dokng.com_016d9dc7
+  type: http
+  server: 149.88.21.129
+  port: 443
+  password: ''
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: ''
+- name: ruk1ng001_D🔴🇷🇴hos[🤖💬🔮🧩]_dokng.com_9b101db6
+  type: http
+  server: 193.176.84.35
+  port: 9002
+  password: 'null'
+  skip-cert-verify: true
+  sni: 193.176.84.35
+  tls: true
+  username: 'null'
+- name: ruk1ng001_D🔴🇮🇹hos[🤖💬🔮🧩]_dokng.com_8ed40d75
+  type: ss
+  server: 202.50.253.90
+  port: 19999
+  cipher: aes-256-gcm
+  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
+- name: ruk1ng001_D🔴🇮🇹hos[🤖💬🔮🧩]_dokng.com_c23341c5
+  type: ss
+  server: 202.50.253.63
+  port: 19999
+  cipher: aes-256-gcm
+  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
+  skip-cert-verify: false
+  tls: false
+  udp: true
+- name: ruk1ng001_C🟠🇮🇹hos[🤖💬🔮🧩]_dokng.com_92c172b4
+  type: ss
+  server: 202.50.253.45
+  port: 19999
+  cipher: aes-256-gcm
+  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
+- name: ruk1ng001_D🔴🇷🇴hos[🤖💬🔮🧩]_dokng.com_b09c9850
+  type: http
+  server: 193.176.84.31
+  port: 9002
+  skip-cert-verify: true
+  sni: www.bing.com
+  tls: true
+- name: ruk1ng001_C🟠🇮🇹hos[🤖💬🔮🎵]_dokng.com_30207bf9
+  type: ss
+  server: 202.50.253.36
+  port: 19999
+  cipher: aes-256-gcm
+  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
+  udp: true
+- name: ruk1ng001_A🟢🇹🇭res[💬🐙🔍]_dokng.com_441fecdf
+  type: socks5
+  server: 151.246.108.69
+  port: 42000
+  password: fAgE2jqK
+  username: h87527jJ
+- name: ruk1ng001_C🟠🇺🇸hos[🤖💬🎮✈️]_dokng.com_c8aee3e4
+  type: hysteria2
+  server: starlink-ft.251313.xyz
+  port: 443
+  password: https://xship.2fa.cat
+  skip-cert-verify: true
+  sni: xship.top
+- name: ruk1ng001_C🟠🇳🇱hos[🤖💬🔮🎵]_dokng.com_5d45780e
+  type: vless
+  server: 196.196.148.76
+  port: 443
+  client-fingerprint: firefox
+  flow: xtls-rprx-vision
+  reality-opts:
+    public-key: VZS639V1i-35g7VXb9EoTYL-Srm7858sxcvFAunncmA
+    short-id: 8d0d0679f42ffd98
+  servername: 8a2e72t.nl20.h1clayd.shop
+  tls: true
+  udp: true
+  uuid: 4201786b-d99b-4147-a5f0-20d47acddb81
+- name: ruk1ng001_A🟢🇹🇭res_dokng.com_bf81894b
+  type: socks5
+  server: 151.246.109.158
+  port: 42000
+  password: 1pB7HV6u
+  username: AJ3d9gJw
+- name: ruk1ng001_C🟠🇮🇹hos[🤖💬🔮🧩]_dokng.com_07162a4c
+  type: ss
+  server: 202.50.253.99
+  port: 19999
+  cipher: aes-256-gcm
+  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
+  udp: true
+- name: ruk1ng001_D🔴🇷🇴hos[🤖💬🔮🧩]_dokng.com_0c9de1a9
+  type: http
+  server: 193.176.84.26
+  port: 9002
+  skip-cert-verify: true
+  sni: www.bing.com
+  tls: true
+- name: ruk1ng001_A🟢🇸🇬res_dokng.com_903162eb
+  type: http
+  server: 149.88.99.209
+  port: 9443
+  password: ''
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: ''
+- name: ruk1ng001_U⚪🏳️ukn_dokng.com_568f056a
+  type: http
+  server: 149.34.248.65
+  port: 443
+  skip-cert-verify: true
+  sni: 149.34.248.65
+  tls: true
+- name: ruk1ng001_A🟢🇮🇳res[🤖💬📺🎵]_dokng.com_60704389
+  type: vless
+  server: xray-dmr3b3hy-calm-maple-7.cloady.io
+  port: 443
+  client-fingerprint: chrome
+  network: ws
+  servername: xray-dmr3b3hy-calm-maple-7.cloady.io
+  tls: true
+  uuid: 06a5afa1-2bbc-a5d1-1770-becd1089c636
+  ws-opts:
+    headers:
+      Host: xray-dmr3b3hy-calm-maple-7.cloady.io
+    path: /0175469f14317d82
+- name: ruk1ng001_A🟢🇺🇸res[🤖💬🧩🎵]_dokng.com_72ccc46a
+  type: http
+  server: usgp1-cdn-route.couldflare-cdn.com
+  port: 443
+  password: exaxgqkKkd0TAMrCxeonWg==
+  tls: true
+  udp: true
+  username: mrwdfNTD8M79LCukCieldrqZWqs=
+- name: ruk1ng001_C🟠🇺🇸hos[💬🎵🎮🐙]_dokng.com_08d7e43e
+  type: hysteria2
+  server: starlink-ft.251313.xyz
+  port: 443
+  password: https://xship.best
+  skip-cert-verify: true
+  sni: xship.top
+  udp: true
+- name: ruk1ng001_A🟢🇳🇱res[🤖💬🔮📺]_dokng.com_e0876948
+  type: vless
+  server: 196.196.148.85
+  port: 443
+  client-fingerprint: firefox
+  network: tcp
+  reality-opts:
+    public-key: l-GzBDuNuhnjxoRlZqKvT7jAt_sbVAxhGFsAttO5kXs
+    short-id: 361d0dd59c70516f
+  servername: 5d0319t.nl7.h1clayd.click
+  tls: true
+  uuid: cda0862a-0f87-4be9-8ed8-1d0c9e382839
+- name: ruk1ng001_A🟢🇹🇭res_dokng.com_021435aa
+  type: socks5
+  server: 87.84.49.245
+  port: 62000
+  password: YlRoWvE0dL_cUqS94wPeKnA4
+  username: ks878449260d
+- name: ruk1ng001_D🔴🇺🇸hos[🤖💬🧩🎵]_dokng.com_7b64c972
+  type: http
+  server: 138.199.35.212
+  port: 9002
+  password: ''
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: ''
+- name: ruk1ng001_A🟢🇻🇳res_dokng.com_8b68a714
+  type: socks5
+  server: 103.184.113.236
+  port: 62000
+  password: jHsK2gqs
+  username: qT46DZLv
+- name: ruk1ng001_D🔴🇺🇸hos[🤖💬🧩🎵]_dokng.com_cc9cfe69
+  type: http
+  server: 138.199.35.200
+  port: 9002
+  password: ''
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: ''
+- name: ruk1ng001_A🟢🇹🇭res_dokng.com_63f8b36e
+  type: socks5
+  server: 82.47.152.151
+  port: 42000
+  password: Ks4Iab43
+  username: userLjVB
+- name: ruk1ng001_D🔴🇺🇸hos[🤖💬🎵🎮]_dokng.com_df2b9dfe
+  type: http
+  server: 138.199.35.201
+  port: 9002
+  password: ''
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: ''
+- name: ruk1ng001_D🔴🇸🇬hos_dokng.com_731ac5ff
+  type: socks5
+  server: 47.236.168.243
+  port: 1080
+  password: '8888'
+  username: '8888'
+- name: ruk1ng001_D🔴🇺🇸hos[🤖💬🧩🎮]_dokng.com_e00ef38c
+  type: http
+  server: 138.199.35.207
+  port: 9002
+  password: ''
+  skip-cert-verify: true
+  tls: true
+  udp: true
+  username: ''
+- name: shaoyouvip_🇪🇪EE_1|1.3MB/s
+  type: vless
+  server: 185.174.135.219
+  port: 443
+  client-fingerprint: firefox
+  network: grpc
+  reality-opts:
+    public-key: pR39Vv5qhk8r6akOicoy6mMs4-ppSWUez8MyAXG7wwQ
+    short-id: 27350908de933e09
+  servername: eeb.899themes.pro
+  tls: true
+  udp: true
+  uuid: ba373a70-295f-482d-a471-8bc17b54e23b
+- name: shaoyouvip_🇸🇬SG_1|3.2MB/s
+  type: trojan
+  server: 34651e.cf.877774.xyz
+  port: 443
+  network: ws
+  password: 531d9e93-53be-4f05-a9c1-33490d4da2f3
+  skip-cert-verify: true
+  sni: 44-ml-1.ccc4vortex.top
+  udp: true
+  ws-opts:
+    headers:
+      Host: 44-ml-1.ccc4vortex.top
+    path: /images
+- name: shaoyouvip_🇺🇸US_1|2.8MB/s
+  type: vmess
+  server: fctwi.xiaoyan.io
+  port: 16648
+  alterId: 0
+  cipher: auto
+  network: ws
+  skip-cert-verify: true
+  tls: false
+  uuid: 967fbc94-fccd-46c2-9241-be92d4906186
+  ws-opts:
+    headers:
+      Host: 86714acc4cc5924e812db1c117db832f.mobgslb.tbcache.com
+    path: /
+- name: shaoyouvip_🇩🇪DE_1|2.0MB/s
+  type: hysteria2
+  server: uk-tube-01.stre4m.net
+  port: 13337
+  password: 900c8c92-1979-4c7c-8f2f-63e87d53d8fe
+  servername: mother-earth.fyi
+  skip-cert-verify: true
+  sni: mother-earth.fyi
+  tls: true
+- name: shaoyouvip_🇺🇸US_3|3.5MB/s
+  type: hysteria2
+  server: 108.181.9.242
+  port: 50777
+  password: 531d9e93-53be-4f05-a9c1-33490d4da2f3
+  servername: iosapps.itunes.apple.com
+  skip-cert-verify: false
+  sni: iosapps.itunes.apple.com
+  udp: true
+- name: shaoyouvip_🇺🇸US_4|3.9MB/s
+  type: hysteria2
+  server: 108.181.10.72
+  port: 50448
+  password: 531d9e93-53be-4f05-a9c1-33490d4da2f3
+  servername: iosapps.itunes.apple.com
+  skip-cert-verify: false
+  sni: iosapps.itunes.apple.com
+  udp: true
+- name: shaoyouvip_🇹🇭TH_1|1.1MB/s
+  type: socks5
+  server: 87.84.49.140
+  port: 62000
+  password: YlRoWvE0dL_cUqS94wPeKnA4
+  skip-cert-verify: true
+  username: ks878449260d
+- name: leilaomi_[271.8ms +/-2ms] http-172.64.69.89
+  type: http
+  server: 172.64.69.89
+  port: 443
+  tls: true
+  skip-cert-verify: true
+- name: leilaomi_[280.0ms +/-11ms] http-198.44.138.27
+  type: http
+  server: 198.44.138.27
+  port: 9443
+  tls: true
+  skip-cert-verify: true
+- name: leilaomi_[321.3ms +/-2ms] http-38.95.111.226
+  type: http
+  server: 38.95.111.226
+  port: 9443
+  tls: true
+  skip-cert-verify: true
+- name: leilaomi_[332.6ms +/-2ms] http-138.199.35.198
+  type: http
+  server: 138.199.35.198
+  port: 9002
+  username: 'null'
+  password: 'null'
+  tls: true
+  skip-cert-verify: true
+- name: leilaomi_[379.0ms +/-3ms] http-138.199.35.200
+  type: http
+  server: 138.199.35.200
+  port: 9002
+  tls: true
+  skip-cert-verify: true
+- name: leilaomi_[326.9ms +/-0ms] http-138.199.35.207
+  type: http
+  server: 138.199.35.207
+  port: 9002
+  tls: true
+  skip-cert-verify: true
+- name: leilaomi_[497.0ms +/-0ms] http-34.249.214.108
+  type: http
+  server: 34.249.214.108
+  port: 443
+  tls: true
+  skip-cert-verify: true
+- name: leilaomi_[508.6ms +/-2ms] http-18.200.158.139
+  type: http
+  server: 18.200.158.139
+  port: 443
+  tls: true
+  skip-cert-verify: true
+- name: leilaomi_[546.9ms +/-3ms] http-149.36.51.129
+  type: http
+  server: 149.36.51.129
+  port: 443
+  tls: true
+  skip-cert-verify: true
+- name: leilaomi_[537.7ms +/-1ms] http-84.17.47.123
+  type: http
+  server: 84.17.47.123
+  port: 9002
+  tls: true
+  skip-cert-verify: true
+- name: leilaomi_[535.4ms +/-3ms] http-84.17.47.149
+  type: http
+  server: 84.17.47.149
+  port: 9002
+  tls: true
+  skip-cert-verify: true
+- name: leilaomi_🇮🇹 [531.3ms +/-1ms] shadowsocks-1875023019
+  type: ss
+  server: 202.50.253.63
+  port: 19999
+  cipher: aes-256-gcm
+  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
+  udp: true
+- name: leilaomi_[546.1ms +/-1ms] http-84.17.47.148
+  type: http
+  server: 84.17.47.148
+  port: 9002
+  username: 'null'
+  password: 'null'
+  tls: true
+  skip-cert-verify: true
+- name: leilaomi_[542.5ms +/-9ms] http-84.17.47.147
+  type: http
+  server: 84.17.47.147
+  port: 9002
+  username: 'null'
+  password: 'null'
+  tls: true
+  skip-cert-verify: true
+- name: leilaomi_[563.4ms +/-2ms] http-158.173.154.2
+  type: http
+  server: 158.173.154.2
+  port: 9002
+  tls: true
+  skip-cert-verify: true
+- name: leilaomi_[550.1ms +/-0ms] http-84.17.47.124
+  type: http
+  server: 84.17.47.124
+  port: 9002
+  tls: true
+  skip-cert-verify: true
+- name: leilaomi_[564.1ms +/-4ms] http-158.173.154.1
+  type: http
+  server: 158.173.154.1
+  port: 9002
+  tls: true
+  skip-cert-verify: true
+- name: leilaomi_[571.0ms +/-5ms] http-158.173.154.3
+  type: http
+  server: 158.173.154.3
+  port: 9002
+  tls: true
+  skip-cert-verify: true
+- name: leilaomi_[566.2ms +/-5ms] http-158.173.154.5
+  type: http
+  server: 158.173.154.5
+  port: 9002
+  tls: true
+  skip-cert-verify: true
+- name: leilaomi_[575.9ms +/-6ms] http-158.173.154.4
+  type: http
+  server: 158.173.154.4
+  port: 9002
+  tls: true
+  skip-cert-verify: true
+- name: leilaomi_[332.5ms +/-1ms] 4Nika-374f6c35e6
+  type: vless
+  server: 172.235.32.253
+  port: 443
+  uuid: 62fe4c8e-2620-478c-9c39-3d4e12848ff4
+  udp: true
+  tls: true
+  servername: itunes.apple.com
+  skip-cert-verify: true
+  reality-opts:
+    public-key: r__vI0YVD9j6Fttsb4aZ0TwvUggV493v6GILKXWIZwA
+    short-id: ac184496
+    support-x25519mlkem768: true
+  client-fingerprint: chrome
+  network: ws
+  ws-opts:
+    path: /ws
+    headers:
+      Host: itunes.apple.com
+- name: leilaomi_[623.8ms +/-2ms] http-149.36.50.1
+  type: http
+  server: 149.36.50.1
+  port: 443
+  tls: true
+  skip-cert-verify: true
+- name: leilaomi_[638.2ms +/-1ms] http-212.102.63.31
+  type: http
+  server: 212.102.63.31
+  port: 443
+  tls: true
+  skip-cert-verify: true
+- name: leilaomi_[586.4ms +/-26ms] http-103.97.88.154
+  type: http
+  server: 103.97.88.154
+  port: 443
+  username: 'null'
+  password: 'null'
+  tls: true
+  skip-cert-verify: true
+- name: leilaomi_[610.6ms +/-1ms] http-84.17.50.214
+  type: http
+  server: 84.17.50.214
+  port: 9443
+  tls: true
+  skip-cert-verify: true
+- name: leilaomi_[347.0ms +/-2ms] 4Kian-01db735cba
+  type: vless
+  server: 172.233.139.98
+  port: 443
+  uuid: 62b5a30a-89de-4da7-b1c0-08abfad0cd1d
+  udp: true
+  tls: true
+  servername: itunes.apple.com
+  skip-cert-verify: true
+  reality-opts:
+    public-key: ZtWVf2gAix3etGziWVZ9apsWfWb5UOepCWQqVyIGxHI
+    short-id: 4d3f31a1
+    support-x25519mlkem768: true
+  client-fingerprint: chrome
+  network: ws
+  ws-opts:
+    path: /ws
+    headers:
+      Host: itunes.apple.com
+- name: leilaomi_[664.1ms +/-2ms] http-95.153.31.66
+  type: http
+  server: 95.153.31.66
+  port: 9443
+  tls: true
+  skip-cert-verify: true
+- name: leilaomi_🇺🇸 [437.8ms +/-168ms] vless-1835128666
+  type: vless
+  server: 45.63.53.81
+  port: 443
+  uuid: c512dcbd-1847-40a2-9c99-989c8bfe4717
+  udp: true
+  tls: true
+  servername: itunes.apple.com
+  skip-cert-verify: true
+  reality-opts:
+    public-key: 6nTROV2ELz-3vNUl0A00hp378QngpYABrPgjCpUknD0
+    short-id: f436f707
+    support-x25519mlkem768: true
+  client-fingerprint: chrome
+  network: ws
+  ws-opts:
+    path: /ws
+    headers:
+      Host: itunes.apple.com
+- name: leilaomi_[650.0ms +/-26ms] http-84.17.47.125
+  type: http
+  server: 84.17.47.125
+  port: 9002
+  tls: true
+  skip-cert-verify: true
+- name: leilaomi_🇮🇹 [573.5ms +/-109ms] shadowsocks-1875023009
+  type: ss
+  server: 202.50.253.27
+  port: 19999
+  cipher: aes-256-gcm
+  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
+  udp: true
+- name: leilaomi_[756.4ms +/-4ms] http-152.233.16.174
+  type: http
+  server: 152.233.16.174
+  port: 9443
+  tls: true
+  skip-cert-verify: true
+- name: leilaomi_[731.1ms +/-4ms] http-185.225.28.50
+  type: http
+  server: 185.225.28.50
+  port: 443
+  tls: true
+  skip-cert-verify: true
+- name: leilaomi_🇮🇹 [558.5ms +/-127ms] shadowsocks-1875022929
+  type: ss
+  server: 202.50.253.90
+  port: 19999
+  cipher: aes-256-gcm
+  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
+  udp: true
+- name: leilaomi_[753.4ms +/-10ms] http-193.176.84.30
+  type: http
+  server: 193.176.84.30
+  port: 9002
+  tls: true
+  skip-cert-verify: true
+- name: leilaomi_[764.1ms +/-6ms] http-193.176.84.35
+  type: http
+  server: 193.176.84.35
+  port: 9002
+  tls: true
+  skip-cert-verify: true
+- name: leilaomi_[773.4ms +/-4ms] http-193.176.84.36
+  type: http
+  server: 193.176.84.36
+  port: 9002
+  tls: true
+  skip-cert-verify: true
+- name: leilaomi_[776.0ms +/-10ms] http-193.176.84.24
+  type: http
+  server: 193.176.84.24
+  port: 9002
+  tls: true
+  skip-cert-verify: true
+- name: leilaomi_[769.3ms +/-18ms] http-193.176.84.27
+  type: http
+  server: 193.176.84.27
+  port: 9002
+  tls: true
+  skip-cert-verify: true
+- name: leilaomi_[842.0ms +/-4ms] http-185.183.105.130
+  type: http
+  server: 185.183.105.130
+  port: 443
+  tls: true
+  skip-cert-verify: true
+- name: leilaomi_🇺🇸 [435.1ms +/-0ms] 🇺🇸
+  type: hysteria2
+  server: 135.126.21.107
+  port: 443
+  password: 6ac6d17d-040c-4fab-940e-8f5d72c3fed6
+  sni: de2-balance.rezproffx.ru
+  skip-cert-verify: true
+- name: leilaomi_🇮🇹 [594.3ms +/-147ms] shadowsocks-1875023048
+  type: ss
+  server: 202.50.253.72
+  port: 19999
+  cipher: aes-256-gcm
+  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
+  udp: true
+- name: leilaomi_🇮🇹 [571.6ms +/-148ms] shadowsocks-1875022946
+  type: ss
+  server: 202.50.253.54
+  port: 19999
+  cipher: aes-256-gcm
+  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
+  udp: true
+- name: leilaomi_[817.6ms +/-5ms] http-193.176.84.19
+  type: http
+  server: 193.176.84.19
+  port: 9002
+  tls: true
+  skip-cert-verify: true
+- name: leilaomi_[815.1ms +/-12ms] http-193.176.84.38
+  type: http
+  server: 193.176.84.38
+  port: 9002
+  tls: true
+  skip-cert-verify: true
+- name: leilaomi_🇮🇹 [514.6ms +/-3ms] ⚜️𝗝𝗼𝗶𝗻
+  type: ss
+  server: 202.50.253.18
+  port: 19999
+  cipher: aes-256-gcm
+  password: ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=
+  udp: true
+- name: leilaomi_[859.9ms +/-3ms] http-87.98.174.157
+  type: http
+  server: 87.98.174.157
+  port: 6103
+  tls: true
+  skip-cert-verify: true
+- name: leilaomi_[857.5ms +/-8ms] http-193.176.84.21
+  type: http
+  server: 193.176.84.21
+  port: 9002
+  tls: true
+  skip-cert-verify: true
+- name: leilaomi_[833.7ms +/-51ms] http-87.120.103.242
+  type: http
+  server: 87.120.103.242
+  port: 443
+  tls: true
+  skip-cert-verify: true
+- name: leilaomi_[509.3ms +/-2ms] 4Jadi-0ba43d49b4
+  type: vless
+  server: 172.104.86.181
+  port: 443
+  uuid: 010431f3-04f6-4404-a801-b93bf2e3c2b2
+  udp: true
+  tls: true
+  servername: itunes.apple.com
+  skip-cert-verify: true
+  reality-opts:
+    public-key: ujYDprigWFLxcj4BtitDNa-hoPjIbpSzrnEcqp3cgjk
+    short-id: c8559ca1
+    support-x25519mlkem768: true
+  client-fingerprint: chrome
+  network: ws
+  ws-opts:
+    path: /ws
+    headers:
+      Host: itunes.apple.com
+- name: leilaomi_[797.1ms +/-2ms] http-149.22.85.65
+  type: http
+  server: 149.22.85.65
+  port: 443
+  tls: true
+  skip-cert-verify: true
+- name: leilaomi_[968.3ms +/-2ms] http-146.70.123.98
+  type: http
+  server: 146.70.123.98
+  port: 443
+  tls: true
+  skip-cert-verify: true
+- name: leilaomi_[745.6ms +/-1ms] http-89.124.11.9
+  type: http
+  server: 89.124.11.9
+  port: 443
+  username: 'null'
+  password: 'null'
+  tls: true
+  skip-cert-verify: true
+- name: leilaomi_[805.5ms +/-5ms] http-193.176.84.34
+  type: http
+  server: 193.176.84.34
+  port: 9002
+  tls: true
+  skip-cert-verify: true
+- name: leilaomi_[759.9ms +/-2ms] http-193.176.84.26
+  type: http
+  server: 193.176.84.26
+  port: 9002
+  username: 'null'
+  password: 'null'
+  tls: true
+  skip-cert-verify: true
+- name: leilaomi_[524.5ms +/-0ms] 4FreeIran-78bcdcba0b
+  type: vless
+  server: 172.237.14.142
+  port: 443
+  uuid: 323aa578-bddb-47ed-bdb6-5650ade5825c
+  udp: true
+  tls: true
+  servername: itunes.apple.com
+  skip-cert-verify: true
+  reality-opts:
+    public-key: UPeN2wAl3WQKsj-IchFF-81OnbhP1FQJ0EtcBFQn0Ak
+    short-id: 6093f81a
+    support-x25519mlkem768: true
+  client-fingerprint: chrome
+  network: ws
+  ws-opts:
+    path: /ws
+    headers:
+      Host: itunes.apple.com
+- name: leilaomi_[676.7ms +/-13ms] 🇪🇸
+  type: vless
+  server: 196.196.149.80
+  port: 443
+  uuid: 4201786b-d99b-4147-a5f0-20d47acddb81
+  udp: true
+  tls: true
+  servername: b3cd32g.es1.h1clayd.click
+  skip-cert-verify: true
+  reality-opts:
+    public-key: 7efBhLzPwoTtEC1GlukCdiTllobUfa2_XuAKNSLJx30
+    short-id: e7cffac9f8cfb434
+    support-x25519mlkem768: true
+  client-fingerprint: chrome
+  network: grpc
+- name: leilaomi_[599.7ms +/-3ms] 4Sarina-ab64889cb8
+  type: vless
+  server: 194.58.60.228
+  port: 443
+  uuid: bbbee51e-021e-4e65-ba03-bf7de175116f
+  udp: true
+  tls: true
+  servername: node43.lmdscdn.ru
+  skip-cert-verify: true
+  reality-opts:
+    public-key: PVlnR_I9tZ8hKhOHW6ySpSofhsaShcBQ_JV2-0TePVA
+    short-id: c5548af15927b698
+    support-x25519mlkem768: true
+  client-fingerprint: chrome
+  network: grpc
+- name: leilaomi_[938.9ms +/-47ms] vless-1832764138
+  type: vless
+  server: 104.17.210.74
+  port: 443
+  uuid: 4e4f1f70-5e56-4a76-bb9d-db087f4690c4
+  udp: true
+  tls: true
+  servername: jp3.yohototo.top
+  skip-cert-verify: true
+  network: ws
+  ws-opts:
+    path: /tyxyws
+    headers:
+      Host: jp3.yohototo.top
+- name: leilaomi_[519.3ms +/-0ms] ProxyPool | 🇭🇰 香港 | HKG
+  type: anytls
+  server: 5641sdds.df6h451rh.xin
+  port: 443
+  password: 0324fbc29561
+  sni: images.ctfassets.net
+  skip-cert-verify: true
+- name: leilaomi_[948.9ms +/-6ms] 4Nika-c1034dcd11
+  type: vless
+  server: 104.27.97.42
+  port: 8443
+  uuid: 3692de53-42e6-4aed-a522-40ec355dcd2f
+  udp: true
+  tls: true
+  servername: free.sahanwickramasinghe.com
+  skip-cert-verify: true
+  client-fingerprint: chrome
+  network: ws
+  ws-opts:
+    path: /
+    headers:
+      Host: free.sahanwickramasinghe.com
+- name: leilaomi_[1063.1ms +/-269ms] 🇮🇳
+  type: vless
+  server: 147.93.171.8
+  port: 8443
+  uuid: 591e7de6-f2dd-4ff9-ae21-8e00d5affa2a
+  udp: true
+  tls: true
+  servername: 147-93-171-8.sslip.io
+  skip-cert-verify: true
+  client-fingerprint: chrome
+  network: ws
+  ws-opts:
+    path: /vpn-live
+    headers:
+      Host: 147-93-171-8.sslip.io
